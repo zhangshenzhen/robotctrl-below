@@ -26,6 +26,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.brick.robotctrl.SettingsActivity"
+            android:launchMode="singleTop"
+            android:label="@string/settings"
+            android:icon="@drawable/ic_action_settings"
+            android:theme="@style/AppTheme.Settings">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

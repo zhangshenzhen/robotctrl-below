@@ -1,5 +1,6 @@
 package com.brick.robotctrl;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,12 +16,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // relative menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // remove text in toolbar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
     }
 
+    // relative menu
     Menu menu = null;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,13 +40,12 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // menu context
             case R.id.actionSettings:
-                // do some thing
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivityForResult(intent, 0);
+                // do some thing else
                 break;
             case R.id.actionSwitchCtrl:
-                if(menuCtrl)
-                    menuCtrl = false;
-                else
-                    menuCtrl = true;
+                menuCtrl = !menuCtrl;
                 menu.findItem(R.id.actionSwitchCtrl).setIcon( menuCtrl?
                         R.drawable.ic_action_changectrl :
                         R.drawable.ic_action_changectrl_disable);
