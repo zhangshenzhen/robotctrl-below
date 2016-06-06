@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">RobotCtrl</string>
+    <string name="settings">设置</string>
+    <string name="robotName">robotName</string>
+    <string name="robotNameTitle">Robot name</string>
+    <string name="serverIp">serverIp</string>
+    <string name="serverIpTitle">Server IP</string>
+    <string name="serverPort">serverPort</string>
+    <string name="serverPortTitle">Server port</string>
+    <string name="list">list</string>
+    <string name="controlType">Control Type</string>
+</resources>
