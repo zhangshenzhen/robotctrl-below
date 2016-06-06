@@ -44,9 +44,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         switch (item.getItemId()) {
             // menu context
             case android.R.id.home:
-                Intent intent = new Intent();
-                intent.putExtra("data", true);
-                setResult(RESULT_OK, intent);
                 finish();
                 return true;
             default:
