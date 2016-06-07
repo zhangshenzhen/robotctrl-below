@@ -105,4 +105,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         };
     }
+
+    // relative ssdb
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("data", true);
+        setResult(RESULT_OK, intent);
+        finish();
+        super.onBackPressed();
+    }
 }

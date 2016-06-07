@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,16 +18,23 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener, CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = "MainActivity";
 
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
 
-    public static ImageView pointView = null;
+    TextView gravityTextView = null;
+    TextView notifyTextView = null;
+    ImageView pointView = null;
+    CheckBox dirCtrlSwitch = null;
+    SSDBTask ssdbTask = null;
+
+    private boolean serverChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +45,20 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         pointView.setOnTouchListener(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //去除ToolBar上的文字
+        // remove text in toolbar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        //NOTE OnSharedPreferenceChangeListener 侦听配置改变
+
+        ssdbTask = new SSDBTask(MainActivity.this, handler);
+
+        notifyTextView = (TextView) findViewById(R.id.notifyTextView);
+        pointView = (ImageView) findViewById(R.id.pointView);
+        pointView.setOnTouchListener(this);
+        dirCtrlSwitch = (CheckBox) findViewById(R.id.dirCtrlCheckBox);
+        dirCtrlSwitch.setOnCheckedChangeListener(this);
+
+        //NOTE OnSharedPreferenceChangeListener: listen settings changed
         presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             private final String robotName = getString(R.string.robotName);
             private final String serverIp = getString(R.string.serverIp);
@@ -61,11 +79,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                         e.printStackTrace();
                     }
                     if (key.equals(robotName)) {
-                        // do some thing
+                        ssdbTask.setRobotName(val);
                     } else if (key.equals(serverIp)) {
-                        // do some thing
+                        ssdbTask.setServerIP(val);
+                        serverChanged = true;
                     } else if (key.equals(serverPort)) {
-                        // do some thing
+                        int serverPort = Integer.parseInt(val);
+                        ssdbTask.setServerPort(serverPort);
+                        serverChanged = true;
                     }
                     Log.i(TAG, "onSharedPreferenceChanged: " + key + " " + val);
                 }
@@ -73,6 +94,28 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         };
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(presChangeListener);
     }
+
+    // receive ssdb server info
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SSDBTask.ENABLECTRL:
+                    dirCtrlSwitch.setChecked(true);
+                    break;
+                case SSDBTask.ACTION_HGET:
+                    String rlt = (String) msg.obj;
+                    gravityTextView.setText(rlt);
+                    break;
+                case SSDBTask.DIRCTRLWARNING:
+                    notifyTextView.setText("open switch please");
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     // relative menu
     Menu menu = null;
@@ -116,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
     PointF lastPoint = new PointF(), initPoint = new PointF(-1f, -1f);
+    long lastTime = 0, curTime = 0;
     public static float MAX_RADIUS = 0f;
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -134,6 +178,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     float nextX = pointView.getX() - distance.x;
                     float nextY = pointView.getY() - distance.y;
 
+                    //50ms check once，do not WR ssdb too quick
+                    curTime = System.currentTimeMillis();
+                    if (curTime - lastTime > 50) {
+                        lastTime = curTime;
+                        int dir = getMoveDirection(nextX, nextY);
+                        ssdbTask.robotMove(dir);
+                        notifyTextView.setText(SSDBTask.DirCtrlVals[dir]);
+                    }
+
                     Log.i(TAG, "onTouch: ACTION_MOVE ===========pointView.getX():"+pointView.getX()+"-distance.x:"+distance.x);
                     // limit the pointView in the circle
                     float lengthX = nextX - initPoint.x, lengthY = nextY - initPoint.y;
@@ -151,6 +204,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     Log.i(TAG, "onTouch: ACTION_UP X:"+event.getRawX()+" Y:"+event.getRawY());
                     // back to the center
                     animationMoveTo(initPoint, 150);
+                    ssdbTask.robotMove(SSDBTask.DIR_STOP);
+                    notifyTextView.setText(SSDBTask.DirCtrlVals[SSDBTask.DIR_STOP]);
                 }
                 break;
                 default:
@@ -191,6 +246,40 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 presChangeListener.onSharedPreferenceChanged(PreferenceManager.getDefaultSharedPreferences(this), getString(R.string.controlType));
             }
             Log.i(TAG, "onWindowFocusChanged: " + initPoint.toString());
+        }
+    }
+
+    private int getMoveDirection(PointF point) {
+        return getMoveDirection(point.x, point.y);
+    }
+    private int getMoveDirection(float x, float y) {
+        float deltaX = x - initPoint.x;
+        float deltaY = y - initPoint.y;
+        float deltaAbsX = Math.abs(deltaX);
+        float deltaAbsY = Math.abs(deltaY);
+        if (deltaAbsX < MAX_RADIUS / 2 && deltaAbsY < MAX_RADIUS / 2) {
+            return SSDBTask.DIR_STOP;
+        } else {
+            if (deltaAbsY > deltaAbsX) {
+                if (deltaY < 0f) {
+                    return SSDBTask.DIR_UP;
+                } else {
+                    return SSDBTask.DIR_DOWN;
+                }
+            } else {
+                if (deltaX < 0f) {
+                    return SSDBTask.DIR_LEFT;
+                } else {
+                    return SSDBTask.DIR_RIGHT;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (buttonView.getId() == R.id.dirCtrlCheckBox) {
+            ssdbTask.setDirCtrlEnable(isChecked);
         }
     }
 }
