@@ -9,4 +9,10 @@
     <string name="serverPortTitle">Server port</string>
     <string name="list">list</string>
     <string name="controlType">Control Type</string>
+
+    <string name="serialCOM">serialCOM</string>
+    <string name="serialCOMTitle">Serial COM</string>
+    <string name="serialBaud">serialBaud</string>
+    <string name="serialBaudTitle">Serial Baud</string>
+
 </resources>

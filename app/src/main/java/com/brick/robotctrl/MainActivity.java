@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     SSDBTask ssdbTask = null;
 
     private boolean serverChanged = false;
+    private boolean serialChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         // remove text in toolbar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
 
@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             private final String serverIp = getString(R.string.serverIp);
             private final String serverPort = getString(R.string.serverPort);
             private final String controlType = getString(R.string.controlType);
+
+            private final String serialBaud = getString(R.string.serialBaud);
+            private final String serialCom = getString(R.string.serialCOM);
 
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -87,6 +90,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                         int serverPort = Integer.parseInt(val);
                         ssdbTask.setServerPort(serverPort);
                         serverChanged = true;
+                    } else if(key.equals(serialCom)) {
+                        // do some thing
+                        serialChanged = true;
+                    } else if(key.equals(serialBaud)) {
+                        // do some thing
+                        serialChanged = true;
                     }
                     Log.i(TAG, "onSharedPreferenceChanged: " + key + " " + val);
                 }
@@ -249,9 +258,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    private int getMoveDirection(PointF point) {
-        return getMoveDirection(point.x, point.y);
-    }
     private int getMoveDirection(float x, float y) {
         float deltaX = x - initPoint.x;
         float deltaY = y - initPoint.y;
@@ -281,5 +287,42 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         if (buttonView.getId() == R.id.dirCtrlCheckBox) {
             ssdbTask.setDirCtrlEnable(isChecked);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                Log.i(TAG, "onActivityResult: " + data.getBooleanExtra("data", false));
+                if (serverChanged) {
+                    serverChanged = false;
+                    ssdbTask.connect();
+                }
+                if ( serialChanged ) {
+                    serialChanged = false;
+                    // do some thing
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.i(TAG, "onRestart");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(presChangeListener);
+        ssdbTask.disConnect();
+        super.onDestroy();
     }
 }

@@ -26,6 +26,23 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="@string/robotNameTitle"/>
+        <ListPreference
+            android:defaultValue="9600"
+            android:entries="@array/ttyBaud"
+            android:entryValues="@array/ttyBaud"
+            android:key="@string/serialBaud"
+            android:negativeButtonText="Cancel"
+            android:positiveButtonText="OK"
+            android:title="@string/serialBaudTitle"/>
+        <ListPreference
+            android:defaultValue="ttySAC2"
+            android:entries="@array/ttyCOM"
+            android:entryValues="@array/ttyCOM"
+            android:key="@string/serialCOM"
+            android:negativeButtonText="Cancel"
+            android:positiveButtonText="OK"
+            android:title="@string/serialCOMTitle"/>
+
     </PreferenceCategory>
     <PreferenceCategory
         android:title="控制">
