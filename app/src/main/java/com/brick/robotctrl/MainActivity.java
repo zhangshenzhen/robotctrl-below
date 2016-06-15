@@ -4,6 +4,9 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Handler;
@@ -17,10 +20,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import com.bean.serialport.ComBean;
+import com.bean.serialport.SerialHelper;
+import com.cedric.serialport.SerialPortFinder;
+
+import java.io.IOException;
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener, CompoundButton.OnCheckedChangeListener {
 
@@ -36,6 +54,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     private boolean serverChanged = false;
     private boolean serialChanged = false;
+
+    // relative serial
+    Button spinButton;
+    ToggleButton toggleButtonCOMA;
+    Spinner SpinnerCOMA;
+    SerialControl ComA;
+    SerialPortFinder mSerialPortFinder;//串口设备搜索
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +127,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
         };
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(presChangeListener);
+
+
+        // relative serial
+        ComA = new SerialControl();
+        setControls();
     }
 
     // receive ssdb server info
@@ -323,6 +353,142 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         Log.i(TAG, "onDestroy");
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(presChangeListener);
         ssdbTask.disConnect();
+        CloseComPort(ComA);
         super.onDestroy();
     }
+
+
+
+
+
+
+    ///////////////////////// relative serial
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        CloseComPort(ComA);
+        setControls();
+    }
+
+
+    private void setControls()
+    {
+        String appName = getString(R.string.app_name);
+        try {
+            PackageInfo pinfo = getPackageManager().getPackageInfo("com.bjw.ComAssistant", PackageManager.GET_CONFIGURATIONS);
+            String versionName = pinfo.versionName;
+            setTitle(appName+" V"+versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        spinButton=(Button)findViewById(R.id.spinButton);
+        toggleButtonCOMA=(ToggleButton)findViewById(R.id.toggleButtonCOMA);
+        SpinnerCOMA=(Spinner)findViewById(R.id.SpinnerCOMA);
+        spinButton.setOnClickListener(new ButtonClickEvent());
+
+        toggleButtonCOMA.setOnCheckedChangeListener(new ToggleButtonCheckedChangeEvent());
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.baudrates_value,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSerialPortFinder= new SerialPortFinder();
+        String[] entryValues = mSerialPortFinder.getAllDevicesPath();
+        List<String> allDevices = new ArrayList<String>();
+        for (int i = 0; i < entryValues.length; i++) {
+            allDevices.add(entryValues[i]);
+        }
+        ArrayAdapter<String> aspnDevices = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, allDevices);
+        aspnDevices.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        SpinnerCOMA.setAdapter(aspnDevices);
+        if (allDevices.size()>0)
+        {
+            SpinnerCOMA.setSelection(0);
+        }
+        SpinnerCOMA.setOnItemSelectedListener(new ItemSelectedEvent());
+    }
+    // close or open serial if serial com and baud changed
+    class ItemSelectedEvent implements Spinner.OnItemSelectedListener{
+        public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+        {
+            if (arg0 == SpinnerCOMA)
+            {
+                CloseComPort(ComA);
+                toggleButtonCOMA.setChecked(false);
+            }
+        }
+        public void onNothingSelected(AdapterView<?> arg0)
+        {}
+
+    }
+
+    class ButtonClickEvent implements View.OnClickListener {
+        public void onClick(View v)
+        {
+            if(v==spinButton){
+                sendPortData(ComA, "FF10FF10");
+            }
+
+        }
+    }
+    // open or close serial
+    class ToggleButtonCheckedChangeEvent implements ToggleButton.OnCheckedChangeListener{
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+        {
+            if (buttonView == toggleButtonCOMA){
+                if (isChecked){
+//						ComA=new SerialControl("/dev/s3c2410_serial0", "9600");
+                    ComA.setPort(SpinnerCOMA.getSelectedItem().toString());
+                    ComA.setBaudRate(9600);
+                    OpenComPort(ComA);
+                }else {
+                    CloseComPort(ComA);
+                }
+            }
+        }
+    }
+    // serial control class
+    private class SerialControl extends SerialHelper {
+        public SerialControl(){
+        }
+
+        @Override
+        protected void onDataReceived(final ComBean ComRecData)
+        {
+            // receive data
+        }
+    }
+    // send
+    private void sendPortData(SerialHelper ComPort,String sOut){
+        if (ComPort!=null && ComPort.isOpen())
+        {
+            ComPort.sendHex(sOut);
+        }
+    }
+    // close serial
+    private void CloseComPort(SerialHelper ComPort){
+        if (ComPort!=null){
+            ComPort.stopSend();
+            ComPort.close();
+        }
+    }
+    // open serial
+    private void OpenComPort(SerialHelper ComPort){
+        try
+        {
+            ComPort.open();
+        } catch (SecurityException e) {
+            ShowMessage("open serial failure: permission denied!");
+        } catch (IOException e) {
+            ShowMessage("open serial failure: unknow why!");
+        } catch (InvalidParameterException e) {
+            ShowMessage("open serial failure: parameeter error!");
+        }
+    }
+
+    private void ShowMessage(String sMsg)
+    {
+        Toast.makeText(this, sMsg, Toast.LENGTH_SHORT).show();
+    }
+
 }

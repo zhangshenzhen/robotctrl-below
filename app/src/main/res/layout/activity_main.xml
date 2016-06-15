@@ -76,4 +76,28 @@
         android:navigationIcon="@drawable/ic_action_settings"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/AppTheme.Settings"/>
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ToggleButton"
+        android:id="@+id/toggleButtonCOMA"
+        android:layout_above="@+id/SpinnerCOMA"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/SpinnerCOMA"
+        android:layout_alignBaseline="@+id/notifyTextView"
+        android:layout_alignBottom="@+id/notifyTextView"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="旋转"
+        android:id="@+id/spinButton"
+        android:layout_below="@+id/pointView"
+        android:layout_alignEnd="@+id/toggleButtonCOMA" />
 </RelativeLayout>
