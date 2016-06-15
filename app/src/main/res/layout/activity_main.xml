@@ -100,4 +100,12 @@
         android:id="@+id/spinButton"
         android:layout_below="@+id/pointView"
         android:layout_alignEnd="@+id/toggleButtonCOMA" />
+
+    <VideoView
+        android:layout_width="200dip"
+        android:layout_height="130dip"
+        android:id="@+id/videoView"
+        android:layout_above="@+id/pointView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="142dp" />
 </RelativeLayout>

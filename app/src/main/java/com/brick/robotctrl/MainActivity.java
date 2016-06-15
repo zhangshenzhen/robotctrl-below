@@ -9,11 +9,11 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -30,10 +30,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.VideoView;
 
 import com.bean.serialport.ComBean;
 import com.bean.serialport.SerialHelper;
 import com.cedric.serialport.SerialPortFinder;
+import com.kjn.videoview.myvideoview;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     CheckBox dirCtrlSwitch = null;
     SSDBTask ssdbTask = null;
 
+
+
     private boolean serverChanged = false;
     private boolean serialChanged = false;
 
@@ -61,6 +65,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     Spinner SpinnerCOMA;
     SerialControl ComA;
     SerialPortFinder mSerialPortFinder;//串口设备搜索
+
+    ////////////videoview相关
+    private VideoView videoView;
+    private Thread newThread;
+    myvideoview myvideoview = null;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +93,21 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         pointView.setOnTouchListener(this);
         dirCtrlSwitch = (CheckBox) findViewById(R.id.dirCtrlCheckBox);
         dirCtrlSwitch.setOnCheckedChangeListener(this);
+
+
+        //////////////////////////////////////
+        videoView = (VideoView) findViewById(R.id.videoView);
+        new Thread() {
+            @Override
+            public void run() {
+                myvideoview = new myvideoview(videoView);//这里写入子线程需要做的工作
+            }
+        }.start();
+        
+
+
+
+        ///////////////////////////////////////////
 
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
         presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
