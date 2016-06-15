@@ -23,7 +23,9 @@ public class myvideoview {
         this.videoView = videoView;
         list = new ArrayList<String>();
         videopath = Environment.getExternalStorageDirectory()
-              .getPath()+"/data";
+              .getPath()+"/Movies";
+        //System.out.println(222222222+videopath);
+        //videopath = "/root/sdcard/Movies";
         getFiles(videopath);
         videoView.setVideoPath(list.get(index));             //获得第一个video的路径
         videoView.start();                                   //开始播放
