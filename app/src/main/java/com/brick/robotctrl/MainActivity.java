@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         //////////////////////////////////////
         videoView = (VideoView) findViewById(R.id.videoView);
+        videoView.setMediaController(new MediaController(this));  //不需要注释掉即可
         new Thread() {
             @Override
             public void run() {
