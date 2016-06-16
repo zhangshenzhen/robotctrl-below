@@ -40,11 +40,13 @@ import com.bean.serialport.ComBean;
 import com.bean.serialport.SerialHelper;
 import com.cedric.serialport.SerialPortFinder;
 import com.kjn.videoview.ADVideo;
+import com.jly.expression.expression;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener, CompoundButton.OnCheckedChangeListener {
 
@@ -78,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private boolean flag = true;
 
 
+    //expression
+    private Button exp = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +103,21 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         pointView.setOnTouchListener(this);
         dirCtrlSwitch = (CheckBox) findViewById(R.id.dirCtrlCheckBox);
         dirCtrlSwitch.setOnCheckedChangeListener(this);
+
+
+        /**
+         * expression 实现
+         *
+         */
+        exp =(Button)findViewById(R.id.expression);
+        exp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent();
+                it.setClass(MainActivity.this,com.jly.expression.expression.class);
+                startActivity(it);
+            }
+        });
 
 
         /**
