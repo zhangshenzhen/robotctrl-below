@@ -2,6 +2,7 @@ package com.brick.robotctrl;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -10,9 +11,11 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -67,11 +70,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     SerialControl ComA;
     SerialPortFinder mSerialPortFinder;//串口设备搜索
 
-    ////////////videoview相关
+    // videoview
     private VideoView videoView;
     private Thread newThread;
     myvideoview myvideoview = null;
-
+    private String videoPath;
+    private boolean flag = true;
 
 
     @Override
@@ -96,20 +100,27 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         dirCtrlSwitch.setOnCheckedChangeListener(this);
 
 
-        //////////////////////////////////////
+        /**
+         *videoview 实现
+         * **/
         videoView = (VideoView) findViewById(R.id.videoView);
         videoView.setMediaController(new MediaController(this));  //不需要注释掉即可
-        new Thread() {
-            @Override
-            public void run() {
-                myvideoview = new myvideoview(videoView);//这里写入子线程需要做的工作
-            }
-        }.start();
+        myvideoview = new myvideoview(videoView);
+        videoPath = Environment.getExternalStorageDirectory()
+                .getPath()+"/Movies";
+        flag = myvideoview.getFiles(videoPath);
+        if (flag) {
+            new Thread() {
+                @Override
+                public void run() {
+                    myvideoview.play();
+                }
+            }.start();
+        }
+        else {
+            showVideoDialog();
+        }
         
-
-
-
-        ///////////////////////////////////////////
 
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
         presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -517,6 +528,26 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private void ShowMessage(String sMsg)
     {
         Toast.makeText(this, sMsg, Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void showVideoDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("提示");
+        builder.setMessage("路径中无视频文件");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
 }
