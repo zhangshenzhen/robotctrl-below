@@ -39,7 +39,7 @@ import android.widget.VideoView;
 import com.bean.serialport.ComBean;
 import com.bean.serialport.SerialHelper;
 import com.cedric.serialport.SerialPortFinder;
-import com.kjn.videoview.myvideoview;
+import com.kjn.videoview.MyVideoView;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     // videoview
     private VideoView videoView;
     private Thread newThread;
-    myvideoview myvideoview = null;
+    MyVideoView myVideoView = null;
     private String videoPath;
     private boolean flag = true;
 
@@ -105,15 +105,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
          * **/
         videoView = (VideoView) findViewById(R.id.videoView);
         videoView.setMediaController(new MediaController(this));  //不需要注释掉即可
-        myvideoview = new myvideoview(videoView);
+        myVideoView = new MyVideoView(videoView);
         videoPath = Environment.getExternalStorageDirectory()
                 .getPath()+"/Movies";
-        flag = myvideoview.getFiles(videoPath);
+        flag = myVideoView.getFiles(videoPath);
         if (flag) {
             new Thread() {
                 @Override
                 public void run() {
-                    myvideoview.play();
+                    myVideoView.play();
                 }
             }.start();
         }
