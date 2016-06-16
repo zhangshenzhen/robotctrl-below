@@ -173,18 +173,47 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         setControls();
     }
 
+    private boolean enableCtrl = false;
     // receive ssdb server info
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            Log.i(TAG, "handleMessage: msg.what: "+msg.what);
             switch (msg.what) {
                 case SSDBTask.ENABLECTRL:
+                    enableCtrl = true;
                     dirCtrlSwitch.setChecked(true);
+                    ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, ssdbTask.Key_Event, "");
                     break;
                 case SSDBTask.ACTION_HGET:
                     String rlt = (String) msg.obj;
-                    gravityTextView.setText(rlt);
+                    Log.d(TAG, "handleMessage: rlt:" + rlt + "enableCtrl" + enableCtrl);
+                    if( enableCtrl ) {
+                        if ( rlt.equals("up") ) {
+                            Log.d(TAG, "handleMessage: it's up");
+//                            gravityTextView.setText("forward");
+                            sendPortData(ComA, "FF01FF01");
+                        }else if ( rlt.equals("down") ) {
+                            Log.d(TAG, "handleMessage: it's down");
+//                                gravityTextView.setText("backward");
+                                sendPortData(ComA, "FF02FF02");
+
+                        }else if ( rlt.equals("left") ) {
+                            Log.d(TAG, "handleMessage: it's left");
+//                                gravityTextView.setText("left");
+                                sendPortData(ComA, "FF03FF03");
+                        }else if ( rlt.equals("right") ) {
+                            Log.d(TAG, "handleMessage: it's right");
+//                                gravityTextView.setText("right");
+                                sendPortData(ComA, "FF04FF04");
+                        }else if ( rlt.equals("stop") ) {
+                            Log.d(TAG, "handleMessage: it's stop");
+//                                gravityTextView.setText("stop");
+//                                sendPortData(ComA, "FF10FF10");
+                        }
+                    }
+//                    gravityTextView.setText(rlt);
                     break;
                 case SSDBTask.DIRCTRLWARNING:
                     notifyTextView.setText("open switch please");
@@ -465,7 +494,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         public void onClick(View v)
         {
             if(v==spinButton){
-                sendPortData(ComA, "FF10FF10");
+//                sendPortData(ComA, "FF10FF10");
+                ssdbTask.SSDBQuery(ssdbTask.ACTION_HGET);
             }
 
         }

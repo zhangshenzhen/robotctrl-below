@@ -36,7 +36,7 @@ public class SSDBTask extends TimerTask {
     private SSDB ssdbClient = null;
     public String serverIp = "192.168.0.192";
     public int serverPort = 8888;
-    public String robotName = "Robot123";
+    public String robotName = "Robot";
 
     public void setRobotName(@NonNull String robotName) {
         if (!TextUtils.isEmpty(robotName))
@@ -206,8 +206,23 @@ public class SSDBTask extends TimerTask {
                     }
                     break;
                 case ACTION_HGET:
-                    try {
-                        byte[] rlt = ssdbClient.hget(robotName, cmd.key);
+                    try {                   // get Key_Event
+                        byte[] rlt = ssdbClient.hget(robotName, Key_Event);
+                        if (rlt != null) {
+                            Message message = new Message();
+                            message.what = ENABLECTRL;
+                            message.obj = new String(rlt, "GBK");
+                            contextHandler.sendMessage(message);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        if (ssdbClient == null) {
+                            SSDBQuery(ACTION_CONNECT);
+                        }
+                    }
+                    try {                   // get Key_DirCtrl
+                        byte[] rlt = ssdbClient.hget(robotName, Key_DirCtrl);
+                        Log.i(TAG, "run: "+rlt);
                         if (rlt != null) {
                             Message message = new Message();
                             message.what = ACTION_HGET;
@@ -260,8 +275,9 @@ public class SSDBTask extends TimerTask {
     public static final int DIR_RIGHT = 3;
     public static final int DIR_STOP = 4;
 
-    private static final String Key_DirCtrl = "DirCtl";
-    private static final String Key_EndDirCtrl = "EndDirCtl";
+    public static final String Key_DirCtrl = "DirCtl";
+    public static final String Key_EndDirCtrl = "EndDirCtl";
+    public static final String Key_Event = "event";
     public static final String[] DirCtrlVals = new String[]{"up", "down", "left", "right", "stop"};
 
     private List<Integer> cmdHistory = new ArrayList<>();//命令历史记录
