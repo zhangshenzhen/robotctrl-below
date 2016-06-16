@@ -25,14 +25,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 import android.widget.VideoView;
 
-import com.cedric.serialport.SerialPortFinder;
 import com.kjn.videoview.ADVideo;
 import com.jly.expression.expression;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener, CompoundButton.OnCheckedChangeListener {
@@ -49,16 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private boolean serverChanged = false;
     private boolean serialChanged = false;
 
-    // relative serial
-    Button spinButton;
-    ToggleButton toggleButtonCOMA;
-    Spinner SpinnerCOMA;
-
-    SerialPortFinder mSerialPortFinder;//串口设备搜索
-
     // videoview
     private VideoView videoView;
-    private Thread newThread;
     ADVideo adVideo = null;
     private String videoPath;
     private boolean flag = true;
@@ -103,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 startActivity(it);
             }
         });
-
 
         /**
          *videoview 实现
@@ -174,11 +165,18 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         };
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(presChangeListener);
 
-
-        // relative serial
-//        ComA = new SerialControl();
-//        setControls();
+        // relative timer
+        Timer timer = new Timer(true);
+        timer.schedule(queryTask,200, 200); //延时1000ms后执行，1000ms执行一次
+        // timer.cancel(); //退出计时器
     }
+
+    TimerTask queryTask = new TimerTask() {
+        @Override
+        public void run() {
+            ssdbTask.SSDBQuery(ssdbTask.ACTION_HGET);
+        }
+    };
 
     private boolean enableCtrl = false;
     // receive ssdb server info
