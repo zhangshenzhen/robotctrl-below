@@ -3,7 +3,6 @@ package com.brick.robotctrl;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -16,9 +15,6 @@ import com.bean.serialport.SerialHelper;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 
-/**
- * Created by Brick on 2016/6/16.
- */
 public class SerialCtrl {
     public final String TAG = "SerialCtrl";
     public String serialCOM = "ttySAC2";
@@ -59,11 +55,11 @@ public class SerialCtrl {
     }
 
     public void openSerialCOM() {
+        serialCOM = "/dev/" + serialCOM;
         Log.d(TAG, "openSerialCOM: serialBaud:" + serialBaud + "\tserialCOM:" + serialCOM);
-//        ComA.setBaudRate(serialBaud);
-//        ComA.setPort(serialCOM.toString());
-        ComA.setBaudRate(9600);
-        ComA.setPort("/dev/ttySAC2");
+        ShowMessage("Open " + serialCOM + " successful, the BaudRate is " + serialBaud);
+        ComA.setBaudRate(serialBaud);
+        ComA.setPort(serialCOM);
         openComPort(ComA);
     }
 
@@ -125,23 +121,22 @@ public class SerialCtrl {
 
 // relative robot
     public void robotMove(String dir) {
-        if ( dir.equals("up") ) {
-            Log.d(TAG, "handleMessage: it's up");
-            sendPortData(ComA, "FF01FF01");
-        }else if ( dir.equals("down") ) {
-            Log.d(TAG, "handleMessage: it's down");
-            sendPortData(ComA, "FF02FF02");
-
-        }else if ( dir.equals("left") ) {
-            Log.d(TAG, "handleMessage: it's left");
-            sendPortData(ComA, "FF03FF03");
-        }else if ( dir.equals("right") ) {
-            Log.d(TAG, "handleMessage: it's right");
-            sendPortData(ComA, "FF04FF04");
-        }else if ( dir.equals("stop") ) {
-            Log.d(TAG, "handleMessage: it's stop");
+        switch (dir) {
+            case "up":
+                sendPortData(ComA, "FF01FF01");
+                break;
+            case "down":
+                sendPortData(ComA, "FF02FF02");
+                break;
+            case "left":
+                sendPortData(ComA, "FF03FF03");
+                break;
+            case "right":
+                sendPortData(ComA, "FF04FF04");
+                break;
+            case "stop":
+                break;
+            default:
         }
     }
-
-
 }
