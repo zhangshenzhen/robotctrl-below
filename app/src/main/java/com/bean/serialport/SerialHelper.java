@@ -17,7 +17,7 @@ public abstract class SerialHelper{
 	private InputStream mInputStream;
 	private ReadThread mReadThread;
 	private SendThread mSendThread;
-	private String sPort="/dev/s3c2410_serial0";
+	private String sPort="/dev/ttySAC2";
 	private int iBaudRate=9600;
 	private boolean _isOpen=false;
 	private byte[] _bLoopData=new byte[]{0x30};
