@@ -1,10 +1,12 @@
 package com.kjn.videoview;
 
 import android.media.MediaPlayer;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.VideoView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,15 +17,28 @@ public class myvideoview {
     private VideoView videoView;
     private List<String> list;
     private int index = 0;
-
+    private    String videopath;
 
     public myvideoview (VideoView videoView){
         this.videoView = videoView;
+        list = new ArrayList<String>();
+        videopath = Environment.getExternalStorageDirectory()
+              .getPath()+"/Movies";
+        //System.out.println(222222222+videopath);
+        //videopath = "/root/sdcard/Movies";
+        getFiles(videopath);
+        videoView.setVideoPath(list.get(index));             //获得第一个video的路径
+        videoView.start();                                   //开始播放
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
+          @Override
+          public void onCompletion(MediaPlayer mp) {
+              next();
+          }
+        });
     }
 
 
-    public boolean getFiles(String url) {
-        boolean flag = true;
+    private void getFiles(String url) {
         try {
             File file = new File(url);
             File[] files = file.listFiles();
@@ -39,16 +54,10 @@ public class myvideoview {
                     }
                 }
             }
-            if (list.isEmpty()){
-                flag = false;
-            }
         } catch (Exception e) {
             Log.d("getfile", "查找异常!");
-            System.out.println(e.toString());
-            System.out.println(e.getMessage());
-            e.printStackTrace();
         }
-        return flag;
+
     }
 
     private void next(){
@@ -59,17 +68,7 @@ public class myvideoview {
         } else {
             videoView.setVideoPath(list.get(index));
             videoView.start();
+            //System.out.println("111111111111111");
         }
-    }
-
-    public void play(){
-        videoView.setVideoPath(list.get(index));             //获得第一个video的路径
-        videoView.start();                                   //开始播放
-        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                next();
-            }
-        });
     }
 }
