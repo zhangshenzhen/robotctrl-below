@@ -6,66 +6,11 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/background"
     tools:context="com.brick.robotctrl.MainActivity"
 
     tools:ignore="ContentDescription"
     android:keepScreenOn="true">
-
-
-
-    <TextView
-        android:id="@+id/gravityTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="SEU ROBOT"
-        android:textColor="@color/colorBright"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/notifyTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/gravityTextView"
-        android:layout_alignStart="@id/gravityTextView"
-        android:text="@string/app_name"
-        android:textColor="@color/colorBright"
-        android:textSize="16sp"/>
-
-    <ImageView
-        android:id="@+id/pointView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/ic_launcher"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:scaleType="centerInside"
-        android:src="@drawable/circle"
-        android:id="@+id/imageView" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true">
-
-        <CheckBox
-            android:id="@+id/dirCtrlCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:button="@drawable/changectrl"
-            android:textColor="@color/colorBright"
-            />
-    </LinearLayout>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -77,45 +22,33 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/AppTheme.Settings"/>
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ToggleButton"
-        android:id="@+id/toggleButtonCOMA"
-        android:layout_above="@+id/SpinnerCOMA"
-        android:layout_alignParentStart="true" />
+    <!--<VideoView-->
+        <!--android:layout_width="200dip"-->
+        <!--android:layout_height="130dip"-->
+        <!--android:id="@+id/videoView"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="142dp" />-->
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/SpinnerCOMA"
-        android:layout_alignBaseline="@+id/notifyTextView"
-        android:layout_alignBottom="@+id/notifyTextView"
-        android:layout_alignParentStart="true" />
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/leftEyeButton"
+        android:longClickable="true"
+        android:src="@drawable/siri"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/toolbar"
+        android:layout_marginStart="67dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="旋转"
-        android:id="@+id/spinButton"
-        android:layout_below="@+id/pointView"
-        android:layout_alignEnd="@+id/toggleButtonCOMA" />
-
-    <VideoView
-        android:layout_width="200dip"
-        android:layout_height="130dip"
-        android:id="@+id/videoView"
-        android:layout_above="@+id/pointView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="142dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="表情"
-        android:id="@+id/expression"
-        android:layout_below="@+id/spinButton"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="34dp" />
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/rightEyeButton"
+        android:longClickable="true"
+        android:src="@drawable/function"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="70dp" />
 
 </RelativeLayout>

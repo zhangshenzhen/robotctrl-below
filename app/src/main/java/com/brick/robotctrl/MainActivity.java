@@ -35,37 +35,32 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener, CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity {// implements View.OnTouchListener, CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "MainActivity";
 
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
 
-    TextView notifyTextView = null;
-    ImageView pointView = null;
-    CheckBox dirCtrlSwitch = null;
+//    TextView notifyTextView = null;
+//    ImageView pointView = null;
+//    CheckBox dirCtrlSwitch = null;
+    ImageView leftEyeButton = null;
+    ImageView rightEyeButton = null;
     SSDBTask ssdbTask = null;
     SerialCtrl serialCtrl = null;
 
     private boolean serverChanged = false;
     private boolean serialChanged = false;
 
-    // videoview
-    private VideoView videoView;
-    ADVideo adVideo = null;
-    private String videoPath;
-    private boolean flag = true;
-
-
-    //expression
-    private Button exp = null;
+//    // videoview
+//    private VideoView videoView;
+//    ADVideo adVideo = null;
+//    private String videoPath;
+//    private boolean flag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        pointView = (ImageView) findViewById(R.id.pointView);
-        pointView.setOnTouchListener(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // remove text in toolbar
@@ -75,47 +70,42 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler);
 
-        notifyTextView = (TextView) findViewById(R.id.notifyTextView);
-        pointView = (ImageView) findViewById(R.id.pointView);
-        pointView.setOnTouchListener(this);
-        dirCtrlSwitch = (CheckBox) findViewById(R.id.dirCtrlCheckBox);
-        dirCtrlSwitch.setOnCheckedChangeListener(this);
-
-
-        /**
-         * expression 实现
-         *
-         */
-        exp =(Button)findViewById(R.id.expression);
-        exp.setOnClickListener(new View.OnClickListener() {
+        leftEyeButton = (ImageView) findViewById(R.id.leftEyeButton);
+        leftEyeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it = new Intent();
-                it.setClass(MainActivity.this,expression.class);
-                startActivity(it);
+                startActivity(new Intent().setClass(MainActivity.this, expression.class));
             }
         });
 
-        /**
-         *videoview 实现
-         * **/
-        videoView = (VideoView) findViewById(R.id.videoView);
-        videoView.setMediaController(new MediaController(this));  //不需要注释掉即可
-        adVideo = new ADVideo(videoView);
-        videoPath = Environment.getExternalStorageDirectory()
-                .getPath()+"/Movies";
-        flag = adVideo.getFiles(videoPath);
-        if (flag) {
-            new Thread() {
-                @Override
-                public void run() {
-                    adVideo.play();
-                }
-            }.start();
-        }
-        else {
-            showVideoDialog();
-        }
+        rightEyeButton = (ImageView) findViewById(R.id.rightEyeButton);
+        rightEyeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent().setClass(MainActivity.this, MenuActivity.class));
+            }
+        });
+
+//        /**
+//         *videoview 实现
+//         * **/
+//        videoView = (VideoView) findViewById(R.id.videoView);
+//        videoView.setMediaController(new MediaController(this));  //不需要注释掉即可
+//        adVideo = new ADVideo(videoView);
+//        videoPath = Environment.getExternalStorageDirectory()
+//                .getPath()+"/Movies";
+//        flag = adVideo.getFiles(videoPath);
+//        if (flag) {
+//            new Thread() {
+//                @Override
+//                public void run() {
+//                    adVideo.play();
+//                }
+//            }.start();
+//        }
+//        else {
+//            showVideoDialog();
+//        }
         
 
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
@@ -132,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 if (key.equals(controlType)) {
                     boolean val = sharedPreferences.getBoolean(key, false);
-                    changeCtrlType(val);
+//                    changeCtrlType(val);
                     Log.i(TAG, "onSharedPreferenceChanged: " + key + " " + val);
                 } else {
                     String val = null;
@@ -188,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             switch (msg.what) {
                 case SSDBTask.ENABLECTRL:
                     enableCtrl = true;
-                    dirCtrlSwitch.setChecked(true);
                     ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, ssdbTask.Key_Event, "");
                     break;
                 case SSDBTask.ACTION_HGET:
@@ -199,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     }
                     break;
                 case SSDBTask.DIRCTRLWARNING:
-                    notifyTextView.setText("open switch please");
+//                    notifyTextView.setText("open switch please");
                     break;
                 default:
                     break;
@@ -228,146 +217,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 startActivityForResult(intent, 0);
                 // do some thing else
                 break;
-            case R.id.actionSwitchCtrl:
-                changeCtrlType(!gravityCtrlEnable);
-                // do some thing else
-                break;
             default:
                 break;
         }
         return true;
-    }
-
-    private void changeCtrlType(boolean enable) {
-        gravityCtrlEnable = enable;
-        if (menu != null) {
-            menu.findItem(R.id.actionSwitchCtrl).setIcon(enable ?
-                    R.drawable.ic_action_changectrl :
-                    R.drawable.ic_action_changectrl_disable);
-        }
-    }
-
-
-    PointF lastPoint = new PointF(), initPoint = new PointF(-1f, -1f);
-    long lastTime = 0, curTime = 0;
-    public static float MAX_RADIUS = 0f;
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (v.getId() == R.id.pointView) {
-            switch (event.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                    Log.i(TAG, "onTouch: ACTION_DOWN X:"+event.getRawX()+" Y:"+event.getRawY());
-                    lastPoint.set(event.getRawX(), event.getRawY());
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    Log.i(TAG, "onTouch: ACTION_MOVE X:"+event.getRawX()+" Y:"+event.getRawY());
-                    PointF distance = new PointF();
-                    distance.set(lastPoint);
-                    distance.offset(-event.getRawX(), -event.getRawY());
-
-                    float nextX = pointView.getX() - distance.x;
-                    float nextY = pointView.getY() - distance.y;
-
-                    //50ms check once，do not WR ssdb too quick
-                    curTime = System.currentTimeMillis();
-                    if (curTime - lastTime > 50) {
-                        lastTime = curTime;
-                        int dir = getMoveDirection(nextX, nextY);
-                        ssdbTask.robotMove(dir);
-                        notifyTextView.setText(SSDBTask.DirCtrlVals[dir]);
-                    }
-
-                    Log.i(TAG, "onTouch: ACTION_MOVE ===========pointView.getX():"+pointView.getX()+"-distance.x:"+distance.x);
-                    // limit the pointView in the circle
-                    float lengthX = nextX - initPoint.x, lengthY = nextY - initPoint.y;
-                    float sqLength = (float) Math.hypot(lengthX, lengthY);
-                    if (sqLength > MAX_RADIUS) {
-                        nextX = initPoint.x + MAX_RADIUS / sqLength * lengthX;
-                        nextY = initPoint.y + MAX_RADIUS / sqLength * lengthY;
-                        lastPoint.set(nextX + pointView.getWidth() / 2, nextY + pointView.getHeight() / 2);
-                    } else {
-                        lastPoint.set(event.getRawX(), event.getRawY());
-                    }
-                    animationMoveTo(nextX, nextY, 0);
-                    break;
-                case MotionEvent.ACTION_UP: {
-                    Log.i(TAG, "onTouch: ACTION_UP X:"+event.getRawX()+" Y:"+event.getRawY());
-                    // back to the center
-                    animationMoveTo(initPoint, 150);
-                    ssdbTask.robotMove(SSDBTask.DIR_STOP);
-                    notifyTextView.setText(SSDBTask.DirCtrlVals[SSDBTask.DIR_STOP]);
-                }
-                break;
-                default:
-                    break;
-            }
-        }
-        return true;
-    }
-
-    private void animationMoveTo(PointF point, long duration) {
-        animationMoveTo(point.x, point.y, duration);
-    }
-    private void animationMoveTo(float nextX, float nextY, long duration) {
-        // move the animator
-        ObjectAnimator x = ObjectAnimator.ofFloat(pointView, "x", pointView.getX(), nextX);
-        ObjectAnimator y = ObjectAnimator.ofFloat(pointView, "y", pointView.getY(), nextY);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(x, y);
-        animatorSet.setDuration(duration);
-        animatorSet.start();
-    }
-
-    // limit the speed of pointView
-    int screenHeight, screenWidth;
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        // 这里来获取容器的宽和高
-        if (hasFocus) {
-            Point screen = new Point();
-            getWindowManager().getDefaultDisplay().getSize(screen);
-            screenHeight = screen.y;
-            screenWidth = screen.x;
-            MAX_RADIUS = screenHeight * 0.35f;
-            if (initPoint.x < 0f && initPoint.y < 0f) {
-                initPoint.set(pointView.getX(), pointView.getY());
-                presChangeListener.onSharedPreferenceChanged(PreferenceManager.getDefaultSharedPreferences(this), getString(R.string.controlType));
-            }
-            Log.i(TAG, "onWindowFocusChanged: " + initPoint.toString());
-        }
-    }
-
-    private int getMoveDirection(float x, float y) {
-        float deltaX = x - initPoint.x;
-        float deltaY = y - initPoint.y;
-        float deltaAbsX = Math.abs(deltaX);
-        float deltaAbsY = Math.abs(deltaY);
-        if (deltaAbsX < MAX_RADIUS / 2 && deltaAbsY < MAX_RADIUS / 2) {
-            return SSDBTask.DIR_STOP;
-        } else {
-            if (deltaAbsY > deltaAbsX) {
-                if (deltaY < 0f) {
-                    return SSDBTask.DIR_UP;
-                } else {
-                    return SSDBTask.DIR_DOWN;
-                }
-            } else {
-                if (deltaX < 0f) {
-                    return SSDBTask.DIR_LEFT;
-                } else {
-                    return SSDBTask.DIR_RIGHT;
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (buttonView.getId() == R.id.dirCtrlCheckBox) {
-            ssdbTask.setDirCtrlEnable(isChecked);
-        }
     }
 
     @Override

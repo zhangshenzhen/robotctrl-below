@@ -8,11 +8,11 @@
         android:icon="@drawable/ic_action_settings"
         android:title="@string/settings"
         app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/actionSwitchCtrl"
-        android:icon="@drawable/ic_action_changectrl_disable"
-        android:title="切换控制"
-        app:showAsAction="ifRoom"/>
+    <!--<item-->
+        <!--android:id="@+id/actionSwitchCtrl"-->
+        <!--android:icon="@drawable/ic_action_changectrl_disable"-->
+        <!--android:title="切换控制"-->
+        <!--app:showAsAction="ifRoom"/>-->
     <group>
         <item
             android:icon="@mipmap/ic_launcher"
