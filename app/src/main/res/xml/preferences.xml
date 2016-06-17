@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:keepScreenOn="true" >
+
     <PreferenceCategory
         android:summary="服务器地址、端口"
         android:title="服务器">

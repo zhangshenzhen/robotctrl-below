@@ -20,7 +20,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class MainActivity extends AppCompatActivity {// implements View.OnTouchListener, CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {// implements View.OnTouchL
                         // do some thing
                         serialChanged = true;
                     }
-                    Log.i(TAG, "onSharedPreferenceChanged: " + key + " " + val);
+//                    Log.i(TAG, "onSharedPreferenceChanged: " + key + " " + val);
                 }
             }
         };
@@ -115,10 +115,16 @@ public class MainActivity extends AppCompatActivity {// implements View.OnTouchL
         // timer.cancel(); //退出计时器
     }
 
+    private int timerOutCount = 0;
     TimerTask queryTask = new TimerTask() {
         @Override
         public void run() {
             ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
+            timerOutCount++;
+            if(timerOutCount > (1*60*1000/200)) {
+                startActivity(new Intent().setClass(MainActivity.this, MenuActivity.class));
+                timerOutCount = 0;
+            }
         }
     };
 

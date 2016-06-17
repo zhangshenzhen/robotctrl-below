@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MenuActivity extends AppCompatActivity {
     private final String TAG = "MenuActivity";
 
@@ -40,9 +43,20 @@ public class MenuActivity extends AppCompatActivity {
         testButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    startActivity(new Intent().setClass(MenuActivity.this, ...));
+                    startActivity(new Intent().setClass(MenuActivity.this, TestActivity.class));
                 }
             }
         );
+        // relative timer
+        Timer timer = new Timer(true);
+        timer.schedule(timeOutTask, 1*60*1000, 1*60*1000);  //60min
+        // timer.cancel(); //退出计时器
     }
+
+    TimerTask timeOutTask = new TimerTask() {
+        @Override
+        public void run() {
+            startActivity(new Intent().setClass(MenuActivity.this, MenuActivity.class));
+        }
+    };
 }
