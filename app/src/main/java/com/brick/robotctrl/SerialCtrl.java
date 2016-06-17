@@ -135,6 +135,22 @@ public class SerialCtrl {
                 sendPortData(ComA, "FF04FF04");
                 break;
             case "stop":
+                sendPortData(ComA, "FF05FF05");
+                break;
+            case "headup":
+                sendPortData(ComA, "FF11FF11");
+                break;
+            case "headdown":
+                sendPortData(ComA, "FF12FF12");
+                break;
+            case "headleft":
+                sendPortData(ComA, "FF13FF13");
+                break;
+            case "headright":
+                sendPortData(ComA, "FF14FF14");
+                break;
+            case "headmid":
+                sendPortData(ComA, "FF15FF15");
                 break;
             default:
         }
