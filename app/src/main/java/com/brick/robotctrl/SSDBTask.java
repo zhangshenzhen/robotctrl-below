@@ -34,8 +34,8 @@ public class SSDBTask extends TimerTask {
     private Handler contextHandler = null;
     private Context context = null;
     private SSDB ssdbClient = null;
-    public String serverIp = "192.168.0.192";
-    public int serverPort = 8888;
+    public String serverIp = "60.171.108.155";
+    public int serverPort = 11028;
     public String robotName = "Robot";
 
     public void setRobotName(@NonNull String robotName) {
