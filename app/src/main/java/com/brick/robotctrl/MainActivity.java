@@ -11,8 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.jly.expression.expression;
 
@@ -20,7 +22,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnTouchListener{
     private static final String TAG = "MainActivity";
 
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean serverChanged = false;
     private boolean serialChanged = false;
 
+    private RelativeLayout mainActivity = null;
+    UserTimer userTimer = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
+        userTimer = new UserTimer();
+
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler);
 
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         leftEyeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                userTimer.clearTimerCount();
                 startActivity(new Intent().setClass(MainActivity.this, expression.class));
             }
         });
@@ -58,9 +66,13 @@ public class MainActivity extends AppCompatActivity {
         rightEyeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                userTimer.clearTimerCount();
                 startActivity(new Intent().setClass(MainActivity.this, MenuActivity.class));
             }
         });
+
+        mainActivity = (RelativeLayout) findViewById(R.id.mainActivity);
+        mainActivity.setOnTouchListener(this);
 
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
         presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -115,15 +127,16 @@ public class MainActivity extends AppCompatActivity {
         // timer.cancel(); //退出计时器
     }
 
-    private int timerOutCount = 0;
     TimerTask queryTask = new TimerTask() {
         @Override
         public void run() {
             ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
-            timerOutCount++;
-            if(timerOutCount > (1*60*1000/200)) {
-                startActivity(new Intent().setClass(MainActivity.this, MenuActivity.class));
-                timerOutCount = 0;
+
+            userTimer.addTimerCount();
+            Log.d(TAG, "TimerTask: " + userTimer.getTimerCount());
+            if(userTimer.getTimerCount() > (1*10*1000/200)) {
+                startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
+                userTimer.clearTimerCount();
             }
         }
     };
@@ -134,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Log.i(TAG, "handleMessage: msg.what: "+msg.what);
+//            Log.i(TAG, "handleMessage: msg.what: "+msg.what);
             switch (msg.what) {
                 case SSDBTask.ENABLECTRL:
                     enableCtrl = true;
@@ -142,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case SSDBTask.ACTION_HGET:
                     String rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: rlt:" + rlt + "\tenableCtrl:" + enableCtrl);
+//                    Log.d(TAG, "handleMessage: rlt:" + rlt + "\tenableCtrl:" + enableCtrl);
                     if( enableCtrl ) {
                         serialCtrl.robotMove(rlt);
                     }
@@ -166,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    boolean gravityCtrlEnable = false;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.i(TAG, "onCreateOptionsMenu: "+item);
@@ -210,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         Log.i(TAG, "onRestart");
+        userTimer.clearTimerCount();
         super.onRestart();
     }
 
@@ -220,5 +233,12 @@ public class MainActivity extends AppCompatActivity {
         ssdbTask.disConnect();
         serialCtrl.closeSerialCOM();
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event){
+        Log.d(TAG, "OnTouch: Touch Screen");
+        userTimer.clearTimerCount();
+        return true;
     }
 }

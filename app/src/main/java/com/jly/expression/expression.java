@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import com.brick.robotctrl.UserTimer;
 
 import com.ant.liao.GifView;
 import com.ant.liao.GifView.GifImageType;
@@ -16,6 +17,8 @@ public class expression extends Activity implements OnClickListener {
 
 	private GifView gf1;
 	private Button bt;
+
+	UserTimer userTimer = null;
 	
 	private int w ;
     private int h ;
@@ -33,7 +36,8 @@ public class expression extends Activity implements OnClickListener {
 		screenWidth  = getWindowManager().getDefaultDisplay().getWidth();       // 屏幕宽（像素，如：480px）
 		screenHeight = getWindowManager().getDefaultDisplay().getHeight();      // 屏幕高（像素，如：800p）
 		Log.e("TAG" + "  getDefaultDisplay", "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);
-		
+
+		userTimer = new UserTimer();
 		
 	    w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
 	    h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
@@ -58,6 +62,7 @@ public class expression extends Activity implements OnClickListener {
 	    
 	
 	public void onClick(View v) {
+		userTimer.clearTimerCount();
 		if(v == gf1)
 		{
 			if(f){

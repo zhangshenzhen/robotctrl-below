@@ -154,7 +154,7 @@ public class SSDBTask extends TimerTask {
             if (cmd == null) {
                 return;
             }
-            Log.i(TAG, "run: " + cmd);
+//            Log.i(TAG, "run: " + cmd);
             switch (cmd.cmdType) {
                 case ACTION_CONNECT:
                     try {
@@ -222,7 +222,7 @@ public class SSDBTask extends TimerTask {
                     }
                     try {                   // get Key_DirCtrl
                         byte[] rlt = ssdbClient.hget(robotName, Key_DirCtrl);
-                        Log.i(TAG, "run: "+rlt);
+//                        Log.i(TAG, "run: "+rlt);
                         if (rlt != null) {
                             Message message = new Message();
                             message.what = ACTION_HGET;

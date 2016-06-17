@@ -6,15 +6,20 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.List;
 
 
-public class SettingsActivity extends AppCompatPreferenceActivity {
+public class SettingsActivity extends AppCompatPreferenceActivity{
     private static final String TAG = "SettingsActivity";
+
+    UserTimer userTimer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

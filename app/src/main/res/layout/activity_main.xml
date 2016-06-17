@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     tools:context="com.brick.robotctrl.MainActivity"
-
+    android:id="@+id/mainActivity"
     tools:ignore="ContentDescription"
     android:keepScreenOn="true">
 

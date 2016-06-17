@@ -2,20 +2,28 @@ package com.brick.robotctrl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity implements View.OnTouchListener{
     private final String TAG = "MenuActivity";
 
     Button IDButton = null;
     Button ADButton = null;
     Button testButton = null;
+
+    UserTimer userTimer = null;
+
+    private RelativeLayout menuActivity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +35,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                startActivity(new Intent().setClass(MenuActivity.this, ...));
+                userTimer.clearTimerCount();
                 Toast.makeText(MenuActivity.this, "No ID Detector", Toast.LENGTH_SHORT).show();
             }
         });
@@ -35,6 +44,7 @@ public class MenuActivity extends AppCompatActivity {
         ADButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                userTimer.clearTimerCount();
                 startActivity(new Intent().setClass(MenuActivity.this, ADActivity.class));
             }
         });
@@ -43,20 +53,40 @@ public class MenuActivity extends AppCompatActivity {
         testButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    userTimer.clearTimerCount();
                     startActivity(new Intent().setClass(MenuActivity.this, TestActivity.class));
                 }
             }
         );
-        // relative timer
-        Timer timer = new Timer(true);
-        timer.schedule(timeOutTask, 1*60*1000, 1*60*1000);  //60min
-        // timer.cancel(); //退出计时器
+
+        userTimer = new UserTimer();
+
+        menuActivity = (RelativeLayout) findViewById(R.id.menuActivity);
+        menuActivity.setOnTouchListener(this);
     }
 
-    TimerTask timeOutTask = new TimerTask() {
-        @Override
-        public void run() {
-            startActivity(new Intent().setClass(MenuActivity.this, MenuActivity.class));
-        }
-    };
+    @Override
+    protected void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.i(TAG, "onRestart");
+        userTimer.clearTimerCount();
+        super.onRestart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        super.onDestroy();
+    }
+    @Override
+    public boolean onTouch(View v, MotionEvent event){
+        Log.d(TAG, "OnTouch: Touch Screen");
+        userTimer.clearTimerCount();
+        return true;
+    }
 }

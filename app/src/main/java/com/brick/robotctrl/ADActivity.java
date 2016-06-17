@@ -76,4 +76,22 @@ public class ADActivity extends AppCompatActivity implements View.OnTouchListene
             showVideoDialog();
         }
     }
+
+    @Override
+    protected void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.i(TAG, "onRestart");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        super.onDestroy();
+    }
 }

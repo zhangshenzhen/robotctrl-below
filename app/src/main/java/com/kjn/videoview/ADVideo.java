@@ -34,7 +34,7 @@ public class ADVideo {
                     if (files[i].getAbsolutePath().endsWith(".3gp")
                             || files[i].getAbsolutePath().endsWith(".mp4")) {
                         videoList.add(files[i].toString());
-                        System.out.println(files[i].toString());
+//                        System.out.println(files[i].toString());
                     }
                 }
             }
@@ -47,9 +47,9 @@ public class ADVideo {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-        for(int i = 0; i<videoList.size(); i++) {
-            Log.d(TAG, "getFiles: " + videoList.get(i));
-        }
+//        for(int i = 0; i<videoList.size(); i++) {
+//            Log.d(TAG, "getFiles: " + videoList.get(i));
+//        }
         return flag;
     }
 
