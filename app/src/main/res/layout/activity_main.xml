@@ -22,13 +22,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/AppTheme.Settings"/>
 
-    <!--<VideoView-->
-        <!--android:layout_width="200dip"-->
-        <!--android:layout_height="130dip"-->
-        <!--android:id="@+id/videoView"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginBottom="142dp" />-->
-
     <ImageButton
         android:layout_width="100dp"
         android:layout_height="100dp"

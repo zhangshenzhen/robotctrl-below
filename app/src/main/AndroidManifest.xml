@@ -32,6 +32,7 @@
             android:icon="@drawable/ic_action_settings"
             android:label="@string/settings"
             android:launchMode="singleTop"
+            android:screenOrientation="landscape"
             android:theme="@style/AppTheme.Settings">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,12 +45,26 @@
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.FullScreen.NoTitle"></activity>
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
         <activity
             android:name=".MenuActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_menu"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
+        <activity
+            android:name=".ADActivity"
+            android:label="@string/title_activity_ad"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
+        <activity
+            android:name=".TestActivity"
+            android:label="@string/title_activity_test"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" ></activity>
     </application>
 
 </manifest>

@@ -16,7 +16,7 @@
     <string name="serialBaudTitle">Serial Baud</string>
 
     <string name="title_activity_menu">MenuActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_ad">ADActivity</string>
+    <string name="title_activity_test">TestActivity</string>
 
 </resources>

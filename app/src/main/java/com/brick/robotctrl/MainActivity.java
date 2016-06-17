@@ -1,34 +1,19 @@
 package com.brick.robotctrl;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Point;
-import android.graphics.PointF;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.MediaController;
-import android.widget.TextView;
-import android.widget.VideoView;
 
-import com.kjn.videoview.ADVideo;
 import com.jly.expression.expression;
 
 import java.util.Timer;
@@ -40,9 +25,6 @@ public class MainActivity extends AppCompatActivity {// implements View.OnTouchL
 
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
 
-//    TextView notifyTextView = null;
-//    ImageView pointView = null;
-//    CheckBox dirCtrlSwitch = null;
     ImageView leftEyeButton = null;
     ImageView rightEyeButton = null;
     SSDBTask ssdbTask = null;
@@ -50,12 +32,6 @@ public class MainActivity extends AppCompatActivity {// implements View.OnTouchL
 
     private boolean serverChanged = false;
     private boolean serialChanged = false;
-
-//    // videoview
-//    private VideoView videoView;
-//    ADVideo adVideo = null;
-//    private String videoPath;
-//    private boolean flag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,28 +61,6 @@ public class MainActivity extends AppCompatActivity {// implements View.OnTouchL
                 startActivity(new Intent().setClass(MainActivity.this, MenuActivity.class));
             }
         });
-
-//        /**
-//         *videoview 实现
-//         * **/
-//        videoView = (VideoView) findViewById(R.id.videoView);
-//        videoView.setMediaController(new MediaController(this));  //不需要注释掉即可
-//        adVideo = new ADVideo(videoView);
-//        videoPath = Environment.getExternalStorageDirectory()
-//                .getPath()+"/Movies";
-//        flag = adVideo.getFiles(videoPath);
-//        if (flag) {
-//            new Thread() {
-//                @Override
-//                public void run() {
-//                    adVideo.play();
-//                }
-//            }.start();
-//        }
-//        else {
-//            showVideoDialog();
-//        }
-        
 
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
         presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -164,7 +118,7 @@ public class MainActivity extends AppCompatActivity {// implements View.OnTouchL
     TimerTask queryTask = new TimerTask() {
         @Override
         public void run() {
-            ssdbTask.SSDBQuery(ssdbTask.ACTION_HGET);
+            ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
         }
     };
 
@@ -178,7 +132,7 @@ public class MainActivity extends AppCompatActivity {// implements View.OnTouchL
             switch (msg.what) {
                 case SSDBTask.ENABLECTRL:
                     enableCtrl = true;
-                    ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, ssdbTask.Key_Event, "");
+                    ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.Key_Event, "");
                     break;
                 case SSDBTask.ACTION_HGET:
                     String rlt = (String) msg.obj;
@@ -261,24 +215,4 @@ public class MainActivity extends AppCompatActivity {// implements View.OnTouchL
         serialCtrl.closeSerialCOM();
         super.onDestroy();
     }
-
-    private void showVideoDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("提示");
-        builder.setMessage("路径中无视频文件");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
 }
