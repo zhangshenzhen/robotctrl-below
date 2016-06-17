@@ -8,15 +8,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ${kang} on 2016/6/16.
- */
-
 public class ADVideo {
+    private final String TAG = "ADVideo";
     private VideoView videoView;
     private List<String> videoList;
     private int index = 0;
-
+    private int per;
 
     public ADVideo (VideoView videoView){
         this.videoView = videoView;
@@ -50,15 +47,19 @@ public class ADVideo {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+        for(int i = 0; i<videoList.size(); i++) {
+            Log.d(TAG, "getFiles: " + videoList.get(i));
+        }
         return flag;
     }
 
-    private void next(){
+    private void next() {
         if (++index >= videoList.size()) {
             index = 0;
         }
-            videoView.setVideoPath(videoList.get(index));
-            videoView.start();
+        Log.d(TAG, "next: 正在播放" + videoList.get(index));
+        videoView.setVideoPath(videoList.get(index));
+        videoView.start();
     }
 
     public void play(){
@@ -70,5 +71,27 @@ public class ADVideo {
                 next();
             }
         });
+    }
+
+    public void pause(){
+
+        videoView.pause();
+        per = videoView.getCurrentPosition();
+    }
+
+    public void resume(){
+        //videoView.seekTo(per);
+        videoView.resume();
+        videoView.start();
+
+    }
+
+    public void  stopPlayBack(){
+        videoView.stopPlayback();
+    }
+
+    public void start(){
+        videoView.seekTo(per);
+        videoView.start();
     }
 }

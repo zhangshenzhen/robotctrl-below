@@ -1,21 +1,25 @@
 package com.brick.robotctrl;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.kjn.videoview.ADVideo;
 
-public class ADActivity extends AppCompatActivity {
+public class ADActivity extends AppCompatActivity implements View.OnTouchListener {
+    private final String TAG = "ADActivity";
 
-    private VideoView videoView = null;
+    private VideoView videoView;
     ADVideo adVideo = null;
-    private String videoPath = null;
+    private String videoPath;
     private boolean flag = true;
 
     @Override
@@ -25,22 +29,10 @@ public class ADActivity extends AppCompatActivity {
 
         // videoview 实现
         videoView = (VideoView) findViewById(R.id.videoView);
-        videoView.setMediaController(new MediaController(this));  //不需要注释掉即可
+        videoView.setOnTouchListener(this);
+//        videoView.setMediaController(new MediaController(this));  //不需要注释掉即可
         adVideo = new ADVideo(videoView);
-        videoPath = Environment.getExternalStorageDirectory()
-                .getPath()+"/Movies";
-        flag = adVideo.getFiles(videoPath);
-        if (flag) {
-            new Thread() {
-                @Override
-                public void run() {
-                    adVideo.play();
-                }
-            }.start();
-        }
-        else {
-            showVideoDialog();
-        }
+        videoPlay();
     }
 
     private void showVideoDialog(){
@@ -60,5 +52,28 @@ public class ADActivity extends AppCompatActivity {
             }
         });
         builder.create().show();
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event){
+        Log.d(TAG, "onTouch: to MainActivity");
+        startActivity(new Intent().setClass(ADActivity.this, MainActivity.class));
+        return true;
+    }
+    public void videoPlay(){
+        videoPath = Environment.getExternalStorageDirectory()
+                .getPath()+"/Movies";
+        flag = adVideo.getFiles(videoPath);
+        if (flag) {
+            new Thread() {
+                @Override
+                public void run() {
+                    adVideo.play();
+                }
+            }.start();
+        }
+        else {
+            showVideoDialog();
+        }
     }
 }
