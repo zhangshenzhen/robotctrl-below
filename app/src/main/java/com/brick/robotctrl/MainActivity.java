@@ -150,7 +150,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 //            Log.i(TAG, "handleMessage: msg.what: "+msg.what);
             switch (msg.what) {
                 case SSDBTask.ENABLECTRL:
-                    enableCtrl = true;
+                    String rlt  = (String) msg.obj;
+                    if( rlt.equals("") )
+                            enableCtrl = true;
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.Key_Event, "");
                     break;
                 case SSDBTask.ACTION_HGET:
