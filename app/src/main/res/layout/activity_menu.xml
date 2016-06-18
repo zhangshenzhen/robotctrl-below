@@ -13,16 +13,18 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="身份识别"
+        android:text="身份确认"
+        android:textSize="30sp"
         android:id="@+id/IDButton"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="192dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="广告页面"
+        android:text="营销推广"
+        android:textSize="30sp"
         android:id="@+id/ADButton"
         android:layout_below="@+id/IDButton"
         android:layout_centerHorizontal="true" />
@@ -31,7 +33,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="测试平台"
+        android:textSize="30sp"
         android:id="@+id/testButton"
         android:layout_below="@+id/ADButton"
         android:layout_centerHorizontal="true" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="业务咨询"
+        android:textSize="30sp"
+        android:id="@+id/busButton"
+        android:layout_below="@+id/testButton"
+        android:layout_alignStart="@+id/IDButton" />
 </RelativeLayout>
