@@ -155,4 +155,19 @@ public class SerialCtrl {
             default:
         }
     }
+    public void setRobotRate(String rate) {
+        String[] splitRate = rate.split(" ");
+        int exeRateBCC, turnRateBCC, headRateBCC, timeoutTimeBCC;
+        exeRateBCC = 0xFF & 0x16 & (Integer.parseInt(splitRate[0]));
+        turnRateBCC =  0xFF & 0x16 & (Integer.parseInt(splitRate[1]));
+        headRateBCC =  0xFF & 0x16 & (Integer.parseInt(splitRate[2]));
+        timeoutTimeBCC =  0xFF & 0x16 & (Integer.parseInt(splitRate[3]));
+        for (int i=0; i < 4; i++) {
+            Log.d(TAG, "setRobotRate: "+ splitRate[i]);
+        }
+        sendPortData(ComA, "FF16"+splitRate[0]+String.valueOf(exeRateBCC));
+        sendPortData(ComA, "FF17"+splitRate[1]+String.valueOf(turnRateBCC));
+        sendPortData(ComA, "FF18"+splitRate[2]+String.valueOf(headRateBCC));
+        sendPortData(ComA, "FF16"+splitRate[3]+String.valueOf(timeoutTimeBCC));
+    }
 }

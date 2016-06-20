@@ -133,34 +133,31 @@ public class SSDBTask extends TimerTask {
 
     public void disConnect() {
         if (ssdbClient != null) {
-            if (enableDirCtrl) {
-                setDirCtrlEnable(false);
-            }
             SSDBQuery(ACTION_DISCONNECT);
         }
     }
 
     public boolean stop = false;
 
-    //----event-->DirCtrl-->
-    public static final String[] event = new String[]{"event", "DirCtl", "left", "right", "stop"};
-    public static final String Key_Event = "event";
-    public static final String Key_DirCtrl = "DirCtl";
-    public static final String Key_EndDirCtrl = "EndDirCtl";
-    public static boolean enableDirCtrl = false;
-    public static final String Key_SetParam = "param";
-    public static boolean enableSetParam = false;
-    public static final String Key_Charge = "Charge";
-    public static final String Key_VideoPlay = "VideoPlay";
-    public static boolean enableVideoPlay = false;
-    public static final String Key_VideoInfo = "VideoInfo";
-    public static final String Key_VideoPlayList = "VideoPlayList";
-    public static final String Key_RobotMsg = "RobotMsg";
-    public static final String Key_BatteryVolt = "BatteryVolt";
-    public static final String Key_NetworkDelay = "NetworkDelay";
-    public static final String Key_Location = "Location";
-    public static final String[] DirCtrlVals = new String[]{"up", "down", "left", "right", "stop"};
 
+    public static final int Key_Event = 0;
+    public static final int Key_DirCtrl = 1;
+    public static final int  Key_SetParam = 2;
+    public static final int Key_VideoPlay = 3;
+    public static final int Key_VideoInfo = 4;
+    public static final int Key_VideoPlayList = 5;
+    public static final int Key_RobotMsg = 6;
+    public static final int Key_BatteryVolt = 7;
+    public static final int Key_NetworkDelay = 8;
+    public static final int Key_Location = 9;
+    public static final int Key_ChangeEmotion = 10;
+    public static final String[] event = new String[]{"event", "DirCtl", "param",
+            "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt", "NetworkDelay", "Location", "ChangeEmotion"};
+    public static boolean enableDirCtl = false;
+    public static boolean enableChangeEmotion = false;
+    public static boolean enableSetParameter = false;
+
+    private int iCount = 0;
     @Override
     public synchronized void run() {
         if (stop) {
@@ -228,96 +225,77 @@ public class SSDBTask extends TimerTask {
                     }
                     break;
                 case ACTION_HGET:
-                    try {
-                        byte[] rlt = ssdbClient.hget(robotName, Key_Event);     // check event
-                        if (rlt != null) {
-                            Message message = new Message();
-                            message.what = Key_Event;
-                            message.obj = new String(rlt, "GBK");
-                            contextHandler.sendMessage(message);
-                        }
-                        rlt = ssdbClient.hget(robotName, Key_DirCtrl);          // check move control
-                        if (rlt != null) {
-                            Message message = new Message();
-                            message.what = ACTION_HGET;
-                            message.obj = new String(rlt, "GBK");
-                            contextHandler.sendMessage(message);
-                        }
-                        rlt = ssdbClient.hget(robotName, Key_SetParam);
-                        if (rlt != null) {
-                            Message message = new Message();
-                            message.what = ACTION_HGET;
-                            message.obj = new String(rlt, "GBK");
-                            contextHandler.sendMessage(message);
-                        }
-                        rlt = ssdbClient.hget(robotName, Key_VideoPlay);
-                        if (rlt != null) {
-                            Message message = new Message();
-                            message.what = ACTION_HGET;
-                            message.obj = new String(rlt, "GBK");
-                            contextHandler.sendMessage(message);
-                        }
-//                        rlt = ssdbClient.hget(robotName, Key_VideoInfo);
-//                        if (rlt != null) {
-//                            Message message = new Message();
-//                            message.what = ACTION_HGET;
-//                            message.obj = new String(rlt, "GBK");
-//                            contextHandler.sendMessage(message);
-//                        }
-//                        rlt = ssdbClient.hget(robotName, Key_VideoPlayList);
-//                        if (rlt != null) {
-//                            Message message = new Message();
-//                            message.what = ACTION_HGET;
-//                            message.obj = new String(rlt, "GBK");
-//                            contextHandler.sendMessage(message);
-//                        }
-//                        rlt = ssdbClient.hget(robotName, Key_RobotMsg);
-//                        if (rlt != null) {
-//                            Message message = new Message();
-//                            message.what = ACTION_HGET;
-//                            message.obj = new String(rlt, "GBK");
-//                            contextHandler.sendMessage(message);
-//                        }
-//                        rlt = ssdbClient.hget(robotName, Key_BatteryVolt);
-//                        if (rlt != null) {
-//                            Message message = new Message();
-//                            message.what = ACTION_HGET;
-//                            message.obj = new String(rlt, "GBK");
-//                            contextHandler.sendMessage(message);
-//                        }
-//                        rlt = ssdbClient.hget(robotName, Key_NetworkDelay);
-//                        if (rlt != null) {
-//                            Message message = new Message();
-//                            message.what = ACTION_HGET;
-//                            message.obj = new String(rlt, "GBK");
-//                            contextHandler.sendMessage(message);
-//                        }
-//                        rlt = ssdbClient.hget(robotName, Key_Location);
-//                        if (rlt != null) {
-//                            Message message = new Message();
-//                            message.what = ACTION_HGET;
-//                            message.obj = new String(rlt, "GBK");
-//                            contextHandler.sendMessage(message);
-//                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        if (ssdbClient == null) {
-                            SSDBQuery(ACTION_CONNECT);
+                    if (++iCount >= 5) {        // 1s check
+                        try {
+                            byte[] rlt = ssdbClient.hget(robotName, event[Key_Event]); // check event
+                            if (rlt != null) {
+                                Message message = new Message();
+                                message.what = Key_Event;
+                                message.obj = new String(rlt, "GBK");
+                                contextHandler.sendMessage(message);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            if (ssdbClient == null) {
+                                SSDBQuery(ACTION_CONNECT);
+                            }
                         }
                     }
-                    break;
+                    ////////////////////////////////////////////////////////////// 200ms check
+                    if (enableDirCtl) {             // check control move
+                        try {
+                            byte[] rlt = ssdbClient.hget(robotName, event[Key_DirCtrl]);          // check move control
+                            if (rlt != null) {
+                                Message message = new Message();
+                                message.what = Key_DirCtrl;
+                                message.obj = new String(rlt, "GBK");
+                                contextHandler.sendMessage(message);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            if (ssdbClient == null) {
+                                SSDBQuery(ACTION_CONNECT);
+                            }
+                        }
+                    }
+                    if ( enableSetParameter ) {     // check rate parameter
+                        enableSetParameter = false;
+                        try {
+                            byte[] rlt = ssdbClient.hget(robotName, event[Key_SetParam]);
+                            if (rlt != null) {
+                                Message message = new Message();
+                                message.what = Key_SetParam;
+                                message.obj = new String(rlt, "GBK");
+                                contextHandler.sendMessage(message);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            if (ssdbClient == null) {
+                                SSDBQuery(ACTION_CONNECT);
+                            }
+                        }
+                    }
+                    if ( enableChangeEmotion ) {       // check emotion change
+                        enableChangeEmotion = false;
+                        try {
+                            byte[] rlt = ssdbClient.hget(robotName, event[Key_ChangeEmotion]);
+                            if (rlt != null) {
+                                Message message = new Message();
+                                message.what = Key_ChangeEmotion;
+                                message.obj = new String(rlt, "GBK");
+                                contextHandler.sendMessage(message);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            if (ssdbClient == null) {
+                                SSDBQuery(ACTION_CONNECT);
+                            }
+                        }
+                    }
                 default:
                     break;
             }
         }
-    }
-
-    public void setDirCtrlEnable(boolean enable) {
-        if (!enable) {
-            SSDBQuery(ACTION_HSET, Key_DirCtrl, Key_EndDirCtrl);
-        }
-        SSDBQuery(ACTION_HSET, "event", enable ? Key_DirCtrl : Key_EndDirCtrl);
-        enableDirCtrl = enable;
     }
 
     public void SSDBQuery(int codeType) {

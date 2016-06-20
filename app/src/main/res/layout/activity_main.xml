@@ -31,7 +31,8 @@
         android:scaleType="centerCrop"
         android:layout_marginStart="230dip"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/toolbar" />
+        android:layout_toEndOf="@+id/toolbar"
+        android:background="#ffffff" />
 
     <ImageButton
         android:layout_width="150dp"
@@ -43,6 +44,7 @@
 
         android:layout_marginEnd="300dip"
         android:layout_alignTop="@+id/leftEyeButton"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="#ffffff" />
 
 </RelativeLayout>

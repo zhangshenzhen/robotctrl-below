@@ -53,10 +53,46 @@ public class expression extends Activity implements OnClickListener {
         width =gf1.getMeasuredWidth();
         height =gf1.getMeasuredHeight();
         Log.e("TAG" + "  getDefaultDisplay", "Width=" + width + "; Height=" + height);
-		
+
 	}
-	    
-	
+
+	public void changeEmotion(int emotionIndex) {
+		switch (emotionIndex){
+			case 1: gf1.setGifImage(R.drawable.complacent);
+				//gf1.setGifImageType(GifImageType.COVER);
+				gf1.showAnimation();
+				break;
+			case 2: gf1.setGifImage(R.drawable.anthomaniac);
+				//gf1.setGifImageType(GifImageType.COVER);
+				gf1.showAnimation();
+				break;
+			case 3: gf1.setGifImage(R.drawable.exciting);
+				//gf1.setGifImageType(GifImageType.COVER);
+				gf1.showAnimation();
+				break;
+			case 4: gf1.setGifImage(R.drawable.sigh);
+				//gf1.setGifImageType(GifImageType.COVER);
+				gf1.showAnimation();
+				break;
+			case 5: gf1.setGifImage(R.drawable.smile);
+				//gf1.setGifImageType(GifImageType.COVER);
+				gf1.showAnimation();
+				break;
+			case 6: gf1.setGifImage(R.drawable.tear);
+				//gf1.setGifImageType(GifImageType.COVER);
+				gf1.showAnimation();
+				break;
+			case 7: gf1.setGifImage(R.drawable.think);
+				//gf1.setGifImageType(GifImageType.COVER);
+				gf1.showAnimation();
+				break;
+			default : gf1.setGifImage(R.drawable.shy);count=0;
+				gf1.showAnimation();
+				break;
+		}
+	}
+
+
 	public void onClick(View v) {
 		userTimer.clearTimerCount();
 		if(v == gf1)

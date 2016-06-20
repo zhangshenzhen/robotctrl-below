@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -121,6 +126,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         };
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(presChangeListener);
 
+        Intent playIntent = new Intent();
+        playIntent.putExtra("url", "/sdcard/Movies/qianqian.mp3");
+//        intent.putExtra("MSG", 0);
+        Log.d(TAG, "onCreate: starting PlayService");
+        playIntent.setClass(MainActivity.this, PlayerService.class);
+        startService(playIntent);       //启动服务
+
         // relative timer
         Timer timer = new Timer(true);
         timer.schedule(queryTask,200, 200); //延时1000ms后执行，1000ms执行一次
@@ -133,43 +145,64 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
 
             userTimer.addTimerCount();
-            Log.d(TAG, "TimerTask: " + userTimer.getTimerCount());
-            if(userTimer.getTimerCount() > (1*10*1000/200)) {
+//            Log.d(TAG, "TimerTask: " + userTimer.getTimerCount());
+            if(userTimer.getTimerCount() > (1*30*1000/200)) {
+                Log.d(TAG, "Timeout to play video");
                 startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
                 userTimer.clearTimerCount();
             }
         }
     };
 
-    private boolean enableCtrl = false;
     // receive ssdb server info
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-//            Log.i(TAG, "handleMessage: msg.what: "+msg.what);
+    //            Log.i(TAG, "handleMessage: msg.what: "+msg.what);
             switch (msg.what) {
-                case SSDBTask.ENABLECTRL:
+                case SSDBTask.Key_Event:
                     String rlt  = (String) msg.obj;
-                    if( rlt.equals("") )
-                            enableCtrl = true;
-                    ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.Key_Event, "");
+                    if (rlt.equals("DirCtl"))
+                        ssdbTask.enableDirCtl = true;
+                    if (rlt.equals("EndDirCtl"))
+                        ssdbTask.enableDirCtl = false;
+                    if(rlt.equals("ChangeMotion"))
+                        ssdbTask.enableChangeEmotion = true;
+                    ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, ssdbTask.event[ssdbTask.Key_Event], "");
                     break;
-                case SSDBTask.ACTION_HGET:
-                    String rlt = (String) msg.obj;
-//                    Log.d(TAG, "handleMessage: rlt:" + rlt + "\tenableCtrl:" + enableCtrl);
-                    if( enableCtrl ) {
+                case SSDBTask.Key_DirCtrl:
+                    rlt = (String) msg.obj;
+                    if (rlt != null)
                         serialCtrl.robotMove(rlt);
-                    }
+    //                    Log.d(TAG, "handleMessage: rlt:" + rlt + "\tenableCtrl:" + enableCtrl);
                     break;
-                case SSDBTask.DIRCTRLWARNING:
-//                    notifyTextView.setText("open switch please");
+                case SSDBTask.Key_SetParam:
+    //                    notifyTextView.setText("open switch please");
+                    rlt = (String) msg.obj;
+                    if ( rlt != null)
+                        serialCtrl.setRobotRate(rlt);
                     break;
+                case SSDBTask.Key_ChangeEmotion:
+                    rlt = (String) msg.obj;
+
+                    Intent playIntent = new Intent();
+                    playIntent.putExtra("url", "/sdcard/Movies/qianqian.mp3");
+//        intent.putExtra("MSG", 0);
+                    Log.d(TAG, "onCreate: starting PlayService");
+                    playIntent.setClass(MainActivity.this, PlayerService.class);
+                    startService(playIntent);       //启动服务
+
+//                    Intent expressionIntent = new Intent();
+//                    expressionIntent.putExtra("emotionIndex",)
+//                    startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
+//                    changeEmotion(Integer.parseInt(rlt));
                 default:
                     break;
             }
         }
     };
+
 
     // relative menu
     Menu menu = null;
@@ -218,12 +251,24 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onStop() {
         Log.i(TAG, "onStop");
+        Intent stopIntent = new Intent();
+        stopIntent.putExtra("url", "/sdcard/Movies/qianqian.mp3");
+//        intent.putExtra("MSG", 0);
+        Log.d(TAG, "onCreate: starting PlayService");
+        stopIntent.setClass(MainActivity.this, PlayerService.class);
+        stopService(stopIntent);
         super.onStop();
     }
 
     @Override
     protected void onRestart() {
         Log.i(TAG, "onRestart");
+        Intent playIntent = new Intent();
+        playIntent.putExtra("url", "/sdcard/Movies/qianqian.mp3");
+//        intent.putExtra("MSG", 0);
+        Log.d(TAG, "onCreate: starting PlayService");
+        playIntent.setClass(MainActivity.this, PlayerService.class);
+        startService(playIntent);       //启动服务
         userTimer.clearTimerCount();
         super.onRestart();
     }
