@@ -79,11 +79,11 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
         <activity
-        android:name=".ShowQueryActivity2"
-        android:label="提问"
-        android:launchMode="singleTask"
-        android:screenOrientation="landscape"
-        android:theme="@style/AppTheme.FullScreen.NoTitle" />
+            android:name=".ShowQueryActivity2"
+            android:label="提问"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
 
         <activity
             android:name=".TestActivity"

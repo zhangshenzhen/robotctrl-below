@@ -30,4 +30,14 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:design:22.2.1'
+    compile files('libs/commons-beanutils-1.9.2.jar')
+    compile files('libs/commons-collections-3.2.1.jar')
+    compile files('libs/commons-httpclient-3.1.jar')
+    compile files('libs/commons-lang-2.4.jar')
+    compile files('libs/commons-logging-1.1.1.jar')
+    compile files('libs/ezmorph-1.0.6.jar')
+    compile files('libs/gson-2.3.1.jar')
+    compile files('libs/hcicloud-5.0.jar')
+    compile files('libs/hcicloud_recorder-5.0.jar')
+    compile files('libs/json-lib-2.4-jdk15.jar')
 }

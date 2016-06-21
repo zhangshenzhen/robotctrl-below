@@ -49,7 +49,7 @@ import java.util.Locale;
  */
 
 public class QuestActivity extends Activity{
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "QuestActivity";
 
     /**
      * 加载用户信息工具类
@@ -108,7 +108,7 @@ public class QuestActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_quest);
         mResult = (TextView) findViewById(R.id.resultview);
         mState = (TextView) findViewById(R.id.stateview);
         mError = (TextView) findViewById(R.id.errorview);
@@ -436,13 +436,13 @@ public class QuestActivity extends Activity{
         }
     }
 
-    /**
-     * 加载初始化信息
-     *
-     * @param context
-     *            上下文语境
-     * @return 系统初始化参数
-     */
+//    /**
+//     * 加载初始化信息
+//     *
+//     * @param context
+//     *            上下文语境
+//     * @return 系统初始化参数
+//     */
     private InitParam getInitParam() {
         String authDirPath = this.getFilesDir().getAbsolutePath();
 

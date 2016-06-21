@@ -57,12 +57,12 @@ public class MenuActivity extends AppCompatActivity implements View.OnTouchListe
 
         busButton = (Button) findViewById(R.id.busButton);
         busButton.setOnClickListener(new View.OnClickListener() {
-                                          @Override
-                                          public void onClick(View view) {
-                                              userTimer.clearTimerCount();
-                                              startActivity(new Intent().setClass(MenuActivity.this, QuestActivity.class));
-                                          }
-                                      }
+            @Override
+            public void onClick(View view) {
+                    userTimer.clearTimerCount();
+                    startActivity(new Intent().setClass(MenuActivity.this, QuestActivity.class));
+                }
+            }
         );
 
         userTimer = new UserTimer();
