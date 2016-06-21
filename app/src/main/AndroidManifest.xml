@@ -8,6 +8,12 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.MOUNT_FORMAT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
     <application
         android:allowBackup="true"
@@ -60,6 +66,25 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
+        <activity
+            android:name=".QuestActivity"
+            android:label="提问"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
+        <activity
+            android:name=".ShowQueryActivity"
+            android:label="提问"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
+        <activity
+        android:name=".ShowQueryActivity2"
+        android:label="提问"
+        android:launchMode="singleTask"
+        android:screenOrientation="landscape"
+        android:theme="@style/AppTheme.FullScreen.NoTitle" />
+
         <activity
             android:name=".TestActivity"
             android:label="@string/title_activity_test"

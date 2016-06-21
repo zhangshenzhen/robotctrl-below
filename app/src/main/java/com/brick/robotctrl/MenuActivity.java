@@ -2,7 +2,6 @@ package com.brick.robotctrl;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -11,16 +10,13 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class MenuActivity extends AppCompatActivity implements View.OnTouchListener{
     private final String TAG = "MenuActivity";
 
     Button IDButton = null;
     Button ADButton = null;
     Button testButton = null;
-
+    Button busButton = null;
     UserTimer userTimer = null;
 
     private RelativeLayout menuActivity = null;
@@ -57,6 +53,16 @@ public class MenuActivity extends AppCompatActivity implements View.OnTouchListe
                     startActivity(new Intent().setClass(MenuActivity.this, TestActivity.class));
                 }
             }
+        );
+
+        busButton = (Button) findViewById(R.id.busButton);
+        busButton.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View view) {
+                                              userTimer.clearTimerCount();
+                                              startActivity(new Intent().setClass(MenuActivity.this, QuestActivity.class));
+                                          }
+                                      }
         );
 
         userTimer = new UserTimer();
