@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.os.Bundle;
+import com.jly.idcard.IDcard;
+
 
 public class MenuActivity extends AppCompatActivity implements View.OnTouchListener{
     private final String TAG = "MenuActivity";
@@ -26,13 +29,16 @@ public class MenuActivity extends AppCompatActivity implements View.OnTouchListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+
         IDButton = (Button) findViewById(R.id.IDButton);
         IDButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                startActivity(new Intent().setClass(MenuActivity.this, ...));
                 userTimer.clearTimerCount();
-                Toast.makeText(MenuActivity.this, "No ID Detector", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(MenuActivity.this, "No ID Detector", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent().setClass(MenuActivity.this, IDcard.class));
+
             }
         });
 
@@ -70,6 +76,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnTouchListe
         menuActivity = (RelativeLayout) findViewById(R.id.menuActivity);
         menuActivity.setOnTouchListener(this);
     }
+
+
 
     @Override
     protected void onStop() {
