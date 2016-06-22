@@ -37,10 +37,10 @@ public class ShowQueryActivity2 extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_showquery);
         Intent intent = getIntent();
-        data = intent.getStringExtra("extra_showResult2");
+        data = intent.getStringExtra("extra_showResult");
         showqueryButton = (Button) findViewById(R.id.button);
         showqueryButton.setText(data);
-        Log.d("extra_showResult2",data);
+        Log.d("extra_showResult",data);
 
         editText = (EditText) findViewById(R.id.editText);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -71,11 +71,23 @@ public class ShowQueryActivity2 extends Activity {
                                 JsonBean jsonBean = gson.fromJson(result, type);
                                 System.out.println(jsonBean.getResult());
                                 resultShow = jsonBean.getSingleNode().getAnswerMsg();
-                                System.out.println(resultShow);
-                                if(resultShow != null) {
-                                    Intent intent = new Intent(ShowQueryActivity2.this, ShowQueryActivity.class);
-                                    intent.putExtra("extra_showResult",resultShow);
-                                    startActivity(intent);
+                                if (jsonBean.getVagueNode() != null) {
+                                    for (int i = 0;i < jsonBean.getVagueNode().getItemList().size(); i++){
+                                        resultShow += jsonBean.getVagueNode().getItemList().get(i).getNum() + jsonBean.getVagueNode().getItemList().get(i).getQuestion();
+                                    }
+                                    if(resultShow != null) {
+                                        Intent intent = new Intent(ShowQueryActivity2.this, ShowQueryActivity.class);
+                                        intent.putExtra("extra_showResult",resultShow);
+                                        startActivity(intent);
+                                    }
+
+                                }else{
+                                    resultShow = jsonBean.getSingleNode().getAnswerMsg();
+                                    if(resultShow != null) {
+                                        Intent intent = new Intent(ShowQueryActivity2.this, ShowSureQueryActivity.class);
+                                        intent.putExtra("extra_showResult",resultShow);
+                                        startActivity(intent);
+                                    }
                                 }
                             }
                         } catch (HttpException e) {

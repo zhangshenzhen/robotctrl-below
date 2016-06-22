@@ -71,11 +71,23 @@ public class ShowQueryActivity extends Activity {
                                 JsonBean jsonBean = gson.fromJson(result, type);
                                 System.out.println(jsonBean.getResult());
                                 resultShow = jsonBean.getSingleNode().getAnswerMsg();
-                                System.out.println(resultShow);
-                                if(resultShow != null) {
-                                    Intent intent = new Intent(ShowQueryActivity.this, ShowQueryActivity2.class);
-                                    intent.putExtra("extra_showResult2",resultShow);
-                                    startActivity(intent);
+                                if (jsonBean.getVagueNode() != null) {
+                                    for (int i = 0;i < jsonBean.getVagueNode().getItemList().size(); i++){
+                                        resultShow += jsonBean.getVagueNode().getItemList().get(i).getNum() + jsonBean.getVagueNode().getItemList().get(i).getQuestion();
+                                    }
+                                    if(resultShow != null) {
+                                        Intent intent = new Intent(ShowQueryActivity.this, ShowQueryActivity.class);
+                                        intent.putExtra("extra_showResult",resultShow);
+                                        startActivity(intent);
+                                    }
+
+                                }else{
+                                    resultShow = jsonBean.getSingleNode().getAnswerMsg();
+                                    if(resultShow != null) {
+                                        Intent intent = new Intent(ShowQueryActivity.this, ShowSureQueryActivity.class);
+                                        intent.putExtra("extra_showResult",resultShow);
+                                        startActivity(intent);
+                                    }
                                 }
                             }
 

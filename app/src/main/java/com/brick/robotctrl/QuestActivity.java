@@ -112,7 +112,6 @@ public class QuestActivity extends Activity{
         mResult = (TextView) findViewById(R.id.resultview);
         mState = (TextView) findViewById(R.id.stateview);
         mError = (TextView) findViewById(R.id.errorview);
-        mGrammarLv = (ListView) findViewById(R.id.grammar_list);
         mBtnRecogRealTimeMode = (Button) findViewById(R.id.begin_recog_real_time_mode);
 
 
@@ -310,16 +309,22 @@ public class QuestActivity extends Activity{
                                         for (int i = 0;i < jsonBean.getVagueNode().getItemList().size(); i++){
                                             resultShow += jsonBean.getVagueNode().getItemList().get(i).getNum() + jsonBean.getVagueNode().getItemList().get(i).getQuestion();
                                         }
+                                        if(resultShow != null) {
+                                            Intent intent = new Intent(QuestActivity.this, ShowQueryActivity.class);
+                                            intent.putExtra("extra_showResult",resultShow);
+                                            startActivity(intent);
+                                        }
 
                                     }else{
                                         resultShow = jsonBean.getSingleNode().getAnswerMsg();
+                                        if(resultShow != null) {
+                                            Intent intent = new Intent(QuestActivity.this, ShowSureQueryActivity.class);
+                                            intent.putExtra("extra_showResult",resultShow);
+                                            startActivity(intent);
+                                        }
                                     }
                                     System.out.println(resultShow);
-                                    if(resultShow != null) {
-                                        Intent intent = new Intent(QuestActivity.this, ShowQueryActivity.class);
-                                        intent.putExtra("extra_showResult",resultShow);
-                                        startActivity(intent);
-                                    }
+
                                 }
 
                             } catch (HttpException e) {
