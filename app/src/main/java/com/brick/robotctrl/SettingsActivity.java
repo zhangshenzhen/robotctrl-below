@@ -1,5 +1,6 @@
 package com.brick.robotctrl;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -121,5 +122,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         setResult(RESULT_OK, intent);
         finish();
         super.onBackPressed();
+    }
+
+    public static void activityStart(Context context) {
+        Intent intent = new Intent(context, SettingsActivity.class);
+        context.startActivity(intent);
     }
 }

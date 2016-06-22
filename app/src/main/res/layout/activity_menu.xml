@@ -19,7 +19,6 @@
         android:layout_marginTop="192dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +27,6 @@
         android:id="@+id/ADButton"
         android:layout_below="@+id/IDButton"
         android:layout_centerHorizontal="true" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,5 +42,13 @@
         android:textSize="30sp"
         android:id="@+id/busButton"
         android:layout_below="@+id/testButton"
+        android:layout_alignStart="@+id/IDButton" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设置界面"
+        android:textSize="30sp"
+        android:id="@+id/settingsButton"
+        android:layout_below="@+id/busButton"
         android:layout_alignStart="@+id/IDButton" />
 </RelativeLayout>
