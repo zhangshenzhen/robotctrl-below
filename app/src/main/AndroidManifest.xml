@@ -90,6 +90,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
+        <activity
+            android:name=".ShowSureQueryActivity"
+            android:label="提问"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
 
         <activity
             android:name=".TestActivity"
