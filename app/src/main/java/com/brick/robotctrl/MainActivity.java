@@ -137,20 +137,29 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         Timer timer = new Timer(true);
         timer.schedule(queryTask,200, 200); //延时1000ms后执行，1000ms执行一次
         // timer.cancel(); //退出计时器
+
+        View decorView = getWindow().getDecorView();
+//        Hide both the navigation bar and the status bar.
+//        SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+//        a general rule, you should design your app to hide the status bar whenever you
+//        hide the navigation bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
+        decorView.setSystemUiVisibility(uiOptions);
     }
 
     TimerTask queryTask = new TimerTask() {
         @Override
         public void run() {
-            ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
+        ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
 
-            userTimer.addTimerCount();
+        userTimer.addTimerCount();
 //            Log.d(TAG, "TimerTask: " + userTimer.getTimerCount());
-            if(userTimer.getTimerCount() > (1*30*1000/200)) {
-                Log.d(TAG, "Timeout to play video");
-                startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
-                userTimer.clearTimerCount();
-            }
+        if(userTimer.getTimerCount() > (1*30*1000/200)) {
+            Log.d(TAG, "Timeout to play video");
+            startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
+            userTimer.clearTimerCount();
+        }
         }
     };
 
@@ -270,6 +279,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         playIntent.setClass(MainActivity.this, PlayerService.class);
         startService(playIntent);       //启动服务
         userTimer.clearTimerCount();
+
+        View decorView = getWindow().getDecorView();
+//        Hide both the navigation bar and the status bar.
+//        SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+//        a general rule, you should design your app to hide the status bar whenever you
+//        hide the navigation bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
+        decorView.setSystemUiVisibility(uiOptions);
         super.onRestart();
     }
 
