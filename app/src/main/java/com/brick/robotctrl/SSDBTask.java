@@ -10,6 +10,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.udpwork.ssdb.SSDB;
@@ -190,7 +191,7 @@ public class SSDBTask extends TimerTask {
                                             .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    stop = false;
+                                                    stop = true;
                                                 }
                                             })
                                             .setPositiveButton("retry", new DialogInterface.OnClickListener() {
