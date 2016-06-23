@@ -15,11 +15,11 @@
         android:id="@+id/videoView"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true" />
-    <FrameLayout android:id="@+id/operation_volume_brightness"
-        android:visibility="invisible" android:layout_centerInParent="true"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:background="#00000000" android:orientation="horizontal"
-        android:padding="0dip">
+    <!--<FrameLayout android:id="@+id/operation_volume_brightness"-->
+        <!--android:visibility="invisible" android:layout_centerInParent="true"-->
+        <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+        <!--android:background="#00000000" android:orientation="horizontal"-->
+        <!--android:padding="0dip">-->
         <!--<ImageView android:id="@+id/operation_bg"-->
             <!--android:layout_gravity="center" -->
             <!--android:src="@drawable/video_volumn_bg"-->
@@ -35,6 +35,6 @@
                 <!--android:layout_width="0dip" android:layout_height="wrap_content"-->
                 <!--android:scaleType="matrix" />-->
         <!--</FrameLayout>-->
-    </FrameLayout>
+    <!--</FrameLayout>-->
 
 </RelativeLayout>
