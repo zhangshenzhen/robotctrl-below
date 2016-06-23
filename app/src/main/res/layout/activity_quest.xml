@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/logview"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="" />
+    <!--<TextView-->
+        <!--android:id="@+id/logview"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="" />-->
 
 
     <Button
@@ -14,7 +14,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
-        android:text="语音咨询" >
+        android:text="语音咨询"
+        android:textSize="30sp">
+
 
     </Button>
 
@@ -22,18 +24,20 @@
         android:id="@+id/stateview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="状态" />
+        android:text="状态"
+        android:textSize="30sp"/>
 
     <TextView
         android:id="@+id/resultview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="所问问题" />
-    <TextView
-        android:id="@+id/errorview"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="错误信息" />
+        android:text="所问问题"
+        android:textSize="30sp"/>
+    <!--<TextView-->
+        <!--android:id="@+id/errorview"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="错误信息" />-->
 
     <!--<TextView
         android:layout_width="fill_parent"

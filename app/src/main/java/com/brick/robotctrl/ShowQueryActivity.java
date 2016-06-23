@@ -25,7 +25,7 @@ import org.apache.commons.httpclient.HttpException;
 public class ShowQueryActivity extends Activity {
     String TAG ="showQueryActivity";
     String data;
-    private Button showqueryButton;
+    private TextView showqueryText;
     private Button getValueButton;
     public String result;
     public String resultShow;
@@ -39,9 +39,9 @@ public class ShowQueryActivity extends Activity {
         Intent intent = getIntent();
         data = intent.getStringExtra("extra_showResult");
         Log.d("extra_showResult",data);
-        showqueryButton = (Button) findViewById(R.id.button);
+        showqueryText = (TextView) findViewById(R.id.textView);
         editText = (EditText) findViewById(R.id.editText);
-        showqueryButton.setText(data);
+        showqueryText.setText(data);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
