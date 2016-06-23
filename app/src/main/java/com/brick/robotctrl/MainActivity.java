@@ -169,6 +169,7 @@ public class MainActivity extends BaseActivity {
 //                Log.d(TAG, "Timeout to play video");
                 startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
                 userTimer.clearTimerCount();
+                serialCtrl.reOpenSerialCOM();
             }
         }
     };

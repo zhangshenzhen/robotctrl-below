@@ -63,6 +63,14 @@ public class SerialCtrl {
         openComPort(ComA);
     }
 
+    public void reOpenSerialCOM() {
+        closeSerialCOM();
+        serialCOM = "/dev/" + serialCOM;
+        ComA.setBaudRate(serialBaud);
+        ComA.setPort(serialCOM);
+        openComPort(ComA);
+    }
+
     public void closeSerialCOM() {
         closeComPort(ComA);
     }
