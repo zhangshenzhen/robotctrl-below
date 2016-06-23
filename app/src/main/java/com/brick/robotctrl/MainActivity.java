@@ -241,9 +241,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, "onActivityResult: requestCode:" + requestCode);
+        Log.d(TAG, "onActivityResult: resultCode:" + resultCode);
         if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-                Log.i(TAG, "onActivityResult: " + data.getBooleanExtra("data", false));
+//            if (resultCode == RESULT_OK) {        // left top back resultCode = 0
+//                Log.i(TAG, "onActivityResult: " + data.getBooleanExtra("data", false));
+//                Log.d(TAG, "onActivityResult: serverChanged:" + serverChanged);
+//                Log.d(TAG, "onActivityResult: serialChanged:" + serialChanged);
                 if (serverChanged) {
                     serverChanged = false;
                     ssdbTask.connect();
@@ -251,8 +255,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 if ( serialChanged ) {
                     serialChanged = false;
                     serialCtrl.openSerialCOM();
-                    // do some thing
-                }
+//                    // do some thing
+//                }
             }
         }
     }
