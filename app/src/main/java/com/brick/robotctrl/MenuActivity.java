@@ -13,7 +13,7 @@ import android.os.Bundle;
 import com.jly.idcard.IDcard;
 
 
-public class MenuActivity extends AppCompatActivity implements View.OnTouchListener{
+public class MenuActivity extends BaseActivity implements View.OnTouchListener{
     private final String TAG = "MenuActivity";
 
     Button IDButton = null;

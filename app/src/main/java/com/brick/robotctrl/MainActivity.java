@@ -26,7 +26,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnTouchListener{
+public class MainActivity extends BaseActivity implements View.OnTouchListener{
     private static final String TAG = "MainActivity";
 
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private boolean serialChanged = false;
 
     private RelativeLayout mainActivity = null;
-    UserTimer userTimer = null;
 
     private String mp3Url = "/sdcard/Movies/qianqian.mp3";
 
@@ -141,15 +140,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         Timer timer = new Timer(true);
         timer.schedule(queryTask, 200, 200); //延时1000ms后执行，1000ms执行一次
         // timer.cancel(); //退出计时器
-
-        View decorView = getWindow().getDecorView();
-//        Hide both the navigation bar and the status bar.
-//        SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-//        a general rule, you should design your app to hide the status bar whenever you
-//        hide the navigation bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
-        decorView.setSystemUiVisibility(uiOptions);
     }
 
     private int countForPlayer = 0;
@@ -175,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
 
 //            Log.d(TAG, "TimerTask: " + userTimer.getTimerCount());
-            if(userTimer.getTimerCount() > (20*30*1000/200)) {
+            if(userTimer.getTimerCount() > (10*60*1000/200)) {
 //                Log.d(TAG, "Timeout to play video");
                 startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
                 userTimer.clearTimerCount();
@@ -290,16 +280,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         Log.i(TAG, "onRestart");
         countForPlayer = 0;
         PlayerService.startPlayerService(MainActivity.this, mp3Url);
-        userTimer.clearTimerCount();
-
-        View decorView = getWindow().getDecorView();
-//        Hide both the navigation bar and the status bar.
-//        SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-//        a general rule, you should design your app to hide the status bar whenever you
-//        hide the navigation bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
-        decorView.setSystemUiVisibility(uiOptions);
         super.onRestart();
     }
 

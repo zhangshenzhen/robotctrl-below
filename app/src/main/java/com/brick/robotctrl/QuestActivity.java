@@ -48,7 +48,7 @@ import java.util.Locale;
  * Created by ${kang} on 2016/6/20.
  */
 
-public class QuestActivity extends Activity{
+public class QuestActivity extends BaseActivity {
     private static final String TAG = "QuestActivity";
 
     /**

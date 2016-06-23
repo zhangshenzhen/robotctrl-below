@@ -14,7 +14,7 @@ import android.widget.VideoView;
 
 import com.kjn.videoview.ADVideo;
 
-public class ADActivity extends AppCompatActivity implements View.OnTouchListener {
+public class ADActivity extends BaseActivity implements View.OnTouchListener {
     private final String TAG = "ADActivity";
 
     private VideoView videoView;

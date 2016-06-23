@@ -22,7 +22,7 @@ import org.apache.commons.httpclient.HttpException;
  * Created by ${kang} on 2016/6/20.
  */
 
-public class ShowQueryActivity2 extends Activity {
+public class ShowQueryActivity2 extends BaseActivity  {
     String TAG ="showQueryActivity2";
     String data;
     private Button showqueryButton;

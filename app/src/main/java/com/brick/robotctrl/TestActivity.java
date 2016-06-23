@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TestActivity extends AppCompatActivity implements View.OnTouchListener {
+public class TestActivity extends BaseActivity implements View.OnTouchListener {
     private final String TAG = "TestActivity";
 
     UserTimer userTimer = null;

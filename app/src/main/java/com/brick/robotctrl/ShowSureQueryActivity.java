@@ -31,8 +31,8 @@ import java.util.Locale;
  * Created by ${kang} on 2016/6/22.
  */
 
-public class ShowSureQueryActivity extends Activity {
-    public static final String TAG = "HciCloudTTSPlayerExampleActivity";
+public class ShowSureQueryActivity extends BaseActivity {
+    public static final String TAG = "ShowSureQueryActivity";
 
     /**
      * 加载用户信息工具类
