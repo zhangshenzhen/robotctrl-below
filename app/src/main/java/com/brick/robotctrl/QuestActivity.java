@@ -91,10 +91,10 @@ public class QuestActivity extends BaseActivity {
                             ref.get().mResult.setText(msg.obj.toString());
 
                         break;
-                    case 3:
-                        if (!msg.obj.toString().equalsIgnoreCase(""))
-                            ref.get().mError.setText(msg.obj.toString());
-                        break;
+//                    case 3:
+//                        if (!msg.obj.toString().equalsIgnoreCase(""))
+//                            ref.get().mError.setText(msg.obj.toString());
+//                        break;
                     default:
                         break;
                 }
@@ -111,7 +111,7 @@ public class QuestActivity extends BaseActivity {
         setContentView(R.layout.activity_quest);
         mResult = (TextView) findViewById(R.id.resultview);
         mState = (TextView) findViewById(R.id.stateview);
-        mError = (TextView) findViewById(R.id.errorview);
+//        mError = (TextView) findViewById(R.id.errorview);
         mBtnRecogRealTimeMode = (Button) findViewById(R.id.begin_recog_real_time_mode);
 
 
@@ -269,9 +269,9 @@ public class QuestActivity extends BaseActivity {
     private class ASRResultProcess implements ASRRecorderListener {
         @Override
         public void onRecorderEventError(RecorderEvent arg0, int arg1) {
-            String sError = "错误码为：" + arg1;
-            Message m = mUIHandle.obtainMessage(1, 3, 1, sError);
-            mUIHandle.sendMessage(m);
+//            String sError = "错误码为：" + arg1;
+//            Message m = mUIHandle.obtainMessage(1, 3, 1, sError);
+//            mUIHandle.sendMessage(m);
         }
 
         @Override
