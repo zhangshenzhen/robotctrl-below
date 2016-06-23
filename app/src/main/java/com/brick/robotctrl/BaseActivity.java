@@ -67,6 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        clearTimerCount();
         Log.d(TAG, "onResume: ");
         View decorView = getWindow().getDecorView();
 //        Hide both the navigation bar and the status bar.
@@ -106,13 +107,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
 
-//        @Override
-//        public boolean onSingleTapConfirmed (MotionEvent e){
-//            Log.d(TAG, "onTouch: to MainActivity");
-//            startActivity(new Intent().setClass(ADActivity.this, MainActivity.class));
-//            return true;
-//
-//        }
+        @Override
+        public boolean onSingleTapConfirmed (MotionEvent e){
+            Log.d(TAG, "onTouch: to MainActivity");
+            clearTimerCount();
+            return true;
+
+        }
 
 
 

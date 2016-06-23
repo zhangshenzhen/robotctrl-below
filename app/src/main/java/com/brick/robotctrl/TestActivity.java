@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TestActivity extends BaseActivity implements View.OnTouchListener {
+public class TestActivity extends BaseActivity  {
     private final String TAG = "TestActivity";
 
     UserTimer userTimer = null;
@@ -22,9 +22,6 @@ public class TestActivity extends BaseActivity implements View.OnTouchListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-
-        testActivity = (RelativeLayout) findViewById(R.id.testActivity);
-        testActivity.setOnTouchListener(this);
         userTimer = new UserTimer();
     }
 
@@ -45,12 +42,5 @@ public class TestActivity extends BaseActivity implements View.OnTouchListener {
     protected void onDestroy() {
         Log.i(TAG, "onDestroy");
         super.onDestroy();
-    }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event){
-        Log.d(TAG, "OnTouch: Touch Screen");
-        userTimer.clearTimerCount();
-        return true;
     }
 }

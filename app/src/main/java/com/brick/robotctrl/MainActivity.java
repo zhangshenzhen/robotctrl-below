@@ -79,9 +79,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        mainActivity = (RelativeLayout) findViewById(R.id.mainActivity);
-//        mainActivity.setOnTouchListener(this);
-
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
         presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             private final String robotName = getString(R.string.robotName);
@@ -291,11 +288,4 @@ public class MainActivity extends BaseActivity {
         serialCtrl.closeSerialCOM();
         super.onDestroy();
     }
-
-//    @Override
-//    public boolean onTouch(View v, MotionEvent event){
-//        Log.d(TAG, "OnTouch: Touch Screen");
-//        userTimer.clearTimerCount();
-//        return true;
-//    }
 }

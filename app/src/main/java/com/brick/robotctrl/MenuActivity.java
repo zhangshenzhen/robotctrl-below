@@ -13,7 +13,7 @@ import android.os.Bundle;
 import com.jly.idcard.IDcard;
 
 
-public class MenuActivity extends BaseActivity implements View.OnTouchListener{
+public class MenuActivity extends BaseActivity {
     private final String TAG = "MenuActivity";
 
     Button IDButton = null;
@@ -73,8 +73,6 @@ public class MenuActivity extends BaseActivity implements View.OnTouchListener{
 
         userTimer = new UserTimer();
 
-        menuActivity = (RelativeLayout) findViewById(R.id.menuActivity);
-        menuActivity.setOnTouchListener(this);
     }
 
 
@@ -96,11 +94,5 @@ public class MenuActivity extends BaseActivity implements View.OnTouchListener{
     protected void onDestroy() {
         Log.i(TAG, "onDestroy");
         super.onDestroy();
-    }
-    @Override
-    public boolean onTouch(View v, MotionEvent event){
-        Log.d(TAG, "OnTouch: Touch Screen");
-        userTimer.clearTimerCount();
-        return true;
     }
 }
