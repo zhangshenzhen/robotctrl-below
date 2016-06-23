@@ -1,5 +1,7 @@
 package com.brick.robotctrl;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     private RelativeLayout mainActivity = null;
     UserTimer userTimer = null;
+
+    private String mp3Url = "/sdcard/Movies/qianqian.mp3";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(presChangeListener);
 
         Intent playIntent = new Intent();
-        playIntent.putExtra("url", "/sdcard/Movies/qianqian.mp3");
+        playIntent.putExtra("url", mp3Url);
 //        intent.putExtra("MSG", 0);
         Log.d(TAG, "onCreate: starting PlayService");
         playIntent.setClass(MainActivity.this, PlayerService.class);
@@ -148,18 +152,34 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         decorView.setSystemUiVisibility(uiOptions);
     }
 
+    private int countForPlayer = 0;
     TimerTask queryTask = new TimerTask() {
         @Override
         public void run() {
-        ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
+            ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
 
-        userTimer.addTimerCount();
+            ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+//            Log.d(TAG, "pkg:"+cn.getPackageName());
+//            Log.d(TAG, "cls:"+cn.getClassName());
+
+            if ( cn.getClassName().equals("com.brick.robotctrl.MainActivity") ) {
+                countForPlayer++;
+                Log.d(TAG, "run: countForPlayer:" + countForPlayer);
+                if ( countForPlayer == 30*1000/200 ) {
+                    PlayerService.startPlayerService(MainActivity.this, mp3Url);
+                    countForPlayer = 0;
+                }
+            } else if (!cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {
+                userTimer.addTimerCount();
+            }
+
 //            Log.d(TAG, "TimerTask: " + userTimer.getTimerCount());
-        if(userTimer.getTimerCount() > (20*30*1000/200)) {
-            Log.d(TAG, "Timeout to play video");
-            startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
-            userTimer.clearTimerCount();
-        }
+            if(userTimer.getTimerCount() > (20*30*1000/200)) {
+//                Log.d(TAG, "Timeout to play video");
+                startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
+                userTimer.clearTimerCount();
+            }
         }
     };
 
@@ -195,13 +215,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 case SSDBTask.Key_ChangeEmotion:
                     rlt = (String) msg.obj;
 
-                    Intent playIntent = new Intent();
-                    playIntent.putExtra("url", "/sdcard/Movies/newmain.mp3");
-//        intent.putExtra("MSG", 0);
-                    Log.d(TAG, "onCreate: starting PlayService");
-                    playIntent.setClass(MainActivity.this, PlayerService.class);
-                    startService(playIntent);       //启动服务
-
 //                    Intent expressionIntent = new Intent();
 //                    expressionIntent.putExtra("emotionIndex",)
 //                    startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
@@ -211,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
         }
     };
-
 
     // relative menu
     Menu menu = null;
@@ -265,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     protected void onStop() {
         Log.i(TAG, "onStop");
         Intent stopIntent = new Intent();
-        stopIntent.putExtra("url", "/sdcard/Movies/qianqian.mp3");
+        stopIntent.putExtra("url", mp3Url);
 //        intent.putExtra("MSG", 0);
         Log.d(TAG, "onCreate: starting PlayService");
         stopIntent.setClass(MainActivity.this, PlayerService.class);
@@ -276,12 +288,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onRestart() {
         Log.i(TAG, "onRestart");
-        Intent playIntent = new Intent();
-        playIntent.putExtra("url", "/sdcard/Movies/qianqian.mp3");
-//        intent.putExtra("MSG", 0);
-        Log.d(TAG, "onCreate: starting PlayService");
-        playIntent.setClass(MainActivity.this, PlayerService.class);
-        startService(playIntent);       //启动服务
+        countForPlayer = 0;
+        PlayerService.startPlayerService(MainActivity.this, mp3Url);
         userTimer.clearTimerCount();
 
         View decorView = getWindow().getDecorView();
