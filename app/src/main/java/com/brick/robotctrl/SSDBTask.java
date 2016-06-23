@@ -153,7 +153,7 @@ public class SSDBTask extends TimerTask {
     public static final int Key_Location = 9;
     public static final int Key_ChangeEmotion = 10;
     public static final String[] event = new String[]{"event", "DirCtl", "param",
-            "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt", "NetworkDelay", "Location", "ChangeEmotion"};
+            "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt", "NetworkDelay", "Location", "Brow"};
     public static boolean enableDirCtl = false;
     public static boolean enableChangeEmotion = false;
     public static boolean enableSetParameter = false;

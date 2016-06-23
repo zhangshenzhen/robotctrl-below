@@ -204,11 +204,7 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener{
                     break;
                 case SSDBTask.Key_ChangeEmotion:
                     rlt = (String) msg.obj;
-
-//                    Intent expressionIntent = new Intent();
-//                    expressionIntent.putExtra("emotionIndex",)
-//                    startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
-//                    changeEmotion(Integer.parseInt(rlt));
+                    expression.startExpressionActivity(MainActivity.this, rlt);
                 default:
                     break;
             }
