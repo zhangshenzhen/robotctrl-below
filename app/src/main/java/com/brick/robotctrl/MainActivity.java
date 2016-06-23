@@ -26,7 +26,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class MainActivity extends BaseActivity implements View.OnTouchListener{
+public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
 
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener{
         });
 
         mainActivity = (RelativeLayout) findViewById(R.id.mainActivity);
-        mainActivity.setOnTouchListener(this);
+//        mainActivity.setOnTouchListener(this);
 
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
         presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -292,10 +292,10 @@ public class MainActivity extends BaseActivity implements View.OnTouchListener{
         super.onDestroy();
     }
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event){
-        Log.d(TAG, "OnTouch: Touch Screen");
-        userTimer.clearTimerCount();
-        return true;
-    }
+//    @Override
+//    public boolean onTouch(View v, MotionEvent event){
+//        Log.d(TAG, "OnTouch: Touch Screen");
+//        userTimer.clearTimerCount();
+//        return true;
+//    }
 }

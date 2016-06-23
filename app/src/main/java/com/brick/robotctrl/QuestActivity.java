@@ -397,9 +397,9 @@ public class QuestActivity extends BaseActivity {
     public void onDestroy()
     {
         super.onDestroy();
-        mAsrRecorder.release();
-        HciCloudSys.hciRelease();
-        Log.i(TAG, "onDestroy()");
+//        mAsrRecorder.release();
+//        HciCloudSys.hciRelease();
+//        Log.i(TAG, "onDestroy()");
     }
 
 
