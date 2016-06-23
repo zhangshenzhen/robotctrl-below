@@ -2,6 +2,8 @@ package com.jly.expression;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +14,9 @@ import com.brick.robotctrl.UserTimer;
 import com.ant.liao.GifView;
 import com.ant.liao.GifView.GifImageType;
 import com.brick.robotctrl.R;
+import com.brick.robotctrl.BaseActivity;
 
-public class expression extends Activity implements OnClickListener {
+public class expression extends BaseActivity implements OnClickListener {
 
 	private GifView gf1;
 	private Button bt;
@@ -26,12 +29,16 @@ public class expression extends Activity implements OnClickListener {
 	private int height;
 	private boolean f = true;
 	private int count=0;
+	private String index = null;
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
         
 		int screenWidth  = getWindowManager().getDefaultDisplay().getWidth();       // 屏幕宽（像素，如：480px）
 		int screenHeight = getWindowManager().getDefaultDisplay().getHeight();      // 屏幕高（像素，如：800p）
 		Log.e("TAG" + "  getDefaultDisplay", "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);
+
+		Intent intent = getIntent();
+		index = intent.getStringExtra("index");
 
 		userTimer = new UserTimer();
 
@@ -65,41 +72,41 @@ public class expression extends Activity implements OnClickListener {
 
 	}
 
-	public void changeEmotion(int emotionIndex) {
-		switch (emotionIndex){
-			case 1: gf1.setGifImage(R.drawable.admire);
-				//gf1.setGifImageType(GifImageType.COVER);
-				gf1.showAnimation();
-				break;
-			case 2: gf1.setGifImage(R.drawable.afraid);
-				//gf1.setGifImageType(GifImageType.COVER);
-				gf1.showAnimation();
-				break;
-			case 3: gf1.setGifImage(R.drawable.exciting);
-				//gf1.setGifImageType(GifImageType.COVER);
-				gf1.showAnimation();
-				break;
-			case 4: gf1.setGifImage(R.drawable.sigh);
-				//gf1.setGifImageType(GifImageType.COVER);
-				gf1.showAnimation();
-				break;
-			case 5: gf1.setGifImage(R.drawable.smile);
-				//gf1.setGifImageType(GifImageType.COVER);
-				gf1.showAnimation();
-				break;
-			case 6: gf1.setGifImage(R.drawable.cry);
-				//gf1.setGifImageType(GifImageType.COVER);
-				gf1.showAnimation();
-				break;
-			case 7: gf1.setGifImage(R.drawable.cheer);
-				//gf1.setGifImageType(GifImageType.COVER);
-				gf1.showAnimation();
-				break;
-			default : gf1.setGifImage(R.drawable.shy);count=0;
-				gf1.showAnimation();
-				break;
-		}
-	}
+//	public void changeEmotion(int emotionIndex) {
+//		switch (emotionIndex){
+//			case 1: gf1.setGifImage(R.drawable.admire);
+//				//gf1.setGifImageType(GifImageType.COVER);
+//				gf1.showAnimation();
+//				break;
+//			case 2: gf1.setGifImage(R.drawable.afraid);
+//				//gf1.setGifImageType(GifImageType.COVER);
+//				gf1.showAnimation();
+//				break;
+//			case 3: gf1.setGifImage(R.drawable.exciting);
+//				//gf1.setGifImageType(GifImageType.COVER);
+//				gf1.showAnimation();
+//				break;
+//			case 4: gf1.setGifImage(R.drawable.sigh);
+//				//gf1.setGifImageType(GifImageType.COVER);
+//				gf1.showAnimation();
+//				break;
+//			case 5: gf1.setGifImage(R.drawable.smile);
+//				//gf1.setGifImageType(GifImageType.COVER);
+//				gf1.showAnimation();
+//				break;
+//			case 6: gf1.setGifImage(R.drawable.cry);
+//				//gf1.setGifImageType(GifImageType.COVER);
+//				gf1.showAnimation();
+//				break;
+//			case 7: gf1.setGifImage(R.drawable.cheer);
+//				//gf1.setGifImageType(GifImageType.COVER);
+//				gf1.showAnimation();
+//				break;
+//			default : gf1.setGifImage(R.drawable.shy);count=0;
+//				gf1.showAnimation();
+//				break;
+//		}
+//	}
 
 
 	public void onClick(View v) {
@@ -149,5 +156,12 @@ public class expression extends Activity implements OnClickListener {
 					break;
 			}
 		}
+	}
+
+	public static void startExpressionActivity(Context context, String index) {
+		Intent changeMotionIntent = new Intent();
+		changeMotionIntent.setClass(context, expression.class);
+		changeMotionIntent.putExtra("index", index);
+		context.startActivity(changeMotionIntent);
 	}
 }
