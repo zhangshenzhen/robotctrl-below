@@ -40,7 +40,7 @@ public class SSDBTask extends TimerTask {
     private SSDB ssdbClient = null;
     public String serverIp = "60.171.108.155";
     public int serverPort = 11028;
-    public String robotName = "Robot";
+    public String robotName = "r00004A";
 
     public void setRobotName(@NonNull String robotName) {
         if (!TextUtils.isEmpty(robotName))

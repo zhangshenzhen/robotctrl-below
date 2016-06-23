@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         // relative timer
         Timer timer = new Timer(true);
-        timer.schedule(queryTask,200, 200); //延时1000ms后执行，1000ms执行一次
+        timer.schedule(queryTask, 200, 200); //延时1000ms后执行，1000ms执行一次
         // timer.cancel(); //退出计时器
 
         View decorView = getWindow().getDecorView();
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         userTimer.addTimerCount();
 //            Log.d(TAG, "TimerTask: " + userTimer.getTimerCount());
-        if(userTimer.getTimerCount() > (1*30*1000/200)) {
+        if(userTimer.getTimerCount() > (20*30*1000/200)) {
             Log.d(TAG, "Timeout to play video");
             startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
             userTimer.clearTimerCount();
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     rlt = (String) msg.obj;
 
                     Intent playIntent = new Intent();
-                    playIntent.putExtra("url", "/sdcard/Movies/qianqian.mp3");
+                    playIntent.putExtra("url", "/sdcard/Movies/newmain.mp3");
 //        intent.putExtra("MSG", 0);
                     Log.d(TAG, "onCreate: starting PlayService");
                     playIntent.setClass(MainActivity.this, PlayerService.class);

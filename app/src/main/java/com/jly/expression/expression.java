@@ -54,15 +54,24 @@ public class expression extends Activity implements OnClickListener {
         height =gf1.getMeasuredHeight();
         Log.e("TAG" + "  getDefaultDisplay", "Width=" + width + "; Height=" + height);
 
+		View decorView = getWindow().getDecorView();
+//        Hide both the navigation bar and the status bar.
+//        SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+//        a general rule, you should design your app to hide the status bar whenever you
+//        hide the navigation bar.
+		int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+				| View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
+		decorView.setSystemUiVisibility(uiOptions);
+
 	}
 
 	public void changeEmotion(int emotionIndex) {
 		switch (emotionIndex){
-			case 1: gf1.setGifImage(R.drawable.complacent);
+			case 1: gf1.setGifImage(R.drawable.admire);
 				//gf1.setGifImageType(GifImageType.COVER);
 				gf1.showAnimation();
 				break;
-			case 2: gf1.setGifImage(R.drawable.anthomaniac);
+			case 2: gf1.setGifImage(R.drawable.afraid);
 				//gf1.setGifImageType(GifImageType.COVER);
 				gf1.showAnimation();
 				break;
@@ -78,11 +87,11 @@ public class expression extends Activity implements OnClickListener {
 				//gf1.setGifImageType(GifImageType.COVER);
 				gf1.showAnimation();
 				break;
-			case 6: gf1.setGifImage(R.drawable.tear);
+			case 6: gf1.setGifImage(R.drawable.cry);
 				//gf1.setGifImageType(GifImageType.COVER);
 				gf1.showAnimation();
 				break;
-			case 7: gf1.setGifImage(R.drawable.think);
+			case 7: gf1.setGifImage(R.drawable.cheer);
 				//gf1.setGifImageType(GifImageType.COVER);
 				gf1.showAnimation();
 				break;
