@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.os.Bundle;
@@ -16,10 +17,10 @@ import com.jly.idcard.IDcard;
 public class MenuActivity extends BaseActivity {
     private final String TAG = "MenuActivity";
 
-    Button IDButton = null;
-    Button ADButton = null;
-    Button testButton = null;
-    Button busButton = null;
+    ImageButton IDButton = null;
+    ImageButton ADButton = null;
+    ImageButton testButton = null;
+    ImageButton busButton = null;
     UserTimer userTimer = null;
 
     private RelativeLayout menuActivity = null;
@@ -30,19 +31,17 @@ public class MenuActivity extends BaseActivity {
         setContentView(R.layout.activity_menu);
 
 
-        IDButton = (Button) findViewById(R.id.IDButton);
+        IDButton = (ImageButton) findViewById(R.id.IDButton);
         IDButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent().setClass(MenuActivity.this, ...));
                 userTimer.clearTimerCount();
-               // Toast.makeText(MenuActivity.this, "No ID Detector", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent().setClass(MenuActivity.this, IDcard.class));
 
             }
         });
 
-        ADButton = (Button) findViewById(R.id.ADButton);
+        ADButton = (ImageButton) findViewById(R.id.ADButton);
         ADButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,7 +50,7 @@ public class MenuActivity extends BaseActivity {
             }
         });
 
-        testButton = (Button) findViewById(R.id.testButton);
+        testButton = (ImageButton) findViewById(R.id.testButton);
         testButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -61,7 +60,7 @@ public class MenuActivity extends BaseActivity {
             }
         );
 
-        busButton = (Button) findViewById(R.id.busButton);
+        busButton = (ImageButton) findViewById(R.id.busButton);
         busButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

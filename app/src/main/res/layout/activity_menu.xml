@@ -10,45 +10,42 @@
     tools:ignore="ContentDescription"
     android:keepScreenOn="true">
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="身份确认"
-        android:textSize="30sp"
         android:id="@+id/IDButton"
-        android:layout_marginTop="192dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-    <Button
+        android:background="@color/accent_material_dark"
+        android:src="@drawable/identification"
+        android:layout_marginLeft="200dp"
+        android:layout_centerVertical="true" />
+
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="营销推广"
-        android:textSize="30sp"
         android:id="@+id/ADButton"
-        android:layout_below="@+id/IDButton"
-        android:layout_centerHorizontal="true" />
-    <Button
+        android:src="@drawable/marketingpromotion"
+        android:background="@color/accent_material_dark"
+        android:layout_toRightOf="@+id/IDButton"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="184dp"/>
+
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="测试平台"
-        android:textSize="30sp"
         android:id="@+id/testButton"
-        android:layout_below="@+id/ADButton"
-        android:layout_centerHorizontal="true" />
-    <Button
+        android:src="@drawable/testbench"
+        android:background="@color/accent_material_dark"
+        android:layout_toRightOf="@+id/ADButton"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="184dp"/>
+
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="业务咨询"
-        android:textSize="30sp"
         android:id="@+id/busButton"
-        android:layout_below="@+id/testButton"
-        android:layout_alignStart="@+id/IDButton" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="设置界面"
-        android:textSize="30sp"
-        android:id="@+id/settingsButton"
-        android:layout_below="@+id/busButton"
-        android:layout_alignStart="@+id/IDButton" />
+        android:src="@drawable/businessconsulting"
+        android:background="@color/accent_material_dark"
+        android:layout_toRightOf="@+id/testButton"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="184dp"/>
 </RelativeLayout>
