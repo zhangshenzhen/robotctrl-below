@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ant.liao.GifView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kjn.askquestion.AccountInfo;
@@ -49,6 +50,7 @@ import java.util.Locale;
  */
 public class QuestTestActivity extends Activity {
     private static final String TAG = "QuestActivity";
+    private GifView gf;
     private String mp3Url = "/sdcard/Movies/record1.m4a";
     /**
      * 加载用户信息工具类
@@ -113,7 +115,10 @@ public class QuestTestActivity extends Activity {
         mState = (TextView) findViewById(R.id.stateview);
 //        mError = (TextView) findViewById(R.id.errorview);
         mBtnRecogRealTimeMode = (Button) findViewById(R.id.begin_recog_real_time_mode);
-
+        gf =(GifView)findViewById(R.id.gif1);
+        gf.setGifImage(R.drawable.smile);
+        gf.setGifImageType(GifView.GifImageType.COVER);
+        gf.setShowDimension(640,400);
 
         humanButton = (Button) findViewById(R.id.humanButton);
         humanButton.setOnClickListener(new View.OnClickListener() {

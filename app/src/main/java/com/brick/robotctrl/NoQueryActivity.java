@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ant.liao.GifView;
 import com.jly.idcard.IDcard;
 
 import java.util.Timer;
@@ -20,6 +21,7 @@ import java.util.TimerTask;
  */
 public class NoQueryActivity extends BaseActivity {
     private static final String TAG = "NoQueryActivity";
+    private GifView gf;
     private String mp3Url = "/sdcard/Movies/record1.m4a";         //播放的MP3文件
 
     private TextView text;
@@ -37,6 +39,11 @@ public class NoQueryActivity extends BaseActivity {
         Log.d("extra_showResult", showText);
         text.setText(showText);
 
+        gf =(GifView)findViewById(R.id.gif3);
+        gf.setGifImage(R.drawable.smile);
+        gf.setGifImageType(GifView.GifImageType.COVER);
+        gf.setShowDimension(640,400);
+
         humanButton = (Button) findViewById(R.id.humanButton);
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +57,7 @@ public class NoQueryActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent().setClass(NoQueryActivity.this, QuestTestActivity.class));
+
             }
         });
 

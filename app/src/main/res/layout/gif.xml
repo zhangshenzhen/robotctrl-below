@@ -14,7 +14,7 @@
         android:layout_height="wrap_content" >
 
          <com.ant.liao.GifView
-             android:id="@+id/gif1"
+             android:id="@+id/gif2"
              android:layout_width="match_parent"
              android:layout_height="match_parent" />
 

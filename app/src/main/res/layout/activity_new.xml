@@ -12,7 +12,7 @@
         android:layout_weight="0.02"
         android:orientation="vertical" >
         <com.ant.liao.GifView
-            android:id="@+id/gif1"
+            android:id="@+id/gif3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="人工服务"
             android:id="@+id/humanButton"
-            android:layout_below="@+id/gif1"
+            android:layout_below="@+id/gif2"
             android:layout_marginLeft="250dp"/>
     </RelativeLayout>
 

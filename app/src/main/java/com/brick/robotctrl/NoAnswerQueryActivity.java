@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ant.liao.GifView;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,6 +19,7 @@ import java.util.TimerTask;
  */
 public class NoAnswerQueryActivity extends BaseActivity {
     private static final String TAG = "NoAnswerQueryActivity";
+    private GifView gf;
     private String mp3Url = "/sdcard/Movies/qianqian.mp3";         //播放的MP3文件
 
     private TextView text;
@@ -33,6 +36,11 @@ public class NoAnswerQueryActivity extends BaseActivity {
         showText = intent.getStringExtra("extra_showResult");
         Log.d("extra_showResult", showText);
         text.setText(showText);
+
+        gf =(GifView)findViewById(R.id.gif3);
+        gf.setGifImage(R.drawable.smile);
+        gf.setGifImageType(GifView.GifImageType.COVER);
+        gf.setShowDimension(640,400);
 
         humanButton = (Button) findViewById(R.id.humanButton);
         humanButton.setOnClickListener(new View.OnClickListener() {
