@@ -48,7 +48,7 @@ import java.util.Locale;
  * Created by ${kang} on 2016/6/20.
  */
 
-public class QuestActivity extends BaseActivity {
+public class QuestActivity extends Activity {
     private static final String TAG = "QuestActivity";
 
     /**
@@ -66,7 +66,8 @@ public class QuestActivity extends BaseActivity {
     public String data;
 
     public String resultShow;
-
+    ArrayList<String> showItem = new ArrayList<String>();
+    ArrayList<Integer> showNum = new ArrayList<Integer>();
     private ASRRecorder mAsrRecorder;
 
     private String grammar = null;
@@ -106,7 +107,6 @@ public class QuestActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quest);
         mResult = (TextView) findViewById(R.id.resultview);
@@ -305,13 +305,24 @@ public class QuestActivity extends BaseActivity {
                                     JsonBean jsonBean = gson.fromJson(result, type);
                                     System.out.println(jsonBean.getResult());
                                     resultShow = jsonBean.getSingleNode().getAnswerMsg();
+//                                    showItem.add("您想问的是：");
+                                    showItem.clear();
+                                    showNum.clear();
                                     if (jsonBean.getVagueNode() != null) {
                                         for (int i = 0;i < jsonBean.getVagueNode().getItemList().size(); i++){
-                                            resultShow += jsonBean.getVagueNode().getItemList().get(i).getNum() + jsonBean.getVagueNode().getItemList().get(i).getQuestion();
+//                                            resultShow += jsonBean.getVagueNode().getItemList().get(i).getNum() + jsonBean.getVagueNode().getItemList().get(i).getQuestion();
+
+                                            showItem.add(jsonBean.getVagueNode().getItemList().get(i).getQuestion());
+                                            showNum.add(jsonBean.getVagueNode().getItemList().get(i).getNum());
                                         }
+//                                        ArrayList<String> showItem = new ArrayList<String>();
+
+
                                         if(resultShow != null) {
                                             Intent intent = new Intent(QuestActivity.this, ShowQueryActivity.class);
                                             intent.putExtra("extra_showResult",resultShow);
+                                            intent.putStringArrayListExtra("extra_showItem",showItem);
+                                            intent.putIntegerArrayListExtra("extra_showNum",showNum);
                                             startActivity(intent);
                                         }
 

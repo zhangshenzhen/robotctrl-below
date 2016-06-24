@@ -38,11 +38,11 @@ public class ShowQueryActivity2 extends BaseActivity  {
         setContentView(R.layout.activity_showquery);
         Intent intent = getIntent();
         data = intent.getStringExtra("extra_showResult");
-        showqueryText = (TextView) findViewById(R.id.textView);
+//        showqueryText = (TextView) findViewById(R.id.textView);
         showqueryText.setText(data);
         Log.d("extra_showResult",data);
 
-        editText = (EditText) findViewById(R.id.editText);
+//        editText = (EditText) findViewById(R.id.editText);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
