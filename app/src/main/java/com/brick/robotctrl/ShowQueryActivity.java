@@ -33,10 +33,8 @@ public class ShowQueryActivity extends Activity  {
     ArrayList<String> showItem = new ArrayList<String>();
     ArrayList<Integer> showNum = new ArrayList<Integer>();
 //    private TextView showqueryText;
-//    private Button getValueButton;
     public String result;
     public String resultShow;
-//    private EditText editText;
     String num;
     private ListView queryListView;
 
@@ -45,22 +43,18 @@ public class ShowQueryActivity extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_showquery);
         Intent intent = getIntent();
-        data = intent.getStringExtra("extra_showResult");
-        Log.d("extra_showResult",data);
 
         showItem = intent.getStringArrayListExtra("extra_showItem");
         showNum = intent.getIntegerArrayListExtra("extra_showNum");
         queryListView = (ListView) findViewById(R.id.listView);
-        ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>
-                (this,android.R.layout.simple_list_item_1,showItem);
+        ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,showItem);
         queryListView.setAdapter(myArrayAdapter);
-        for (int i = 0;i < showItem.size(); i++){
-            Log.d(TAG,showItem.get(i));
-        }
-        for (int i = 0;i < showNum.size(); i++){
-            Log.d(TAG,showNum.get(i).toString());
-        }
-
+//        for (int i = 0;i < showItem.size(); i++){
+//            Log.d(TAG,showItem.get(i));
+//        }
+//        for (int i = 0;i < showNum.size(); i++){
+//            Log.d(TAG,showNum.get(i).toString());
+//        }
         queryListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -104,52 +98,45 @@ public class ShowQueryActivity extends Activity  {
                     num = "9";
                     Log.d(TAG, "点击成功");
                 }
-
-
-                        new Thread(){
-                            @Override
-                            public void run() {
-                                Jason jts = new Jason();
-                                Log.i(TAG,"进入新线程edit");
-                                try {
-                                    result = jts.ask(num);                               //把网络访问的代码放在这里
-
-                                    if (result != null) {
-                                        Log.i(TAG,"进入解析2");
-                                        Gson gson = new Gson();
-                                        java.lang.reflect.Type type = new TypeToken<JsonBean>() {
-                                        }.getType();
-                                        JsonBean jsonBean = gson.fromJson(result, type);
-                                        System.out.println(jsonBean.getResult());
-                                        resultShow = jsonBean.getSingleNode().getAnswerMsg();
-                                        if (jsonBean.getVagueNode() != null) {
-                                            for (int i = 0;i < jsonBean.getVagueNode().getItemList().size(); i++){
-                                                resultShow += jsonBean.getVagueNode().getItemList().get(i).getNum() + jsonBean.getVagueNode().getItemList().get(i).getQuestion();
-                                            }
-                                            if(resultShow != null) {
-                                                Intent intent = new Intent(ShowQueryActivity.this, ShowQueryActivity.class);
-                                                intent.putExtra("extra_showResult",resultShow);
-                                                startActivity(intent);
-                                            }
-
-                                        }else{
-                                            resultShow = jsonBean.getSingleNode().getAnswerMsg();
-                                            if(resultShow != null) {
-                                                Intent intent = new Intent(ShowQueryActivity.this, ShowSureQueryActivity.class);
-                                                intent.putExtra("extra_showResult",resultShow);
-                                                startActivity(intent);
-                                            }
-                                        }
+                new Thread(){
+                    @Override
+                    public void run() {
+                        Jason jts = new Jason();
+                        Log.i(TAG,"进入新线程edit");
+                        try {
+                            result = jts.ask(num);                               //把网络访问的代码放在这里
+                            if (result != null) {
+                                Log.i(TAG,"进入解析2");
+                                Gson gson = new Gson();
+                                java.lang.reflect.Type type = new TypeToken<JsonBean>() {}.getType();
+                                JsonBean jsonBean = gson.fromJson(result, type);
+                                System.out.println(jsonBean.getResult());
+                                resultShow = jsonBean.getSingleNode().getAnswerMsg();
+                                if (jsonBean.getVagueNode() != null) {
+                                    for (int i = 0;i < jsonBean.getVagueNode().getItemList().size(); i++){
+                                        resultShow += jsonBean.getVagueNode().getItemList().get(i).getNum() + jsonBean.getVagueNode().getItemList().get(i).getQuestion();
                                     }
-
-                                } catch (HttpException e) {
-                                    System.out.println("heheda" + e);
-                                }//把网络访问的代码放在这里
+                                    if(resultShow != null) {
+                                        Intent intent = new Intent(ShowQueryActivity.this, ShowQueryActivity.class);
+                                        intent.putExtra("extra_showResult",resultShow);
+                                        startActivity(intent);
+                                    }
+                                }else{
+                                    resultShow = jsonBean.getSingleNode().getAnswerMsg();
+                                    if(resultShow != null) {
+                                        Intent intent = new Intent(ShowQueryActivity.this, ShowSureQueryActivity.class);
+                                        intent.putExtra("extra_showResult",resultShow);
+                                        startActivity(intent);
+                                    }
+                                }
                             }
-                        }.start();
+                        } catch (HttpException e) {
+                            System.out.println("heheda" + e);
+                        }//把网络访问的代码放在这里
+                    }
+                }.start();
             }
         });
-
 //        showqueryText = (TextView) findViewById(R.id.textView);
 //        editText = (EditText) findViewById(R.id.editText);
 //        showqueryText.setText(data);
@@ -209,6 +196,5 @@ public class ShowQueryActivity extends Activity  {
 //                }.start();
 //            }
 //        });
-
     }
 }

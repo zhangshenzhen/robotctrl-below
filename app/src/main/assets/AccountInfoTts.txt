@@ -4,23 +4,23 @@
 ######################################################
 
 #应用程序序号
-appKey=ed5d549e
+#appKey=ed5d549e
 
 #开发者密钥
-developerKey=e9519f8525975fc1c0964fa0d5bbc775
+#developerKey=e9519f8525975fc1c0964fa0d5bbc775
 
 #灵云云服务的接口地址 
-cloudUrl=test.api.hcicloud.com:8888
+#cloudUrl=test.api.hcicloud.com:8888
 
 #需要运行的灵云能力
-capKey=tts.cloud.wangjing
+#capKey=tts.cloud.wangjing
 
 
 #应用程序序号
-#appKey=ac5d5452
+appKey=ac5d5452
 #开发者密钥
-#developerKey=developer_key
+developerKey=developer_key
 #灵云云服务的接口地址 
-#cloudUrl=60.171.108.152:8888
+cloudUrl=60.171.108.152:8888
 #需要运行的灵云能力
-#capKey=tts.cloud.synth
+capKey=tts.cloud.synth

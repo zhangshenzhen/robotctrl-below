@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:keepScreenOn="true"
+    android:id="@+id/gifActivity"
+    android:background="#ffffff">
+    <RelativeLayout
+        android:layout_width="640dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.02"
+        android:orientation="vertical" >
+        <com.ant.liao.GifView
+            android:id="@+id/gif1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="人工服务"
+            android:id="@+id/humanButton"
+            android:layout_below="@+id/gif1"
+            android:layout_marginLeft="250dp"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.26">
+
+
+        <Button
+            android:id="@+id/begin_recog_real_time_mode"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+
+            android:text="语音咨询"
+            android:textSize="30sp">
+
+
+        </Button>
+
+        <TextView
+            android:id="@+id/stateview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/begin_recog_real_time_mode"
+            android:text="状态"
+            android:textSize="30sp"
+            android:textColor="@color/accent_material_light" />
+
+        <TextView
+            android:id="@+id/resultview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/stateview"
+            android:text="所问问题"
+            android:textSize="30sp"
+            android:textColor="@color/accent_material_light" />
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView"
+            android:layout_below="@+id/resultview"
+            android:layout_centerHorizontal="true" />
+
+
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>
