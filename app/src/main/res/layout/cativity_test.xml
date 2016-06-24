@@ -65,7 +65,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/listView"
             android:layout_below="@+id/resultview"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:background="@color/background_floating_material_dark" />
 
 
     </RelativeLayout>

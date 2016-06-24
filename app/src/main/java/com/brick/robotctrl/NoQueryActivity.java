@@ -21,8 +21,8 @@ import java.util.TimerTask;
  */
 public class NoQueryActivity extends BaseActivity {
     private static final String TAG = "NoQueryActivity";
+    private String mp3Url = "/sdcard/Movies/record4.m4a";         //播放的MP3文件
     private GifView gf;
-    private String mp3Url = "/sdcard/Movies/record1.m4a";         //播放的MP3文件
 
     private TextView text;
     private String showText;
@@ -57,7 +57,6 @@ public class NoQueryActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent().setClass(NoQueryActivity.this, QuestTestActivity.class));
-
             }
         });
 

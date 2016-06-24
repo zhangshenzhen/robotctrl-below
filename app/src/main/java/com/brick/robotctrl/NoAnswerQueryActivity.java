@@ -19,8 +19,8 @@ import java.util.TimerTask;
  */
 public class NoAnswerQueryActivity extends BaseActivity {
     private static final String TAG = "NoAnswerQueryActivity";
+    private String mp3Url = "/sdcard/Movies/record2.m4a";         //播放的MP3文件
     private GifView gf;
-    private String mp3Url = "/sdcard/Movies/qianqian.mp3";         //播放的MP3文件
 
     private TextView text;
     private String showText;
@@ -68,8 +68,7 @@ public class NoAnswerQueryActivity extends BaseActivity {
 //        startService(playIntent);       //启动服务
         PlayerService.startPlayerService(NoAnswerQueryActivity.this, mp3Url);
 
-        Timer timer = new Timer(true);
-        timer.schedule(queryTask, 200, 200); //延时1000ms后执行，1000ms执行一次
+
 
 /////////////////////////////
 

@@ -44,7 +44,7 @@ public class ShowSureQueryActivity extends BaseActivity {
     private String showText = null;
     private TtsConfig ttsConfig = null;
     private TTSPlayer mTtsPlayer = null;
-
+    private String mp3Url = "/sdcard/Movies/record3.m4a";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,8 +138,9 @@ public class ShowSureQueryActivity extends BaseActivity {
                 switch (v.getId()) {
                     case R.id.returnq:
                         // 开始合成
-                        Intent intent = new Intent(ShowSureQueryActivity.this, QuestActivity.class);
+                        Intent intent = new Intent(ShowSureQueryActivity.this, MenuActivity.class);
                         startActivity(intent);
+                        PlayerService.startPlayerService(ShowSureQueryActivity.this, mp3Url);
                         break;
 
                     /*case R.id.btnPause:

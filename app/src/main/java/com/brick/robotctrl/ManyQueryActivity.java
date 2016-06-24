@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.ant.liao.GifView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kjn.askquestion.Jason;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
  */
 public class ManyQueryActivity extends Activity {
     String TAG ="ManyQueryActivity";
+    private GifView showGf;
     String data;
     ArrayList<String> showItem = new ArrayList<String>();
     ArrayList<Integer> showNum = new ArrayList<Integer>();
@@ -37,7 +39,10 @@ public class ManyQueryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
         Intent intent = getIntent();
-
+        showGf =(GifView)findViewById(R.id.gif3);
+        showGf.setGifImage(R.drawable.smile);
+        showGf.setGifImageType(GifView.GifImageType.COVER);
+        showGf.setShowDimension(640,400);
         showItem = intent.getStringArrayListExtra("extra_showItem");
         showNum = intent.getIntegerArrayListExtra("extra_showNum");
         queryListView = (ListView) findViewById(R.id.listView);
