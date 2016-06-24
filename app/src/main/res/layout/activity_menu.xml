@@ -4,7 +4,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/menubackground"
     tools:context="com.brick.robotctrl.MenuActivity"
     android:id="@+id/menuActivity"
     tools:ignore="ContentDescription"
@@ -14,38 +14,73 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/IDButton"
-        android:background="@color/accent_material_dark"
         android:src="@drawable/identification"
-        android:layout_marginLeft="200dp"
-        android:layout_centerVertical="true" />
+        android:layout_marginLeft="440dp"
+        android:layout_marginTop="206dp"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/abc_btn_borderless_material" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="      身份确认"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/IDButton"
+        android:layout_alignStart="@+id/IDButton" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ADButton"
         android:src="@drawable/marketingpromotion"
-        android:background="@color/accent_material_dark"
         android:layout_toRightOf="@+id/IDButton"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="184dp"/>
+        android:layout_marginTop="206dp"
+        android:layout_marginLeft="100dp"
+        android:background="@drawable/abc_btn_borderless_material" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="      娱乐互动"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/ADButton"
+        android:layout_alignStart="@+id/ADButton" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/testButton"
         android:src="@drawable/testbench"
-        android:background="@color/accent_material_dark"
-        android:layout_toRightOf="@+id/ADButton"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="184dp"/>
+        android:layout_marginLeft="440dp"
+        android:layout_marginTop="426dp"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/abc_btn_borderless_material" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="      产品介绍"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/testButton"
+        android:layout_alignStart="@+id/testButton" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/busButton"
         android:src="@drawable/businessconsulting"
-        android:background="@color/accent_material_dark"
         android:layout_toRightOf="@+id/testButton"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="184dp"/>
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="426dp"
+        android:background="@drawable/abc_btn_borderless_material" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="      业务咨询"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/busButton"
+        android:layout_alignStart="@+id/busButton" />
+
+
 </RelativeLayout>
