@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.InterpolatorRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -129,6 +130,7 @@ public class SerialCtrl {
 
 // relative robot
     public void robotMove(String dir) {
+        Log.d(TAG, "robotMove: ");
         switch (dir) {
             case "up":
                 sendPortData(ComA, "FF01FF01");
@@ -164,18 +166,23 @@ public class SerialCtrl {
         }
     }
     public void setRobotRate(String rate) {
+        Log.d(TAG, "setRobotRate: ");
         String[] splitRate = rate.split(" ");
-        int exeRateBCC, turnRateBCC, headRateBCC, timeoutTimeBCC;
-        exeRateBCC = 0xFF & 0x16 & (Integer.parseInt(splitRate[0]));
-        turnRateBCC =  0xFF & 0x16 & (Integer.parseInt(splitRate[1]));
-        headRateBCC =  0xFF & 0x16 & (Integer.parseInt(splitRate[2]));
-        timeoutTimeBCC =  0xFF & 0x16 & (Integer.parseInt(splitRate[3]));
+        int exeRate, exeRateBCC, turnRate, turnRateBCC, headRate, headRateBCC, timeoutTimeBCC;
+        exeRate = Integer.parseInt(splitRate[0])/2;
+        turnRate = Integer.parseInt(splitRate[1])/2;
+        headRate = Integer.parseInt(splitRate[2])/2;
+        exeRateBCC = 0xFF & 0x16 & exeRate;
+        turnRateBCC =  0xFF & 0x16 & turnRate;
+        headRateBCC =  0xFF & 0x16 & headRate;
+//        timeoutTimeBCC =  0xFF & 0x16 & (Integer.parseInt(splitRate[3]));
+
         for (int i=0; i < 4; i++) {
             Log.d(TAG, "setRobotRate: "+ splitRate[i]);
         }
-        sendPortData(ComA, "FF16"+splitRate[0]+String.valueOf(exeRateBCC));
-        sendPortData(ComA, "FF17"+splitRate[1]+String.valueOf(turnRateBCC));
-        sendPortData(ComA, "FF18"+splitRate[2]+String.valueOf(headRateBCC));
-        sendPortData(ComA, "FF16"+splitRate[3]+String.valueOf(timeoutTimeBCC));
+        sendPortData(ComA, "FF16" + String.valueOf(exeRate) + String.valueOf(exeRateBCC));
+        sendPortData(ComA, "FF17" + String.valueOf(turnRate) + String.valueOf(turnRateBCC));
+        sendPortData(ComA, "FF18" + String.valueOf(headRate) + String.valueOf(headRateBCC));
+//        sendPortData(ComA, "FF16"+splitRate[3]+String.valueOf(timeoutTimeBCC));
     }
 }
