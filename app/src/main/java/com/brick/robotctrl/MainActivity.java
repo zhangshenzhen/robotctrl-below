@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.jly.expression.expression;
+import com.udpwork.ssdb.SSDB;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -66,7 +67,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 userTimer.clearTimerCount();
-                startActivity(new Intent().setClass(MainActivity.this, expression.class));
+                expression.startExpressionActivity(MainActivity.this, "0");
             }
         });
 
@@ -157,14 +158,12 @@ public class MainActivity extends BaseActivity {
                     PlayerService.startPlayerService(MainActivity.this, mp3Url);
                     countForPlayer = 0;
                 }
-            } else if (!cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {
-                userTimer.addTimerCount();
-//                Log.d(TAG, "run: userTimer" + userTimer.getTimerCount());
             }
 
-//            Log.d(TAG, "TimerTask: " + userTimer.getTimerCount());
+            userTimer.addTimerCount();
+
             if(userTimer.getTimerCount() > (10*60*1000/200)) {
-//                Log.d(TAG, "Timeout to play video");
+                Log.d(TAG, "Timeout to play video");
                 startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
                 userTimer.clearTimerCount();
                 serialCtrl.reOpenSerialCOM();
@@ -177,37 +176,59 @@ public class MainActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-    //            Log.i(TAG, "handleMessage: msg.what: "+msg.what);
+            Log.d(TAG, "handleMessage: msg:" + SSDBTask.event[msg.what] );
             switch (msg.what) {
                 case SSDBTask.Key_Event:
                     String rlt  = (String) msg.obj;
                     if (rlt.equals("DirCtl"))
                         ssdbTask.enableDirCtl = true;
-                    if (rlt.equals("EndDirCtl"))
-                        ssdbTask.enableDirCtl = false;
-                    if(rlt.equals("ChangeMotion"))
-                        ssdbTask.enableChangeEmotion = true;
+                    if (rlt.equals("param"))
+                        ssdbTask.enableSetParameter = true;
+                    ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, ssdbTask.event[ssdbTask.Key_SetParam], "");
+                    if(rlt.equals("Brow")) {
+                        ssdbTask.enableChangeBrow = true;
+                        ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, ssdbTask.event[ssdbTask.Key_ChangeBrow], "");
+                    }
                     ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, ssdbTask.event[ssdbTask.Key_Event], "");
                     break;
                 case SSDBTask.Key_DirCtrl:
                     rlt = (String) msg.obj;
-                    if (rlt != null)
+                    Log.d(TAG, "handleMessage: Key_DirCtrl" + rlt);
+//                    if (rlt.equals("EndDirCtl")) {
+//                        ssdbTask.enableDirCtl = false;
+//                    } else {
+                        Log.d(TAG, "handleMessage: rlt:" + rlt);
                         serialCtrl.robotMove(rlt);
-    //                    Log.d(TAG, "handleMessage: rlt:" + rlt + "\tenableCtrl:" + enableCtrl);
+//                        Log.d(TAG, "handleMessage: rlt:" + rlt + "\tenableCtrl:" + enableCtrl);
+//                    }
                     break;
                 case SSDBTask.Key_SetParam:
-    //                    notifyTextView.setText("open switch please");
                     rlt = (String) msg.obj;
-                    if ( rlt != null)
+                    Log.d(TAG, "handleMessage: setparam" + rlt);
+                    if ( rlt.equals("") );
+                    else {
                         serialCtrl.setRobotRate(rlt);
+                        SSDBTask.enableSetParameter = false;
+                    }
                     break;
-                case SSDBTask.Key_ChangeEmotion:
+                case SSDBTask.Key_ChangeBrow:
                     rlt = (String) msg.obj;
-                    expression.startExpressionActivity(MainActivity.this, rlt);
+                    Log.d(TAG, "handleMessage: Brow" + rlt);
+                    if ( rlt.equals("") );
+                    else {
+                        Log.d(TAG, "handleMessage: changebrowed");
+                        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+                        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+                        if (cn.getClassName().equals("com.jly.expression.expression")) {
+                            expression.changeExpression(Integer.parseInt(rlt));
+                            SSDBTask.enableChangeBrow = false;
+                        }
+                    }
                     break;
                 case SSDBTask.ACTION_CONNECT_FAILED:
                     Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                     startActivityForResult(intent, 0);
+                    break;
                 default:
                     break;
             }
