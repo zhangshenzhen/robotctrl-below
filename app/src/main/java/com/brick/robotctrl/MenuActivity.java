@@ -65,7 +65,7 @@ public class MenuActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                     userTimer.clearTimerCount();
-                    startActivity(new Intent().setClass(MenuActivity.this, QuestActivity.class));
+                    startActivity(new Intent().setClass(MenuActivity.this, QuestTestActivity.class));
                 }
             }
         );

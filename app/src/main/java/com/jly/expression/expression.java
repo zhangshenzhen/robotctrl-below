@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+
 import com.brick.robotctrl.UserTimer;
 
 import com.ant.liao.GifView;
@@ -97,7 +97,7 @@ public class expression extends BaseActivity implements OnClickListener {
 
 
 		setContentView(R.layout.gif);
-		gf = (GifView) findViewById(R.id.gif1);
+		gf = (GifView) findViewById(R.id.gif2);
 		gf.setGifImage(R.drawable.shy);
 		gf.setOnClickListener(this);
 		gf.setGifImageType(GifImageType.COVER);
