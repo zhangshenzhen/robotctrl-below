@@ -2,6 +2,8 @@ package com.jly.expression;
 
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +21,7 @@ import com.brick.robotctrl.BaseActivity;
 
 public class expression extends BaseActivity implements OnClickListener {
 
-	private GifView gf;
+	private static GifView gf;
 	private int w ;
 	private int h ;
 	private int width ;
@@ -28,15 +30,24 @@ public class expression extends BaseActivity implements OnClickListener {
 	private int count=0;
 	private String index = null;
 	UserTimer userTimer = null;
+	private static int currentIndex = 0;
+
 	private static enum EXPRESSION {
-		EXPRESSION_SHY(R.drawable.shy, "shy", 0),
-		EXPRESSION_COMPLACENT(R.drawable.complacent, "complacent", 1),
-		EXPRESSION_ANTHOMANIAC(R.drawable.anthomaniac, "anthomaniac", 2),
-		EXPRESSION_EXCITING(R.drawable.exciting,"exciting", 3),
-		EXPRESSION_SIGH(R.drawable.sigh, "sigh", 4),
-		EXPRESSION_SMILE(R.drawable.smile, "smile", 5),
-		EXPRESSION_TEAR(R.drawable.tear, "tear", 6),
-		EXPRESSION_THINK(R.drawable.think, "think", 7);
+		机器人害怕(R.drawable.haipa, "机器人害怕", 0),
+		机器人害羞(R.drawable.haixiu, "机器人害羞", 1),
+		机器人花痴(R.drawable.huachi, "机器人花痴", 2),
+		机器人欢呼(R.drawable.huanhu,"机器人欢呼", 3),
+		机器人骄傲得意(R.drawable.jiaoaodeyi, "机器人骄傲得意", 4),
+		机器人金币(R.drawable.jinbi, "机器人金币", 5),
+		机器人困惑(R.drawable.kunhuo, "机器人困惑", 6),
+		机器人流泪(R.drawable.liulei, "机器人流泪", 7),
+		机器人生气(R.drawable.shengqi, "机器人生气", 8),
+		机器人说话(R.drawable.shuohua, "机器人说话", 9),
+		机器人思索(R.drawable.sisuo, "机器人思索", 10),
+		机器人叹气(R.drawable.tanqi, "机器人叹气", 11),
+		机器人微笑(R.drawable.weixiao, "机器人微笑", 12),
+		机器人羡慕(R.drawable.xianmu, "机器人羡慕", 13),
+		机器人兴奋(R.drawable.xingfen, "机器人兴奋", 14);
 		private int id;
 		private String name;
 		private int index;
@@ -45,13 +56,20 @@ public class expression extends BaseActivity implements OnClickListener {
 			this.name = name;
 			this.index = index;
 		}
+		public static int getExpressionSize() {
+			int ExpressionSize = 0;
+			for ( EXPRESSION exp: EXPRESSION.values()) {
+				ExpressionSize++;
+			}
+			return ExpressionSize;
+		}
 		public static EXPRESSION getExpression( int index ) {
 			for ( EXPRESSION exp: EXPRESSION.values()) {
 				if ( index == exp.index ) {
 					return exp;
 				}
 			}
-			return EXPRESSION.EXPRESSION_SMILE;
+			return EXPRESSION.机器人微笑;
 		}
 		public static EXPRESSION getExpression( String name ) {
 			for ( EXPRESSION exp: EXPRESSION.values()) {
@@ -59,7 +77,7 @@ public class expression extends BaseActivity implements OnClickListener {
 					return exp;
 				}
 			}
-			return EXPRESSION.EXPRESSION_SMILE;
+			return EXPRESSION.机器人微笑;
 		}
 	}
 	public void onCreate(Bundle icicle) {
@@ -85,99 +103,22 @@ public class expression extends BaseActivity implements OnClickListener {
 		gf.setGifImageType(GifImageType.COVER);
 		gf.setShowDimension(screenWidth, screenHeight);
 
-		View decorView = getWindow().getDecorView();
-//        Hide both the navigation bar and the status bar.
-//        SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-//        a general rule, you should design your app to hide the status bar whenever you
-//        hide the navigation bar.
-		int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-				| View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
-		decorView.setSystemUiVisibility(uiOptions);
+		changeExpression(Integer.parseInt(index));
+	}
 
-		switch (EXPRESSION.getExpression(index)) {
-			case EXPRESSION_SHY:
-				gf.setGifImage(R.drawable.shy);
-				gf.showAnimation();
-			case EXPRESSION_COMPLACENT:
-				gf.setGifImage(R.drawable.complacent);
-				gf.showAnimation();
-				break;
-			case EXPRESSION_ANTHOMANIAC:
-				gf.setGifImage(R.drawable.anthomaniac);
-				gf.showAnimation();
-				break;
-			case EXPRESSION_EXCITING:
-				gf.setGifImage(R.drawable.exciting);
-				gf.showAnimation();
-				break;
-			case EXPRESSION_SIGH:
-				gf.setGifImage(R.drawable.sigh);
-				gf.showAnimation();
-				break;
-			case EXPRESSION_SMILE:
-				gf.setGifImage(R.drawable.smile);
-				gf.showAnimation();
-				break;
-			case EXPRESSION_TEAR:
-				gf.setGifImage(R.drawable.tear);
-				gf.showAnimation();
-				break;
-			case EXPRESSION_THINK:
-				gf.setGifImage(R.drawable.think);
-				gf.showAnimation();
-				break;
-			default:
-				break;
-		}
+	public static void changeExpression(int index) {
+		gf.setGifImage(EXPRESSION.getExpression(index).id);
+		gf.showAnimation();
+		currentIndex = index;
 	}
 
 
 	public void onClick(View v) {
 		userTimer.clearTimerCount();
-		if (v == gf) {
-			switch (++count) {
-				case 1:
-					gf.setGifImage(R.drawable.complacent);
-					//gf1.setGifImageType(GifImageType.COVER);
-					gf.showAnimation();
-					break;
-				case 2:
-					gf.setGifImage(R.drawable.anthomaniac);
-					//gf1.setGifImageType(GifImageType.COVER);
-					gf.showAnimation();
-					break;
-				case 3:
-					gf.setGifImage(R.drawable.exciting);
-					//gf1.setGifImageType(GifImageType.COVER);
-					gf.showAnimation();
-					break;
-				case 4:
-					gf.setGifImage(R.drawable.sigh);
-					//gf1.setGifImageType(GifImageType.COVER);
-					gf.showAnimation();
-					break;
-				case 5:
-					gf.setGifImage(R.drawable.smile);
-					//gf1.setGifImageType(GifImageType.COVER);
-					gf.showAnimation();
-					break;
-				case 6:
-					gf.setGifImage(R.drawable.tear);
-					//gf1.setGifImageType(GifImageType.COVER);
-					gf.showAnimation();
-					break;
-				case 7:
-					gf.setGifImage(R.drawable.think);
-					//gf1.setGifImageType(GifImageType.COVER);
-					gf.showAnimation();
-					break;
-				default:
-					gf.setGifImage(R.drawable.shy);
-					count = 0;
-					gf.showAnimation();
-					break;
-			}
-		}
+		currentIndex++;
+		if ( currentIndex >= EXPRESSION.getExpressionSize())
+			currentIndex = 0;
+		changeExpression(currentIndex);
 	}
 
 	public static void startExpressionActivity(Context context, String index) {
