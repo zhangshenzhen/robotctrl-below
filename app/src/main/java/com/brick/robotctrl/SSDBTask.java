@@ -25,15 +25,11 @@ public class SSDBTask extends TimerTask {
     public static final int ENABLECTRL = 0x0001;            // enable control
     public static final int DIRCTRLWARNING = 0x0002;
     private static final int ACTION_CONNECT = 0x0001;
-    private static final int ACTION_DISCONNECT = 0x0010;
-    public static final int ACTION_HSET = 0x0100;
-    public static final int ACTION_HGET = 0x1000;
+    private static final int ACTION_DISCONNECT = 0x0002;
+    public static final int ACTION_HSET = 0x0004;
+    public static final int ACTION_HGET = 0x0008;
 
-    public static final int DIR_UP = 0;
-    public static final int DIR_DOWN = 1;
-    public static final int DIR_LEFT = 2;
-    public static final int DIR_RIGHT = 3;
-    public static final int DIR_STOP = 4;
+    public static final int ACTION_CONNECT_FAILED = 0x000F;
 
     private Handler contextHandler = null;
     private Context context = null;
@@ -123,6 +119,7 @@ public class SSDBTask extends TimerTask {
             ssdbClient.close();
             ssdbClient = null;
         }
+        stop = false;
         SSDBQuery(ACTION_CONNECT);
         contextHandler.post(new Runnable() {
             @Override
@@ -161,6 +158,7 @@ public class SSDBTask extends TimerTask {
     private int iCount = 0;
     @Override
     public synchronized void run() {
+//        Log.d(TAG, "run: stop:" + stop);
         if (stop) {
             return;
         }
@@ -178,34 +176,42 @@ public class SSDBTask extends TimerTask {
             switch (cmd.cmdType) {
                 case ACTION_CONNECT:
                     try {
+                        Log.d(TAG, "run: ACTION_CONNECT");
                         ssdbClient = new SSDB(serverIp, serverPort);
+                        stop = false;
                     } catch (Exception e) {
-                        if (ssdbClient == null) {
-                            stop = true;
-                            contextHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    new AlertDialog.Builder(context).setIcon(R.mipmap.ic_launcher)
-                                            .setTitle("can not connect to server: " + serverIp + " " + serverPort)
-                                            .setCancelable(false)
-                                            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    stop = true;
-                                                }
-                                            })
-                                            .setPositiveButton("retry", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    stop = false;
-                                                    SSDBQuery(ACTION_CONNECT);
-                                                    run();
-                                                }
-                                            })
-                                            .create().show();
-                                }
-                            });
-                        }
+                        Log.d(TAG, "run: ACTION_CONNECT_FAILED");
+                        Message message = new Message();
+                        message.what = ACTION_CONNECT_FAILED;
+//                        message.obj = new String(, "GBK");
+                        contextHandler.sendMessage(message);
+                        stop = true;
+//                        if (ssdbClient == null) {
+//                            stop = true;
+//                            contextHandler.post(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    new AlertDialog.Builder(context).setIcon(R.mipmap.ic_launcher)
+//                                            .setTitle("can not connect to server: " + serverIp + " " + serverPort)
+//                                            .setCancelable(false)
+//                                            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+//                                                @Override
+//                                                public void onClick(DialogInterface dialog, int which) {
+//                                                    stop = true;
+//                                                }
+//                                            })
+//                                            .setPositiveButton("retry", new DialogInterface.OnClickListener() {
+//                                                @Override
+//                                                public void onClick(DialogInterface dialog, int which) {
+//                                                    stop = false;
+//                                                    SSDBQuery(ACTION_CONNECT);
+//                                                    run();
+//                                                }
+//                                            })
+//                                            .create().show();
+//                                }
+//                            });
+//                        }
                         e.printStackTrace();
                     }
                     break;
