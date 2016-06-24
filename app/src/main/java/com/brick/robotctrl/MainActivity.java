@@ -159,6 +159,7 @@ public class MainActivity extends BaseActivity {
                 }
             } else if (!cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {
                 userTimer.addTimerCount();
+//                Log.d(TAG, "run: userTimer" + userTimer.getTimerCount());
             }
 
 //            Log.d(TAG, "TimerTask: " + userTimer.getTimerCount());
@@ -203,6 +204,10 @@ public class MainActivity extends BaseActivity {
                 case SSDBTask.Key_ChangeEmotion:
                     rlt = (String) msg.obj;
                     expression.startExpressionActivity(MainActivity.this, rlt);
+                    break;
+                case SSDBTask.ACTION_CONNECT_FAILED:
+                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivityForResult(intent, 0);
                 default:
                     break;
             }
@@ -244,10 +249,10 @@ public class MainActivity extends BaseActivity {
 //                Log.i(TAG, "onActivityResult: " + data.getBooleanExtra("data", false));
 //                Log.d(TAG, "onActivityResult: serverChanged:" + serverChanged);
 //                Log.d(TAG, "onActivityResult: serialChanged:" + serialChanged);
-                if (serverChanged) {
-                    serverChanged = false;
+//                if (serverChanged) {
+//                    serverChanged = false;
                     ssdbTask.connect();
-                }
+//                }
                 if ( serialChanged ) {
                     serialChanged = false;
                     serialCtrl.openSerialCOM();

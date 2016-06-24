@@ -38,7 +38,7 @@
             android:name=".SettingsActivity"
             android:icon="@drawable/ic_action_settings"
             android:label="@string/settings"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.Settings">
             <intent-filter>
