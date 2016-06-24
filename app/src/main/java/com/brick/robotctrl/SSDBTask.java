@@ -148,11 +148,11 @@ public class SSDBTask extends TimerTask {
     public static final int Key_BatteryVolt = 7;
     public static final int Key_NetworkDelay = 8;
     public static final int Key_Location = 9;
-    public static final int Key_ChangeEmotion = 10;
+    public static final int Key_ChangeBrow = 10;
     public static final String[] event = new String[]{"event", "DirCtl", "param",
             "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt", "NetworkDelay", "Location", "Brow"};
     public static boolean enableDirCtl = false;
-    public static boolean enableChangeEmotion = false;
+    public static boolean enableChangeBrow = false;
     public static boolean enableSetParameter = false;
 
     private int iCount = 0;
@@ -179,6 +179,7 @@ public class SSDBTask extends TimerTask {
                         Log.d(TAG, "run: ACTION_CONNECT");
                         ssdbClient = new SSDB(serverIp, serverPort);
                         stop = false;
+                        SSDBQuery(ACTION_HSET, event[Key_ChangeBrow], "");
                     } catch (Exception e) {
                         Log.d(TAG, "run: ACTION_CONNECT_FAILED");
                         Message message = new Message();
@@ -266,7 +267,6 @@ public class SSDBTask extends TimerTask {
                         }
                     }
                     if ( enableSetParameter ) {     // check rate parameter
-                        enableSetParameter = false;
                         try {
                             byte[] rlt = ssdbClient.hget(robotName, event[Key_SetParam]);
                             if (rlt != null) {
@@ -282,13 +282,12 @@ public class SSDBTask extends TimerTask {
                             }
                         }
                     }
-                    if ( enableChangeEmotion ) {       // check emotion change
-                        enableChangeEmotion = false;
+                    if ( enableChangeBrow ) {       // check emotion change
                         try {
-                            byte[] rlt = ssdbClient.hget(robotName, event[Key_ChangeEmotion]);
+                            byte[] rlt = ssdbClient.hget(robotName, event[Key_ChangeBrow]);
                             if (rlt != null) {
                                 Message message = new Message();
-                                message.what = Key_ChangeEmotion;
+                                message.what = Key_ChangeBrow;
                                 message.obj = new String(rlt, "GBK");
                                 contextHandler.sendMessage(message);
                             }
