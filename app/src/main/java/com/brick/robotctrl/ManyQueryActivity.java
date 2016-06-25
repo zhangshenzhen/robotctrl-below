@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.ant.liao.GifView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jly.expression.expression;
 import com.kjn.askquestion.Jason;
 import com.kjn.askquestion.JsonBean;
 
@@ -33,12 +35,32 @@ public class ManyQueryActivity extends Activity {
     public String resultShow;
     String num;
     private ListView queryListView;
-
+    private Button humanButton;
+    private Button askButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
         Intent intent = getIntent();
+
+
+        humanButton = (Button) findViewById(R.id.humanButton);
+        humanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                expression.startExpressionActivity(ManyQueryActivity.this, "0");
+            }
+        });
+
+        askButton = (Button) findViewById(R.id.askButton);
+        askButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent().setClass(ManyQueryActivity.this, QuestTestActivity.class));
+            }
+        });
+
+
         showGf =(GifView)findViewById(R.id.gif3);
         showGf.setGifImage(R.drawable.smile);
         showGf.setGifImageType(GifView.GifImageType.COVER);
@@ -112,21 +134,43 @@ public class ManyQueryActivity extends Activity {
                                 JsonBean jsonBean = gson.fromJson(result, type);
                                 System.out.println(jsonBean.getResult());
                                 resultShow = jsonBean.getSingleNode().getAnswerMsg();
+                                showItem.clear();
+                                showNum.clear();
                                 if (jsonBean.getVagueNode() != null) {
-                                    for (int i = 0; i < jsonBean.getVagueNode().getItemList().size(); i++) {
-                                        resultShow += jsonBean.getVagueNode().getItemList().get(i).getNum() + jsonBean.getVagueNode().getItemList().get(i).getQuestion();
+                                    for (int i = 0;i < jsonBean.getVagueNode().getItemList().size(); i++){
+                                        showItem.add(jsonBean.getVagueNode().getItemList().get(i).getQuestion());
+                                        showNum.add(jsonBean.getVagueNode().getItemList().get(i).getNum());
                                     }
-                                    if (resultShow != null) {
-                                        Intent intent = new Intent(ManyQueryActivity.this, ShowQueryActivity.class);
-                                        intent.putExtra("extra_showResult", resultShow);
+//                                        ArrayList<String> showItem = new ArrayList<String>();
+
+
+                                    if(resultShow != null) {
+                                        Intent intent = new Intent(ManyQueryActivity.this, ManyQueryActivity.class);
+                                        intent.putExtra("extra_showResult",resultShow);
+                                        intent.putStringArrayListExtra("extra_showItem",showItem);
+                                        intent.putIntegerArrayListExtra("extra_showNum",showNum);
                                         startActivity(intent);
                                     }
-                                } else {
+
+                                }else{
                                     resultShow = jsonBean.getSingleNode().getAnswerMsg();
-                                    if (resultShow != null) {
-                                        Intent intent = new Intent(ManyQueryActivity.this, ShowSureQueryActivity.class);
-                                        intent.putExtra("extra_showResult", resultShow);
-                                        startActivity(intent);
+                                    Log.d(TAG,resultShow);
+                                    if(resultShow != null) {
+                                        if(jsonBean.getAnswerTypeId() == 1){
+                                            Intent intent = new Intent(ManyQueryActivity.this, NoQueryActivity.class);
+                                            resultShow = "请输入问题！";
+                                            intent.putExtra("extra_showResult",resultShow);
+                                            startActivity(intent);
+                                        }else if(jsonBean.getAnswerTypeId() == 3){
+                                            Intent intent = new Intent(ManyQueryActivity.this, NoAnswerQueryActivity.class);
+                                            resultShow = "抱歉，机器人无法理解您的意思,请转人工服务！";
+                                            intent.putExtra("extra_showResult",resultShow);
+                                            startActivity(intent);
+                                        }else {
+                                            Intent intent = new Intent(ManyQueryActivity.this, ShowSureQueryActivity.class);
+                                            intent.putExtra("extra_showResult", resultShow);
+                                            startActivity(intent);
+                                        }
                                     }
                                 }
                             }

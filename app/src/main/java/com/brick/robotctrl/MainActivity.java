@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 userTimer.clearTimerCount();
-                expression.startExpressionActivity(MainActivity.this, "0");
+                startActivity(new Intent().setClass(MainActivity.this, QuestTestActivity.class));
             }
         });
 

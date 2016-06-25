@@ -73,24 +73,6 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
         <activity
-            android:name=".QuestActivity"
-            android:label="提问"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.FullScreen.NoTitle" />
-        <activity
-            android:name=".ShowQueryActivity"
-            android:label="提问"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.FullScreen.NoTitle" />
-        <activity
-            android:name=".ShowQueryActivity2"
-            android:label="提问"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.FullScreen.NoTitle" />
-        <activity
             android:name=".ShowSureQueryActivity"
             android:label="提问"
             android:launchMode="singleTask"

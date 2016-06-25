@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.ant.liao.GifView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jly.expression.expression;
 import com.kjn.askquestion.AccountInfo;
 import com.kjn.askquestion.Jason;
 import com.kjn.askquestion.JsonBean;
@@ -49,7 +50,7 @@ import java.util.Locale;
  * Created by kjnijk on 2016-06-24.
  */
 public class QuestTestActivity extends Activity {
-    private static final String TAG = "QuestActivity";
+    private static final String TAG = "QuestTestActivity";
     private GifView gf;
     private String mp3Url = "/sdcard/Movies/record1.m4a";
     /**
@@ -115,6 +116,7 @@ public class QuestTestActivity extends Activity {
         mState = (TextView) findViewById(R.id.stateview);
 //        mError = (TextView) findViewById(R.id.errorview);
         mBtnRecogRealTimeMode = (Button) findViewById(R.id.begin_recog_real_time_mode);
+        PlayerService.startPlayerService(QuestTestActivity.this, mp3Url);
         gf =(GifView)findViewById(R.id.gif1);
         gf.setGifImage(R.drawable.smile);
         gf.setGifImageType(GifView.GifImageType.COVER);
@@ -124,12 +126,9 @@ public class QuestTestActivity extends Activity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent().setClass(QuestTestActivity.this, com.jly.expression.expression.class));
+                expression.startExpressionActivity(QuestTestActivity.this, "0");
             }
         });
-
-
-        PlayerService.startPlayerService(QuestTestActivity.this, mp3Url);
 
         mUIHandle = new WeakRefHandler(this);
 

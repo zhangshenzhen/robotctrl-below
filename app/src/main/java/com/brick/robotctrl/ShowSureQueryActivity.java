@@ -138,7 +138,7 @@ public class ShowSureQueryActivity extends BaseActivity {
                 switch (v.getId()) {
                     case R.id.returnq:
                         // 开始合成
-                        Intent intent = new Intent(ShowSureQueryActivity.this, MenuActivity.class);
+                        Intent intent = new Intent(ShowSureQueryActivity.this, MainActivity.class);
                         startActivity(intent);
                         PlayerService.startPlayerService(ShowSureQueryActivity.this, mp3Url);
                         break;

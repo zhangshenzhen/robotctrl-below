@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ant.liao.GifView;
+import com.jly.expression.expression;
 import com.jly.idcard.IDcard;
 
 import java.util.Timer;
@@ -48,7 +49,7 @@ public class NoQueryActivity extends BaseActivity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent().setClass(NoQueryActivity.this, com.jly.expression.expression.class));
+                expression.startExpressionActivity(NoQueryActivity.this, "0");
             }
         });
 
