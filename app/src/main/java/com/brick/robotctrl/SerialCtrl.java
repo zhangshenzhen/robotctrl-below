@@ -35,7 +35,7 @@ public class SerialCtrl {
         setSerialBaud(sp.getString(context.getString(R.string.serialBaud), String.valueOf(serialBaud)));
 
         ComA = new SerialControl();
-//        openSerialCOM();
+        openSerialCOM();
     }
 
     public void setSerialCOM(@NonNull String serialCOM) {
