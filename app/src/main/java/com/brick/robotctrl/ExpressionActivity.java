@@ -11,19 +11,17 @@ import com.ant.liao.GifView;
 import com.ant.liao.GifView.GifImageType;
 
 public class ExpressionActivity extends BaseActivity implements OnClickListener {
+	private static final String TAG = "ExpressionActivity";
 
 	private static GifView gf;
 	private int w ;
 	private int h ;
-	private int width ;
-	private int height;
 	private boolean f = true;
-	private int count=0;
 	private String index = null;
 	UserTimer userTimer = null;
 	private static int currentIndex = 0;
 
-	private static enum EXPRESSION {
+	enum EXPRESSION {
 		机器人害怕(R.drawable.haipa, "机器人害怕", 0),
 		机器人害羞(R.drawable.haixiu, "机器人害羞", 1),
 		机器人花痴(R.drawable.huachi, "机器人花痴", 2),
@@ -42,7 +40,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		private int id;
 		private String name;
 		private int index;
-		private EXPRESSION(int id, String name, int index) {
+		EXPRESSION(int id, String name, int index) {
 			this.id = id;
 			this.name = name;
 			this.index = index;
@@ -64,7 +62,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		}
 		public static EXPRESSION getExpression( String name ) {
 			for ( EXPRESSION exp: EXPRESSION.values()) {
-				if ( name == exp.name ) {
+				if ( name.equals(exp.name) ) {
 					return exp;
 				}
 			}
@@ -98,18 +96,24 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 	}
 
 	public static void changeExpression(int index) {
-		gf.setGifImage(EXPRESSION.getExpression(index).id);
-		gf.showAnimation();
-		currentIndex = index;
+		Log.d(TAG, "changeExpression: current expression:" + currentIndex + "\tset expression:" + index);
+		if ( currentIndex != index ) {
+			System.gc();
+			gf.setGifImage(EXPRESSION.getExpression(index).id);
+			gf.showAnimation();
+			currentIndex = index;
+		}
 	}
 
 
 	public void onClick(View v) {
 		userTimer.clearTimerCount();
-		currentIndex++;
-		if ( currentIndex >= EXPRESSION.getExpressionSize())
-			currentIndex = 0;
-		changeExpression(currentIndex);
+
+		int index = currentIndex;
+		index++;
+		if ( index >= EXPRESSION.getExpressionSize())
+			index = 0;
+		changeExpression(index);
 	}
 
 	public static void startExpressionActivity(Context context, String index) {
