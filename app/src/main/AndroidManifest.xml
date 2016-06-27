@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.jly.expression.expression"
+            android:name=".ExpressionActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
@@ -108,7 +108,7 @@
             android:label="@string/title_activity_test"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.FullScreen.NoTitle" ></activity>
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
     </application>
 
 </manifest>
