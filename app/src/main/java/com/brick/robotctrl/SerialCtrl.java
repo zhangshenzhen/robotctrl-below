@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.annotation.InterpolatorRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
@@ -40,7 +39,7 @@ public class SerialCtrl {
 
     public void setSerialCOM(@NonNull String serialCOM) {
         if (!TextUtils.isEmpty(serialCOM))
-            this.serialCOM = serialCOM;
+            this.serialCOM = "/dev/" + serialCOM;
     }
 
     public void setSerialBaud(int serialBaud) {
@@ -56,7 +55,6 @@ public class SerialCtrl {
     }
 
     public void openSerialCOM() {
-        serialCOM = "/dev/" + serialCOM;
         Log.d(TAG, "openSerialCOM: serialBaud:" + serialBaud + "\tserialCOM:" + serialCOM);
         ShowMessage("Open " + serialCOM + " successful, the BaudRate is " + serialBaud);
         ComA.setBaudRate(serialBaud);
