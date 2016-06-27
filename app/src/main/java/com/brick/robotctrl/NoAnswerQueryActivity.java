@@ -10,9 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ant.liao.GifView;
-import com.jly.expression.expression;
 
-import java.util.Timer;
 import java.util.TimerTask;
 
 /**
@@ -47,7 +45,7 @@ public class NoAnswerQueryActivity extends BaseActivity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                expression.startExpressionActivity(NoAnswerQueryActivity.this, "0");
+                ExpressionActivity.startExpressionActivity(NoAnswerQueryActivity.this, "0");
             }
         });
 

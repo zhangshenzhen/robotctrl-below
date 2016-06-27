@@ -1,9 +1,5 @@
-package com.jly.expression;
+package com.brick.robotctrl;
 
-
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,15 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.brick.robotctrl.UserTimer;
-
 import com.ant.liao.GifView;
 import com.ant.liao.GifView.GifImageType;
-import com.brick.robotctrl.R;
-import com.brick.robotctrl.BaseActivity;
 
-
-public class expression extends BaseActivity implements OnClickListener {
+public class ExpressionActivity extends BaseActivity implements OnClickListener {
 
 	private static GifView gf;
 	private int w ;
@@ -123,7 +114,7 @@ public class expression extends BaseActivity implements OnClickListener {
 
 	public static void startExpressionActivity(Context context, String index) {
 		Intent changeMotionIntent = new Intent();
-		changeMotionIntent.setClass(context, expression.class);
+		changeMotionIntent.setClass(context, ExpressionActivity.class);
 		changeMotionIntent.putExtra("index", index);
 		context.startActivity(changeMotionIntent);
 	}

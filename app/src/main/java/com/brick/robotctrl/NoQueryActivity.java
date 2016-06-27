@@ -4,17 +4,13 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.ant.liao.GifView;
-import com.jly.expression.expression;
-import com.jly.idcard.IDcard;
 
-import java.util.Timer;
 import java.util.TimerTask;
 
 /**
@@ -49,7 +45,7 @@ public class NoQueryActivity extends BaseActivity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                expression.startExpressionActivity(NoQueryActivity.this, "0");
+                ExpressionActivity.startExpressionActivity(NoQueryActivity.this, "0");
             }
         });
 

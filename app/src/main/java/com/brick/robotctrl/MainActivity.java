@@ -8,20 +8,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-import com.jly.expression.expression;
-import com.udpwork.ssdb.SSDB;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -220,7 +214,7 @@ public class MainActivity extends BaseActivity {
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
                         if (cn.getClassName().equals("com.jly.expression.expression")) {
-                            expression.changeExpression(Integer.parseInt(rlt));
+                            ExpressionActivity.changeExpression(Integer.parseInt(rlt));
                             SSDBTask.enableChangeBrow = false;
                         }
                     }
