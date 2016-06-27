@@ -48,7 +48,7 @@ import java.util.Locale;
 /**
  * Created by kjnijk on 2016-06-24.
  */
-public class QuestTestActivity extends Activity {
+public class QuestTestActivity extends BaseActivity {
     private static final String TAG = "QuestTestActivity";
     private GifView gf;
     private String mp3Url = "/sdcard/Movies/record1.m4a";
