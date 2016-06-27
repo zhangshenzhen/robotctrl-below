@@ -17,6 +17,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.udpwork.ssdb.SSDB;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -97,20 +99,20 @@ public class MainActivity extends BaseActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if (key.equals(robotName)) {
+                    if (key.equals(robotName) && val != null) {
                         ssdbTask.setRobotName(val);     // deal it if val = null
-                    } else if (key.equals(serverIp)) {
+                    } else if (key.equals(serverIp) && val != null) {
                         ssdbTask.setServerIP(val);
                         serverChanged = true;
                     } else if (key.equals(serverPort)) {
                         int serverPort = Integer.parseInt(val);
                         ssdbTask.setServerPort(serverPort);
                         serverChanged = true;
-                    } else if(key.equals(serialCom)) {
+                    } else if(key.equals(serialCom) && val != null) {
                         // do some thing
                         serialCtrl.setSerialCOM(val);
                         serialChanged = true;
-                    } else if(key.equals(serialBaud)) {
+                    } else if(key.equals(serialBaud) && val != null) {
                         serialCtrl.setSerialBaud(val);
                         // do some thing
                         serialChanged = true;
@@ -170,56 +172,64 @@ public class MainActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Log.d(TAG, "handleMessage: msg:" + SSDBTask.event[msg.what] );
             switch (msg.what) {
                 case SSDBTask.Key_Event:
                     String rlt  = (String) msg.obj;
-                    if (rlt.equals("DirCtl"))
-                        ssdbTask.enableDirCtl = true;
-                    if (rlt.equals("param"))
-                        ssdbTask.enableSetParameter = true;
-                    ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, ssdbTask.event[ssdbTask.Key_SetParam], "");
-                    if(rlt.equals("Brow")) {
-                        ssdbTask.enableChangeBrow = true;
-                        ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, ssdbTask.event[ssdbTask.Key_ChangeBrow], "");
+//                    Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                    if (rlt.equals("DirCtl")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableDirCtl = true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
                     }
-                    ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, ssdbTask.event[ssdbTask.Key_Event], "");
+                    if (rlt.equals("param")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableSetParameter = true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
+                    if(rlt.equals("Brow")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableChangeBrow = true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
                     break;
                 case SSDBTask.Key_DirCtrl:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: Key_DirCtrl" + rlt);
-//                    if (rlt.equals("EndDirCtl")) {
-//                        ssdbTask.enableDirCtl = false;
-//                    } else {
-                        Log.d(TAG, "handleMessage: rlt:" + rlt);
+                    Log.d(TAG, "handleMessage: ------------------Key:DirCtrl \tvalue:" + rlt);
+                    if (rlt.equals("EndDirCtl")) {
+                        SSDBTask.enableDirCtl = false;
+                    } else if ( !rlt.equals("")) {
                         serialCtrl.robotMove(rlt);
-//                        Log.d(TAG, "handleMessage: rlt:" + rlt + "\tenableCtrl:" + enableCtrl);
-//                    }
+                    }
                     break;
                 case SSDBTask.Key_SetParam:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: setparam" + rlt);
-                    if ( rlt.equals("") );
-                    else {
+                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    if ( !rlt.equals("") ) {
                         serialCtrl.setRobotRate(rlt);
                         SSDBTask.enableSetParameter = false;
                     }
                     break;
                 case SSDBTask.Key_ChangeBrow:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: Brow" + rlt);
-                    if ( rlt.equals("") );
-                    else {
-                        Log.d(TAG, "handleMessage: changebrowed");
+                    Log.d(TAG, "handleMessage: ------------------Key:ChangeBrow \tvalue:" + rlt);
+                    if ( !rlt.equals("") ) {
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-                        if (cn.getClassName().equals("com.jly.expression.expression")) {
+                        if (cn.getClassName().equals("com.brick.robotctrl.ExpressionActivity")) {
                             ExpressionActivity.changeExpression(Integer.parseInt(rlt));
                             SSDBTask.enableChangeBrow = false;
+                            Log.d(TAG, "handleMessage: changebrowed");
+                        } else {
+                            SSDBTask.enableChangeBrow = false;
+                            Log.d(TAG, "handleMessage: change brow failure because of current activity is not ExpressionActivity");
                         }
                     }
                     break;
                 case SSDBTask.ACTION_CONNECT_FAILED:
+                    Log.d(TAG, "handleMessage: connect ssdb failure!");
                     Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                     startActivityForResult(intent, 0);
                     break;
@@ -268,12 +278,12 @@ public class MainActivity extends BaseActivity {
 //                    serverChanged = false;
                     ssdbTask.connect();
 //                }
-                if ( serialChanged ) {
-                    serialChanged = false;
+//                if ( serialChanged ) {
+//                    serialChanged = false;
                     serialCtrl.openSerialCOM();
 //                    // do some thing
 //                }
-            }
+//            }
         }
     }
 

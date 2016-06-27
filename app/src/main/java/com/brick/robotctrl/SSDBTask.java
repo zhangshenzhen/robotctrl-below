@@ -1,8 +1,6 @@
 package com.brick.robotctrl;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -158,7 +156,6 @@ public class SSDBTask extends TimerTask {
     private int iCount = 0;
     @Override
     public synchronized void run() {
-//        Log.d(TAG, "run: stop:" + stop);
         if (stop) {
             return;
         }
@@ -179,7 +176,6 @@ public class SSDBTask extends TimerTask {
                         Log.d(TAG, "run: ACTION_CONNECT");
                         ssdbClient = new SSDB(serverIp, serverPort);
                         stop = false;
-                        SSDBQuery(ACTION_HSET, event[Key_ChangeBrow], "");
                     } catch (Exception e) {
                         Log.d(TAG, "run: ACTION_CONNECT_FAILED");
                         Message message = new Message();
@@ -187,32 +183,6 @@ public class SSDBTask extends TimerTask {
 //                        message.obj = new String(, "GBK");
                         contextHandler.sendMessage(message);
                         stop = true;
-//                        if (ssdbClient == null) {
-//                            stop = true;
-//                            contextHandler.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    new AlertDialog.Builder(context).setIcon(R.mipmap.ic_launcher)
-//                                            .setTitle("can not connect to server: " + serverIp + " " + serverPort)
-//                                            .setCancelable(false)
-//                                            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-//                                                @Override
-//                                                public void onClick(DialogInterface dialog, int which) {
-//                                                    stop = true;
-//                                                }
-//                                            })
-//                                            .setPositiveButton("retry", new DialogInterface.OnClickListener() {
-//                                                @Override
-//                                                public void onClick(DialogInterface dialog, int which) {
-//                                                    stop = false;
-//                                                    SSDBQuery(ACTION_CONNECT);
-//                                                    run();
-//                                                }
-//                                            })
-//                                            .create().show();
-//                                }
-//                            });
-//                        }
                         e.printStackTrace();
                     }
                     break;
@@ -265,6 +235,8 @@ public class SSDBTask extends TimerTask {
                                 SSDBQuery(ACTION_CONNECT);
                             }
                         }
+                    } else {
+                        SSDBQuery(ACTION_HSET, event[Key_DirCtrl], "");
                     }
                     if ( enableSetParameter ) {     // check rate parameter
                         try {
@@ -281,6 +253,8 @@ public class SSDBTask extends TimerTask {
                                 SSDBQuery(ACTION_CONNECT);
                             }
                         }
+                    } else {
+                        SSDBQuery(ACTION_HSET, event[Key_SetParam], "");
                     }
                     if ( enableChangeBrow ) {       // check emotion change
                         try {
@@ -297,6 +271,8 @@ public class SSDBTask extends TimerTask {
                                 SSDBQuery(ACTION_CONNECT);
                             }
                         }
+                    } else {
+                        SSDBQuery(ACTION_HSET, event[Key_ChangeBrow], "");
                     }
                 default:
                     break;
