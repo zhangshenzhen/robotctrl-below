@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.ant.liao.GifView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.jly.expression.expression;
 import com.kjn.askquestion.AccountInfo;
 import com.kjn.askquestion.Jason;
 import com.kjn.askquestion.JsonBean;
@@ -126,7 +125,7 @@ public class QuestTestActivity extends Activity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                expression.startExpressionActivity(QuestTestActivity.this, "0");
+                ExpressionActivity.startExpressionActivity(QuestTestActivity.this, "0");
             }
         });
 

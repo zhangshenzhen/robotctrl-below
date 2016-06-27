@@ -147,7 +147,7 @@ public class MainActivity extends BaseActivity {
 
             if ( cn.getClassName().equals("com.brick.robotctrl.MainActivity") ) {
                 countForPlayer++;
-                Log.d(TAG, "run: countForPlayer:" + countForPlayer);
+//                Log.d(TAG, "run: countForPlayer:" + countForPlayer);
                 if ( countForPlayer == 30*1000/200 ) {
                     PlayerService.startPlayerService(MainActivity.this, mp3Url);
                     countForPlayer = 0;

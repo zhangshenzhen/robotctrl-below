@@ -13,7 +13,6 @@ import android.widget.ListView;
 import com.ant.liao.GifView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.jly.expression.expression;
 import com.kjn.askquestion.Jason;
 import com.kjn.askquestion.JsonBean;
 
@@ -48,7 +47,7 @@ public class ManyQueryActivity extends Activity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                expression.startExpressionActivity(ManyQueryActivity.this, "0");
+                ExpressionActivity.startExpressionActivity(ManyQueryActivity.this, "0");
             }
         });
 
