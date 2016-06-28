@@ -235,6 +235,7 @@ public class QuestTestActivity extends BaseActivity {
             public void onClick(View v) {
                 if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
                     asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
+                    PlayerService.stopPlayerService(QuestTestActivity.this);
                     mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
                 } else {
                     Log.e("recorder", "录音机未处于空闲状态，请稍等");

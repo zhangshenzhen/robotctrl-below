@@ -75,6 +75,10 @@ public class ShowSureQueryActivity extends BaseActivity {
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mTtsPlayer != null) {
+                    mTtsPlayer.release();
+                }
+                HciCloudSys.hciRelease();
                 mp = new MediaPlayer();
                 mp.reset();
                 try {
@@ -155,10 +159,6 @@ public class ShowSureQueryActivity extends BaseActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mTtsPlayer != null) {
-            mTtsPlayer.release();
-        }
-        HciCloudSys.hciRelease();
     }
 
 
