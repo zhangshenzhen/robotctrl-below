@@ -29,19 +29,18 @@ public class ManyQueryActivity extends Activity {
     String data;
     ArrayList<String> showItem = new ArrayList<String>();
     ArrayList<Integer> showNum = new ArrayList<Integer>();
-    //    private TextView showqueryText;
     public String result;
     public String resultShow;
     String num;
     private ListView queryListView;
     private Button humanButton;
     private Button askButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
         Intent intent = getIntent();
-
 
         humanButton = (Button) findViewById(R.id.humanButton);
         humanButton.setOnClickListener(new View.OnClickListener() {
@@ -64,17 +63,13 @@ public class ManyQueryActivity extends Activity {
         showGf.setGifImage(R.drawable.smile);
         showGf.setGifImageType(GifView.GifImageType.COVER);
         showGf.setShowDimension(640,400);
+
         showItem = intent.getStringArrayListExtra("extra_showItem");
         showNum = intent.getIntegerArrayListExtra("extra_showNum");
         queryListView = (ListView) findViewById(R.id.listView);
         ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, showItem);
         queryListView.setAdapter(myArrayAdapter);
-//        for (int i = 0;i < showItem.size(); i++){
-//            Log.d(TAG,showItem.get(i));
-//        }
-//        for (int i = 0;i < showNum.size(); i++){
-//            Log.d(TAG,showNum.get(i).toString());
-//        }
+
         queryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -140,9 +135,6 @@ public class ManyQueryActivity extends Activity {
                                         showItem.add(jsonBean.getVagueNode().getItemList().get(i).getQuestion());
                                         showNum.add(jsonBean.getVagueNode().getItemList().get(i).getNum());
                                     }
-//                                        ArrayList<String> showItem = new ArrayList<String>();
-
-
                                     if(resultShow != null) {
                                         Intent intent = new Intent(ManyQueryActivity.this, ManyQueryActivity.class);
                                         intent.putExtra("extra_showResult",resultShow);
@@ -150,7 +142,6 @@ public class ManyQueryActivity extends Activity {
                                         intent.putIntegerArrayListExtra("extra_showNum",showNum);
                                         startActivity(intent);
                                     }
-
                                 }else{
                                     resultShow = jsonBean.getSingleNode().getAnswerMsg();
                                     Log.d(TAG,resultShow);

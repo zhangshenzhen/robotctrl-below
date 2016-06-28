@@ -39,26 +39,21 @@ public class ShowSureQueryActivity extends BaseActivity {
      */
     private AccountInfoTts mAccountInfo;
 
-
     private TextView text = null;
     private String showText = null;
     private TtsConfig ttsConfig = null;
     private TTSPlayer mTtsPlayer = null;
     private String mp3Url = "/sdcard/Movies/record3.m4a";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_showsurequery);
+
         text = (TextView) findViewById(R.id.singleshow);
         Intent intent = getIntent();
         showText = intent.getStringExtra("extra_showResult");
-
-        Log.d("extra_showResult", showText);
         text.setText(showText);
-
-
-
-
 
         mAccountInfo = AccountInfoTts.getInstance();
         boolean loadResult = mAccountInfo.loadAccountInfo(this);
@@ -94,7 +89,6 @@ public class ShowSureQueryActivity extends BaseActivity {
             return;
         }
 
-
         //传入了capKey初始化TTS播发器
         boolean isPlayerInitSuccess = initPlayer();
         if (!isPlayerInitSuccess) {
@@ -128,13 +122,9 @@ public class ShowSureQueryActivity extends BaseActivity {
         HciCloudSys.hciRelease();
     }
 
-
-
     // 测试按钮 ,播放,停止TTS语音播放
     public void onClick(View v) {
-
             try {
-
                 switch (v.getId()) {
                     case R.id.returnq:
                         // 开始合成

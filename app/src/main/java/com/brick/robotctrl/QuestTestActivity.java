@@ -92,7 +92,6 @@ public class QuestTestActivity extends BaseActivity {
                     case 2:
                         if (!msg.obj.toString().equalsIgnoreCase(""))
                             ref.get().mResult.setText(msg.obj.toString());
-
                         break;
 //                    case 3:
 //                        if (!msg.obj.toString().equalsIgnoreCase(""))
@@ -113,13 +112,12 @@ public class QuestTestActivity extends BaseActivity {
         setContentView(R.layout.cativity_test);
         mResult = (TextView) findViewById(R.id.resultview);
         mState = (TextView) findViewById(R.id.stateview);
-//        mError = (TextView) findViewById(R.id.errorview);
         mBtnRecogRealTimeMode = (Button) findViewById(R.id.begin_recog_real_time_mode);
-        PlayerService.startPlayerService(QuestTestActivity.this, mp3Url);
         gf =(GifView)findViewById(R.id.gif1);
         gf.setGifImage(R.drawable.smile);
         gf.setGifImageType(GifView.GifImageType.COVER);
         gf.setShowDimension(640,400);
+        PlayerService.startPlayerService(QuestTestActivity.this, mp3Url);
 
         humanButton = (Button) findViewById(R.id.humanButton);
         humanButton.setOnClickListener(new View.OnClickListener() {
@@ -165,11 +163,8 @@ public class QuestTestActivity extends BaseActivity {
             return;
         }
 
-
-
         // 读取用户的调用的能力
         String capKey = mAccountInfo.getCapKey();
-
         if (!capKey.equals("asr.cloud.grammar"))
         {
             mBtnRecogRealTimeMode.setEnabled(true);
@@ -202,35 +197,35 @@ public class QuestTestActivity extends BaseActivity {
         asrConfig.addParam(AsrConfig.AudioConfig.PARAM_KEY_ENCODE, AsrConfig.AudioConfig.VALUE_OF_PARAM_ENCODE_SPEEX);
         // 其他配置，此处可以全部选取缺省值
 
-        // 语法相关的配置,若使用自由说能力可以不必配置该项
-        if (capKey.contains("local.grammar")) {
-            grammar = loadGrammar("stock_10001.gram");
-            // 加载本地语法获取语法ID
-            AsrGrammarId id = new AsrGrammarId();
-            ASRCommonRecorder.loadGrammar("capkey=" + capKey +",grammarType=jsgf", grammar, id);
-            Log.d(TAG, "grammarid="+id);
-            // PARAM_KEY_GRAMMAR_TYPE 语法类型，使用自由说能力时，忽略以下此参数
-            asrConfig.addParam(AsrConfig.GrammarConfig.PARAM_KEY_GRAMMAR_TYPE,
-                    AsrConfig.GrammarConfig.VALUE_OF_PARAM_GRAMMAR_TYPE_ID);
-            asrConfig.addParam(AsrConfig.GrammarConfig.PARAM_KEY_GRAMMAR_ID,
-                    "" + id.getGrammarId());
-
-            List<String> grammarList = loadGrammarList(grammar);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, grammarList);
-            mGrammarLv.setAdapter(adapter);
-        }
-        else if(capKey.contains("cloud.grammar")) {
-            grammar = loadGrammar("stock_10001.gram");
-            // PARAM_KEY_GRAMMAR_TYPE 语法类型，使用自由说能力时，忽略以下此参数
-            asrConfig.addParam(AsrConfig.GrammarConfig.PARAM_KEY_GRAMMAR_TYPE,
-                    AsrConfig.GrammarConfig.VALUE_OF_PARAM_GRAMMAR_TYPE_JSGF);
-
-            List<String> grammarList = loadGrammarList(grammar);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, grammarList);
-            mGrammarLv.setAdapter(adapter);
-        }
+//        // 语法相关的配置,若使用自由说能力可以不必配置该项
+//        if (capKey.contains("local.grammar")) {
+//            grammar = loadGrammar("stock_10001.gram");
+//            // 加载本地语法获取语法ID
+//            AsrGrammarId id = new AsrGrammarId();
+//            ASRCommonRecorder.loadGrammar("capkey=" + capKey +",grammarType=jsgf", grammar, id);
+//            Log.d(TAG, "grammarid="+id);
+//            // PARAM_KEY_GRAMMAR_TYPE 语法类型，使用自由说能力时，忽略以下此参数
+//            asrConfig.addParam(AsrConfig.GrammarConfig.PARAM_KEY_GRAMMAR_TYPE,
+//                    AsrConfig.GrammarConfig.VALUE_OF_PARAM_GRAMMAR_TYPE_ID);
+//            asrConfig.addParam(AsrConfig.GrammarConfig.PARAM_KEY_GRAMMAR_ID,
+//                    "" + id.getGrammarId());
+//
+//            List<String> grammarList = loadGrammarList(grammar);
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                    android.R.layout.simple_list_item_1, grammarList);
+//            mGrammarLv.setAdapter(adapter);
+//        }
+//        else if(capKey.contains("cloud.grammar")) {
+//            grammar = loadGrammar("stock_10001.gram");
+//            // PARAM_KEY_GRAMMAR_TYPE 语法类型，使用自由说能力时，忽略以下此参数
+//            asrConfig.addParam(AsrConfig.GrammarConfig.PARAM_KEY_GRAMMAR_TYPE,
+//                    AsrConfig.GrammarConfig.VALUE_OF_PARAM_GRAMMAR_TYPE_JSGF);
+//
+//            List<String> grammarList = loadGrammarList(grammar);
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                    android.R.layout.simple_list_item_1, grammarList);
+//            mGrammarLv.setAdapter(adapter);
+//        }
 
         Log.v(TAG, "asr config:" + asrConfig.getStringConfig());
 
@@ -241,7 +236,6 @@ public class QuestTestActivity extends BaseActivity {
                 if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
                     asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
                     mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
-
                 } else {
                     Log.e("recorder", "录音机未处于空闲状态，请稍等");
                 }
@@ -250,35 +244,35 @@ public class QuestTestActivity extends BaseActivity {
     }
     // /////////////////////////////////////////////////////////////////////////////////////////
 
-    private String loadGrammar(String fileName) {
-        String grammar = "";
-        try {
-            InputStream is = null;
-            try {
-                is = getAssets().open(fileName);
-                byte[] data = new byte[is.available()];
-                is.read(data);
-                grammar = new String(data);
-            } finally {
-                is.close();
-            }
+//    private String loadGrammar(String fileName) {
+//        String grammar = "";
+//        try {
+//            InputStream is = null;
+//            try {
+//                is = getAssets().open(fileName);
+//                byte[] data = new byte[is.available()];
+//                is.read(data);
+//                grammar = new String(data);
+//            } finally {
+//                is.close();
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return grammar;
+//    }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return grammar;
-    }
-
-    private List<String> loadGrammarList(String WordlistGrammar) {
-
-        List<String> strList = new ArrayList<String>();
-
-        for (String msg : WordlistGrammar.split("\n")) {
-            strList.add(msg.trim());
-        }
-
-        return strList;
-    }
+//    private List<String> loadGrammarList(String WordlistGrammar) {
+//
+//        List<String> strList = new ArrayList<String>();
+//
+//        for (String msg : WordlistGrammar.split("\n")) {
+//            strList.add(msg.trim());
+//        }
+//
+//        return strList;
+//    }
 
     private class ASRResultProcess implements ASRRecorderListener {
         @Override
@@ -310,16 +304,13 @@ public class QuestTestActivity extends BaseActivity {
                             Log.i(TAG,"进入新线程");
                             try {
                                 result = jts.ask(query);                               //把网络访问的代码放在这里
-
                                 if (result != null) {
                                     Log.i(TAG, "进入解析");
                                     Gson gson = new Gson();
-                                    java.lang.reflect.Type type = new TypeToken<JsonBean>() {
-                                    }.getType();
+                                    java.lang.reflect.Type type = new TypeToken<JsonBean>() {}.getType();
                                     JsonBean jsonBean = gson.fromJson(result, type);
                                     System.out.println(jsonBean.getResult());
                                     resultShow = jsonBean.getSingleNode().getAnswerMsg();
-//                                    showItem.add("您想问的是：");
                                     showItem.clear();
                                     showNum.clear();
                                     if (jsonBean.getVagueNode() != null) {
@@ -327,9 +318,6 @@ public class QuestTestActivity extends BaseActivity {
                                             showItem.add(jsonBean.getVagueNode().getItemList().get(i).getQuestion());
                                             showNum.add(jsonBean.getVagueNode().getItemList().get(i).getNum());
                                         }
-//                                        ArrayList<String> showItem = new ArrayList<String>();
-
-
                                         if(resultShow != null) {
                                             Intent intent = new Intent(QuestTestActivity.this, ManyQueryActivity.class);
                                             intent.putExtra("extra_showResult",resultShow);
@@ -337,9 +325,7 @@ public class QuestTestActivity extends BaseActivity {
                                             intent.putIntegerArrayListExtra("extra_showNum",showNum);
                                             startActivity(intent);
                                         }
-
                                     }else{
-                                        resultShow = jsonBean.getSingleNode().getAnswerMsg();
                                         Log.d(TAG,resultShow);
                                         if(resultShow != null) {
                                             if(jsonBean.getAnswerTypeId() == 1){
@@ -359,16 +345,12 @@ public class QuestTestActivity extends BaseActivity {
                                             }
                                         }
                                     }
-                                    System.out.println(resultShow);
-
                                 }
-
                             } catch (HttpException e) {
                                 System.out.println("heheda" + e);
                             }
                         }
                     }.start();
-
                 } else {
                     sResult = "未能正确识别,请重新输入";
                 }
@@ -432,10 +414,10 @@ public class QuestTestActivity extends BaseActivity {
     @Override
     public void onDestroy()
     {
+        mAsrRecorder.release();
+        HciCloudSys.hciRelease();
+        Log.i(TAG, "onDestroy()");
         super.onDestroy();
-//        mAsrRecorder.release();
-//        HciCloudSys.hciRelease();
-//        Log.i(TAG, "onDestroy()");
     }
 
 

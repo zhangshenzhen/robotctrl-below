@@ -20,11 +20,11 @@ public class NoAnswerQueryActivity extends BaseActivity {
     private static final String TAG = "NoAnswerQueryActivity";
     private String mp3Url = "/sdcard/Movies/record2.m4a";         //播放的MP3文件
     private GifView gf;
-
     private TextView text;
     private String showText;
     private Button humanButton;
     private Button askButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +35,7 @@ public class NoAnswerQueryActivity extends BaseActivity {
         showText = intent.getStringExtra("extra_showResult");
         Log.d("extra_showResult", showText);
         text.setText(showText);
+        PlayerService.startPlayerService(NoAnswerQueryActivity.this, mp3Url);
 
         gf =(GifView)findViewById(R.id.gif3);
         gf.setGifImage(R.drawable.smile);
@@ -56,63 +57,13 @@ public class NoAnswerQueryActivity extends BaseActivity {
                 startActivity(new Intent().setClass(NoAnswerQueryActivity.this, QuestTestActivity.class));
             }
         });
-
-
-/////////////////////////////MP3播放
-//        Intent playIntent = new Intent();
-//        playIntent.putExtra("url", mp3Url);
-////        intent.putExtra("MSG", 0);
-//        Log.d(TAG, "onCreate: starting PlayService");
-//        playIntent.setClass(NoAnswerQueryActivity.this, PlayerService.class);
-//        startService(playIntent);       //启动服务
-        PlayerService.startPlayerService(NoAnswerQueryActivity.this, mp3Url);
-
-
-
-/////////////////////////////
-
-
-
     }
 
-
-
-
-
-
-    private int countForPlayer = 0;
-    TimerTask queryTask = new TimerTask() {
-        @Override
-        public void run() {
-            ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-//            Log.d(TAG, "pkg:"+cn.getPackageName());
-//            Log.d(TAG, "cls:"+cn.getClassName());
-
-            if ( cn.getClassName().equals("com.brick.robotctrl.NoQueryActivity") ) {
-                countForPlayer++;
-                Log.d(TAG, "run: countForPlayer:" + countForPlayer);
-                if ( countForPlayer == 30*1000/200 ) {
-                    PlayerService.startPlayerService(NoAnswerQueryActivity.this, mp3Url);
-                    countForPlayer = 0;
-                }
-            } else if (!cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {
-                userTimer.addTimerCount();
-//                Log.d(TAG, "run: userTimer" + userTimer.getTimerCount());
-            }
-            if(userTimer.getTimerCount() > (10*60*1000/200)) {
-//                Log.d(TAG, "Timeout to play video");
-                startActivity(new Intent().setClass(NoAnswerQueryActivity.this, ADActivity.class));
-                userTimer.clearTimerCount();
-            }
-        }
-    };
     @Override
     protected void onStop() {
         Log.i(TAG, "onStop");
         Intent stopIntent = new Intent();
         stopIntent.putExtra("url", mp3Url);
-//        intent.putExtra("MSG", 0);
         Log.d(TAG, "onCreate: starting PlayService");
         stopIntent.setClass(NoAnswerQueryActivity.this, PlayerService.class);
         stopService(stopIntent);
@@ -122,7 +73,6 @@ public class NoAnswerQueryActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         Log.i(TAG, "onRestart");
-        countForPlayer = 0;
         PlayerService.startPlayerService(NoAnswerQueryActivity.this, mp3Url);
         super.onRestart();
     }
