@@ -156,6 +156,7 @@ public class SSDBTask extends TimerTask {
     private int iCount = 0;
     @Override
     public synchronized void run() {
+//        Log.d(TAG, "run: stop:" + stop);
         if (stop) {
             return;
         }
@@ -197,9 +198,7 @@ public class SSDBTask extends TimerTask {
                         ssdbClient.hset(robotName, cmd.key, cmd.val);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        if (ssdbClient == null) {
-                            SSDBQuery(ACTION_CONNECT);
-                        }
+                        SSDBQuery(ACTION_CONNECT);
                     }
                     break;
                 case ACTION_HGET:
@@ -214,9 +213,7 @@ public class SSDBTask extends TimerTask {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            if (ssdbClient == null) {
-                                SSDBQuery(ACTION_CONNECT);
-                            }
+                            SSDBQuery(ACTION_CONNECT);
                         }
                     }
                     ////////////////////////////////////////////////////////////// 200ms check
@@ -231,9 +228,7 @@ public class SSDBTask extends TimerTask {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            if (ssdbClient == null) {
-                                SSDBQuery(ACTION_CONNECT);
-                            }
+                            SSDBQuery(ACTION_CONNECT);
                         }
                     } else {
                         SSDBQuery(ACTION_HSET, event[Key_DirCtrl], "");
@@ -249,9 +244,7 @@ public class SSDBTask extends TimerTask {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            if (ssdbClient == null) {
-                                SSDBQuery(ACTION_CONNECT);
-                            }
+                            SSDBQuery(ACTION_CONNECT);
                         }
                     } else {
                         SSDBQuery(ACTION_HSET, event[Key_SetParam], "");
@@ -267,9 +260,7 @@ public class SSDBTask extends TimerTask {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            if (ssdbClient == null) {
-                                SSDBQuery(ACTION_CONNECT);
-                            }
+                            SSDBQuery(ACTION_CONNECT);
                         }
                     } else {
                         SSDBQuery(ACTION_HSET, event[Key_ChangeBrow], "");
