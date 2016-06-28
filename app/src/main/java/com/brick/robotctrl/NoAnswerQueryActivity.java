@@ -1,17 +1,12 @@
 package com.brick.robotctrl;
 
-import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.ant.liao.GifView;
-
-import java.util.TimerTask;
 
 /**
  * Created by kjnijk on 2016-06-24.
@@ -73,7 +68,6 @@ public class NoAnswerQueryActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         Log.i(TAG, "onRestart");
-        PlayerService.startPlayerService(NoAnswerQueryActivity.this, mp3Url);
         super.onRestart();
     }
 }

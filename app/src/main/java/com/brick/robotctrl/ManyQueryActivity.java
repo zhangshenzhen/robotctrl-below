@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Created by kjnijk on 2016-06-24.
  */
-public class ManyQueryActivity extends Activity {
+public class ManyQueryActivity extends BaseActivity {
     String TAG ="ManyQueryActivity";
     private GifView showGf;
     String data;

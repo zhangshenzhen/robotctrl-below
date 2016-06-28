@@ -73,7 +73,6 @@ public class NoQueryActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         Log.i(TAG, "onRestart");
-        PlayerService.startPlayerService(NoQueryActivity.this, mp3Url);
         super.onRestart();
     }
 }

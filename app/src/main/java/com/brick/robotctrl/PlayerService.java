@@ -114,9 +114,6 @@ public class PlayerService extends Service {
         }
     }
 
-//    mediaPlayer.OnCompletionListener();//(new MediaPlayer.OnCompletionListener() {
-//
-//    })
 
     public static void startPlayerService(Context context, String url) {
 

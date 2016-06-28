@@ -2,14 +2,18 @@ package com.brick.robotctrl;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.kjn.askquestion.AccountInfoTts;
+import com.kjn.videoview.ADVideo;
 import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
 import com.sinovoice.hcicloudsdk.api.HciCloudSys;
 import com.sinovoice.hcicloudsdk.common.AuthExpireTime;
@@ -43,7 +47,11 @@ public class ShowSureQueryActivity extends BaseActivity {
     private String showText = null;
     private TtsConfig ttsConfig = null;
     private TTSPlayer mTtsPlayer = null;
-    private String mp3Url = "/sdcard/Movies/record3.m4a";
+    public String mp3Url = "/sdcard/Movies/record3.m4a";
+    private MediaPlayer mp;
+//    private boolean flag = true;
+//    ADVideo adVideo = null;
+    private Button goButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,37 @@ public class ShowSureQueryActivity extends BaseActivity {
         Intent intent = getIntent();
         showText = intent.getStringExtra("extra_showResult");
         text.setText(showText);
+
+//        videoView.setVideoPath(mp3Url);             //获得第一个video的路径
+//        videoView.start();                                   //开始播放
+//        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
+//            @Override
+//            public void onCompletion(MediaPlayer mp) {
+//                next();
+//            }
+//        });
+        goButton = (Button) findViewById(R.id.returnq);
+        goButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mp = new MediaPlayer();
+                mp.reset();
+                try {
+                    mp.setDataSource(mp3Url);
+                    mp.prepare();
+                    mp.start();
+                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            Intent intent = new Intent(ShowSureQueryActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
 
         mAccountInfo = AccountInfoTts.getInstance();
         boolean loadResult = mAccountInfo.loadAccountInfo(this);
@@ -122,38 +161,40 @@ public class ShowSureQueryActivity extends BaseActivity {
         HciCloudSys.hciRelease();
     }
 
+
     // 测试按钮 ,播放,停止TTS语音播放
-    public void onClick(View v) {
-            try {
-                switch (v.getId()) {
-                    case R.id.returnq:
-                        // 开始合成
-                        Intent intent = new Intent(ShowSureQueryActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        PlayerService.startPlayerService(ShowSureQueryActivity.this, mp3Url);
-                        break;
-
-                    /*case R.id.btnPause:
-                        if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING) {
-                            mTtsPlayer.pause();
-                        }
-                        break;
-
-                    case R.id.btnResume:
-                        if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PAUSE) {
-                            mTtsPlayer.resume();
-                        }
-                        break;*/
-
-                    default:
-                        break;
-                }
-            } catch (IllegalStateException ex) {
-                Toast.makeText(getBaseContext(), "状态错误", Toast.LENGTH_SHORT)
-                        .show();
-            }
-
-    }
+//    public void onClick(View v) {
+//            try {
+//                switch (v.getId()) {
+//                    case R.id.returnq:
+////                        PlayerService.startPlayerService(ShowSureQueryActivity.this, mp3Url);
+//                        mp.setDataSource(mp3Url);
+//                        Intent intent = new Intent(ShowSureQueryActivity.this, MainActivity.class);
+//                        startActivity(intent);
+//
+//                        break;
+//
+//                    /*case R.id.btnPause:
+//                        if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING) {
+//                            mTtsPlayer.pause();
+//                        }
+//                        break;
+//
+//                    case R.id.btnResume:
+//                        if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PAUSE) {
+//                            mTtsPlayer.resume();
+//                        }
+//                        break;*/
+//
+//                    default:
+//                        break;
+//                }
+//            } catch (IllegalStateException ex) {
+//                Toast.makeText(getBaseContext(), "状态错误", Toast.LENGTH_SHORT)
+//                        .show();
+//            }
+//
+//    }
 
     /**
      * 初始化播放器
@@ -276,13 +317,6 @@ public class ShowSureQueryActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 加载初始化信息
-     *
-     * @param context
-     *            上下文语境
-     * @return 系统初始化参数
-     */
     private InitParam getInitParam() {
         String authDirPath = this.getFilesDir().getAbsolutePath();
 

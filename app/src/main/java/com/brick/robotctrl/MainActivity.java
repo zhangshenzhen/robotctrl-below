@@ -288,16 +288,27 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStop() {
+    protected void onPause(){
         Log.i(TAG, "onStop");
         Intent stopIntent = new Intent();
         stopIntent.putExtra("url", mp3Url);
-//        intent.putExtra("MSG", 0);
-        Log.d(TAG, "onCreate: starting PlayService");
+        Log.d(TAG, "onCreate: stop PlayService");
         stopIntent.setClass(MainActivity.this, PlayerService.class);
         stopService(stopIntent);
-        super.onStop();
+        super.onPause();
     }
+
+//    @Override
+//    protected void onStop() {
+//        Log.i(TAG, "onStop");
+//        Intent stopIntent = new Intent();
+//        stopIntent.putExtra("url", mp3Url);
+////        intent.putExtra("MSG", 0);
+////        Log.d(TAG, "onCreate: starting PlayService");
+////        stopIntent.setClass(MainActivity.this, PlayerService.class);
+////        stopService(stopIntent);
+//        super.onStop();
+//    }
 
     @Override
     protected void onRestart() {
