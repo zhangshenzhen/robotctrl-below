@@ -54,6 +54,7 @@ public class ShowSureQueryActivity extends BaseActivity {
 //    private boolean flag = true;
 //    ADVideo adVideo = null;
     private Button goButton;
+    private Button personservice_bt;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,8 @@ public class ShowSureQueryActivity extends BaseActivity {
         showGf.setGifImageType(GifView.GifImageType.COVER);
 
         text = (TextView) findViewById(R.id.singleshow);
-        Intent intent = getIntent();
+
+        final Intent intent = getIntent();
         showText = intent.getStringExtra("extra_showResult");
         text.setText(showText);
 
@@ -103,6 +105,14 @@ public class ShowSureQueryActivity extends BaseActivity {
                 }catch(Exception e){
                     e.printStackTrace();
                 }
+            }
+        });
+        personservice_bt = (Button) findViewById(R.id.humanButton1);
+        personservice_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clearTimerCount();
+                ExpressionActivity.startExpressionActivity(ShowSureQueryActivity.this, "0");
             }
         });
 
