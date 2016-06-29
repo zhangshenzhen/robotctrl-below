@@ -23,7 +23,7 @@
         android:summary="配置机器人名称"
         android:title="机器人">
         <EditTextPreference
-            android:defaultValue="Robot"
+            android:defaultValue="r00004A"
             android:inputType="textAutoComplete"
             android:key="@string/robotName"
             android:selectAllOnFocus="true"
