@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,11 +37,12 @@ public class ADActivity extends Activity {
     private int mVolume = -1;
 //    private View mVolumeBrightnessLayout;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad);
+
+        getWindow().setFormat(PixelFormat.TRANSLUCENT);
 
         // videoview 实现
         videoView = (VideoView) findViewById(R.id.videoView);
