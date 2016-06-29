@@ -21,7 +21,6 @@ public class MenuActivity extends BaseActivity {
     ImageButton ADButton = null;
     ImageButton testButton = null;
     ImageButton busButton = null;
-    UserTimer userTimer = null;
 
     private RelativeLayout menuActivity = null;
 
@@ -35,7 +34,7 @@ public class MenuActivity extends BaseActivity {
         IDButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userTimer.clearTimerCount();
+                clearTimerCount();
                 startActivity(new Intent().setClass(MenuActivity.this, IDcard.class));
 
             }
@@ -45,7 +44,8 @@ public class MenuActivity extends BaseActivity {
         ADButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userTimer.clearTimerCount();
+                clearTimerCount();
+                Log.d(TAG, "onClick: starting ADActivity");
                 startActivity(new Intent().setClass(MenuActivity.this, ADActivity.class));
             }
         });
@@ -54,7 +54,7 @@ public class MenuActivity extends BaseActivity {
         testButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    userTimer.clearTimerCount();
+                    clearTimerCount();
                     startActivity(new Intent().setClass(MenuActivity.this, TestActivity.class));
                 }
             }
@@ -64,14 +64,11 @@ public class MenuActivity extends BaseActivity {
         busButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    userTimer.clearTimerCount();
+                    clearTimerCount();
                     startActivity(new Intent().setClass(MenuActivity.this, QuestTestActivity.class));
                 }
             }
         );
-
-        userTimer = new UserTimer();
-
     }
 
 
@@ -85,7 +82,7 @@ public class MenuActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         Log.i(TAG, "onRestart");
-        userTimer.clearTimerCount();
+        clearTimerCount();
         super.onRestart();
     }
 

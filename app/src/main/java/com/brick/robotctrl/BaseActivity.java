@@ -16,7 +16,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     UserTimer userTimer = null;
     private static int timerOutCount = 0;
 
-
     private AudioManager mAudioManager;
     /** 最大声音 */
     private int mMaxVolume;

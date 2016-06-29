@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.brick.robotctrl.BaseActivity;
 import com.brick.robotctrl.R;
 import com.hdos.idCardUartDevice.JniReturnData;
 import com.hdos.idCardUartDevice.publicSecurityIDCardLib;
@@ -18,7 +19,7 @@ import java.io.UnsupportedEncodingException;
  * Created by jiangly on 2016/6/22.
  */
 
-public class IDcard extends Activity {
+public class IDcard extends BaseActivity {
 
     private byte[] name = new byte[32];
     private byte[] sex = new byte[6];

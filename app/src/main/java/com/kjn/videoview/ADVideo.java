@@ -47,9 +47,9 @@ public class ADVideo {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-//        for(int i = 0; i<videoList.size(); i++) {
-//            Log.d(TAG, "getFiles: " + videoList.get(i));
-//        }
+        for(int i = 0; i<videoList.size(); i++) {
+            Log.d(TAG, "getFiles: " + videoList.get(i));
+        }
         return flag;
     }
 
@@ -64,6 +64,7 @@ public class ADVideo {
 
     public void play(){
         videoView.setVideoPath(videoList.get(index));             //获得第一个video的路径
+        Log.d(TAG, "play: starting play: " + videoList.get(index));
         videoView.start();                                   //开始播放
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
             @Override

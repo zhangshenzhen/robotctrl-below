@@ -82,6 +82,7 @@ public class ShowSureQueryActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 goButton.setClickable(false);
+                clearTimerCount();
                 if (mTtsPlayer != null) {
                     mTtsPlayer.release();
                 }

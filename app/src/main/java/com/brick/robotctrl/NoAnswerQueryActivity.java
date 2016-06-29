@@ -41,6 +41,7 @@ public class NoAnswerQueryActivity extends BaseActivity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clearTimerCount();
                 ExpressionActivity.startExpressionActivity(NoAnswerQueryActivity.this, "0");
             }
         });
@@ -49,6 +50,7 @@ public class NoAnswerQueryActivity extends BaseActivity {
         askButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clearTimerCount();
                 startActivity(new Intent().setClass(NoAnswerQueryActivity.this, QuestTestActivity.class));
             }
         });
