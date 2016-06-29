@@ -75,6 +75,7 @@ public class ShowSureQueryActivity extends BaseActivity {
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clearTimerCount();
                 if (mTtsPlayer != null) {
                     mTtsPlayer.release();
                 }

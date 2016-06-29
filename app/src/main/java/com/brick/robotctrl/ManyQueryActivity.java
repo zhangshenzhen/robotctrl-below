@@ -46,6 +46,7 @@ public class ManyQueryActivity extends BaseActivity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clearTimerCount();
                 ExpressionActivity.startExpressionActivity(ManyQueryActivity.this, "0");
             }
         });
@@ -54,6 +55,7 @@ public class ManyQueryActivity extends BaseActivity {
         askButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clearTimerCount();
                 startActivity(new Intent().setClass(ManyQueryActivity.this, QuestTestActivity.class));
             }
         });
@@ -73,6 +75,7 @@ public class ManyQueryActivity extends BaseActivity {
         queryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                clearTimerCount();
                 if (showNum.get(arg2).equals(0)) {
                     num = "0";
                     Log.d(TAG, "点击成功");

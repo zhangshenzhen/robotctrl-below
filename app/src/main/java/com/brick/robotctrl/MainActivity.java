@@ -53,8 +53,6 @@ public class MainActivity extends BaseActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        userTimer = new UserTimer();
-
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler);
 
@@ -62,7 +60,7 @@ public class MainActivity extends BaseActivity {
         leftEyeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userTimer.clearTimerCount();
+                clearTimerCount();
                 startActivity(new Intent().setClass(MainActivity.this, QuestTestActivity.class));
             }
         });
@@ -71,7 +69,7 @@ public class MainActivity extends BaseActivity {
         rightEyeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userTimer.clearTimerCount();
+                clearTimerCount();
                 startActivity(new Intent().setClass(MainActivity.this, MenuActivity.class));
             }
         });
@@ -156,12 +154,13 @@ public class MainActivity extends BaseActivity {
                 }
             }
 
-            userTimer.addTimerCount();
+            addTimerCount();
+            Log.d(TAG, "run: " + getTimerCount());
 
-            if(userTimer.getTimerCount() > (10*60*1000/200)) {
+            if(getTimerCount() > (10*60*1000/200)) {
                 Log.d(TAG, "Timeout to play video");
                 startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
-                userTimer.clearTimerCount();
+                clearTimerCount();
                 serialCtrl.reOpenSerialCOM();
             }
         }

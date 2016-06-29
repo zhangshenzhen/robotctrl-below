@@ -16,7 +16,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     UserTimer userTimer = null;
     private static int timerOutCount = 0;
 
-
     private AudioManager mAudioManager;
     /** 最大声音 */
     private int mMaxVolume;
@@ -67,7 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        userTimer.clearTimerCount();
+        clearTimerCount();
         Log.d(TAG, "onResume: ");
         View decorView = getWindow().getDecorView();
 //        Hide both the navigation bar and the status bar.
@@ -110,7 +109,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         @Override
         public boolean onSingleTapConfirmed (MotionEvent e){
             Log.d(TAG, "onTouch: to MainActivity");
-            userTimer.clearTimerCount();
+            clearTimerCount();
             return true;
 
         }

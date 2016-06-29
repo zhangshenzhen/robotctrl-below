@@ -123,6 +123,7 @@ public class QuestTestActivity extends BaseActivity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clearTimerCount();
                 ExpressionActivity.startExpressionActivity(QuestTestActivity.this, "0");
             }
         });
