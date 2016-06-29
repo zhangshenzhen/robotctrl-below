@@ -8,7 +8,7 @@ android:id="@+id/gifActivity"
 android:background="#ffffff">
 <RelativeLayout
     android:layout_width="0dp"
-    android:layout_height="675dp"
+    android:layout_height="752dp"
     android:layout_weight="0.7"
     android:layout_alignParentLeft="true">
     <com.ant.liao.GifView
@@ -24,9 +24,7 @@ android:background="#ffffff">
         android:layout_marginLeft="40dp"
         android:background="@drawable/personvoice"
         android:layout_gravity="bottom"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="110dp" />
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
 
 <RelativeLayout
