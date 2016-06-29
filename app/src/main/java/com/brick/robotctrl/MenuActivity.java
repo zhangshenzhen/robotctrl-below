@@ -46,6 +46,7 @@ public class MenuActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 userTimer.clearTimerCount();
+                Log.d(TAG, "onClick: starting ADActivity");
                 startActivity(new Intent().setClass(MenuActivity.this, ADActivity.class));
             }
         });
