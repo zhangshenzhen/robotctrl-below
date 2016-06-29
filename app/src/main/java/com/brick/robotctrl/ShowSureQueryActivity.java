@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.ant.liao.GifView;
 import com.kjn.askquestion.AccountInfoTts;
 import com.kjn.videoview.ADVideo;
 import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
@@ -38,6 +39,7 @@ import java.util.Locale;
 public class ShowSureQueryActivity extends BaseActivity {
     public static final String TAG = "ShowSureQueryActivity";
 
+    private GifView showGf;
     /**
      * 加载用户信息工具类
      */
@@ -58,6 +60,10 @@ public class ShowSureQueryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_showsurequery);
 
+        showGf =(GifView)findViewById(R.id.gif4);
+        showGf.setGifImage(R.drawable.jiaoaodeyi);
+        showGf.setGifImageType(GifView.GifImageType.COVER);
+
         text = (TextView) findViewById(R.id.singleshow);
         Intent intent = getIntent();
         showText = intent.getStringExtra("extra_showResult");
@@ -75,6 +81,7 @@ public class ShowSureQueryActivity extends BaseActivity {
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                goButton.setClickable(false);
                 if (mTtsPlayer != null) {
                     mTtsPlayer.release();
                 }
@@ -88,7 +95,7 @@ public class ShowSureQueryActivity extends BaseActivity {
                     mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
-                            Intent intent = new Intent(ShowSureQueryActivity.this, MainActivity.class);
+                            Intent intent = new Intent(ShowSureQueryActivity.this, QuestTestActivity.class);
                             startActivity(intent);
                         }
                     });

@@ -60,9 +60,9 @@ public class ManyQueryActivity extends BaseActivity {
 
 
         showGf =(GifView)findViewById(R.id.gif3);
-        showGf.setGifImage(R.drawable.smile);
+        showGf.setGifImage(R.drawable.think);
         showGf.setGifImageType(GifView.GifImageType.COVER);
-        showGf.setShowDimension(640,400);
+      //  showGf.setShowDimension(640,400);
 
         showItem = intent.getStringArrayListExtra("extra_showItem");
         showNum = intent.getIntegerArrayListExtra("extra_showNum");

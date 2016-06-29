@@ -35,7 +35,7 @@ public class NoAnswerQueryActivity extends BaseActivity {
         gf =(GifView)findViewById(R.id.gif3);
         gf.setGifImage(R.drawable.smile);
         gf.setGifImageType(GifView.GifImageType.COVER);
-        gf.setShowDimension(640,400);
+       // gf.setShowDimension(640,400);
 
         humanButton = (Button) findViewById(R.id.humanButton);
         humanButton.setOnClickListener(new View.OnClickListener() {

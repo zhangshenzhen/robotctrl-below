@@ -2,6 +2,7 @@ package com.brick.robotctrl;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -66,12 +67,12 @@ public class QuestTestActivity extends BaseActivity {
     public String result;
     public String data;
     private Button humanButton;
-
+    private MediaPlayer mp;
     public String resultShow;
     ArrayList<String> showItem = new ArrayList<String>();
     ArrayList<Integer> showNum = new ArrayList<Integer>();
     private ASRRecorder mAsrRecorder;
-
+    private AsrConfig asrConfig = null;
     private String grammar = null;
 
     private static class WeakRefHandler extends Handler {          //可以避免内存泄漏的Handler库
@@ -116,8 +117,8 @@ public class QuestTestActivity extends BaseActivity {
         gf =(GifView)findViewById(R.id.gif1);
         gf.setGifImage(R.drawable.smile);
         gf.setGifImageType(GifView.GifImageType.COVER);
-        gf.setShowDimension(640,400);
-        PlayerService.startPlayerService(QuestTestActivity.this, mp3Url);
+        //gf.setShowDimension(640,400);
+//        PlayerService.startPlayerService(QuestTestActivity.this, mp3Url);
 
         humanButton = (Button) findViewById(R.id.humanButton);
         humanButton.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +188,7 @@ public class QuestTestActivity extends BaseActivity {
                 new ASRResultProcess());
 
         // 配置识别参数
-        final AsrConfig asrConfig = new AsrConfig();
+        asrConfig = new AsrConfig();
         // PARAM_KEY_CAP_KEY 设置使用的能力
         asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_CAP_KEY, capKey);
         // PARAM_KEY_AUDIO_FORMAT 音频格式根据不同的能力使用不用的音频格式
@@ -228,6 +229,28 @@ public class QuestTestActivity extends BaseActivity {
 //        }
 
         Log.v(TAG, "asr config:" + asrConfig.getStringConfig());
+
+        mp = new MediaPlayer();
+        mp.reset();
+        try {
+            mp.setDataSource(mp3Url);
+            mp.prepare();
+            mp.start();
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
+                        asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
+                        PlayerService.stopPlayerService(QuestTestActivity.this);
+                        mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
+                    } else {
+                        Log.e("recorder", "录音机未处于空闲状态，请稍等");
+                    }
+                }
+            });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         mBtnRecogRealTimeMode.setOnClickListener(new View.OnClickListener() {
 
@@ -401,11 +424,12 @@ public class QuestTestActivity extends BaseActivity {
         }
     }
 
-//	@Override
-//	public void onStart() {
-//		super.onStart();
-//	}
-//
+	@Override
+	public void onRestart() {
+        firtAsk();
+		super.onRestart();
+	}
+
 //	@Override
 //	public void onStop() {
 //		super.onStop();
@@ -522,5 +546,28 @@ public class QuestTestActivity extends BaseActivity {
         }
 
         return initparam;
+    }
+    private void firtAsk(){
+        mp = new MediaPlayer();
+        mp.reset();
+        try {
+            mp.setDataSource(mp3Url);
+            mp.prepare();
+            mp.start();
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
+                        asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
+                        PlayerService.stopPlayerService(QuestTestActivity.this);
+                        mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
+                    } else {
+                        Log.e("recorder", "录音机未处于空闲状态，请稍等");
+                    }
+                }
+            });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

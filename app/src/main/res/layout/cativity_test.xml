@@ -7,36 +7,46 @@
     android:id="@+id/gifActivity"
     android:background="#ffffff">
     <RelativeLayout
-        android:layout_width="640dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.02"
-        android:orientation="vertical" >
+        android:layout_width="0dp"
+        android:layout_height="675dp"
+        android:layout_weight="0.7"
+        android:layout_alignParentLeft="true">
         <com.ant.liao.GifView
             android:id="@+id/gif1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="70dp"
+           />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="人工服务"
             android:id="@+id/humanButton"
-            android:layout_below="@+id/gif1"
-            android:layout_marginLeft="250dp"/>
+            android:layout_marginLeft="40dp"
+            android:background="@drawable/personvoice"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="110dp" />
     </RelativeLayout>
 
-
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:id="@+id/right"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.26">
-
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:background="#FFAEB9"
+        android:layout_weight="0.30">
 
         <Button
             android:id="@+id/begin_recog_real_time_mode"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-
+            android:background="#0A0A0A"
             android:text="语音咨询"
+            android:textColor="#FFFFFF"
             android:textSize="30sp">
 
 
@@ -48,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/begin_recog_real_time_mode"
             android:text="状态"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textColor="@color/accent_material_light" />
 
         <TextView
@@ -57,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/stateview"
             android:text="所问问题"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textColor="@color/accent_material_light" />
 
         <ListView
@@ -66,12 +76,8 @@
             android:id="@+id/listView"
             android:layout_below="@+id/resultview"
             android:layout_centerHorizontal="true"
-            android:background="@color/background_floating_material_dark" />
-
+            />
 
     </RelativeLayout>
-
-
-
 
 </LinearLayout>

@@ -140,7 +140,8 @@ public class MainActivity extends BaseActivity {
     TimerTask queryTask = new TimerTask() {
         @Override
         public void run() {
-            ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
+            if ( !ssdbTask.stop )
+                ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
 
             ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
