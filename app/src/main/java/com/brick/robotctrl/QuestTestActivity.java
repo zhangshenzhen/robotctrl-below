@@ -339,16 +339,24 @@ public class QuestTestActivity extends BaseActivity {
                                     showItem.clear();
                                     showNum.clear();
                                     if (jsonBean.getVagueNode() != null) {
-                                        for (int i = 0;i < jsonBean.getVagueNode().getItemList().size(); i++){
-                                            showItem.add(jsonBean.getVagueNode().getItemList().get(i).getQuestion());
-                                            showNum.add(jsonBean.getVagueNode().getItemList().get(i).getNum());
-                                        }
-                                        if(resultShow != null) {
-                                            Intent intent = new Intent(QuestTestActivity.this, ManyQueryActivity.class);
-                                            intent.putExtra("extra_showResult",resultShow);
-                                            intent.putStringArrayListExtra("extra_showItem",showItem);
-                                            intent.putIntegerArrayListExtra("extra_showNum",showNum);
-                                            startActivity(intent);
+                                        if(jsonBean.getAnswerTypeId() == 6) {
+                                            if(jsonBean.getSingleNode().getScore() != 100.0) {
+                                                for (int i = 0; i < jsonBean.getVagueNode().getItemList().size(); i++) {
+                                                    showItem.add(jsonBean.getVagueNode().getItemList().get(i).getQuestion());
+                                                    showNum.add(jsonBean.getVagueNode().getItemList().get(i).getNum());
+                                                }
+                                                if (resultShow != null) {
+                                                    Intent intent = new Intent(QuestTestActivity.this, ManyQueryActivity.class);
+                                                    intent.putExtra("extra_showResult", resultShow);
+                                                    intent.putStringArrayListExtra("extra_showItem", showItem);
+                                                    intent.putIntegerArrayListExtra("extra_showNum", showNum);
+                                                    startActivity(intent);
+                                                }
+                                            }else{
+                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
+                                                intent.putExtra("extra_showResult", resultShow);
+                                                startActivity(intent);
+                                            }
                                         }
                                     }else{
                                         Log.d(TAG,resultShow);
