@@ -90,7 +90,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		gf.setGifImage(R.drawable.shy);
 		gf.setOnClickListener(this);
 		gf.setGifImageType(GifImageType.COVER);
-		gf.setShowDimension(screenWidth, screenHeight);
+		//gf.setShowDimension(screenWidth, screenHeight);
 
 		changeExpression(Integer.parseInt(index));
 	}
@@ -109,11 +109,11 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 	public void onClick(View v) {
 		userTimer.clearTimerCount();
 
-		int index = currentIndex;
-		index++;
-		if ( index >= EXPRESSION.getExpressionSize())
-			index = 0;
-		changeExpression(index);
+//		int index = currentIndex;
+//		index++;
+//		if ( index >= EXPRESSION.getExpressionSize())
+//			index = 0;
+//		changeExpression(index);
 	}
 
 	public static void startExpressionActivity(Context context, String index) {
