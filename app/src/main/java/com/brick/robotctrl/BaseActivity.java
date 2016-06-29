@@ -67,7 +67,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        clearTimerCount();
+        userTimer.clearTimerCount();
         Log.d(TAG, "onResume: ");
         View decorView = getWindow().getDecorView();
 //        Hide both the navigation bar and the status bar.
@@ -110,7 +110,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         @Override
         public boolean onSingleTapConfirmed (MotionEvent e){
             Log.d(TAG, "onTouch: to MainActivity");
-            clearTimerCount();
+            userTimer.clearTimerCount();
             return true;
 
         }
