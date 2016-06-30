@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -332,14 +333,15 @@ public class QuestTestActivity extends BaseActivity {
                                 if (result != null) {
                                     Log.i(TAG, "进入解析");
                                     Gson gson = new Gson();
-                                    java.lang.reflect.Type type = new TypeToken<JsonBean>() {}.getType();
+                                    Type type = new TypeToken<JsonBean>() {}.getType();
                                     JsonBean jsonBean = gson.fromJson(result, type);
                                     System.out.println(jsonBean.getResult());
                                     resultShow = jsonBean.getSingleNode().getAnswerMsg();
+                                    Log.d(TAG, "run: " +  resultShow);
                                     showItem.clear();
                                     showNum.clear();
                                     if (jsonBean.getVagueNode() != null) {
-                                        if(jsonBean.getAnswerTypeId() == 6) {
+                                        if(jsonBean.getAnswerTypeId() == 6){
                                             if(jsonBean.getSingleNode().getScore() != 100.0) {
                                                 for (int i = 0; i < jsonBean.getVagueNode().getItemList().size(); i++) {
                                                     showItem.add(jsonBean.getVagueNode().getItemList().get(i).getQuestion());
@@ -352,12 +354,14 @@ public class QuestTestActivity extends BaseActivity {
                                                     intent.putIntegerArrayListExtra("extra_showNum", showNum);
                                                     startActivity(intent);
                                                 }
-                                            }else{
+                                            }else {
+                                                Log.d(TAG, "run: " + 111);
                                                 Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
                                                 intent.putExtra("extra_showResult", resultShow);
                                                 startActivity(intent);
                                             }
                                         }
+
                                     }else{
                                         Log.d(TAG,resultShow);
                                         if(resultShow != null) {
@@ -371,7 +375,12 @@ public class QuestTestActivity extends BaseActivity {
                                                 resultShow = "抱歉，机器人无法理解您的意思,请转人工服务！";
                                                 intent.putExtra("extra_showResult",resultShow);
                                                 startActivity(intent);
-                                            }else {
+                                            }else if(jsonBean.getAnswerTypeId() == 6){
+                                                Log.d(TAG, "run: "+ 222);
+                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
+                                                intent.putExtra("extra_showResult", resultShow);
+                                                startActivity(intent);
+                                            } else {
                                                 Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
                                                 intent.putExtra("extra_showResult", resultShow);
                                                 startActivity(intent);
