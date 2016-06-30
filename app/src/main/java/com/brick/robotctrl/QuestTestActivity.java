@@ -125,6 +125,7 @@ public class QuestTestActivity extends BaseActivity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                humanButton.setClickable(false);
                 clearTimerCount();
                 ExpressionActivity.startExpressionActivity(QuestTestActivity.this, "0");
             }
@@ -258,6 +259,7 @@ public class QuestTestActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
+                mBtnRecogRealTimeMode.setClickable(false);
                 if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
                     asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
                     PlayerService.stopPlayerService(QuestTestActivity.this);
@@ -444,6 +446,8 @@ public class QuestTestActivity extends BaseActivity {
 
 	@Override
 	public void onRestart() {
+        mBtnRecogRealTimeMode.setClickable(true);
+        humanButton.setClickable(true);
         firtAsk();
 		super.onRestart();
 	}
@@ -457,8 +461,10 @@ public class QuestTestActivity extends BaseActivity {
     @Override
     public void onDestroy()
     {
-        mAsrRecorder.release();
-        HciCloudSys.hciRelease();
+        if(mAsrRecorder != null) {
+            mAsrRecorder.release();
+            HciCloudSys.hciRelease();
+        }
         Log.i(TAG, "onDestroy()");
         super.onDestroy();
     }

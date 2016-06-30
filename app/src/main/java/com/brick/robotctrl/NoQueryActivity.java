@@ -46,6 +46,7 @@ public class NoQueryActivity extends BaseActivity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                humanButton.setClickable(false);
                 clearTimerCount();
                 ExpressionActivity.startExpressionActivity(NoQueryActivity.this, "0");
             }
@@ -55,6 +56,7 @@ public class NoQueryActivity extends BaseActivity {
         askButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                askButton.setClickable(false);
                 clearTimerCount();
                 startActivity(new Intent().setClass(NoQueryActivity.this, QuestTestActivity.class));
             }
@@ -75,6 +77,8 @@ public class NoQueryActivity extends BaseActivity {
     @Override
     protected void onRestart() {
         Log.i(TAG, "onRestart");
+        askButton.setClickable(true);
+        humanButton.setClickable(true);
         super.onRestart();
     }
 }

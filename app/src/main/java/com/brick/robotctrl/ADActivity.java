@@ -39,9 +39,9 @@ public class ADActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().setFormat(PixelFormat.TRANSLUCENT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad);
-        getWindow().setFormat(PixelFormat.TRANSLUCENT);
 
         // videoview 实现
         videoView = (VideoView) findViewById(R.id.videoView);
