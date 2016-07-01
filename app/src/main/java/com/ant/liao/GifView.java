@@ -294,23 +294,27 @@ public class GifView extends View implements GifAction{
 			}
 			while(isRun){
 				if (pause == false||gifDecoder.getFrameCount() == 1) {
-					GifFrame frame = gifDecoder.next();
-
-					if (frame == null) {
-						SystemClock.sleep(50);
-						continue;
-					}
-					if (frame.image != null)
-						currentImage = frame.image;
-					else if (frame.imageName != null) {
-						currentImage = BitmapFactory.decodeFile(frame.imageName);
-					}
-					long sp = frame.delay;
-					if (redrawHandler != null) {
-						reDraw();
-						SystemClock.sleep(sp);
-					} else {
-						break;
+					try {
+						GifFrame frame = gifDecoder.next();
+						if (frame == null) {
+							SystemClock.sleep(50);
+							continue;
+						}
+						if (frame.image != null)
+							currentImage = frame.image;
+						else if (frame.imageName != null) {
+							currentImage = BitmapFactory.decodeFile(frame.imageName);
+						}
+						long sp = frame.delay;
+						if (redrawHandler != null) {
+							reDraw();
+							SystemClock.sleep(sp);
+						} else {
+							break;
+						}
+					}catch (Exception e)
+					{
+						Log.d("TAG", "run: gifdecoder.next error");
 					}
 				} else {
 					SystemClock.sleep(50);
