@@ -43,7 +43,7 @@ public class NoAnswerQueryActivity extends BaseActivity {
             public void onClick(View view) {
                 humanButton.setClickable(false);
                 clearTimerCount();
-                ExpressionActivity.startExpressionActivity(NoAnswerQueryActivity.this, "0");
+                ExpressionActivity.startExpressionActivity(NoAnswerQueryActivity.this, "12");
             }
         });
 

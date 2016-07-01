@@ -127,7 +127,7 @@ public class QuestTestActivity extends BaseActivity {
             public void onClick(View view) {
                 humanButton.setClickable(false);
                 clearTimerCount();
-                ExpressionActivity.startExpressionActivity(QuestTestActivity.this, "0");
+                ExpressionActivity.startExpressionActivity(QuestTestActivity.this, "12");
             }
         });
 

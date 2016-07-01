@@ -48,7 +48,7 @@ public class NoQueryActivity extends BaseActivity {
             public void onClick(View view) {
                 humanButton.setClickable(false);
                 clearTimerCount();
-                ExpressionActivity.startExpressionActivity(NoQueryActivity.this, "0");
+                ExpressionActivity.startExpressionActivity(NoQueryActivity.this, "12");
             }
         });
 
