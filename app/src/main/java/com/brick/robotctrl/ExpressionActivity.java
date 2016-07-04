@@ -16,7 +16,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 	private static GifView gifView;
 	private String index = null;
 	UserTimer userTimer = null;
-	private static int currentIndex = 0;
+	private static int currentIndex = -1;
 
 	enum EXPRESSION {
 		机器人害怕(R.drawable.haipa, "机器人害怕", 0),
@@ -101,11 +101,11 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 	public void onClick(View v) {
 		userTimer.clearTimerCount();
 
-//		int index = currentIndex;
-//		index++;
-//		if ( index >= EXPRESSION.getExpressionSize())
-//			index = 0;
-//		changeExpression(index);
+		int index = currentIndex;
+		index++;
+		if ( index >= EXPRESSION.getExpressionSize())
+			index = 0;
+		changeExpression(index);
 	}
 
 	public static void startExpressionActivity(Context context, String index) {
@@ -114,4 +114,10 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		changeMotionIntent.putExtra("index", index);
 		context.startActivity(changeMotionIntent);
 	}
+    @Override
+    protected void onStop() {
+        Log.i(TAG, "onStop");
+        currentIndex = -1;		// restart expression
+        super.onStop();
+    }
 }
