@@ -24,6 +24,9 @@ public class SerialCtrl {
     private Handler contextHandler = null;
     private Context context = null;
 
+    public static ComBean ComRecDatatmp=null;    //暂存电池电压的值
+    public static int BatteryNum = 0;         //最终电压值
+
     public SerialCtrl(Context context, Handler handler) {
         assert context != null;
         assert handler != null;
@@ -83,6 +86,7 @@ public class SerialCtrl {
         protected void onDataReceived(final ComBean ComRecData)
         {
             // receive data
+            ComRecDatatmp = ComRecData;
         }
     }
 
@@ -161,6 +165,19 @@ public class SerialCtrl {
                 sendPortData(ComA, "FF15FF15");
                 break;
             default:
+        }
+    }
+    public  void getbattery()      //发送获取电压命令
+    {
+        sendPortData(ComA, "FF10FF10");
+    }
+
+    //----------------------------------------------------显示接收数据
+    public void DispRecData(ComBean ComRecData){
+        // Log.d("getbattery", "getbattery: "+String.format("%02x", ComRecData.bRec[2]).toUpperCase());
+        if(Integer.parseInt(String.format("%02x", ComRecData.bRec[1]).toUpperCase(), 16)==16) {
+            Log.d("getbattery", "getbattery: " + Integer.parseInt(String.format("%02x", ComRecData.bRec[2]).toUpperCase(), 16));
+            BatteryNum = Integer.parseInt(String.format("%02x", ComRecData.bRec[2]).toUpperCase(), 16);
         }
     }
     public void setRobotRate(String rate) {

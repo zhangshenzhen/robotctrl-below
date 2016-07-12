@@ -47,5 +47,13 @@
         android:layout_alignTop="@+id/leftEyeButton"
         android:layout_alignParentEnd="true"
         android:background="#ffffff" />
+    <com.jly.batteryView.batteryView
+        android:id="@+id/battery_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/toolbar"
+        android:layout_alignStart="@+id/rightEyeButton" />
 
 </RelativeLayout>

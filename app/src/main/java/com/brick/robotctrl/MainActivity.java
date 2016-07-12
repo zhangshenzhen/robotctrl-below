@@ -17,6 +17,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.bean.serialport.ComBean;
+import com.jly.batteryView.batteryView;
 import com.udpwork.ssdb.SSDB;
 
 import java.util.Timer;
@@ -32,6 +34,10 @@ public class MainActivity extends BaseActivity {
     ImageView rightEyeButton = null;
     SSDBTask ssdbTask = null;
     SerialCtrl serialCtrl = null;
+
+    DispQueueThread DispQueue=null;//刷新电压显示线程
+    public  batteryView mBatteryView = null;
+    public int CountForbattery=0;
 
     private boolean serverChanged = false;
     private boolean serialChanged = false;
@@ -52,6 +58,11 @@ public class MainActivity extends BaseActivity {
         // remove text in toolbar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+
+        DispQueue = new DispQueueThread();      //获取电压显示线程
+        DispQueue.start();
+        mBatteryView = (batteryView) findViewById(R.id.battery_view);
+        mBatteryView.setPower(SerialCtrl.BatteryNum);
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler);
@@ -158,6 +169,13 @@ public class MainActivity extends BaseActivity {
             addTimerCount();
             Log.d(TAG, "run: " + getTimerCount());
 
+            CountForbattery++;
+            if(CountForbattery>10)
+            {
+                serialCtrl.getbattery();
+                CountForbattery=0;
+            }
+
             if(getTimerCount() > (10*60*1000/200)) {
                 Log.d(TAG, "Timeout to play video");
                 startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
@@ -229,9 +247,9 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case SSDBTask.ACTION_CONNECT_FAILED:
-                    Log.d(TAG, "handleMessage: connect ssdb failure!");
-                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivityForResult(intent, 0);
+//                    Log.d(TAG, "handleMessage: connect ssdb failure!");
+//                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+//                    startActivityForResult(intent, 0);
                     break;
                 default:
                     break;
@@ -326,4 +344,36 @@ public class MainActivity extends BaseActivity {
         serialCtrl.closeSerialCOM();
         super.onDestroy();
     }
+
+    //----------------------------------------------------电池电压刷新显示线程
+    public class DispQueueThread extends Thread{
+        @Override
+        public void run() {
+            super.run();
+            while(!isInterrupted()) {
+                final ComBean ComData;
+                while((ComData=SerialCtrl.ComRecDatatmp)!=null)
+                {
+                    runOnUiThread(new Runnable()
+                    {
+                        public void run()
+                        {
+                            serialCtrl.DispRecData(ComData);
+                            mBatteryView.setPower(SerialCtrl.BatteryNum);
+                        }
+                    });
+
+                    try
+                    {
+                        Thread.sleep(100);//显示性能高的话，可以把此数值调小。
+                    } catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
 }
