@@ -3,18 +3,17 @@ package com.brick.robotctrl;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
-import android.content.ContentProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.IBinder;
-import android.os.StrictMode;
 import android.util.Log;
+import java.io.File;
 
 @SuppressLint("NewApi")
 public class PlayerService extends Service {
-    private final String TAG = "PlayerService";
+    private static final String TAG = "PlayerService";
     private MediaPlayer mediaPlayer = new MediaPlayer();       //媒体播放器对象
     private String path;                        //音乐文件路径
     private boolean isPause;                    //暂停状态
@@ -42,12 +41,6 @@ public class PlayerService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-
-    /**
-     * 播放音乐
-     *
-     * @param position
-     */
     private void play(int position) {
         try {
             mediaPlayer.reset();//把各项参数恢复到初始状态
@@ -116,6 +109,11 @@ public class PlayerService extends Service {
 
 
     public static void startPlayerService(Context context, String url) {
+        File file = new File(url);
+        if ( !file.exists() ) {
+            Log.d(TAG, "startPlayerService: File:" + url + " not exist! startPlayerService no effective");
+            return;
+        }
         stopPlayerService(context);
 
         Intent playIntent = new Intent();
