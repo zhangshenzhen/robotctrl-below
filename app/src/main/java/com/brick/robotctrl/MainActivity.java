@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bean.serialport.ComBean;
-import com.jly.batteryView.batteryView;
+import com.jly.batteryView.BatteryView;
 import com.udpwork.ssdb.SSDB;
 
 import java.util.Timer;
@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity {
     SerialCtrl serialCtrl = null;
 
     DispQueueThread DispQueue=null;//刷新电压显示线程
-    public  batteryView mBatteryView = null;
+    public BatteryView mBatteryView = null;
     public int CountForbattery=0;
 
     private boolean serverChanged = false;
@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity {
 
         DispQueue = new DispQueueThread();      //获取电压显示线程
         DispQueue.start();
-        mBatteryView = (batteryView) findViewById(R.id.battery_view);
+        mBatteryView = (BatteryView) findViewById(R.id.battery_view);
         mBatteryView.setPower(SerialCtrl.BatteryNum);
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
@@ -172,7 +172,7 @@ public class MainActivity extends BaseActivity {
             CountForbattery++;
             if(CountForbattery>10)
             {
-                serialCtrl.getbattery();
+                serialCtrl.getBattery();
                 CountForbattery=0;
             }
 

@@ -12,17 +12,17 @@ import android.view.View;
 /**
  * Created by jiangly on 2016/7/9.
  */
-public class batteryView extends View {
+public class BatteryView extends View {
 
     private int mPower = 255;
 
     private short batteryFlag = 0;
 
-    public batteryView(Context context) {
+    public BatteryView(Context context) {
         super(context);
     }
 
-    public batteryView(Context context, AttributeSet attrs) {
+    public BatteryView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

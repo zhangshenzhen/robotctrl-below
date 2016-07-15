@@ -167,7 +167,7 @@ public class SerialCtrl {
             default:
         }
     }
-    public  void getbattery()      //发送获取电压命令
+    public void getBattery()      //发送获取电压命令
     {
         sendPortData(ComA, "FF10FF10");
     }
