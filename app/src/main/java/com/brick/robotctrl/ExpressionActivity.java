@@ -80,7 +80,6 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 
 		setContentView(R.layout.gif);
 		gifView = (GifView) findViewById(R.id.gif2);
-		gifView.setGifImage(R.drawable.shy);
 		gifView.setOnClickListener(this);
 		gifView.setGifImageType(GifImageType.COVER);
 		//gifView.setShowDimension(screenWidth, screenHeight);
