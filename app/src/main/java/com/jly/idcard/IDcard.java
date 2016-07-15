@@ -52,13 +52,13 @@ public class IDcard extends BaseActivity {
         byte[]cmdSelect= new byte[]{(byte) 0xAA,(byte) 0xAA,(byte) 0xAA,(byte) 0x96,0x69,0x00,0x03,0x20,0x02,0x21};
         byte[] response = null;
         returnData=iDCardDevice.idSamDataExchange(returnData,port, cmdSelect);
-        if(returnData.result>0)
-        {
+        if(returnData.result>0) {
             response=iDCardDevice.strToHex(returnData.iDCardData,returnData.result);
             showString("选成功");
             showString(response,returnData.result);
+        } else {
+            showString("选卡失败");
         }
-        else showString("选卡失败");
     }
     /*身份证寻卡*/
     JniReturnData returnData = new JniReturnData();
@@ -66,15 +66,13 @@ public class IDcard extends BaseActivity {
         byte[]cmdRequst= new byte[]{(byte) 0xAA,(byte) 0xAA,(byte) 0xAA,(byte) 0x96,0x69,0x00,0x03,0x20,0x01,0x22};
         byte[] response = null;
         returnData=iDCardDevice.idSamDataExchange(returnData,port,cmdRequst);
-        if(returnData.result>0)
-        {
+        if(returnData.result>0) {
             response=iDCardDevice.strToHex(returnData.iDCardData,returnData.result);
             showString("寻卡成功");
             showString(response,returnData.result);
         } else {
             showString("寻卡失败");
         }
-
     }
 
     /*读身份证信息*/
@@ -111,7 +109,6 @@ public class IDcard extends BaseActivity {
                 showString("有效日期=" + new String(EffectDate, "Unicode") + "至"+ new String(ExpireDate, "Unicode"));
 
             }
-
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -120,7 +117,6 @@ public class IDcard extends BaseActivity {
     }
 
     public void click2(View view) {
-
         llGroup.removeAllViews();
     }
 
@@ -129,7 +125,6 @@ public class IDcard extends BaseActivity {
         // TODO Auto-generated method stub
 //		commonApi.setGpioOut(125, 0);
         super.onDestroy();
-
     }
 
     //Display
@@ -147,8 +142,6 @@ public class IDcard extends BaseActivity {
         tv.setText(logOut);
         llGroup.addView(tv);
     }
-
-
 }
 
 

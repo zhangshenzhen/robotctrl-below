@@ -54,7 +54,6 @@ public class Jason {
             RequestEntity requestEntity = new ByteArrayRequestEntity(query.getBytes("UTF-8"),"UTF-8");
             method.setRequestEntity(requestEntity);
         } catch (Exception e) {
-
         }
 
         //发出请求
@@ -77,13 +76,12 @@ public class Jason {
             System.out.println(e.toString());
             System.out.println(e.getMessage());
             e.printStackTrace();
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("0033");
-
             System.out.println(e.toString());
             System.out.println(e.getMessage());
             e.printStackTrace();
-        }finally{
+        } finally {
             stopWatch.stop();
             if(stateCode== HttpStatus.SC_OK) {
                 try {

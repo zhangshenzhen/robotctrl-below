@@ -13,10 +13,7 @@ import com.ant.liao.GifView.GifImageType;
 public class ExpressionActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "ExpressionActivity";
 
-	private static GifView gf;
-	private int w ;
-	private int h ;
-	private boolean f = true;
+	private static GifView gifView;
 	private String index = null;
 	UserTimer userTimer = null;
 	private static int currentIndex = 0;
@@ -81,16 +78,12 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 
 		userTimer = new UserTimer();
 
-		w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-		h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-
-
 		setContentView(R.layout.gif);
-		gf = (GifView) findViewById(R.id.gif2);
-		gf.setGifImage(R.drawable.shy);
-		gf.setOnClickListener(this);
-		gf.setGifImageType(GifImageType.COVER);
-		//gf.setShowDimension(screenWidth, screenHeight);
+		gifView = (GifView) findViewById(R.id.gif2);
+		gifView.setGifImage(R.drawable.shy);
+		gifView.setOnClickListener(this);
+		gifView.setGifImageType(GifImageType.COVER);
+		//gifView.setShowDimension(screenWidth, screenHeight);
 
 		changeExpression(Integer.parseInt(index));
 	}
@@ -99,8 +92,8 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		Log.d(TAG, "changeExpression: current expression:" + currentIndex + "\tset expression:" + index);
 		if ( currentIndex != index ) {
 			System.gc();
-			gf.setGifImage(EXPRESSION.getExpression(index).id);
-			gf.showAnimation();
+			gifView.setGifImage(EXPRESSION.getExpression(index).id);
+			gifView.showAnimation();
 			currentIndex = index;
 		}
 	}

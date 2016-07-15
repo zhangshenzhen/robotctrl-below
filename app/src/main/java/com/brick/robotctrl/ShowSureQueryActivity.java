@@ -59,7 +59,7 @@ public class ShowSureQueryActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_showsurequery);
+        setContentView(R.layout.activity_showsurequery );
 
         showGf =(GifView)findViewById(R.id.gif4);
         showGf.setGifImage(R.drawable.jiaoaodeyi);
@@ -339,24 +339,24 @@ public class ShowSureQueryActivity extends BaseActivity {
         String authDirPath = this.getFilesDir().getAbsolutePath();
 
         // 前置条件：无
-        InitParam initparam = new InitParam();
+        InitParam initParam = new InitParam();
 
         // 授权文件所在路径，此项必填
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_AUTH_PATH, authDirPath);
+        initParam.addParam(InitParam.AuthParam.PARAM_KEY_AUTH_PATH, authDirPath);
 
         // 是否自动访问云授权,详见 获取授权/更新授权文件处注释
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_AUTO_CLOUD_AUTH, "no");
+        initParam.addParam(InitParam.AuthParam.PARAM_KEY_AUTO_CLOUD_AUTH, "no");
 
         // 灵云云服务的接口地址，此项必填
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_CLOUD_URL, AccountInfoTts
+        initParam.addParam(InitParam.AuthParam.PARAM_KEY_CLOUD_URL, AccountInfoTts
                 .getInstance().getCloudUrl());
 
         // 开发者Key，此项必填，由捷通华声提供
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_DEVELOPER_KEY, AccountInfoTts
+        initParam.addParam(InitParam.AuthParam.PARAM_KEY_DEVELOPER_KEY, AccountInfoTts
                 .getInstance().getDeveloperKey());
 
         // 应用Key，此项必填，由捷通华声提供
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_APP_KEY, AccountInfoTts
+        initParam.addParam(InitParam.AuthParam.PARAM_KEY_APP_KEY, AccountInfoTts
                 .getInstance().getAppKey());
 
         // 配置日志参数
@@ -377,19 +377,19 @@ public class ShowSureQueryActivity extends BaseActivity {
             }
 
             // 日志的路径，可选，如果不传或者为空则不生成日志
-            initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_PATH, logPath);
+            initParam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_PATH, logPath);
 
             // 日志数目，默认保留多少个日志文件，超过则覆盖最旧的日志
-            initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_COUNT, "5");
+            initParam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_COUNT, "5");
 
             // 日志大小，默认一个日志文件写多大，单位为K
-            initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_SIZE, "1024");
+            initParam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_SIZE, "1024");
 
             // 日志等级，0=无，1=错误，2=警告，3=信息，4=细节，5=调试，SDK将输出小于等于logLevel的日志信息
-            initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_LEVEL, "5");
+            initParam.addParam(InitParam.LogParam.PARAM_KEY_LOG_LEVEL, "5");
         }
 
-        return initparam;
+        return initParam;
     }
 
 }

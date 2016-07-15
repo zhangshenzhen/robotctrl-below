@@ -169,8 +169,7 @@ public class QuestTestActivity extends BaseActivity {
 
         // 读取用户的调用的能力
         String capKey = mAccountInfo.getCapKey();
-        if (!capKey.equals("asr.cloud.grammar"))
-        {
+        if (!capKey.equals("asr.cloud.grammar")) {
             mBtnRecogRealTimeMode.setEnabled(true);
         }
 
@@ -251,7 +250,7 @@ public class QuestTestActivity extends BaseActivity {
                     }
                 }
             });
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -343,8 +342,8 @@ public class QuestTestActivity extends BaseActivity {
                                     showItem.clear();
                                     showNum.clear();
                                     if (jsonBean.getVagueNode() != null) {
-                                        if(jsonBean.getAnswerTypeId() == 6){
-                                            if(jsonBean.getSingleNode().getScore() != 100.0) {
+                                        if (jsonBean.getAnswerTypeId() == 6) {
+                                            if (jsonBean.getSingleNode().getScore() != 100.0) {
                                                 for (int i = 0; i < jsonBean.getVagueNode().getItemList().size(); i++) {
                                                     showItem.add(jsonBean.getVagueNode().getItemList().get(i).getQuestion());
                                                     showNum.add(jsonBean.getVagueNode().getItemList().get(i).getNum());
@@ -356,28 +355,27 @@ public class QuestTestActivity extends BaseActivity {
                                                     intent.putIntegerArrayListExtra("extra_showNum", showNum);
                                                     startActivity(intent);
                                                 }
-                                            }else {
+                                            } else {
                                                 Log.d(TAG, "run: " + 111);
                                                 Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
                                                 intent.putExtra("extra_showResult", resultShow);
                                                 startActivity(intent);
                                             }
                                         }
-
-                                    }else{
+                                    } else {
                                         Log.d(TAG,resultShow);
-                                        if(resultShow != null) {
-                                            if(jsonBean.getAnswerTypeId() == 1){
+                                        if (resultShow != null) {
+                                            if (jsonBean.getAnswerTypeId() == 1) {
                                                 Intent intent = new Intent(QuestTestActivity.this, NoQueryActivity.class);
                                                 resultShow = "请输入问题！";
                                                 intent.putExtra("extra_showResult",resultShow);
                                                 startActivity(intent);
-                                            }else if(jsonBean.getAnswerTypeId() == 3){
+                                            } else if (jsonBean.getAnswerTypeId() == 3) {
                                                 Intent intent = new Intent(QuestTestActivity.this, NoAnswerQueryActivity.class);
                                                 resultShow = "抱歉，机器人无法理解您的意思,请转人工服务！";
                                                 intent.putExtra("extra_showResult",resultShow);
                                                 startActivity(intent);
-                                            }else if(jsonBean.getAnswerTypeId() == 6){
+                                            } else if(jsonBean.getAnswerTypeId() == 6){
                                                 Log.d(TAG, "run: "+ 222);
                                                 Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
                                                 intent.putExtra("extra_showResult", resultShow);
@@ -459,8 +457,7 @@ public class QuestTestActivity extends BaseActivity {
 //
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         if(mAsrRecorder != null) {
             mAsrRecorder.release();
             HciCloudSys.hciRelease();
@@ -519,24 +516,24 @@ public class QuestTestActivity extends BaseActivity {
         String authDirPath = this.getFilesDir().getAbsolutePath();
 
         // 前置条件：无
-        InitParam initparam = new InitParam();
+        InitParam initParam = new InitParam();
 
         // 授权文件所在路径，此项必填
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_AUTH_PATH, authDirPath);
+        initParam.addParam(InitParam.AuthParam.PARAM_KEY_AUTH_PATH, authDirPath);
 
         // 是否自动访问云授权,详见 获取授权/更新授权文件处注释
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_AUTO_CLOUD_AUTH, "no");
+        initParam.addParam(InitParam.AuthParam.PARAM_KEY_AUTO_CLOUD_AUTH, "no");
 
         // 灵云云服务的接口地址，此项必填
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_CLOUD_URL, AccountInfo
+        initParam.addParam(InitParam.AuthParam.PARAM_KEY_CLOUD_URL, AccountInfo
                 .getInstance().getCloudUrl());
 
         // 开发者Key，此项必填，由捷通华声提供
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_DEVELOPER_KEY, AccountInfo
+        initParam.addParam(InitParam.AuthParam.PARAM_KEY_DEVELOPER_KEY, AccountInfo
                 .getInstance().getDeveloperKey());
 
         // 应用Key，此项必填，由捷通华声提供
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_APP_KEY, AccountInfo
+        initParam.addParam(InitParam.AuthParam.PARAM_KEY_APP_KEY, AccountInfo
                 .getInstance().getAppKey());
 
         // 配置日志参数
@@ -557,19 +554,19 @@ public class QuestTestActivity extends BaseActivity {
             }
 
             // 日志的路径，可选，如果不传或者为空则不生成日志
-            initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_PATH, logPath);
+            initParam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_PATH, logPath);
 
             // 日志数目，默认保留多少个日志文件，超过则覆盖最旧的日志
-            initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_COUNT, "5");
+            initParam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_COUNT, "5");
 
             // 日志大小，默认一个日志文件写多大，单位为K
-            initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_SIZE, "1024");
+            initParam.addParam(InitParam.LogParam.PARAM_KEY_LOG_FILE_SIZE, "1024");
 
             // 日志等级，0=无，1=错误，2=警告，3=信息，4=细节，5=调试，SDK将输出小于等于logLevel的日志信息
-            initparam.addParam(InitParam.LogParam.PARAM_KEY_LOG_LEVEL, "5");
+            initParam.addParam(InitParam.LogParam.PARAM_KEY_LOG_LEVEL, "5");
         }
 
-        return initparam;
+        return initParam;
     }
     private void firtAsk(){
         mp = new MediaPlayer();
@@ -590,7 +587,7 @@ public class QuestTestActivity extends BaseActivity {
                     }
                 }
             });
-        }catch(Exception e){
+        } catch (Exception e){
             e.printStackTrace();
         }
     }

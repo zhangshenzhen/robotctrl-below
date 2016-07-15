@@ -116,7 +116,6 @@ public class PlayerService extends Service {
 
 
     public static void startPlayerService(Context context, String url) {
-
         stopPlayerService(context);
 
         Intent playIntent = new Intent();

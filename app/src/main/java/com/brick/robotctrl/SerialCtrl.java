@@ -115,7 +115,7 @@ public class SerialCtrl {
         } catch (IOException e) {
             ShowMessage("open serial failure: unknow why!");
         } catch (InvalidParameterException e) {
-            ShowMessage("open serial failure: parameeter error!");
+            ShowMessage("open serial failure: parameter error!");
         }
     }
 

@@ -146,10 +146,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         int index = (int) (percent * mMaxVolume) + mVolume;
-        if (index > mMaxVolume)
+        if (index > mMaxVolume) {
             index = mMaxVolume;
-        else if (index < 0)
+        } else if (index < 0) {
             index = 0;
+        }
 
         // 变更声音
         mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0);

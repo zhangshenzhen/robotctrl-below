@@ -19,7 +19,6 @@ public class ADVideo {
         this.videoView = videoView;
     }
 
-
     public boolean getFiles(String url) {
         boolean flag = true;
         videoList = new ArrayList<String>();

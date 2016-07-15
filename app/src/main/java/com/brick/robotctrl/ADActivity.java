@@ -107,8 +107,7 @@ public class ADActivity extends Activity {
                     adVideo.play();
                 }
             }.start();
-        }
-        else {
+        } else {
             showVideoDialog();
         }
     }
@@ -191,8 +190,9 @@ public class ADActivity extends Activity {
     private void onVolumeSlide(float percent) {
         if (mVolume == -1) {
             mVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            if (mVolume < 0)
+            if (mVolume < 0) {
                 mVolume = 0;
+            }
 
             // 显示
 //            mOperationBg.setImageResource(R.drawable.video_volumn_bg);
@@ -200,10 +200,11 @@ public class ADActivity extends Activity {
         }
 
         int index = (int) (percent * mMaxVolume) + mVolume;
-        if (index > mMaxVolume)
+        if (index > mMaxVolume) {
             index = mMaxVolume;
-        else if (index < 0)
+        } else if (index < 0) {
             index = 0;
+        }
 
         // 变更声音
         mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0);

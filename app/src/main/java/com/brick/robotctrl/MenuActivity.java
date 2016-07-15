@@ -36,7 +36,6 @@ public class MenuActivity extends BaseActivity {
             public void onClick(View view) {
                 clearTimerCount();
                 startActivity(new Intent().setClass(MenuActivity.this, IDcard.class));
-
             }
         });
 
@@ -52,23 +51,21 @@ public class MenuActivity extends BaseActivity {
 
         testButton = (ImageButton) findViewById(R.id.testButton);
         testButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clearTimerCount();
-                    startActivity(new Intent().setClass(MenuActivity.this, TestActivity.class));
-                }
+            @Override
+            public void onClick(View view) {
+                clearTimerCount();
+                startActivity(new Intent().setClass(MenuActivity.this, TestActivity.class));
             }
-        );
+        });
 
         busButton = (ImageButton) findViewById(R.id.busButton);
         busButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    clearTimerCount();
-                    startActivity(new Intent().setClass(MenuActivity.this, QuestTestActivity.class));
-                }
+                clearTimerCount();
+                startActivity(new Intent().setClass(MenuActivity.this, QuestTestActivity.class));
             }
-        );
+        });
     }
 
 

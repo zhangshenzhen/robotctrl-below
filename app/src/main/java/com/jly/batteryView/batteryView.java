@@ -58,12 +58,10 @@ public class batteryView extends View {
         if(power_percent>0.5f&&power_percent<0.75f) {
             paint2.setColor(Color.YELLOW);
             batteryFlag = 1;
-        }
-        else if(power_percent>=0.75f) {
+        } else if(power_percent>=0.75f) {
             paint2.setColor(Color.GREEN);
             batteryFlag = 1;
-        }
-        else {
+        } else {
             paint2.setColor(Color.RED);
             paint2.setStrokeWidth(5.0f);
             canvas.drawLine(448,22,458,33,paint2);

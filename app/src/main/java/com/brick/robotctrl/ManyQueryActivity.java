@@ -82,40 +82,31 @@ public class ManyQueryActivity extends BaseActivity {
                 if (showNum.get(arg2).equals(0)) {
                     num = "0";
                     Log.d(TAG, "点击成功");
-                }
-                else if (showNum.get(arg2).equals(1)) {
+                } else if (showNum.get(arg2).equals(1)) {
                     num = "1";
                     Log.d(TAG, "点击成功");
-                }
-                else if (showNum.get(arg2).equals(2)) {
+                } else if (showNum.get(arg2).equals(2)) {
                     num = "2";
                     Log.d(TAG, "点击成功");
-                }
-                else if (showNum.get(arg2).equals(3)) {
+                } else if (showNum.get(arg2).equals(3)) {
                     num = "3";
                     Log.d(TAG, "点击成功");
-                }
-                else if (showNum.get(arg2).equals(4)) {
+                } else if (showNum.get(arg2).equals(4)) {
                     num = "4";
                     Log.d(TAG, "点击成功");
-                }
-                else if (showNum.get(arg2).equals(5)) {
+                } else if (showNum.get(arg2).equals(5)) {
                     num = "5";
                     Log.d(TAG, "点击成功");
-                }
-                else if (showNum.get(arg2).equals(6)) {
+                } else if (showNum.get(arg2).equals(6)) {
                     num = "6";
                     Log.d(TAG, "点击成功");
-                }
-                else if (showNum.get(arg2).equals(7)) {
+                } else if (showNum.get(arg2).equals(7)) {
                     num = "7";
                     Log.d(TAG, "点击成功");
-                }
-                else if (showNum.get(arg2).equals(8)) {
+                } else if (showNum.get(arg2).equals(8)) {
                     num = "8";
                     Log.d(TAG, "点击成功");
-                }
-                else if (showNum.get(arg2).equals(9)) {
+                } else if (showNum.get(arg2).equals(9)) {
                     num = "9";
                     Log.d(TAG, "点击成功");
                 }

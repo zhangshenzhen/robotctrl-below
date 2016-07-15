@@ -285,7 +285,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i(TAG, "onActivityResult: requestCode:" + requestCode);
         Log.d(TAG, "onActivityResult: resultCode:" + resultCode);
         if (requestCode == 0) {
 //            if (resultCode == RESULT_OK) {        // left top back resultCode = 0
