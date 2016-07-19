@@ -23,16 +23,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     private int mVolume = -1;
     private GestureDetector mGestureDetector;
 
-    public void clearTimerCount() {
-        this.timerOutCount = 0;
+    public static void clearTimerCount() {
+        timerOutCount = 0;
     }
 
-    public void addTimerCount() {
-        this.timerOutCount++;
+    public static void addTimerCount() {
+        timerOutCount++;
     }
 
-    public int getTimerCount() {
-        return this.timerOutCount;
+    public static int getTimerCount() {
+        return timerOutCount;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {

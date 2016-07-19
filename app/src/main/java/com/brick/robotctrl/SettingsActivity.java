@@ -14,11 +14,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.BaseExpandableListAdapter;
 
 import java.util.List;
 
 
-public class SettingsActivity extends BaseActivity{
+public class SettingsActivity extends AppCompatPreferenceActivity{
     private static final String TAG = "SettingsActivity";
 
 //    UserTimer userTimer = null;
@@ -36,6 +37,8 @@ public class SettingsActivity extends BaseActivity{
                 | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
         decorView.setSystemUiVisibility(uiOptions);
         setupActionBar();
+
+        BaseActivity.clearTimerCount();
     }
 
     // display the return button in action bar
@@ -104,6 +107,8 @@ public class SettingsActivity extends BaseActivity{
             @Override
             public boolean onPreferenceChange(Preference preference, Object value) {
                 String stringValue = value.toString();
+
+                BaseActivity.clearTimerCount();
 
                 if (preference instanceof ListPreference) {
                     // For list preferences, look up the correct display value in
