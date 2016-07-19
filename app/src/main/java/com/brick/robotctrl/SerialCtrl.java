@@ -170,11 +170,9 @@ public class SerialCtrl {
     public int getBattery()      //发送获取电压命令
     {
         sendPortData(ComA, "FF10FF10");
-        if( ComRecDatatmp != null) {
-            if (Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16) {
-                Log.d("getbattery", "getbattery: " + Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16));
-                return BatteryNum = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
-            }
+        if ( ComRecDatatmp != null && (Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16)) {
+            Log.d("getbattery", "getbattery: " + Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16));
+            return BatteryNum = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
         }
         return -1;
     }

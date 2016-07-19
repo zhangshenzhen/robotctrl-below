@@ -58,13 +58,13 @@ public class MainActivity extends BaseActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
+        ssdbTask = new SSDBTask(MainActivity.this, handler);
+        serialCtrl = new SerialCtrl(MainActivity.this, handler);
+
         DispQueue = new DispQueueThread();      //获取电压显示线程
         DispQueue.start();
         mBatteryView = (BatteryView) findViewById(R.id.battery_view);
         mBatteryView.setPower(SerialCtrl.BatteryNum);
-
-        ssdbTask = new SSDBTask(MainActivity.this, handler);
-        serialCtrl = new SerialCtrl(MainActivity.this, handler);
 
         leftEyeButton = (ImageView) findViewById(R.id.leftEyeButton);
         leftEyeButton.setOnClickListener(new View.OnClickListener() {
@@ -342,7 +342,8 @@ public class MainActivity extends BaseActivity {
         public void run() {
             super.run();
             while(!isInterrupted()) {
-                while ((batteryVoltVal = serialCtrl.getBattery())!=-1) {
+                if ((batteryVoltVal = serialCtrl.getBattery())!=-1) {
+                    Log.d(TAG, "run: batteryVoltVal = " + batteryVoltVal);
                     runOnUiThread(new Runnable() {
                         public void run() {
                             mBatteryView.setPower(batteryVoltVal);
@@ -359,5 +360,4 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
-
 }
