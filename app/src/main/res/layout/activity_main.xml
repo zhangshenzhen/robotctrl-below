@@ -47,7 +47,7 @@
         android:layout_alignTop="@+id/leftEyeButton"
         android:layout_alignParentEnd="true"
         android:background="#ffffff" />
-    <com.jly.batteryView.batteryView
+    <com.jly.batteryView.BatteryView
         android:id="@+id/battery_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
