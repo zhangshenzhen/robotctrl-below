@@ -15,14 +15,14 @@ import java.util.TimerTask;
 public class TestActivity extends BaseActivity  {
     private final String TAG = "TestActivity";
 
-    UserTimer userTimer = null;
+//    UserTimer userTimer = null;
     RelativeLayout testActivity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        userTimer = new UserTimer();
+//        userTimer = new UserTimer();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class TestActivity extends BaseActivity  {
     @Override
     protected void onRestart() {
         Log.i(TAG, "onRestart");
-        userTimer.clearTimerCount();
+        clearTimerCount();
         super.onRestart();
     }
 

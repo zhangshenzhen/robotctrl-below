@@ -13,7 +13,7 @@ import android.view.View;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private String TAG = "BaseActivity";
-    UserTimer userTimer = null;
+//    UserTimer userTimer = null;
     private static int timerOutCount = 0;
 
     private AudioManager mAudioManager;
@@ -145,20 +145,20 @@ public abstract class BaseActivity extends AppCompatActivity {
 //            mVolumeBrightnessLayout.setVisibility(View.VISIBLE);
         }
 
-        int index = (int) (percent * mMaxVolume) + mVolume;
-        if (index > mMaxVolume) {
-            index = mMaxVolume;
-        } else if (index < 0) {
-            index = 0;
+        int nextVolume = (int) (percent * mMaxVolume) + mVolume;
+        if (nextVolume > mMaxVolume) {
+            nextVolume = mMaxVolume;
+        } else if (nextVolume < 0) {
+            nextVolume = 0;
         }
 
         // 变更声音
-        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, index, 0);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, nextVolume, 0);
 
         // 变更进度条
 //        ViewGroup.LayoutParams lp = mOperationPercent.getLayoutParams();
 //        lp.width = findViewById(R.id.operation_full).getLayoutParams().width
-//                * index / mMaxVolume;
+//                * nextVolume / mMaxVolume;
 //        mOperationPercent.setLayoutParams(lp);
     }
 }

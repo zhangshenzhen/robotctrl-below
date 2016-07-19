@@ -37,7 +37,6 @@ public class MainActivity extends BaseActivity {
 
     DispQueueThread DispQueue=null;//刷新电压显示线程
     public BatteryView mBatteryView = null;
-    public int CountForbattery=0;
 
     private boolean serverChanged = false;
     private boolean serialChanged = false;
@@ -169,13 +168,6 @@ public class MainActivity extends BaseActivity {
             addTimerCount();
             Log.d(TAG, "run: " + getTimerCount());
 
-            CountForbattery++;
-            if(CountForbattery>10)
-            {
-                serialCtrl.getBattery();
-                CountForbattery=0;
-            }
-
             if(getTimerCount() > (10*60*1000/200)) {
                 Log.d(TAG, "Timeout to play video");
                 startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
@@ -234,14 +226,13 @@ public class MainActivity extends BaseActivity {
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:ChangeBrow \tvalue:" + rlt);
                     if ( !rlt.equals("") ) {
+                        SSDBTask.enableChangeBrow = false;
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
                         if (cn.getClassName().equals("com.brick.robotctrl.ExpressionActivity")) {
                             ExpressionActivity.changeExpression(Integer.parseInt(rlt));
-                            SSDBTask.enableChangeBrow = false;
                             Log.d(TAG, "handleMessage: changebrowed");
                         } else {
-                            SSDBTask.enableChangeBrow = false;
                             Log.d(TAG, "handleMessage: change brow failure because of current activity is not ExpressionActivity");
                         }
                     }
@@ -345,28 +336,22 @@ public class MainActivity extends BaseActivity {
     }
 
     //----------------------------------------------------电池电压刷新显示线程
+    private int batteryVoltVal = -1;
     public class DispQueueThread extends Thread{
         @Override
         public void run() {
             super.run();
             while(!isInterrupted()) {
-                final ComBean ComData;
-                while((ComData=SerialCtrl.ComRecDatatmp)!=null)
-                {
-                    runOnUiThread(new Runnable()
-                    {
-                        public void run()
-                        {
-                            serialCtrl.DispRecData(ComData);
-                            mBatteryView.setPower(SerialCtrl.BatteryNum);
+                while ((batteryVoltVal = serialCtrl.getBattery())!=-1) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            mBatteryView.setPower(batteryVoltVal);
                         }
                     });
 
-                    try
-                    {
-                        Thread.sleep(100);//显示性能高的话，可以把此数值调小。
-                    } catch (Exception e)
-                    {
+                    try {
+                        Thread.sleep(1000);//显示性能高的话，可以把此数值调小。
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;

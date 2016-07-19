@@ -74,7 +74,6 @@ public class ADVideo {
     }
 
     public void pause(){
-
         videoView.pause();
         per = videoView.getCurrentPosition();
     }

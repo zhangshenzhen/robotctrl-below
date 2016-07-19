@@ -41,8 +41,8 @@ public class Jason {
         System.out.println(retStr);
         return retStr;
     }
-    public static String doPostQuery(String url,String query) throws HttpException{
 
+    public static String doPostQuery(String url,String query) throws HttpException{
         String result = null;
         HttpClient client = new HttpClient();           //创建HTTP客户端实例
         PostMethod method = new PostMethod(url);        //

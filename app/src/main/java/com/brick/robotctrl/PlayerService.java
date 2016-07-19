@@ -18,6 +18,8 @@ public class PlayerService extends Service {
     private String path;                        //音乐文件路径
     private boolean isPause;                    //暂停状态
 
+    private static String mp3Url = null;
+
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
@@ -28,7 +30,8 @@ public class PlayerService extends Service {
         if (mediaPlayer.isPlaying()) {
             stop();
         }
-        path = intent.getStringExtra("url");
+//        path = intent.getStringExtra("url");
+        path = mp3Url;
         Log.d(TAG, "onStartCommand: " + path);
 //        int msg = intent.getIntExtra("MSG", 0);
 //        if(msg == AppConstant.PlayerMsg.PLAY_MSG) {
@@ -117,7 +120,8 @@ public class PlayerService extends Service {
         stopPlayerService(context);
 
         Intent playIntent = new Intent();
-        playIntent.putExtra("url", url);
+//        playIntent.putExtra("url", url);
+        mp3Url = url;
 //        intent.putExtra("MSG", 0);
         Log.d("", "startPlayerService: starting PlayService");
         playIntent.setClass(context, PlayerService.class);

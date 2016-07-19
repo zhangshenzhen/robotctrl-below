@@ -15,7 +15,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 
 	private static GifView gifView;
 	private String index = null;
-	UserTimer userTimer = null;
+//	UserTimer userTimer = null;
 	private static int currentIndex = -1;
 
 	enum EXPRESSION {
@@ -76,7 +76,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		Intent intent = getIntent();
 		index = intent.getStringExtra("index");
 
-		userTimer = new UserTimer();
+//		userTimer = new UserTimer();
 
 		setContentView(R.layout.gif);
 		gifView = (GifView) findViewById(R.id.gif2);
@@ -99,7 +99,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 
 
 	public void onClick(View v) {
-		userTimer.clearTimerCount();
+		clearTimerCount();
 
 		int index = currentIndex;
 		index++;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
@@ -17,10 +18,10 @@ import android.view.View;
 import java.util.List;
 
 
-public class SettingsActivity extends AppCompatPreferenceActivity{
+public class SettingsActivity extends BaseActivity{
     private static final String TAG = "SettingsActivity";
 
-    UserTimer userTimer = null;
+//    UserTimer userTimer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         }
     }
 
-    public void onBuildHeaders(List<Header> target) {
+    public void onBuildHeaders(List<PreferenceActivity.Header> target) {
 //        loadHeadersFromResource(R.xml.pref_headers, target);
         //NOTE1 用简单的GeneralPreferenceFragment配置界面 代替 默认的Headers 设置列表
         getFragmentManager().beginTransaction().

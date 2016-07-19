@@ -103,10 +103,6 @@ public class SSDBTask extends TimerTask {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        if (vibrator == null) {
-            throw new NullPointerException("vibrator is null");
-        }
         timer.schedule(this, 50, 50);
         connect();
         SSDBQuery(ACTION_HGET, "Location");

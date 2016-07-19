@@ -167,19 +167,23 @@ public class SerialCtrl {
             default:
         }
     }
-    public void getBattery()      //发送获取电压命令
+    public int getBattery()      //发送获取电压命令
     {
         sendPortData(ComA, "FF10FF10");
+        if( ComRecDatatmp != null) {
+            if (Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16) {
+                Log.d("getbattery", "getbattery: " + Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16));
+                return BatteryNum = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
+            }
+        }
+        return -1;
     }
 
-    //----------------------------------------------------显示接收数据
-    public void DispRecData(ComBean ComRecData){
-        // Log.d("getbattery", "getbattery: "+String.format("%02x", ComRecData.bRec[2]).toUpperCase());
-        if(Integer.parseInt(String.format("%02x", ComRecData.bRec[1]).toUpperCase(), 16)==16) {
-            Log.d("getbattery", "getbattery: " + Integer.parseInt(String.format("%02x", ComRecData.bRec[2]).toUpperCase(), 16));
-            BatteryNum = Integer.parseInt(String.format("%02x", ComRecData.bRec[2]).toUpperCase(), 16);
-        }
-    }
+//    //----------------------------------------------------显示接收数据
+//    public void DispRecData(ComBean ComRecData){
+//        // Log.d("getbattery", "getbattery: "+String.format("%02x", ComRecData.bRec[2]).toUpperCase());
+//
+//    }
     public void setRobotRate(String rate) {
         Log.d(TAG, "setRobotRate: ");
         String[] splitRate = rate.split(" ");
