@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:keepScreenOn="true"
     android:id="@+id/gifActivity"
-    android:background="#ffffff">
+    android:background="#203040">
 
     <com.ant.liao.GifView
         android:id="@+id/gif2"
