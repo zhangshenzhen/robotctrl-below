@@ -2,13 +2,16 @@ package com.brick.robotctrl;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +24,8 @@ import com.bean.serialport.ComBean;
 import com.jly.batteryView.BatteryView;
 import com.udpwork.ssdb.SSDB;
 
+import java.util.Calendar;
+import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,6 +49,9 @@ public class MainActivity extends BaseActivity {
     private RelativeLayout mainActivity = null;
 
     private String mp3Url = "/sdcard/Movies/qianqian.mp3";
+
+    Calendar currentTime = null;
+    Calendar previousTime = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,11 +153,32 @@ public class MainActivity extends BaseActivity {
     }
 
     private int countForPlayer = 0;
+    private int countForAlive = 0;
+    private String strTimeFormat = null;
+    private String disableAudio = "No";
     TimerTask queryTask = new TimerTask() {
         @Override
         public void run() {
-            if ( !ssdbTask.stop )
+            if ( !ssdbTask.stop )                   // 发起读请求
                 ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
+
+            if ( countForAlive++ > 5*1000/200 ) {
+                currentTime = Calendar.getInstance();
+                strTimeFormat = android.provider.Settings.System.getString(getContentResolver(), android.provider.Settings.System.TIME_12_24);
+                if (strTimeFormat.equals(null) || strTimeFormat.equals("12")) {     // 12HOUR
+                    if (Calendar.getInstance().get(Calendar.AM_PM) == Calendar.AM) {      // AM
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR)) +
+                                ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
+                    } else {    // PM
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR) + 12) +
+                                ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
+                    }
+                }else {        // 24HOUR
+                    ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR)) +
+                            ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
+                }
+                countForAlive = 0;
+            }
 
             ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
@@ -164,9 +193,20 @@ public class MainActivity extends BaseActivity {
                     countForPlayer = 0;
                 }
             }
+            if( cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {
+                if ( disableAudio.equals("No") ) {
+                    disableAudio = "Yes";
+                    ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_DisableAudio], disableAudio);
+                }
+            } else {
+                if ( disableAudio.equals("Yes") ) {
+                    disableAudio = "No";
+                    ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_DisableAudio], disableAudio);
+                }
+            }
 
             addTimerCount();
-            Log.d(TAG, "run: " + getTimerCount());
+//            Log.d(TAG, "run: " + getTimerCount());
 
             if(getTimerCount() > (10*60*1000/200)) {
                 Log.d(TAG, "Timeout to play video");

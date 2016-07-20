@@ -143,8 +143,10 @@ public class SSDBTask extends TimerTask {
     public static final int Key_NetworkDelay = 8;
     public static final int Key_Location = 9;
     public static final int Key_ChangeBrow = 10;
+    public static final int Key_CurrentTime = 11;
+    public static final int Key_DisableAudio = 12;
     public static final String[] event = new String[]{"event", "DirCtl", "param",
-            "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt", "NetworkDelay", "Location", "Brow"};
+            "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt", "NetworkDelay", "Location", "Brow", "CurrentTime", "DisableAudio"};
     public static boolean enableDirCtl = false;
     public static boolean enableChangeBrow = false;
     public static boolean enableSetParameter = false;
