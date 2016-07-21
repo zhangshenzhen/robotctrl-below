@@ -24,8 +24,9 @@ public class SerialCtrl {
     private Handler contextHandler = null;
     private Context context = null;
 
-    public static ComBean ComRecDatatmp=null;    //暂存电池电压的值
-    public static int BatteryNum = 0;         //最终电压值
+    public static ComBean ComRecDatatmp = null;    //暂存电池电压的值
+    public static int batteryNum = 0;         //最终电压值
+    public static boolean readyForRead = false;
 
     public SerialCtrl(Context context, Handler handler) {
         assert context != null;
@@ -38,6 +39,7 @@ public class SerialCtrl {
 
         ComA = new SerialControl();
         openSerialCOM();
+        sendPortData(ComA, "FF10FF10");
     }
 
     public void setSerialCOM(@NonNull String serialCOM) {
@@ -87,6 +89,17 @@ public class SerialCtrl {
         {
             // receive data
             ComRecDatatmp = ComRecData;
+            try {
+                if (Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16) {
+                    batteryNum = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d(TAG, "onDataReceived: ");
+            }
+//            else {
+//                batteryNum = ComRecDatatmp.bRec[2];
+//            }
         }
     }
 
@@ -170,11 +183,7 @@ public class SerialCtrl {
     public int getBattery()      //发送获取电压命令
     {
         sendPortData(ComA, "FF10FF10");
-        if ( ComRecDatatmp != null && (Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16)) {
-            Log.d("getbattery", "getbattery: " + Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16));
-            return BatteryNum = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
-        }
-        return -1;
+        return batteryNum;
     }
 
 //    //----------------------------------------------------显示接收数据
