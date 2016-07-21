@@ -35,7 +35,7 @@ public class NoQueryActivity extends BaseActivity {
         showText = intent.getStringExtra("extra_showResult");
         Log.d("extra_showResult", showText);
         text.setText(showText);
-        PlayerService.startPlayerService(NoQueryActivity.this, mp3Url);
+        PlayerService.startAction(NoQueryActivity.this, mp3Url);
 
         gf =(GifView)findViewById(R.id.gif3);
         gf.setGifImage(R.drawable.smile);

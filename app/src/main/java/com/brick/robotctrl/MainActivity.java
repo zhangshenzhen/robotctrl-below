@@ -139,12 +139,7 @@ public class MainActivity extends BaseActivity {
         };
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(presChangeListener);
 
-        Intent playIntent = new Intent();
-        playIntent.putExtra("url", mp3Url);
-//        intent.putExtra("MSG", 0);
-        Log.d(TAG, "onCreate: starting PlayService");
-        playIntent.setClass(MainActivity.this, PlayerService.class);
-        startService(playIntent);       //启动服务
+        PlayerService.startAction(this, mp3Url);
 
         // relative timer
         Timer timer = new Timer(true);
@@ -189,7 +184,7 @@ public class MainActivity extends BaseActivity {
                 countForPlayer++;
 //                Log.d(TAG, "run: countForPlayer:" + countForPlayer);
                 if ( countForPlayer == 30*1000/200 ) {
-                    PlayerService.startPlayerService(MainActivity.this, mp3Url);
+                    PlayerService.startAction(MainActivity.this, mp3Url);
                     countForPlayer = 0;
                 }
             }
@@ -362,7 +357,7 @@ public class MainActivity extends BaseActivity {
     protected void onRestart() {
         Log.i(TAG, "onRestart");
         countForPlayer = 0;
-        PlayerService.startPlayerService(MainActivity.this, mp3Url);
+        PlayerService.startAction(MainActivity.this, mp3Url);
         super.onRestart();
     }
 

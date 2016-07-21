@@ -243,7 +243,7 @@ public class QuestTestActivity extends BaseActivity {
                 public void onCompletion(MediaPlayer mp) {
                     if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
                         asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
-                        PlayerService.stopPlayerService(QuestTestActivity.this);
+                        PlayerService.stopAction(QuestTestActivity.this);
                         mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
                     } else {
                         Log.e("recorder", "录音机未处于空闲状态，请稍等");
@@ -261,7 +261,7 @@ public class QuestTestActivity extends BaseActivity {
                 mBtnRecogRealTimeMode.setClickable(false);
                 if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
                     asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
-                    PlayerService.stopPlayerService(QuestTestActivity.this);
+                    PlayerService.stopAction(QuestTestActivity.this);
                     mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
                 } else {
                     Log.e("recorder", "录音机未处于空闲状态，请稍等");
@@ -580,7 +580,7 @@ public class QuestTestActivity extends BaseActivity {
                 public void onCompletion(MediaPlayer mp) {
                     if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
                         asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
-                        PlayerService.stopPlayerService(QuestTestActivity.this);
+                        PlayerService.stopAction(QuestTestActivity.this);
                         mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
                     } else {
                         Log.e("recorder", "录音机未处于空闲状态，请稍等");

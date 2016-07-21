@@ -111,13 +111,13 @@ public class PlayerService extends Service {
     }
 
 
-    public static void startPlayerService(Context context, String url) {
+    public static void startAction(Context context, String url) {
         File file = new File(url);
         if ( !file.exists() ) {
             Log.d(TAG, "startPlayerService: File:" + url + " not exist! startPlayerService no effective");
             return;
         }
-        stopPlayerService(context);
+        stopAction(context);
 
         Intent playIntent = new Intent();
 //        playIntent.putExtra("url", url);
@@ -128,7 +128,7 @@ public class PlayerService extends Service {
         context.startService(playIntent);       //启动服务
     }
 
-    public static void stopPlayerService(Context context) {
+    public static void stopAction(Context context) {
         Intent stopIntent = new Intent();
         Log.d("", "stopPlayerService: starting stopService");
         stopIntent.setClass(context, PlayerService.class);
