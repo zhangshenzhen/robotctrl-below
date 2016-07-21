@@ -273,9 +273,9 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case SSDBTask.ACTION_CONNECT_FAILED:
-//                    Log.d(TAG, "handleMessage: connect ssdb failure!");
-//                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-//                    startActivityForResult(intent, 0);
+                    Log.d(TAG, "handleMessage: connect ssdb failure!");
+                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivityForResult(intent, 0);
                     break;
                 default:
                     break;
