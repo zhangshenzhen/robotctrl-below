@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity {
     private RelativeLayout mainActivity = null;
 
     private String mp3Url = "/sdcard/Movies/qianqian.mp3";
+    private final String defaultTimeFormat = "12";
 
     Calendar currentTime = null;
     Calendar previousTime = null;
@@ -160,7 +161,7 @@ public class MainActivity extends BaseActivity {
             if ( countForAlive++ > 5*1000/200 ) {
                 currentTime = Calendar.getInstance();
                 strTimeFormat = android.provider.Settings.System.getString(getContentResolver(), android.provider.Settings.System.TIME_12_24);
-                if (strTimeFormat.equals(null) || strTimeFormat.equals("12")) {     // 12HOUR
+                if ( (strTimeFormat == null) || (strTimeFormat.equals("")) || strTimeFormat.equals("12") ) {     // 12HOUR
                     if (Calendar.getInstance().get(Calendar.AM_PM) == Calendar.AM) {      // AM
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR)) +
                                 ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
