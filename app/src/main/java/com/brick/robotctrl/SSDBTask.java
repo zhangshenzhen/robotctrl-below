@@ -8,6 +8,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.EventLog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -133,25 +134,63 @@ public class SSDBTask extends TimerTask {
 
 
     public static final int Key_Event = 0;
-    public static final int Key_DirCtrl = 1;
-    public static final int  Key_SetParam = 2;
-    public static final int Key_VideoPlay = 3;
-    public static final int Key_VideoInfo = 4;
-    public static final int Key_VideoPlayList = 5;
-    public static final int Key_RobotMsg = 6;
-    public static final int Key_BatteryVolt = 7;
-    public static final int Key_NetworkDelay = 8;
-    public static final int Key_Location = 9;
-    public static final int Key_ChangeBrow = 10;
-    public static final int Key_CurrentTime = 11;
+    public static final int Key_DirCtrl = 1;////
+    public static final int  Key_SetParam = 2;////
+    public static final int Key_VideoPlay = 3;//
+    public static final int Key_VideoInfo = 4;//
+    public static final int Key_VideoPlayList = 5;//
+    public static final int Key_RobotMsg = 6; //
+    public static final int Key_BatteryVolt = 7;  //
+    public static final int Key_NetworkDelay = 8;//
+    public static final int Key_Location = 9;////
+    public static final int Key_ChangeBrow = 10;////
+    public static final int Key_CurrentTime = 11;//
     public static final int Key_DisableAudio = 12;
     public static final String[] event = new String[]{"event", "DirCtl", "param",
-            "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt", "NetworkDelay", "Location", "Brow", "CurrentTime", "DisableAudio"};
+            "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt",
+            "NetworkDelay", "Location", "Brow", "CurrentTime", "DisableAudio"};
+   ////////////////////////gaowei/////////////////////////////
+    public static boolean enableForbidAudio=false;
+    public static boolean enableCurrentTime=false;
+    public static boolean enableLocation=false;
+    public static boolean enableNetworkDelay=false;
+    public static boolean enableBatteryVolt=false;
+    public static boolean enableRobotMsg=false;             //
+    public static boolean enableVideoPlayList=false;        //
+    public static boolean enableVideoPlay=false;            //
+    public static boolean enableVideoInfo=false;            //
+    ////////////////////////gaowei////////////////////////////
     public static boolean enableDirCtl = false;
     public static boolean enableChangeBrow = false;
     public static boolean enableSetParameter = false;
 
     private int iCount = 0;
+
+    ////////////////////////gaowei///////////////////////////////////////////////////////////
+
+  void sendMessageToMain(int Key_Type)     //ssdbtask对象从数据库取key_type所指定的键的值给mainactivity                                                //
+  {                                                                                        //
+      try {
+          byte[] rlt = ssdbClient.hget(robotName, event[Key_Type]); // check event
+          if (rlt != null) {
+              Message message = new Message();
+              message.what = Key_Type;
+              message.obj = new String(rlt, "GBK");
+              contextHandler.sendMessage(message);
+          }
+      } catch (Exception e) {
+          e.printStackTrace();
+          SSDBQuery(ACTION_CONNECT);
+      }
+  }
+                                                                                            //
+    ////////////////////////gaowei/////////////////////////////////////////////////////////
+
+
+
+
+
+
     @Override
     public synchronized void run() {
 //        Log.d(TAG, "run: stop:" + stop);
@@ -214,6 +253,58 @@ public class SSDBTask extends TimerTask {
                             SSDBQuery(ACTION_CONNECT);
                         }
                     }
+                    ////////////////////////gaowei/////////////////////////////////////////
+
+                    if(enableVideoInfo){
+                        sendMessageToMain(Key_VideoInfo);
+                    }else{
+                        SSDBQuery(ACTION_HSET, event[Key_VideoInfo], "");
+                    }
+                    if(enableVideoPlay){
+                        sendMessageToMain( Key_VideoPlay);
+                    }else {
+                        SSDBQuery(ACTION_HSET, event[Key_VideoPlay], "");
+                    }
+                    if(enableVideoPlayList){
+                        sendMessageToMain(Key_VideoPlayList);
+                    }else{
+                        SSDBQuery(ACTION_HSET, event[Key_VideoPlayList], "");
+                    }
+                    if(enableRobotMsg){
+                        sendMessageToMain(Key_RobotMsg);
+                    }else{
+                        SSDBQuery(ACTION_HSET, event[Key_RobotMsg], "");
+                    }
+                    if(enableBatteryVolt){
+                        sendMessageToMain(Key_BatteryVolt);
+                    }else{
+                        SSDBQuery(ACTION_HSET, event[Key_BatteryVolt], "");
+                    }
+                    if(enableNetworkDelay){
+                        sendMessageToMain(Key_NetworkDelay);
+                    }else{
+                        SSDBQuery(ACTION_HSET, event[Key_NetworkDelay], "");
+                    }
+                    if(enableLocation){
+                        sendMessageToMain(Key_Location);
+                    }else{
+                        SSDBQuery(ACTION_HSET, event[Key_Location]);
+                    }
+                    if(enableCurrentTime){
+                        sendMessageToMain(Key_CurrentTime);
+                    }else{
+                        SSDBQuery(ACTION_HSET, event[Key_CurrentTime]);
+                    }
+
+                    if(enableForbidAudio){
+                        sendMessageToMain(Key_DisableAudio);
+                    }else{
+                        SSDBQuery(ACTION_HSET, event[Key_DisableAudio]);
+                    }
+
+                    /////////////////////////////gaowei////////////////////////////////////////
+
+
                     ////////////////////////////////////////////////////////////// 200ms check
                     if (enableDirCtl) {             // check control move
                         try {

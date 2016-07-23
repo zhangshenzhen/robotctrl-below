@@ -32,7 +32,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
-
+    private final String robotLocation = "江苏省无锡市";
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
 
     ImageView leftEyeButton = null;
@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                     if (key.equals(robotName) && val != null) {
-                        ssdbTask.setRobotName(val);     // deal it if val = null
+                        ssdbTask.setRobotName(val);     // deal it if val = null设置表名
                     } else if (key.equals(serverIp) && val != null) {
                         ssdbTask.setServerIP(val);
                         serverChanged = true;
@@ -143,21 +143,21 @@ public class MainActivity extends BaseActivity {
 
         // relative timer
         Timer timer = new Timer(true);
-        timer.schedule(queryTask, 200, 200); //延时1000ms后执行，1000ms执行一次
+        timer.schedule(queryTask, 200, 200); //改指令执行后延时1000ms后执行run，之后每1000ms执行一次run
         // timer.cancel(); //退出计时器
     }
 
-    private int countForPlayer = 0;
-    private int countForAlive = 0;
+    private int countForPlayer = 0;//播放计数器
+    private int countForAlive = 0;//复活计数器
     private String strTimeFormat = null;
     private String disableAudio = "No";
     TimerTask queryTask = new TimerTask() {
         @Override
         public void run() {
             if ( !ssdbTask.stop )                   // 发起读请求
-                ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
+                ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-            if ( countForAlive++ > 5*1000/200 ) {
+            if ( countForAlive++ > 5*1000/200 ) {//显示时间
                 currentTime = Calendar.getInstance();
                 strTimeFormat = android.provider.Settings.System.getString(getContentResolver(), android.provider.Settings.System.TIME_12_24);
                 if (strTimeFormat.equals(null) || strTimeFormat.equals("12")) {     // 12HOUR
@@ -175,8 +175,8 @@ public class MainActivity extends BaseActivity {
                 countForAlive = 0;
             }
 
-            ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+            ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
 //            Log.d(TAG, "pkg:"+cn.getPackageName());
 //            Log.d(TAG, "cls:"+cn.getClassName());
 
@@ -188,7 +188,7 @@ public class MainActivity extends BaseActivity {
                     countForPlayer = 0;
                 }
             }
-            if( cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {
+            if( cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {//什么意思
                 if ( disableAudio.equals("No") ) {
                     disableAudio = "Yes";
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_DisableAudio], disableAudio);
@@ -239,7 +239,166 @@ public class MainActivity extends BaseActivity {
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
+                    ////////////////////1111111gaowei1111111111111//////////////////////
+                    if(rlt.equals("VideoPlay")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableVideoPlay = true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
+                    if(rlt.equals("VideoInfo")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableVideoInfo = true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
+                    if(rlt.equals("VideoPlayList")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableVideoPlayList = true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
+                    if(rlt.equals("RobotMsg")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableRobotMsg= true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
+                    if(rlt.equals("BatteryVolt")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableBatteryVolt= true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
+                    if(rlt.equals("NetworkDelay")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableNetworkDelay= true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
+                    if(rlt.equals("Location")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableLocation= true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
+                    if(rlt.equals("CurrentTime")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableCurrentTime= true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
+                    if(rlt.equals("DisableAudio")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableForbidAudio= true;//使能静音
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
+
+                    ////////////////////2222222222gaowei222222222222//////////////////////
+
                     break;
+                ///////////////////////////////////////////////1111111gaowei1111111/////////////////////////////////////
+                case SSDBTask.Key_Location:                                                             //
+                    rlt=(String)msg.obj;                                                                //
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                    if(!rlt.equals(""))   {
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], robotLocation);                                                                                 //
+                        SSDBTask.enableLocation=false;
+                    }
+                    break;
+
+
+
+                case SSDBTask.Key_VideoPlay:                                                             //
+                    rlt=(String)msg.obj;                                                                //
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                    if(!rlt.equals(""))   {
+                        //!!!!!!!!!!!播放音乐函数
+                        //
+                        SSDBTask.enableVideoPlay=false;
+
+                    }
+                    break;
+
+                case SSDBTask.Key_VideoInfo:                                                             //
+                    rlt=(String)msg.obj;                                                                //
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                    if(!rlt.equals(""))   {
+                        //!!!!!!!!!!!执行videoinfo操作
+                        //
+                        SSDBTask.enableVideoInfo=false;
+
+                    }
+                    break;
+
+                case SSDBTask.Key_VideoPlayList:                                                             //
+                    rlt=(String)msg.obj;                                                                //
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                    if(!rlt.equals(""))   {
+                        //!!!!!!!!!!!执行videoPlayList操作
+                        //
+                        SSDBTask.enableVideoPlayList=false;
+
+                    }
+                    break;
+
+                case SSDBTask.Key_RobotMsg:                                                             //
+                    rlt=(String)msg.obj;                                                                //
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                    if(!rlt.equals(""))   {
+                        //!!!!!!!!!!!执行videorobotmsg操作
+                        //
+                        SSDBTask.enableRobotMsg=false;
+
+                    }
+                    break;
+
+                case SSDBTask.Key_BatteryVolt:                                                             //
+                    rlt=(String)msg.obj;                                                                //
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                    if(!rlt.equals(""))   {
+                        //!!!!!!!!!!!执行BatteryVolt操作
+                        //
+                        SSDBTask.enableBatteryVolt=false;
+
+                    }
+                    break;
+
+                case SSDBTask.Key_NetworkDelay:                                                             //
+                    rlt=(String)msg.obj;                                                                //
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                    if(!rlt.equals(""))   {
+                        //!!!!!!!!!!!执行NetworkDelay操作
+                        //
+                        SSDBTask.enableNetworkDelay=false;
+
+                    }
+                    break;
+                case SSDBTask.Key_CurrentTime:                                                             //
+                    rlt=(String)msg.obj;                                                                //
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                    if(!rlt.equals(""))   {
+                        //!!!!!!!!!!!执行CurrentTime操作
+                        //
+                        SSDBTask.enableCurrentTime=false;
+
+                    }
+                    break;
+                case SSDBTask.Key_DisableAudio:                                                             //
+                    rlt=(String)msg.obj;                                                                //
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                    if(!rlt.equals(""))   {
+                        //!!!!!!!!!!!执行ForbidAudio操作
+                        //
+                        SSDBTask.enableForbidAudio=false;
+
+                    }
+                    break;
+
+
+                                                                                                        //
+                 ///////////////////////////////////////////////2222222gaowei2222222//////////////////////////////////
                 case SSDBTask.Key_DirCtrl:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:DirCtrl \tvalue:" + rlt);
