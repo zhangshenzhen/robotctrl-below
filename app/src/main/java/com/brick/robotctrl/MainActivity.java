@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity {
     private RelativeLayout mainActivity = null;
 
     private String mp3Url = "/sdcard/Movies/qianqian.mp3";
+    private final String defaultTimeFormat = "12";
 
     Calendar currentTime = null;
     Calendar previousTime = null;
@@ -72,7 +73,7 @@ public class MainActivity extends BaseActivity {
         DispQueue = new DispQueueThread();      //获取电压显示线程
         DispQueue.start();
         mBatteryView = (BatteryView) findViewById(R.id.battery_view);
-        mBatteryView.setPower(SerialCtrl.BatteryNum);
+        mBatteryView.setPower(SerialCtrl.batteryNum);
 
         leftEyeButton = (ImageView) findViewById(R.id.leftEyeButton);
         leftEyeButton.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +161,7 @@ public class MainActivity extends BaseActivity {
             if ( countForAlive++ > 5*1000/200 ) {//显示时间
                 currentTime = Calendar.getInstance();
                 strTimeFormat = android.provider.Settings.System.getString(getContentResolver(), android.provider.Settings.System.TIME_12_24);
-                if (strTimeFormat.equals(null) || strTimeFormat.equals("12")) {     // 12HOUR
+                if ( (strTimeFormat == null) || (strTimeFormat.equals("")) || strTimeFormat.equals("12") ) {     // 12HOUR
                     if (Calendar.getInstance().get(Calendar.AM_PM) == Calendar.AM) {      // AM
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR)) +
                                 ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
@@ -530,28 +531,31 @@ public class MainActivity extends BaseActivity {
     }
 
     //----------------------------------------------------电池电压刷新显示线程
-    private int batteryVoltVal = -1;
+    private int batteryVoltVal = 0;
     public class DispQueueThread extends Thread{
         @Override
         public void run() {
             super.run();
             while(!isInterrupted()) {
-                if ((batteryVoltVal = serialCtrl.getBattery())!=-1) {
-                    Log.d(TAG, "run: batteryVoltVal = " + batteryVoltVal);
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            mBatteryView.setPower(batteryVoltVal);
+                try {
+                    while( true ) {
+                        batteryVoltVal = serialCtrl.getBattery();
+                        Log.d(TAG, "run: batteryVoltVal = " + batteryVoltVal);
+                        if ( batteryVoltVal != 0) {
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    mBatteryView.setPower(batteryVoltVal);
+                                }
+                            });
                         }
-                    });
-
-                    try {
                         Thread.sleep(1000);//显示性能高的话，可以把此数值调小。
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                    break;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                break;
             }
+            Log.d(TAG, "run: while over");
         }
     }
 }

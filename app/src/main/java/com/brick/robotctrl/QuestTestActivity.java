@@ -450,11 +450,16 @@ public class QuestTestActivity extends BaseActivity {
 		super.onRestart();
 	}
 
-//	@Override
-//	public void onStop() {
-//		super.onStop();
-//	}
-//
+	@Override
+	public void onStop() {
+        if(mAsrRecorder != null) {
+            mAsrRecorder.cancel();
+            Log.d(TAG, "onStop: okkk");
+        }
+        Log.d(TAG, "onStop: ok");
+        super.onStop();
+	}
+
 
     @Override
     public void onDestroy() {
