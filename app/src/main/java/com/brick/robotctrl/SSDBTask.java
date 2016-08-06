@@ -240,6 +240,7 @@ public class SSDBTask extends TimerTask {
                     break;
                 case ACTION_HGET:
                     if (++iCount >= 5) {        // 1s check
+                        iCount = 0;
                         try {
                             byte[] rlt = ssdbClient.hget(robotName, event[Key_Event]); // check event
                             if (rlt != null) {
