@@ -150,9 +150,11 @@ public class SSDBTask extends TimerTask {
     public static final int Key_ChangeBrow = 10;////
     public static final int Key_CurrentTime = 11;//
     public static final int Key_DisableAudio = 12;
+    public static final int Key_SetVolume = 13;
     public static final String[] event = new String[]{"event", "DirCtl", "param",
             "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt",
-            "NetworkDelay", "Location", "Brow", "CurrentTime", "DisableAudio"};
+            "NetworkDelay", "Location", "Brow", "CurrentTime", "DisableAudio",
+            "Volume"};
    ////////////////////////gaowei/////////////////////////////
     public static boolean enableForbidAudio=false;
     public static boolean enableCurrentTime=false;
@@ -167,34 +169,25 @@ public class SSDBTask extends TimerTask {
     public static boolean enableDirCtl = false;
     public static boolean enableChangeBrow = false;
     public static boolean enableSetParameter = false;
+    public static boolean enableSetVolume = false;
 
     private int iCount = 0;
 
-    ////////////////////////gaowei///////////////////////////////////////////////////////////
-
-  void sendMessageToMain(int Key_Type)     //ssdbtask对象从数据库取key_type所指定的键的值给mainactivity                                                //
-  {                                                                                        //
-      try {
-          byte[] rlt = ssdbClient.hget(robotName, event[Key_Type]); // check event
-          if (rlt != null) {
-              Message message = new Message();
-              message.what = Key_Type;
-              message.obj = new String(rlt, "GBK");
-              contextHandler.sendMessage(message);
-          }
-      } catch (Exception e) {
-          e.printStackTrace();
-          SSDBQuery(ACTION_CONNECT);
-      }
-  }
-                                                                                            //
-    ////////////////////////gaowei/////////////////////////////////////////////////////////
-
-
-
-
-
-
+    void sendMessageToMain(int Key_Type)     //ssdbtask对象从数据库取key_type所指定的键的值给mainactivity by gaowei                                               //
+    {
+        try {
+            byte[] rlt = ssdbClient.hget(robotName, event[Key_Type]); // check event
+            if (rlt != null) {
+                Message message = new Message();
+                message.what = Key_Type;
+                message.obj = new String(rlt, "GBK");
+                contextHandler.sendMessage(message);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            SSDBQuery(ACTION_CONNECT);
+        }
+    }
     @Override
     public synchronized void run() {
 //        Log.d(TAG, "run: stop:" + stop);
@@ -258,8 +251,7 @@ public class SSDBTask extends TimerTask {
                             SSDBQuery(ACTION_CONNECT);
                         }
                     }
-                    ////////////////////////gaowei/////////////////////////////////////////
-
+                    // by gaowei start
                     if(enableVideoInfo){
                         sendMessageToMain(Key_VideoInfo);
                     }else{
@@ -300,16 +292,12 @@ public class SSDBTask extends TimerTask {
                     }else{
                         SSDBQuery(ACTION_HSET, event[Key_CurrentTime]);
                     }
-
                     if(enableForbidAudio){
                         sendMessageToMain(Key_DisableAudio);
                     }else{
                         SSDBQuery(ACTION_HSET, event[Key_DisableAudio]);
                     }
-
-                    /////////////////////////////gaowei////////////////////////////////////////
-
-
+                    // by gaowei end
                     ////////////////////////////////////////////////////////////// 200ms check
                     if (enableDirCtl) {             // check control move
                         try {
@@ -359,6 +347,23 @@ public class SSDBTask extends TimerTask {
                     } else {
                         SSDBQuery(ACTION_HSET, event[Key_ChangeBrow], "");
                     }
+                    if ( enableSetVolume ) {       // check volume change
+                        try {
+                            byte[] rlt = ssdbClient.hget(robotName, event[Key_SetVolume]);
+                            if (rlt != null) {
+                                Message message = new Message();
+                                message.what = Key_SetVolume;
+                                message.obj = new String(rlt, "GBK");
+                                contextHandler.sendMessage(message);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            SSDBQuery(ACTION_CONNECT);
+                        }
+                    }
+//                    else {
+//                        SSDBQuery(ACTION_HSET, event[Key_ChangeBrow], "");      // 后面不能清
+//                    }
                 default:
                     break;
             }

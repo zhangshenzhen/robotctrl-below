@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -219,6 +220,11 @@ public class MainActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case SSDBTask.Key_Event:
+                    /**
+                     * 处理event方法
+                     * 1. 设置event事件使能，以获取事件内容；
+                     * 2. 清除服务器中该event事件；
+                     */
                     String rlt  = (String) msg.obj;
 //                    Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                     if (rlt.equals("DirCtl")) {
@@ -239,7 +245,12 @@ public class MainActivity extends BaseActivity {
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    ////////////////////1111111gaowei1111111111111//////////////////////
+                    if(rlt.equals("Volume")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        ssdbTask.enableSetVolume = true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_SetVolume], "");
+                    }
+                    // by gaowei start
                     if(rlt.equals("VideoPlay")) {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableVideoPlay = true;
@@ -294,11 +305,13 @@ public class MainActivity extends BaseActivity {
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-
-                    ////////////////////2222222222gaowei222222222222//////////////////////
-
                     break;
-                ///////////////////////////////////////////////1111111gaowei1111111/////////////////////////////////////
+                /**
+                 * 处理具体的event事件
+                 * 1. 根据event事件的持续性修改event事件的使能开关；
+                 * 2. 对获取的数据做一定的断言处理；
+                 * 3. 根据事件类型及事件内容改变robot行为；
+                 */
                 case SSDBTask.Key_Location:
                     rlt=(String)msg.obj;
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
@@ -307,72 +320,52 @@ public class MainActivity extends BaseActivity {
                         SSDBTask.enableLocation=false;
                     }
                     break;
-
-
-
                 case SSDBTask.Key_VideoPlay:
                     rlt=(String)msg.obj;
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!播放音乐函数
-                        //
                         SSDBTask.enableVideoPlay=false;
-
                     }
                     break;
-
                 case SSDBTask.Key_VideoInfo:
                     rlt=(String)msg.obj;
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行videoinfo操作
-                        //
                         SSDBTask.enableVideoInfo=false;
-
                     }
                     break;
-
                 case SSDBTask.Key_VideoPlayList:
                     rlt=(String)msg.obj;
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行videoPlayList操作
-                        //
                         SSDBTask.enableVideoPlayList=false;
-
                     }
                     break;
-
                 case SSDBTask.Key_RobotMsg:
                     rlt=(String)msg.obj;
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行videorobotmsg操作
-                        //
                         SSDBTask.enableRobotMsg=false;
-
                     }
                     break;
-
                 case SSDBTask.Key_BatteryVolt:
                     rlt=(String)msg.obj;
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行BatteryVolt操作
-                        //
                         SSDBTask.enableBatteryVolt=false;
-
                     }
                     break;
-
                 case SSDBTask.Key_NetworkDelay:
                     rlt=(String)msg.obj;
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行NetworkDelay操作
-                        //
                         SSDBTask.enableNetworkDelay=false;
-
                     }
                     break;
                 case SSDBTask.Key_CurrentTime:
@@ -380,9 +373,7 @@ public class MainActivity extends BaseActivity {
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行CurrentTime操作
-                        //
                         SSDBTask.enableCurrentTime=false;
-
                     }
                     break;
                 case SSDBTask.Key_DisableAudio:
@@ -390,13 +381,10 @@ public class MainActivity extends BaseActivity {
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行ForbidAudio操作
-                        //
                         SSDBTask.enableForbidAudio=false;
-
                     }
                     break;
-
-                 ///////////////////////////////////////////////2222222gaowei2222222//////////////////////////////////
+                // by gaowie end
                 case SSDBTask.Key_DirCtrl:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:DirCtrl \tvalue:" + rlt);
@@ -429,6 +417,19 @@ public class MainActivity extends BaseActivity {
                         }
                     }
                     break;
+                case SSDBTask.Key_SetVolume:
+                    rlt = (String) msg.obj;
+                    Log.d(TAG, "handleMessage: ------------------Key:SetVolume \tvalue:" + rlt);
+                    if ( !rlt.equals("") ) {
+                        int volume = Integer.parseInt(rlt);
+                        if(volume > 100) {
+                            volume = 100;
+                        } else if( volume < 0 ) {
+                            volume = 0;
+                        }
+                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
+                        SSDBTask.enableSetVolume = false;
+                    }
                 case SSDBTask.ACTION_CONNECT_FAILED:
                     Log.d(TAG, "handleMessage: connect ssdb failure!");
                     Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
