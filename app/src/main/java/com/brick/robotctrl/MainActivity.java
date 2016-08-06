@@ -32,7 +32,6 @@ import java.util.TimerTask;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
-    private final String robotLocation = "江苏省无锡市";
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
 
     ImageView leftEyeButton = null;
@@ -45,14 +44,11 @@ public class MainActivity extends BaseActivity {
 
     private boolean serverChanged = false;
     private boolean serialChanged = false;
-
-    private RelativeLayout mainActivity = null;
+    private boolean robotLocationChanged = false;
 
     private String mp3Url = "/sdcard/Movies/qianqian.mp3";
-    private final String defaultTimeFormat = "12";
 
     Calendar currentTime = null;
-    Calendar previousTime = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +92,7 @@ public class MainActivity extends BaseActivity {
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
         presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             private final String robotName = getString(R.string.robotName);
+            private final String robotLocation = getString(R.string.robotLocation);
             private final String serverIp = getString(R.string.serverIp);
             private final String serverPort = getString(R.string.serverPort);
             private final String controlType = getString(R.string.controlType);
@@ -118,6 +115,8 @@ public class MainActivity extends BaseActivity {
                     }
                     if (key.equals(robotName) && val != null) {
                         ssdbTask.setRobotName(val);     // deal it if val = null设置表名
+                    } else if(key.equals(robotLocation) && val != null) {
+                        ssdbTask.setRobotLocation(val);
                     } else if (key.equals(serverIp) && val != null) {
                         ssdbTask.setServerIP(val);
                         serverChanged = true;
@@ -300,20 +299,20 @@ public class MainActivity extends BaseActivity {
 
                     break;
                 ///////////////////////////////////////////////1111111gaowei1111111/////////////////////////////////////
-                case SSDBTask.Key_Location:                                                             //
-                    rlt=(String)msg.obj;                                                                //
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                case SSDBTask.Key_Location:
+                    rlt=(String)msg.obj;
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
-                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], robotLocation);                                                                                 //
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);                                                                                 //
                         SSDBTask.enableLocation=false;
                     }
                     break;
 
 
 
-                case SSDBTask.Key_VideoPlay:                                                             //
-                    rlt=(String)msg.obj;                                                                //
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                case SSDBTask.Key_VideoPlay:
+                    rlt=(String)msg.obj;
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!播放音乐函数
                         //
@@ -322,9 +321,9 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
 
-                case SSDBTask.Key_VideoInfo:                                                             //
-                    rlt=(String)msg.obj;                                                                //
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                case SSDBTask.Key_VideoInfo:
+                    rlt=(String)msg.obj;
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行videoinfo操作
                         //
@@ -333,9 +332,9 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
 
-                case SSDBTask.Key_VideoPlayList:                                                             //
-                    rlt=(String)msg.obj;                                                                //
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                case SSDBTask.Key_VideoPlayList:
+                    rlt=(String)msg.obj;
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行videoPlayList操作
                         //
@@ -344,9 +343,9 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
 
-                case SSDBTask.Key_RobotMsg:                                                             //
-                    rlt=(String)msg.obj;                                                                //
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                case SSDBTask.Key_RobotMsg:
+                    rlt=(String)msg.obj;
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行videorobotmsg操作
                         //
@@ -355,9 +354,9 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
 
-                case SSDBTask.Key_BatteryVolt:                                                             //
-                    rlt=(String)msg.obj;                                                                //
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                case SSDBTask.Key_BatteryVolt:
+                    rlt=(String)msg.obj;
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行BatteryVolt操作
                         //
@@ -366,9 +365,9 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
 
-                case SSDBTask.Key_NetworkDelay:                                                             //
-                    rlt=(String)msg.obj;                                                                //
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                case SSDBTask.Key_NetworkDelay:
+                    rlt=(String)msg.obj;
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行NetworkDelay操作
                         //
@@ -376,9 +375,9 @@ public class MainActivity extends BaseActivity {
 
                     }
                     break;
-                case SSDBTask.Key_CurrentTime:                                                             //
-                    rlt=(String)msg.obj;                                                                //
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                case SSDBTask.Key_CurrentTime:
+                    rlt=(String)msg.obj;
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行CurrentTime操作
                         //
@@ -386,9 +385,9 @@ public class MainActivity extends BaseActivity {
 
                     }
                     break;
-                case SSDBTask.Key_DisableAudio:                                                             //
-                    rlt=(String)msg.obj;                                                                //
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                case SSDBTask.Key_DisableAudio:
+                    rlt=(String)msg.obj;
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         //!!!!!!!!!!!执行ForbidAudio操作
                         //
@@ -397,8 +396,6 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
 
-
-                                                                                                        //
                  ///////////////////////////////////////////////2222222gaowei2222222//////////////////////////////////
                 case SSDBTask.Key_DirCtrl:
                     rlt = (String) msg.obj;
@@ -487,6 +484,9 @@ public class MainActivity extends BaseActivity {
 //                    // do some thing
 //                }
 //            }
+            if ( robotLocationChanged ) {
+                ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);
+            }
         }
     }
 

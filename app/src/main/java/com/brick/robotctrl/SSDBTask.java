@@ -36,10 +36,16 @@ public class SSDBTask extends TimerTask {
     public String serverIp = "60.171.108.155";
     public int serverPort = 11028;
     public String robotName = "r00004A";
+    public String robotLocation = "江苏南大电子信息技术股份有限公司";
 
     public void setRobotName(@NonNull String robotName) {
         if (!TextUtils.isEmpty(robotName))
             this.robotName = robotName;
+    }
+
+    public void setRobotLocation(@NonNull String robotLocation) {
+        if (!TextUtils.isEmpty(robotName))
+            this.robotLocation = robotLocation;
     }
 
     public void setServerPort(int serverPort) {
@@ -53,8 +59,6 @@ public class SSDBTask extends TimerTask {
             this.serverIp = serverIp;
         }
     }
-
-    private Vibrator vibrator = null;
 
     Timer timer = new Timer();
 
