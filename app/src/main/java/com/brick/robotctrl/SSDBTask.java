@@ -185,7 +185,7 @@ public class SSDBTask extends TimerTask {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            SSDBQuery(ACTION_CONNECT);
+//            SSDBQuery(ACTION_CONNECT);
         }
     }
     @Override
@@ -232,7 +232,7 @@ public class SSDBTask extends TimerTask {
                         ssdbClient.hset(robotName, cmd.key, cmd.val);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        SSDBQuery(ACTION_CONNECT);
+//                        SSDBQuery(ACTION_CONNECT);
                     }
                     break;
                 case ACTION_HGET:
@@ -248,54 +248,54 @@ public class SSDBTask extends TimerTask {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            SSDBQuery(ACTION_CONNECT);
+//                            SSDBQuery(ACTION_CONNECT);    // 异常处理不应该是重新连接
                         }
                     }
                     // by gaowei start
                     if(enableVideoInfo){
                         sendMessageToMain(Key_VideoInfo);
                     }else{
-                        SSDBQuery(ACTION_HSET, event[Key_VideoInfo], "");
+//                        SSDBQuery(ACTION_HSET, event[Key_VideoInfo], "");
                     }
                     if(enableVideoPlay){
                         sendMessageToMain( Key_VideoPlay);
                     }else {
-                        SSDBQuery(ACTION_HSET, event[Key_VideoPlay], "");
+//                        SSDBQuery(ACTION_HSET, event[Key_VideoPlay], "");
                     }
                     if(enableVideoPlayList){
                         sendMessageToMain(Key_VideoPlayList);
                     }else{
-                        SSDBQuery(ACTION_HSET, event[Key_VideoPlayList], "");
+//                        SSDBQuery(ACTION_HSET, event[Key_VideoPlayList], "");
                     }
                     if(enableRobotMsg){
                         sendMessageToMain(Key_RobotMsg);
                     }else{
-                        SSDBQuery(ACTION_HSET, event[Key_RobotMsg], "");
+//                        SSDBQuery(ACTION_HSET, event[Key_RobotMsg], "");
                     }
                     if(enableBatteryVolt){
                         sendMessageToMain(Key_BatteryVolt);
                     }else{
-                        SSDBQuery(ACTION_HSET, event[Key_BatteryVolt], "");
+//                        SSDBQuery(ACTION_HSET, event[Key_BatteryVolt], "");
                     }
                     if(enableNetworkDelay){
                         sendMessageToMain(Key_NetworkDelay);
                     }else{
-                        SSDBQuery(ACTION_HSET, event[Key_NetworkDelay], "");
+//                        SSDBQuery(ACTION_HSET, event[Key_NetworkDelay], "");
                     }
                     if(enableLocation){
                         sendMessageToMain(Key_Location);
                     }else{
-                        SSDBQuery(ACTION_HSET, event[Key_Location]);
+//                        SSDBQuery(ACTION_HSET, event[Key_Location]);
                     }
                     if(enableCurrentTime){
                         sendMessageToMain(Key_CurrentTime);
                     }else{
-                        SSDBQuery(ACTION_HSET, event[Key_CurrentTime]);
+//                        SSDBQuery(ACTION_HSET, event[Key_CurrentTime]);
                     }
                     if(enableForbidAudio){
                         sendMessageToMain(Key_DisableAudio);
                     }else{
-                        SSDBQuery(ACTION_HSET, event[Key_DisableAudio]);
+//                        SSDBQuery(ACTION_HSET, event[Key_DisableAudio]);
                     }
                     // by gaowei end
                     ////////////////////////////////////////////////////////////// 200ms check
@@ -310,10 +310,10 @@ public class SSDBTask extends TimerTask {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            SSDBQuery(ACTION_CONNECT);
+//                            SSDBQuery(ACTION_CONNECT);
                         }
                     } else {
-                        SSDBQuery(ACTION_HSET, event[Key_DirCtrl], "");
+//                        SSDBQuery(ACTION_HSET, event[Key_DirCtrl], "");
                     }
                     if ( enableSetParameter ) {     // check rate parameter
                         try {
@@ -326,10 +326,10 @@ public class SSDBTask extends TimerTask {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            SSDBQuery(ACTION_CONNECT);
+//                            SSDBQuery(ACTION_CONNECT);
                         }
                     } else {
-                        SSDBQuery(ACTION_HSET, event[Key_SetParam], "");
+//                        SSDBQuery(ACTION_HSET, event[Key_SetParam], "");
                     }
                     if ( enableChangeBrow ) {       // check emotion change
                         try {
@@ -342,10 +342,10 @@ public class SSDBTask extends TimerTask {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            SSDBQuery(ACTION_CONNECT);
+//                            SSDBQuery(ACTION_CONNECT);
                         }
                     } else {
-                        SSDBQuery(ACTION_HSET, event[Key_ChangeBrow], "");
+//                        SSDBQuery(ACTION_HSET, event[Key_ChangeBrow], "");
                     }
                     if ( enableSetVolume ) {       // check volume change
                         try {
@@ -358,7 +358,7 @@ public class SSDBTask extends TimerTask {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            SSDBQuery(ACTION_CONNECT);
+//                            SSDBQuery(ACTION_CONNECT);
                         }
                     }
 //                    else {
