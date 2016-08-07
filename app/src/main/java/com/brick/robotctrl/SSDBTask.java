@@ -110,7 +110,7 @@ public class SSDBTask extends TimerTask {
         }
         timer.schedule(this, 50, 50);
         connect();
-        SSDBQuery(ACTION_HGET, "Location");
+        SSDBQuery(ACTION_HSET, event[Key_Location], robotLocation);
     }
 
     public void connect() {

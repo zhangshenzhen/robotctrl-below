@@ -117,6 +117,7 @@ public class MainActivity extends BaseActivity {
                     if (key.equals(robotName) && val != null) {
                         ssdbTask.setRobotName(val);     // deal it if val = null设置表名
                     } else if(key.equals(robotLocation) && val != null) {
+                        robotLocationChanged = true;
                         ssdbTask.setRobotLocation(val);
                     } else if (key.equals(serverIp) && val != null) {
                         ssdbTask.setServerIP(val);
@@ -245,10 +246,10 @@ public class MainActivity extends BaseActivity {
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if(rlt.equals("Volume")) {
+                    if(rlt.equals("SetVolume")) {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         ssdbTask.enableSetVolume = true;
-                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_SetVolume], "");
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                     }
                     // by gaowei start
                     if(rlt.equals("VideoPlay")) {
@@ -430,6 +431,7 @@ public class MainActivity extends BaseActivity {
                         mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
                         SSDBTask.enableSetVolume = false;
                     }
+                    break;
                 case SSDBTask.ACTION_CONNECT_FAILED:
                     Log.d(TAG, "handleMessage: connect ssdb failure!");
                     Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -472,22 +474,19 @@ public class MainActivity extends BaseActivity {
         Log.d(TAG, "onActivityResult: resultCode:" + resultCode);
         if (requestCode == 0) {
 //            if (resultCode == RESULT_OK) {        // left top back resultCode = 0
-//                Log.i(TAG, "onActivityResult: " + data.getBooleanExtra("data", false));
-//                Log.d(TAG, "onActivityResult: serverChanged:" + serverChanged);
-//                Log.d(TAG, "onActivityResult: serialChanged:" + serialChanged);
-//                if (serverChanged) {
-//                    serverChanged = false;
+                if (serverChanged) {
+                    serverChanged = false;
                     ssdbTask.connect();
-//                }
-//                if ( serialChanged ) {
-//                    serialChanged = false;
+                }
+                if ( serialChanged ) {
+                    serialChanged = false;
                     serialCtrl.openSerialCOM();
-//                    // do some thing
-//                }
-//            }
+                }
             if ( robotLocationChanged ) {
+                robotLocationChanged = false;
                 ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);
             }
+//            }
         }
     }
 
@@ -541,7 +540,7 @@ public class MainActivity extends BaseActivity {
                 try {
                     while( true ) {
                         batteryVoltVal = serialCtrl.getBattery();
-                        Log.d(TAG, "run: batteryVoltVal = " + batteryVoltVal);
+//                        Log.d(TAG, "run: batteryVoltVal = " + batteryVoltVal);
                         if ( batteryVoltVal != 0) {
                             runOnUiThread(new Runnable() {
                                 public void run() {
