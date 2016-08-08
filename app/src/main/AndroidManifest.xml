@@ -110,6 +110,13 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
+
+        <activity
+            android:name=".AboutActivity"
+            android:label="关于"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
     </application>
 
 </manifest>

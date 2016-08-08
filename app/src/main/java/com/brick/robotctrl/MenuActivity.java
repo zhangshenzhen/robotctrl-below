@@ -2,15 +2,11 @@ package com.brick.robotctrl;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-import android.os.Bundle;
+
 import com.jly.idcard.IDcard;
 
 
@@ -21,6 +17,7 @@ public class MenuActivity extends BaseActivity {
     ImageButton ADButton = null;
     ImageButton testButton = null;
     ImageButton busButton = null;
+    ImageButton aboutButton = null;
 
     private RelativeLayout menuActivity = null;
 
@@ -64,6 +61,16 @@ public class MenuActivity extends BaseActivity {
             public void onClick(View view) {
                 clearTimerCount();
                 startActivity(new Intent().setClass(MenuActivity.this, QuestTestActivity.class));
+            }
+        });
+
+
+        aboutButton = (ImageButton) findViewById(R.id.aboutButton);
+        aboutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clearTimerCount();
+                startActivity(new Intent().setClass(MenuActivity.this, AboutActivity.class));
             }
         });
     }

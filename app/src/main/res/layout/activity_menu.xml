@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/IDButton"
         android:src="@drawable/identification"
-        android:layout_marginLeft="440dp"
+        android:layout_marginLeft="380dp"
         android:layout_marginTop="206dp"
         android:layout_alignParentStart="true"
         android:background="@drawable/abc_btn_borderless_material" />
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/testButton"
         android:src="@drawable/testbench"
-        android:layout_marginLeft="440dp"
+        android:layout_marginLeft="380dp"
         android:layout_marginTop="426dp"
         android:layout_alignParentStart="true"
         android:background="@drawable/abc_btn_borderless_material" />
@@ -81,6 +81,24 @@
         android:id="@+id/textView5"
         android:layout_below="@+id/busButton"
         android:layout_alignStart="@+id/busButton" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/aboutButton"
+        android:src="@drawable/businessconsulting"
+        android:layout_toRightOf="@+id/busButton"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="206dp"
+        android:background="@drawable/abc_btn_borderless_material" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="      关于"
+        android:id="@+id/textView6"
+        android:layout_below="@+id/aboutButton"
+        android:layout_alignStart="@+id/aboutButton" />
 
 
 </RelativeLayout>
