@@ -3,18 +3,16 @@ package com.brick.robotctrl;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.BaseExpandableListAdapter;
 
 import java.util.List;
 
@@ -72,6 +70,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
     }
 
     public static class GeneralPreferenceFragment extends PreferenceFragment {
+
+        private static Preference  developerPreference;
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -89,13 +89,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             bindPreferenceSummaryToValue(findPreference(getString(R.string.list)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serialCOM)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serialBaud)));
+
+            bindPreferenceSummaryToValue(findPreference("developerKey"));
+            developerPreference =  findPreference("developerKey");
+
         }
+
 
         //----------------------it's not easy!
         private static void bindPreferenceSummaryToValue(Preference preference) {
             // Set the listener to watch for value changes.
             preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
-
+            preference.setOnPreferenceClickListener(clickListener);
             // Trigger the listener immediately with the preference's
             // current value.
             sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
@@ -103,6 +108,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                             .getDefaultSharedPreferences(preference.getContext())
                             .getString(preference.getKey(), ""));
         }
+       private static Preference.OnPreferenceClickListener clickListener = new Preference.OnPreferenceClickListener() {
+           long[] mHits = new long[5];
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                //Log.d(TAG,"onPreferenceClick:点击有效");
+                System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
+                mHits[mHits.length-1] = SystemClock.uptimeMillis();
+                //Log.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
+                if (mHits[0] >= (SystemClock.uptimeMillis()-3000)) {
+                    //Log.d(TAG,"onPreferenceClick:进入");
+                    if (preference.getKey().equals("serverIp")) {
+                        developerPreference.setEnabled(true);
+                    }
+                }
+                return true;
+            }
+        };
+
+
 
         private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
             @Override
@@ -128,7 +152,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                 return true;
             }
         };
-    }
+
+        };
+
+
+
+
 
     // relative ssdb
     @Override

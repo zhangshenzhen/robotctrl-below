@@ -79,4 +79,12 @@
         <intent android:action="android.settings.WIFI_SETTINGS"/>
     </Preference>
 
+    <Preference
+        android:summary="Developer mode"
+        android:title="Developer"
+        android:key="developerKey"
+        android:enabled="false">
+    </Preference>
+
+
 </PreferenceScreen>
