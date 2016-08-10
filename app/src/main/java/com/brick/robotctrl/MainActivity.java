@@ -251,6 +251,12 @@ public class MainActivity extends BaseActivity {
                         ssdbTask.enableSetVolume = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                     }
+					if (rlt.equals("EndVideo")){
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableVideoPlay=false;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
                     // by gaowei start
                     if(rlt.equals("VideoPlay")) {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
@@ -321,12 +327,37 @@ public class MainActivity extends BaseActivity {
                         SSDBTask.enableLocation=false;
                     }
                     break;
-                case SSDBTask.Key_VideoPlay:
-                    rlt=(String)msg.obj;
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if(!rlt.equals(""))   {
-                        //!!!!!!!!!!!播放音乐函数
-                        SSDBTask.enableVideoPlay=false;
+                case SSDBTask.Key_VideoPlay:                                                             //
+                    rlt=(String)msg.obj;                                                                //
+                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                    if(!rlt.equals("")){
+                        String[] strArray = rlt.split(" ");
+                        switch (strArray[0]) {
+                            case "Play":
+                                startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
+                                //singleTask 此Activity实例之上的其他Activity实例统统出栈，使此Activity实例成为栈顶对象，显示到幕前。   break;
+                                break;
+                            case "Pause":
+                                ADActivity.videoPause();
+                                break;
+                            case "ContinuePlay":
+                                ADActivity.videoContinuePlay();
+                                break;
+                            case "Stop":
+                                ADActivity.videoStop();
+                                break;
+                            case "Cycle":
+                                ADActivity.videoCycleFrom(strArray[1]);
+                                break;
+                            case "Single":
+                                ADActivity.videoSingleFrom(strArray[1]);
+                                break;
+                            case "SingleCycle":
+                                ADActivity.videoSingleCycleFrom(strArray[1]);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                     break;
                 case SSDBTask.Key_VideoInfo:

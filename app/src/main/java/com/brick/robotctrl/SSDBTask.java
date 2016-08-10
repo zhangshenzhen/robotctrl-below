@@ -151,10 +151,11 @@ public class SSDBTask extends TimerTask {
     public static final int Key_CurrentTime = 11;//
     public static final int Key_DisableAudio = 12;
     public static final int Key_SetVolume = 13;
+	public static final int Key_EndVideo=14;
     public static final String[] event = new String[]{"event", "DirCtl", "param",
             "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt",
             "NetworkDelay", "Location", "Brow", "CurrentTime", "DisableAudio",
-            "Volume"};
+            "Volume","EndVideo"};
    ////////////////////////gaowei/////////////////////////////
     public static boolean enableForbidAudio=false;
     public static boolean enableCurrentTime=false;
@@ -170,6 +171,7 @@ public class SSDBTask extends TimerTask {
     public static boolean enableChangeBrow = false;
     public static boolean enableSetParameter = false;
     public static boolean enableSetVolume = false;
+	// public static boolean enableEndVideo = false;
 
     private int iCount = 0;
 

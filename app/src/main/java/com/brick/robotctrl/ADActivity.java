@@ -24,7 +24,7 @@ public class ADActivity extends Activity {
     private final String TAG = "ADActivity";
 
     private VideoView videoView;
-    ADVideo adVideo = null;
+    static ADVideo adVideo = null;
     private String videoPath;
     private boolean flag = true;
 
@@ -111,7 +111,29 @@ public class ADActivity extends Activity {
             showVideoDialog();
         }
     }
-
+    public static void videoContinuePlay()
+    {
+        adVideo.play();
+    }
+    public static void videoSingleCycleFrom(String str)
+    {
+        ADVideo.playsinglecyclewhat(str);
+    }
+    public static void videoPause()
+    {
+        adVideo.pause();
+    }
+    public static void videoCycleFrom(String str)
+    {
+        ADVideo.playcyclewhat(str);
+    }
+    public static void videoSingleFrom(String str)
+    {
+        ADVideo.playsinglewhat(str);
+    }
+    public static void videoStop(){
+        adVideo.stopPlayBack();
+    }
     @Override
     protected void onStop() {
         Log.i(TAG, "onStop");
@@ -214,5 +236,9 @@ public class ADActivity extends Activity {
 //        lp.width = findViewById(R.id.operation_full).getLayoutParams().width
 //                * index / mMaxVolume;
 //        mOperationPercent.setLayoutParams(lp);
+    }
+
+    public static void startAction(Context context, String str) {
+	
     }
 }
