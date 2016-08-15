@@ -39,7 +39,7 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 
 ## 版本更新
 
-1. RobotCtrl_master_v1.15.9.0815_alpha(0d9be1d)
+1. RobotCtrl_master_v1.15.9.0815_alpha(fa0c466)
 
     1. 左上1/4屏点击5次进入设置界面
     2. 右上1/4屏点击5次进入关于界面
