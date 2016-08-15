@@ -8,6 +8,8 @@ import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,17 +26,19 @@ public class ADActivity extends Activity {
     private final String TAG = "ADActivity";
 
     private VideoView videoView;
-    static ADVideo adVideo = null;
+    ADVideo adVideo = null;
     private String videoPath;
     private boolean flag = true;
-
-
+    private boolean isOver = false;
+    private String fileName = null;
+    private String mode = null;
     private GestureDetector mGestureDetector;
     private AudioManager mAudioManager;
-    /** 最大声音 */
+    /* 最大声音 */
     private int mMaxVolume;
-    /** 当前声音 */
+    /* 当前声音 */
     private int mVolume = -1;
+    private final int singleOver = 1;
 //    private View mVolumeBrightnessLayout;
 
     @Override
@@ -42,24 +46,34 @@ public class ADActivity extends Activity {
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad);
+        Intent intent = getIntent();
+        fileName = intent.getStringExtra("fileName");
+        mode = intent.getStringExtra("mode");
 
         // videoview 实现
         videoView = (VideoView) findViewById(R.id.videoView);
 //      mVolumeBrightnessLayout = findViewById(R.id.operation_volume_brightness);
-
-
-
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         mGestureDetector = new GestureDetector(this, new MyGestureListener());
 
 //        videoView.setOnTouchListener(this);
 //        videoView.setMediaController(new MediaController(this));  //不需要注释掉即可
-        adVideo = new ADVideo(videoView);
-        videoPlay();
-
-
-
+        adVideo = new ADVideo(videoView, handler);
+        switch (mode){
+            case "SingleCycle":
+                videoPlayTargetCycle();
+                break;
+            case "ContinuePlay":
+                videoPlay();
+                break;
+            case "Single":
+                videoPlayTargetSingle();
+                break;
+            case "Cycle":
+                videoCycleFrom(fileName);
+                break;
+        }
 //        View decorView = getWindow().getDecorView();
 ////        Hide both the navigation bar and the status bar.
 ////        SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
@@ -69,6 +83,16 @@ public class ADActivity extends Activity {
 //                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
 //        decorView.setSystemUiVisibility(uiOptions);
     }
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case singleOver:
+                    ExpressionActivity.startAction(ADActivity.this, "12");
+            }
+        }
+    };
 
     private void showVideoDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ADActivity.this);
@@ -108,30 +132,73 @@ public class ADActivity extends Activity {
                 }
             }.start();
         } else {
-            showVideoDialog();
+//            showVideoDialog();
         }
     }
-    public static void videoContinuePlay()
-    {
-        adVideo.play();
+    public void videoPlayTargetCycle(){
+        videoPath = Environment.getExternalStorageDirectory().getPath()+"/Movies";
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+//                    File file = new File(videoPath);
+//                    File[] files = file.listFiles();
+//                    Log.d(TAG, "filename: " + fileName);
+//                    for (int i = 0; i < files.length; i++) {
+//                        if (files[i].getAbsolutePath().endsWith(fileName)) {
+//                            videoPath = files[i].toString();
+//                            break;
+////                        System.out.println(files[i].toString());
+//                        }else{
+//                            videoPath = files[0].toString();
+//                        }
+//                    }
+//                    videoView.setVideoPath(videoPath);
+//                    Log.d(TAG, "play: starting play: " + videoPath);
+//                    videoView.start();
+                    if(adVideo.getFiles(videoPath)){
+                        adVideo.playSingleCycleWhat(fileName);
+                    }
+                } catch (Exception e) {
+                    Log.d("getfile", "查找异常!");
+                    System.out.println(e.toString());
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
-    public static void videoSingleCycleFrom(String str)
-    {
-        ADVideo.playsinglecyclewhat(str);
+    public void videoPlayTargetSingle(){
+        videoPath = Environment.getExternalStorageDirectory().getPath()+"/Movies";
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    if (adVideo.getFiles(videoPath)) {
+                        adVideo.playSingleWhat(fileName);
+                        Log.d(TAG, "videoPlayTargetSingle: " + isOver);
+                    }
+                } catch (Exception e) {
+                    Log.d("getfile", "查找异常!");
+                    System.out.println(e.toString());
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
-    public static void videoPause()
+
+    public void videoCycleFrom(String str)
     {
-        adVideo.pause();
+        videoPath = Environment.getExternalStorageDirectory()
+                .getPath()+"/Movies";
+        flag = adVideo.getFiles(videoPath);
+        if (flag) {
+            adVideo.playCycleWhat(str);
+        }
     }
-    public static void videoCycleFrom(String str)
-    {
-        ADVideo.playcyclewhat(str);
-    }
-    public static void videoSingleFrom(String str)
-    {
-        ADVideo.playsinglewhat(str);
-    }
-    public static void videoStop(){
+
+    public void videoStop(){
         adVideo.stopPlayBack();
     }
     @Override
@@ -184,12 +251,9 @@ public class ADActivity extends Activity {
         @Override
         public boolean onSingleTapConfirmed (MotionEvent e){
             Log.d(TAG, "onTouch: to MainActivity");
-            startActivity(new Intent().setClass(ADActivity.this, MainActivity.class));
+//            startActivity(new Intent().setClass(ADActivity.this, ExpressionActivity.class));
             return true;
-
         }
-
-
 
         /** 滑动 */
         @Override
@@ -238,7 +302,11 @@ public class ADActivity extends Activity {
 //        mOperationPercent.setLayoutParams(lp);
     }
 
-    public static void startAction(Context context, String str) {
-	
+    public static void startAction(Context context, String mode, String str) {
+        Intent startIntent = new Intent();
+        startIntent.setClass(context, ADActivity.class);
+        startIntent.putExtra("mode", mode);
+        startIntent.putExtra("fileName", str);
+        context.startActivity(startIntent);
     }
 }

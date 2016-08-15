@@ -1,22 +1,35 @@
 package com.kjn.videoview;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.PixelFormat;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.widget.VideoView;
+
+import com.brick.robotctrl.R;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ADVideo {
-    private static final String TAG = "ADVideo";
+    private final String TAG = "ADVideo";
     private static VideoView videoView;
-    private static List<String> videoList;
-    private static int index = 0;
-    private int per;
+    private List<String> videoList;
+    private int index = 0;
+    private static int per = 0;
+    private Handler contextHandler = null;
+    private final int singleOver = 1;
 
-    public ADVideo (VideoView videoView){
+    public ADVideo (VideoView videoView, Handler handler){
         this.videoView = videoView;
+        this.contextHandler = handler;
     }
 
     public boolean getFiles(String url) {
@@ -33,7 +46,6 @@ public class ADVideo {
                     if (files[i].getAbsolutePath().endsWith(".3gp")
                             || files[i].getAbsolutePath().endsWith(".mp4")) {
                         videoList.add(files[i].toString());
-//                        System.out.println(files[i].toString());
                     }
                 }
             }
@@ -46,28 +58,28 @@ public class ADVideo {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-        for(int i = 0; i<videoList.size(); i++) {
-            Log.d(TAG, "getFiles: " + videoList.get(i));
-        }
+//        for(int i = 0; i<videoList.size(); i++) {
+//            Log.d(TAG, "getFiles: " + videoList.get(i));
+//        }
         return flag;
     }
 
-    static int  findIndexOfStringInvideoList(String  str)
+    int findIndexOfStringInvideoList(String str)
     {
-
         for(int i=0;i<videoList.size();i++) {
-            if(videoList.get(i).equals(str)) {
+            if(videoList.get(i).endsWith(str)) {
                 return i;
             }
         }
         return -1;
     }
-     public static void playcyclewhat(String str)//从那个字符串表示的视频开始播放并循环
+    public void playCycleWhat(String str)//从那个字符串表示的视频开始播放并循环
     {
         index=findIndexOfStringInvideoList(str);
+        Log.d(TAG, "playCycleWhat: " + index);
         play();
     }
-    public static void playsinglecyclewhat(String str)
+    public void playSingleCycleWhat(String str)
     {
         index=findIndexOfStringInvideoList(str);
 
@@ -78,19 +90,28 @@ public class ADVideo {
             @Override
             public void onCompletion(MediaPlayer mp) {//这是一个匿名类，对该父类mediaplayer.oncompletionlistener中的oncompletion进行了重写
                 videoView.setVideoPath(videoList.get(index));
-                Log.d(TAG, "play: starting play: " + videoList.get(index));
+                Log.d(TAG, "over play: starting play: " + videoList.get(index));
                 videoView.start();
             }
         });
     }
-    public static void playsinglewhat(String str)/////////////////////////
-    {
+    public void playSingleWhat(String str) {
         index=findIndexOfStringInvideoList(str);
         videoView.setVideoPath(videoList.get(index));             //获得第一个video的路径
         Log.d(TAG, "play: starting play: " + videoList.get(index));
         videoView.start();                                   //开始播放
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
+            @Override
+            public void onCompletion(MediaPlayer mp) {//这是一个匿名类，对该父类mediaplayer.oncompletionlistener中的oncompletion进行了重写
+                stopPlayBack();
+                Message message = new Message();
+                message.what = singleOver;
+                message.obj = "nihao";
+                contextHandler.sendMessage(message);
+            }
+        });
     }
-    private static void next() {//播放videolist中下一首音乐
+    private void next() {//播放videolist中下一首音乐
         if (++index >= videoList.size()) {
             index = 0;
         }
@@ -99,7 +120,7 @@ public class ADVideo {
         videoView.start();
     }
 
-    public static void  play(){//从已经检索到的音乐列表之中中挑选一首音乐来播放,播完后下一首
+    public void  play(){//从已经检索到的音乐列表之中中挑选一首音乐来播放,播完后下一首
         videoView.setVideoPath(videoList.get(index));             //获得第一个video的路径
         Log.d(TAG, "play: starting play: " + videoList.get(index));
         videoView.start();                                   //开始播放
@@ -111,7 +132,7 @@ public class ADVideo {
         });
     }
 
-    public void pause(){
+    public static void pause(){
         videoView.pause();
         per = videoView.getCurrentPosition();
     }
@@ -123,11 +144,11 @@ public class ADVideo {
 
     }
 
-    public void  stopPlayBack(){
+    public static void  stopPlayBack(){
         videoView.stopPlayback();
     }
 
-    public void start(){
+    public static void start(){
         videoView.seekTo(per);
         videoView.start();
     }

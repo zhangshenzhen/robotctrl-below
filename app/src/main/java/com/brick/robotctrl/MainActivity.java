@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 
 import com.bean.serialport.ComBean;
 import com.jly.batteryView.BatteryView;
+import com.kjn.videoview.ADVideo;
 import com.udpwork.ssdb.SSDB;
 
 import java.util.Calendar;
@@ -77,7 +78,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 clearTimerCount();
-                startActivity(new Intent().setClass(MainActivity.this, QuestTestActivity.class));
+                startActivity(new Intent().setClass(MainActivity.this, MenuActivity.class));
             }
         });
 
@@ -141,7 +142,7 @@ public class MainActivity extends BaseActivity {
         };
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(presChangeListener);
 
-        PlayerService.startAction(this, mp3Url);
+//        PlayerService.startAction(this, mp3Url);
 
         // relative timer
         Timer timer = new Timer(true);
@@ -182,14 +183,14 @@ public class MainActivity extends BaseActivity {
 //            Log.d(TAG, "pkg:"+cn.getPackageName());
 //            Log.d(TAG, "cls:"+cn.getClassName());
 
-            if ( cn.getClassName().equals("com.brick.robotctrl.MainActivity") ) {
-                countForPlayer++;
-//                Log.d(TAG, "run: countForPlayer:" + countForPlayer);
-                if ( countForPlayer == 30*1000/200 ) {
-                    PlayerService.startAction(MainActivity.this, mp3Url);
-                    countForPlayer = 0;
-                }
-            }
+//            if ( cn.getClassName().equals("com.brick.robotctrl.MainActivity") ) {
+//                countForPlayer++;
+////                Log.d(TAG, "run: countForPlayer:" + countForPlayer);
+//                if ( countForPlayer == 30*1000/200 ) {
+//                    PlayerService.startAction(MainActivity.this, mp3Url);
+//                    countForPlayer = 0;
+//                }
+//            }
             if( cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {//什么意思
                 if ( disableAudio.equals("No") ) {
                     disableAudio = "Yes";
@@ -233,6 +234,11 @@ public class MainActivity extends BaseActivity {
                         SSDBTask.enableDirCtl = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
+                        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+                        ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                        if ( !an.getClassName().equals("com.brick.robotctrl.ExpressionActivity") ) {
+                            ExpressionActivity.startAction(MainActivity.this, "12");
+                        }
                     }
                     if (rlt.equals("param")) {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
@@ -261,12 +267,6 @@ public class MainActivity extends BaseActivity {
                     if(rlt.equals("VideoPlay")) {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableVideoPlay = true;
-                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
-                        Log.d(TAG, "handleMessage: clear Event");
-                    }
-                    if(rlt.equals("VideoInfo")) {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
-                        SSDBTask.enableVideoInfo = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
@@ -323,49 +323,60 @@ public class MainActivity extends BaseActivity {
                     rlt=(String)msg.obj;
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
-                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);                                                                                 //
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);
                         SSDBTask.enableLocation=false;
-                    }
+            }
                     break;
-                case SSDBTask.Key_VideoPlay:                                                             //
-                    rlt=(String)msg.obj;                                                                //
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);          //
+                case SSDBTask.Key_VideoPlay:
+                    rlt=(String)msg.obj;
                     if(!rlt.equals("")){
+                        Log.d(TAG,"handleMessage: ------------------Key:VideoPlay \tvalue:" + rlt);
                         String[] strArray = rlt.split(" ");
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_VideoPlay], "");
                         switch (strArray[0]) {
                             case "Play":
                                 startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
                                 //singleTask 此Activity实例之上的其他Activity实例统统出栈，使此Activity实例成为栈顶对象，显示到幕前。   break;
                                 break;
-                            case "Pause":
-                                ADActivity.videoPause();
-                                break;
                             case "ContinuePlay":
-                                ADActivity.videoContinuePlay();
+                                ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+                                ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                                if ( !an.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
+                                    ADActivity.startAction(MainActivity.this, strArray[0], null);
+                                }else{
+                                    ADVideo.start();
+                                }
+                                break;
+                            case "Pause":
+                                ADVideo.pause();
                                 break;
                             case "Stop":
-                                ADActivity.videoStop();
-                                break;
-                            case "Cycle":
-                                ADActivity.videoCycleFrom(strArray[1]);
+                                ADVideo.stopPlayBack();
+                                ExpressionActivity.startAction(MainActivity.this, "12");
                                 break;
                             case "Single":
-                                ADActivity.videoSingleFrom(strArray[1]);
+                                ActivityManager bm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+                                ComponentName bn = bm.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                                if ( !bn.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
+                                    ADActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
+                                }
+                            case "Cycle":
+                                ActivityManager cm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+                                ComponentName cn = cm.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                                if ( !cn.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
+                                    ADActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
+                                }
                                 break;
                             case "SingleCycle":
-                                ADActivity.videoSingleCycleFrom(strArray[1]);
+                                ActivityManager dm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+                                ComponentName dn = dm.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                                if ( !dn.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
+                                    ADActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
+                                }
                                 break;
                             default:
                                 break;
                         }
-                    }
-                    break;
-                case SSDBTask.Key_VideoInfo:
-                    rlt=(String)msg.obj;
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if(!rlt.equals(""))   {
-                        //!!!!!!!!!!!执行videoinfo操作
-                        SSDBTask.enableVideoInfo=false;
                     }
                     break;
                 case SSDBTask.Key_VideoPlayList:

@@ -24,29 +24,29 @@
 
     <ImageButton
         android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_height="202dp"
         android:id="@+id/leftEyeButton"
         android:longClickable="true"
         android:src="@drawable/siri"
         android:scaleType="centerCrop"
-        android:layout_marginStart="240dp"
-        android:background="#ffffff"
+        android:background="#51cdb5"
+        android:layout_marginTop="182dp"
         android:layout_below="@+id/toolbar"
         android:layout_toEndOf="@+id/toolbar"
-        android:layout_marginTop="125dp" />
+        android:layout_marginStart="128dp" />
 
     <ImageButton
         android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_height="202dp"
         android:id="@+id/rightEyeButton"
         android:longClickable="true"
         android:src="@drawable/function"
         android:scaleType="centerCrop"
-
-        android:layout_marginEnd="300dip"
+        android:layout_marginEnd="130dp"
+        android:background="#51cdb5"
         android:layout_alignTop="@+id/leftEyeButton"
         android:layout_alignParentEnd="true"
-        android:background="#ffffff" />
+        android:layout_alignBottom="@+id/leftEyeButton" />
     <com.jly.batteryView.BatteryView
         android:id="@+id/battery_view"
         android:layout_width="wrap_content"

@@ -18,6 +18,7 @@
         android:layout_marginLeft="380dp"
         android:layout_marginTop="206dp"
         android:layout_alignParentStart="true"
+        android:visibility="invisible"
         android:background="@drawable/abc_btn_borderless_material" />
     <TextView
         android:layout_width="wrap_content"
@@ -26,6 +27,7 @@
         android:text="      身份确认"
         android:id="@+id/textView2"
         android:layout_below="@+id/IDButton"
+        android:visibility="invisible"
         android:layout_alignStart="@+id/IDButton" />
 
     <ImageButton
@@ -36,6 +38,7 @@
         android:layout_toRightOf="@+id/IDButton"
         android:layout_marginTop="206dp"
         android:layout_marginLeft="100dp"
+        android:visibility="invisible"
         android:background="@drawable/abc_btn_borderless_material" />
     <TextView
         android:layout_width="wrap_content"
@@ -44,6 +47,7 @@
         android:text="      娱乐互动"
         android:id="@+id/textView3"
         android:layout_below="@+id/ADButton"
+        android:visibility="invisible"
         android:layout_alignStart="@+id/ADButton" />
 
     <ImageButton
@@ -54,6 +58,7 @@
         android:layout_marginLeft="380dp"
         android:layout_marginTop="426dp"
         android:layout_alignParentStart="true"
+        android:visibility="invisible"
         android:background="@drawable/abc_btn_borderless_material" />
     <TextView
         android:layout_width="wrap_content"
@@ -62,6 +67,7 @@
         android:text="      产品介绍"
         android:id="@+id/textView4"
         android:layout_below="@+id/testButton"
+        android:visibility="invisible"
         android:layout_alignStart="@+id/testButton" />
 
     <ImageButton
@@ -72,6 +78,7 @@
         android:layout_toRightOf="@+id/testButton"
         android:layout_marginLeft="100dp"
         android:layout_marginTop="426dp"
+        android:visibility="invisible"
         android:background="@drawable/abc_btn_borderless_material" />
     <TextView
         android:layout_width="wrap_content"
@@ -80,6 +87,7 @@
         android:text="      业务咨询"
         android:id="@+id/textView5"
         android:layout_below="@+id/busButton"
+        android:visibility="invisible"
         android:layout_alignStart="@+id/busButton" />
 
     <ImageButton
@@ -90,6 +98,7 @@
         android:layout_toRightOf="@+id/busButton"
         android:layout_marginLeft="100dp"
         android:layout_marginTop="206dp"
+        android:visibility="invisible"
         android:background="@drawable/abc_btn_borderless_material" />
     <TextView
         android:layout_width="wrap_content"
@@ -98,6 +107,7 @@
         android:text="      关于"
         android:id="@+id/textView6"
         android:layout_below="@+id/aboutButton"
+        android:visibility="invisible"
         android:layout_alignStart="@+id/aboutButton" />
 
 

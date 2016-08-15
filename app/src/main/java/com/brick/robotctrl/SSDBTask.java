@@ -2,6 +2,7 @@ package com.brick.robotctrl;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
@@ -12,8 +13,10 @@ import android.util.EventLog;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.kjn.videoview.HttpAsk;
 import com.udpwork.ssdb.SSDB;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Timer;
@@ -37,6 +40,10 @@ public class SSDBTask extends TimerTask {
     public int serverPort = 11028;
     public String robotName = "r00004A";
     public String robotLocation = "江苏南大电子信息技术股份有限公司";
+    public String robotLocationGbk;
+    public String videoPlayList = null;
+    private final int serverSite = 222;
+    private String serverSiteString = null;
 
     public void setRobotName(@NonNull String robotName) {
         if (!TextUtils.isEmpty(robotName))
@@ -110,7 +117,78 @@ public class SSDBTask extends TimerTask {
         }
         timer.schedule(this, 50, 50);
         connect();
-        SSDBQuery(ACTION_HSET, event[Key_Location], robotLocation);
+        new Thread() {
+            @Override
+            public void run() {
+                // 需要花时间计算的方法
+                try {
+                    String str = HttpAsk.posturl("http://60.171.108.151:8076/rb/t_loginbyrobot.aspx?action=login&robotcode=r00004&password=123456");
+                    Log.d(TAG, "HttpAsk: " + str);
+                    String[] strArray = str.split(" ");
+//					for(int i = 0; i < strArray.length; i++){
+//						Log.d(TAG, "strArray: " +strArray[i]);;
+//					}
+                    String ans = HttpAsk.posturl("http://60.171.108.151:8076/rb/t_getproperty.aspx?action=queryall&"+strArray[1]+"&"+strArray[2]);
+                    String[] strArray1 = ans.split(" ");
+//					for(int i = 0; i < strArray1.length; i++){
+//						Log.d(TAG, "strArray: " +strArray1[i]);;
+//					}
+                    String[] strArray3 = strArray1[1].split("=");
+//					for(int i = 0; i < strArray3.length; i++){
+//						Log.d(TAG, "strArray: " +strArray3[i]);;
+//					}
+                    robotLocation = strArray3[1];
+
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+                Log.d(TAG, "serverSite: " + robotLocation);
+//                try {
+//                    String robotLocationUtf8 = new String(robotLocation.getBytes("UTF-8"));
+//                    String robotLocationUnicode = new String(robotLocationUtf8.getBytes(), "UTF-8");
+//                    String robotLocationGbk = new String(robotLocationUnicode.getBytes("GBK"));
+//                    System.out.println(robotLocationGbk);
+//                }catch(Exception e){
+//                    System.out.println(e.toString());
+//                    System.out.println(e.getMessage());
+//                    e.printStackTrace();
+//                }
+                SSDBQuery(ACTION_HSET, event[Key_Location], robotLocation);
+            }
+        }.start();
+//        SSDBQuery(ACTION_HSET, event[Key_Location], robotLocation);
+        pushFileList();
+    }
+    public void pushFileList(){
+        try {
+            File file = new File(Environment.getExternalStorageDirectory()
+                    .getPath()+"/Movies");
+            File[] files = file.listFiles();
+            if (files.length == 0){
+                Log.d(TAG, "pushFileList: 为空");
+            }
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].getAbsolutePath().endsWith(".avi")
+                        || files[i].getAbsolutePath().endsWith(".mp4")) {
+                    Log.d(TAG, "getFiles: " + files[i].getAbsolutePath().substring(files[i].getAbsolutePath().lastIndexOf("/") + 1));
+                    if (videoPlayList != null) {
+                        videoPlayList = videoPlayList + files[i].getAbsolutePath().substring(files[i].getAbsolutePath().lastIndexOf("/") + 1) + " ";
+                    } else {
+                        videoPlayList = files[i].getAbsolutePath().substring(files[i].getAbsolutePath().lastIndexOf("/") + 1) + " ";
+                    }
+                }
+            }
+            Log.d(TAG, "SSDBTask: "  + videoPlayList);
+//            String videoPlayListUtf8 = new String(videoPlayList.getBytes( "UTF-8"));
+//            String videoPlayListUnicode = new String(videoPlayListUtf8.getBytes(),"UTF-8");
+//            String videoPlayListGbk = new String(videoPlayListUtf8.getBytes("GBK"));
+            SSDBQuery(ACTION_HSET, event[Key_VideoPlayList], videoPlayList);
+        } catch (Exception e) {
+            Log.d("getfile", "查找异常!");
+            System.out.println(e.toString());
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void connect() {
@@ -139,10 +217,10 @@ public class SSDBTask extends TimerTask {
 
     public static final int Key_Event = 0;
     public static final int Key_DirCtrl = 1;////
-    public static final int  Key_SetParam = 2;////
+    public static final int Key_SetParam = 2;////
     public static final int Key_VideoPlay = 3;//
-    public static final int Key_VideoInfo = 4;//
-    public static final int Key_VideoPlayList = 5;//
+//    public static final int Key_VideoInfo = 4;        // 视频播放时1s上传一次info，不需要接收该关键字
+    public static final int Key_VideoPlayList = 5;  //
     public static final int Key_RobotMsg = 6; //
     public static final int Key_BatteryVolt = 7;  //
     public static final int Key_NetworkDelay = 8;//
@@ -165,7 +243,7 @@ public class SSDBTask extends TimerTask {
     public static boolean enableRobotMsg=false;             //
     public static boolean enableVideoPlayList=false;        //
     public static boolean enableVideoPlay=false;            //
-    public static boolean enableVideoInfo=false;            //
+//    public static boolean enableVideoInfo=false;            //
     ////////////////////////gaowei////////////////////////////
     public static boolean enableDirCtl = false;
     public static boolean enableChangeBrow = false;
@@ -254,13 +332,8 @@ public class SSDBTask extends TimerTask {
                         }
                     }
                     // by gaowei start
-                    if(enableVideoInfo){
-                        sendMessageToMain(Key_VideoInfo);
-                    }else{
-//                        SSDBQuery(ACTION_HSET, event[Key_VideoInfo], "");
-                    }
                     if(enableVideoPlay){
-                        sendMessageToMain( Key_VideoPlay);
+                        sendMessageToMain(Key_VideoPlay);
                     }else {
 //                        SSDBQuery(ACTION_HSET, event[Key_VideoPlay], "");
                     }
