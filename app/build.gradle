@@ -2,8 +2,8 @@ import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.application'
 
-def apkName = "RobotCtrl_BOC"
-def apkVersion = "v1.15.9"
+def apkName = "RobotCtrl_master"
+def apkVersion = "v1.16.9"
 
 def buildTime() {
     def df = new SimpleDateFormat("MMdd")
