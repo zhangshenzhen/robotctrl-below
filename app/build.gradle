@@ -2,7 +2,7 @@ import java.text.SimpleDateFormat
 
 apply plugin: 'com.android.application'
 
-def apkName = "RobotCtrl_master"
+def apkName = "RobotCtrl_BOC"
 def apkVersion = "v1.15.9"
 
 def buildTime() {
@@ -58,4 +58,5 @@ dependencies {
     compile files('libs/hcicloud_recorder-5.0.jar')
     compile files('libs/json-lib-2.4-jdk15.jar')
     compile files('libs/hcicloud_player-5.0.jar')
+    compile files('libs/commons-net-3.3.jar')
 }
