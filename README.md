@@ -47,3 +47,7 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
     4. PC端指定视频文件进行播放
     5. PC端可进行单曲播放，单曲循环播放，从头多曲循环播放和从指定文件多曲循环播放
     6. 通过访问管理服务器，获得位置信息，并上报PC端
+
+2. RobotCtrl_master_v1.15.10.0815_alpha
+
+    1. 修复由于协议问题导致的电机控制失败

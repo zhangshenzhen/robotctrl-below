@@ -240,6 +240,12 @@ public class MainActivity extends BaseActivity {
                             ExpressionActivity.startAction(MainActivity.this, "12");
                         }
                     }
+                    if (rlt.equals("EndDirCtl")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        SSDBTask.enableDirCtl = false;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
                     if (rlt.equals("param")) {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableSetParameter = true;
@@ -431,9 +437,7 @@ public class MainActivity extends BaseActivity {
                 case SSDBTask.Key_DirCtrl:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:DirCtrl \tvalue:" + rlt);
-                    if (rlt.equals("EndDirCtl")) {
-                        SSDBTask.enableDirCtl = false;
-                    } else if ( !rlt.equals("")) {
+                    if ( !rlt.equals("")) {
                         serialCtrl.robotMove(rlt);
                     }
                     break;
