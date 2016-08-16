@@ -56,13 +56,6 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="控制">
-        <SwitchPreference
-            android:key="@string/controlType"
-            android:summaryOff="Touch"
-            android:summaryOn="Gravity"
-            android:switchTextOff="Touch"
-            android:switchTextOn="Gravity"
-            android:title="@string/controlType"/>
         <ListPreference
             android:defaultValue="-1"
             android:entries="@array/lists"
@@ -76,15 +69,29 @@
         android:summary="WiFi configuration"
         android:title="WiFi">
         <!--NOTE intent调用系统设置-->
-        <intent android:action="android.settings.WIFI_SETTINGS"/>
-    </Preference>
+        <intent android:action="com.android.browser.ACTION_START" />
 
+    </Preference>
+    <Preference
+        android:summary="Set PCM IP/Port/Machine ID"
+        android:title="Human Service">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.example.pcmaudioplayer"
+            android:targetClass="com.example.pcmaudioplayer.MainActivity" />
+    </Preference>
+    <Preference
+        android:summary="Open browser and set router"
+        android:title="Set Router">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.android.browser"
+            android:targetClass="com.android.browser.BrowserActivity" />
+    </Preference>
     <Preference
         android:summary="Developer mode"
         android:title="Developer"
         android:key="developerKey"
         android:enabled="false">
     </Preference>
-
-
 </PreferenceScreen>
