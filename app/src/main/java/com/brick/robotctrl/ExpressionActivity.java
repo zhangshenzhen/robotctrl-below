@@ -24,16 +24,16 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 	private int screenWidth;
 	private int screenHeight;
 	enum EXPRESSION {
-		机器人害怕(R.drawable.haipa, "机器人害怕", 0),
+		机器人害怕(R.drawable.haipa, "机器人说话", 0),
 		机器人害羞(R.drawable.haixiu, "机器人害羞", 1),
 		机器人花痴(R.drawable.huachi, "机器人花痴", 2),
-		机器人欢呼(R.drawable.huanhu,"机器人欢呼", 3),
+		机器人欢呼(R.drawable.huanhu, "机器人欢呼", 3),
 		机器人骄傲得意(R.drawable.jiaoaodeyi, "机器人骄傲得意", 4),
 		机器人金币(R.drawable.jinbi, "机器人金币", 5),
 		机器人困惑(R.drawable.kunhuo, "机器人困惑", 6),
 		机器人流泪(R.drawable.liulei, "机器人流泪", 7),
 		机器人生气(R.drawable.shengqi, "机器人生气", 8),
-		机器人说话(R.drawable.shuohua, "机器人说话", 9),
+		机器人说话(R.drawable.shuohua, "机器人害怕", 9),
 		机器人思索(R.drawable.sisuo, "机器人思索", 10),
 		机器人叹气(R.drawable.tanqi, "机器人叹气", 11),
 		机器人微笑(R.drawable.weixiao, "机器人微笑", 12),

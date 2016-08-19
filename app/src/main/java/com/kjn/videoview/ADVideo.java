@@ -34,17 +34,30 @@ public class ADVideo {
 
     public boolean getFiles(String url) {
         boolean flag = true;
-        videoList = new ArrayList<String>();
+      videoList = new ArrayList<String>();
         try {
             File file = new File(url);
             File[] files = file.listFiles();
 
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isDirectory()) {
+                    Log.i(TAG, "getFiles find Directory");
                     getFiles(files[i].getAbsolutePath());
                 } else {
-                    if (files[i].getAbsolutePath().endsWith(".3gp")
-                            || files[i].getAbsolutePath().endsWith(".mp4")) {
+                    if (
+                        files[i].getAbsolutePath().endsWith(".avi")||
+                        files[i].getAbsolutePath().endsWith(".mp4")||
+                        files[i].getAbsolutePath().endsWith(".3gp")
+ //                       files[i].getAbsolutePath().endsWith(".flv")||
+//                        files[i].getAbsolutePath().endsWith(".gif")||
+//                        files[i].getAbsolutePath().endsWith(".mkv")||
+//                        files[i].getAbsolutePath().endsWith(".mov")||
+//                        files[i].getAbsolutePath().endsWith(".mpg")||
+ //                       files[i].getAbsolutePath().endsWith(".rmvb")
+//                        files[i].getAbsolutePath().endsWith(".swf")||
+//                        files[i].getAbsolutePath().endsWith(".vob")||
+//                        files[i].getAbsolutePath().endsWith(".wmv")
+                         ) {
                         videoList.add(files[i].toString());
                     }
                 }

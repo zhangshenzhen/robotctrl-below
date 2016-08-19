@@ -29,13 +29,10 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="@string/robotNameTitle"/>
-        <EditTextPreference
-            android:defaultValue="江苏南大电子信息技术股份有限公司"
-            android:inputType="textAutoComplete"
-            android:key="@string/robotLocation"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/robotLocationTitle"/>
+        <Preference
+            android:key="robotIDKey"
+            android:summary="RobotCtrl_master_v1.15.10.0816_alpha"
+            android:title="Robot ID"/>
         <ListPreference
             android:defaultValue="9600"
             android:entries="@array/ttyBaud"
@@ -52,7 +49,6 @@
             android:negativeButtonText="Cancel"
             android:positiveButtonText="OK"
             android:title="@string/serialCOMTitle"/>
-
     </PreferenceCategory>
     <PreferenceCategory
         android:title="控制">
@@ -70,7 +66,6 @@
         android:title="WiFi">
         <!--NOTE intent调用系统设置-->
         <intent android:action="com.android.browser.ACTION_START" />
-
     </Preference>
     <Preference
         android:summary="Set PCM IP/Port/Machine ID"

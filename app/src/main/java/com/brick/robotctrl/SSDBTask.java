@@ -17,6 +17,7 @@ import com.kjn.videoview.HttpAsk;
 import com.udpwork.ssdb.SSDB;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Timer;
@@ -144,20 +145,21 @@ public class SSDBTask extends TimerTask {
                 }
                 Log.d(TAG, "serverSite: " + robotLocation);
 //                try {
-//                    String robotLocationUtf8 = new String(robotLocation.getBytes("UTF-8"));
-//                    String robotLocationUnicode = new String(robotLocationUtf8.getBytes(), "UTF-8");
-//                    String robotLocationGbk = new String(robotLocationUnicode.getBytes("GBK"));
+////                    String robotLocationUtf8 = new String(robotLocation.getBytes("UTF-8"));
+////                    String robotLocationUnicode = new String(robotLocationUtf8.getBytes(), "UTF-8");
+//                    String robotLocationGbk = new String(robotLocation.getBytes("GBK"));
 //                    System.out.println(robotLocationGbk);
 //                }catch(Exception e){
 //                    System.out.println(e.toString());
 //                    System.out.println(e.getMessage());
 //                    e.printStackTrace();
 //                }
-                SSDBQuery(ACTION_HSET, event[Key_Location], robotLocation);
+                SSDBQuery(ACTION_HSET, event[Key_Location], robotLocationGbk);
             }
         }.start();
 //        SSDBQuery(ACTION_HSET, event[Key_Location], robotLocation);
         pushFileList();
+        SSDBQuery(ACTION_HSET, "ForTest", "你好");
     }
     public void pushFileList(){
         try {
@@ -168,8 +170,20 @@ public class SSDBTask extends TimerTask {
                 Log.d(TAG, "pushFileList: 为空");
             }
             for (int i = 0; i < files.length; i++) {
-                if (files[i].getAbsolutePath().endsWith(".avi")
-                        || files[i].getAbsolutePath().endsWith(".mp4")) {
+                if (
+                    files[i].getAbsolutePath().endsWith(".avi")||
+                    files[i].getAbsolutePath().endsWith(".mp4")||
+                    files[i].getAbsolutePath().endsWith(".3gp")
+                  //  files[i].getAbsolutePath().endsWith(".flv")
+                   // files[i].getAbsolutePath().endsWith(".gif")||
+                   // files[i].getAbsolutePath().endsWith(".mkv")||
+                    //files[i].getAbsolutePath().endsWith(".mov")||
+                   // files[i].getAbsolutePath().endsWith(".mpg")||
+                   // files[i].getAbsolutePath().endsWith(".rmvb")
+                   // files[i].getAbsolutePath().endsWith(".swf")||
+                  //  files[i].getAbsolutePath().endsWith(".vob")
+                   // files[i].getAbsolutePath().endsWith(".wmv")
+                    ) {
                     Log.d(TAG, "getFiles: " + files[i].getAbsolutePath().substring(files[i].getAbsolutePath().lastIndexOf("/") + 1));
                     if (videoPlayList != null) {
                         videoPlayList = videoPlayList + files[i].getAbsolutePath().substring(files[i].getAbsolutePath().lastIndexOf("/") + 1) + " ";
@@ -453,12 +467,68 @@ public class SSDBTask extends TimerTask {
         SSDBQuery(codeType, key, null);
     }
 
+    /** 7位ASCII字符，也叫作ISO646-US、Unicode字符集的基本拉丁块 */
+    public static final String US_ASCII = "US-ASCII";
+
+    /** ISO 拉丁字母表 No.1，也叫作 ISO-LATIN-1 */
+    public static final String ISO_8859_1 = "ISO-8859-1";
+
+    /** 8 位 UCS 转换格式 */
+    public static final String UTF_8 = "UTF-8";
+
+    /** 16 位 UCS 转换格式，Big Endian（最低地址存放高位字节）字节顺序 */
+    public static final String UTF_16BE = "UTF-16BE";
+
+    /** 16 位 UCS 转换格式，Little-endian（最高地址存放低位字节）字节顺序 */
+    public static final String UTF_16LE = "UTF-16LE";
+
+    /** 16 位 UCS 转换格式，字节顺序由可选的字节顺序标记来标识 */
+    public static final String UTF_16 = "UTF-16";
+
+    /** 中文超大字符集 */
+    public static final String GBK = "GBK";
     /**
      * @param codeType cmd type
      * @param key      key you want set or get
      * @param val      value for key
      */
     public synchronized void SSDBQuery(int codeType, String key, String val) {
+        val = "你好";
+        if ( val != null) {
+            try {
+                val = changeCharset(val, GBK);
+//                Log.d(TAG, "111111111111111: " + val.getBytes() + "\t" + val);
+//                String utf8 = new String(val.getBytes());
+//                Log.d(TAG, "222222222222222: " + utf8);
+//                String gbk = new String(utf8.getBytes("GBK"));
+//                Log.d(TAG, "333333333333333: " + gbk);
+//                System.out.println(unicode);
+//                val = gbk;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         cmdList.add(CmdEntry.create(codeType, key, val));
+    }
+
+    public String changeCharset(String str, String newCharset) throws UnsupportedEncodingException {
+        if (str != null) {
+            // 用默认字符编码解码字符串。
+            byte[] bs = str.getBytes();
+            // 用新的字符编码生成字符串
+            return new String(bs, newCharset);
+        }
+        return null;
+    }
+    public String changeCharset(String str, String oldCharset, String newCharset) throws UnsupportedEncodingException {
+        if (str != null) {
+            // 用旧的字符编码解码字符串。解码可能会出现异常。
+            byte[] bs = str.getBytes(oldCharset);
+            Log.d(TAG, "changeCharset: " + new String(bs,"GBK"));
+            // 用新的字符编码生成字符串
+            return new String(bs, newCharset);
+        }
+        return null;
     }
 }

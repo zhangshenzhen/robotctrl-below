@@ -85,7 +85,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serverIp)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serverPort)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.robotName)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.robotLocation)));
+            bindPreferenceSummaryToValue(findPreference("robotIDKey"));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.list)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serialCOM)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serialBaud)));
@@ -118,7 +118,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
                 //Log.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
                 if (mHits[0] >= (SystemClock.uptimeMillis()-3000)) {
                     //Log.d(TAG,"onPreferenceClick:进入");
-                    if (preference.getKey().equals("serverIp")) {
+                    if (preference.getKey().equals("robotIDKey")) {
                         developerPreference.setEnabled(true);
                     }
                 }
