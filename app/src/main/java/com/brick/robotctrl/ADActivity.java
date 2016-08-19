@@ -11,13 +11,11 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.kjn.videoview.ADVideo;
@@ -72,6 +70,12 @@ public class ADActivity extends Activity {
                 break;
             case "Cycle":
                 videoCycleFrom(fileName);
+                break;
+            case "stop":
+                videoStop();
+                break;
+            case "pause":
+                videopause();
                 break;
         }
 //        View decorView = getWindow().getDecorView();
@@ -201,6 +205,11 @@ public class ADActivity extends Activity {
     public void videoStop(){
         adVideo.stopPlayBack();
     }
+
+    public void videopause(){
+        adVideo.pause();
+    }
+
     @Override
     protected void onStop() {
         Log.i(TAG, "onStop");

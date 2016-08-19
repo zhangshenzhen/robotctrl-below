@@ -2,32 +2,25 @@ package com.brick.robotctrl;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
-import com.bean.serialport.ComBean;
 import com.jly.batteryView.BatteryView;
 import com.kjn.videoview.ADVideo;
-import com.udpwork.ssdb.SSDB;
 
 import java.util.Calendar;
-import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,6 +45,8 @@ public class MainActivity extends BaseActivity {
 
     Calendar currentTime = null;
 
+    ADVideo adVideo1 = null;
+    private final int singleOver = 9999;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +59,8 @@ public class MainActivity extends BaseActivity {
         // remove text in toolbar
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+
+        adVideo1 = new ADVideo(handler);
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler);
@@ -221,6 +218,10 @@ public class MainActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
+
+                case singleOver:
+                    ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, "VideoInfo", null);
+
                 case SSDBTask.Key_Event:
                     /**
                      * 处理event方法
@@ -349,15 +350,16 @@ public class MainActivity extends BaseActivity {
                                 ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
                                 if ( !an.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
                                     ADActivity.startAction(MainActivity.this, strArray[0], null);
-                                }else{
-                                    ADVideo.start();
                                 }
+//                                else{
+//                                    ADVideo.start();
+//                                }
                                 break;
                             case "Pause":
-                                ADVideo.pause();
+                                ADActivity.startAction(MainActivity.this, strArray[0], null);
                                 break;
                             case "Stop":
-                                ADVideo.stopPlayBack();
+                                ADActivity.startAction(MainActivity.this, strArray[0], null);
                                 ExpressionActivity.startAction(MainActivity.this, "12");
                                 break;
                             case "Single":

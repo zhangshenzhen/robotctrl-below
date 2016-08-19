@@ -1,18 +1,10 @@
 package com.kjn.videoview;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.PixelFormat;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.widget.VideoView;
-
-import com.brick.robotctrl.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,16 +12,20 @@ import java.util.List;
 
 public class ADVideo {
     private final String TAG = "ADVideo";
-    private static VideoView videoView;
+    private VideoView videoView;
     private List<String> videoList;
     private int index = 0;
     private static int per = 0;
     private Handler contextHandler = null;
+    private Handler contextHandler1 = null;
     private final int singleOver = 1;
 
     public ADVideo (VideoView videoView, Handler handler){
         this.videoView = videoView;
         this.contextHandler = handler;
+    }
+    public ADVideo (Handler handler){
+        this.contextHandler1 = handler;
     }
 
     public boolean getFiles(String url) {
@@ -121,6 +117,8 @@ public class ADVideo {
                 message.what = singleOver;
                 message.obj = "nihao";
                 contextHandler.sendMessage(message);
+                contextHandler1.sendMessage(message);
+//                SSDBTask.SSDBQuery(ACTION_HSET, event[Key_BatteryVolt], "");
             }
         });
     }
@@ -133,7 +131,7 @@ public class ADVideo {
         videoView.start();
     }
 
-    public void  play(){//从已经检索到的音乐列表之中中挑选一首音乐来播放,播完后下一首
+    public void  play(){                     //从已经检索到的音乐列表之中中挑选一首音乐来播放,播完后下一首
         videoView.setVideoPath(videoList.get(index));             //获得第一个video的路径
         Log.d(TAG, "play: starting play: " + videoList.get(index));
         videoView.start();                                   //开始播放
@@ -145,7 +143,7 @@ public class ADVideo {
         });
     }
 
-    public static void pause(){
+    public void pause(){
         videoView.pause();
         per = videoView.getCurrentPosition();
     }
@@ -157,11 +155,11 @@ public class ADVideo {
 
     }
 
-    public static void  stopPlayBack(){
+    public void stopPlayBack(){
         videoView.stopPlayback();
     }
 
-    public static void start(){
+    public void start(){
         videoView.seekTo(per);
         videoView.start();
     }
