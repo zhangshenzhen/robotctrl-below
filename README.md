@@ -70,3 +70,4 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 
     1. 智能语音
     2. 开机自启动
+    3. 修复速度调控（串口测试）

@@ -39,7 +39,7 @@ public class SerialCtrl {
 
         ComA = new SerialControl();
         openSerialCOM();
-        sendPortData(ComA, "FF10FF10");
+//        sendPortData(ComA, "FF10FF10");
     }
 
     public void setSerialCOM(@NonNull String serialCOM) {
@@ -208,8 +208,11 @@ public class SerialCtrl {
             Log.d(TAG, "setRobotRate: "+ splitRate[i]);
         }
         sendPortData(ComA, "FF16" + String.valueOf(exeRate) + String.valueOf(exeRateBCC));
+        Log.d(TAG, "setRobotRate: " + "FF16" + String.valueOf(exeRate) + String.valueOf(exeRateBCC));
         sendPortData(ComA, "FF17" + String.valueOf(turnRate) + String.valueOf(turnRateBCC));
+        Log.d(TAG, "setRobotRate: " + "FF17" + String.valueOf(turnRate) + String.valueOf(turnRateBCC));
         sendPortData(ComA, "FF18" + String.valueOf(headRate) + String.valueOf(headRateBCC));
+        Log.d(TAG, "setRobotRate: " + "FF18" + String.valueOf(headRate) + String.valueOf(headRateBCC));
 //        sendPortData(ComA, "FF16"+splitRate[3]+String.valueOf(timeoutTimeBCC));
     }
 }
