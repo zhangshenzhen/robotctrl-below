@@ -55,6 +55,7 @@ public class ShowSureQueryActivity extends BaseActivity {
 //    ADVideo adVideo = null;
     private Button goButton;
     private Button personservice_bt;
+    private boolean flag = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class ShowSureQueryActivity extends BaseActivity {
             public void onClick(View view) {
                 goButton.setClickable(false);
                 clearTimerCount();
-                if (mTtsPlayer != null) {
+                if (flag) {
                     mTtsPlayer.release();
                 }
                 HciCloudSys.hciRelease();
@@ -152,8 +153,10 @@ public class ShowSureQueryActivity extends BaseActivity {
 
         //传入了capKey初始化TTS播发器
         boolean isPlayerInitSuccess = initPlayer();
+        flag = isPlayerInitSuccess;
         if (!isPlayerInitSuccess) {
             Toast.makeText(this, "播放器初始化失败", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "播放器初始化失败");
             return;
         }
 

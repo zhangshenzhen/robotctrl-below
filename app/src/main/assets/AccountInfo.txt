@@ -4,16 +4,16 @@
 ######################################################
 
 #应用程序序号
-#appKey=ac5d5452
-appKey=ed5d549e
+appKey=ac5d5452
+#appKey=ed5d549e
 
 #开发者密钥
-#developerKey=developer_key
-developerKey=e9519f8525975fc1c0964fa0d5bbc775
+developerKey=developer_key
+#developerKey=e9519f8525975fc1c0964fa0d5bbc775
 
 #灵云云服务的接口地址 
-#cloudUrl=60.171.108.153:8888
-cloudUrl=test.api.hcicloud.com:8888
+cloudUrl=60.171.108.152:8888
+#cloudUrl=test.api.hcicloud.com:8888
 
 #需要运行的灵云能力
 capKey=asr.cloud.freetalk

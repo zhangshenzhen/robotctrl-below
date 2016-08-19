@@ -51,3 +51,8 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 2. RobotCtrl_master_v1.15.10.0816_alpha
 
     1. 修复由于协议问题导致的电机控制失败
+
+3. RobotCtrl_master_v1.17.10.0819_alpha
+
+    1. 智能语音
+    2. 开机自启动

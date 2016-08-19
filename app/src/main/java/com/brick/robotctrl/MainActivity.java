@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 clearTimerCount();
-                startActivity(new Intent().setClass(MainActivity.this, MenuActivity.class));
+                startActivity(new Intent().setClass(MainActivity.this, QuestTestActivity.class));
             }
         });
 
@@ -206,12 +206,12 @@ public class MainActivity extends BaseActivity {
             addTimerCount();
 //            Log.d(TAG, "run: " + getTimerCount());
 
-            if(getTimerCount() > (10*60*1000/200)) {
-                Log.d(TAG, "Timeout to play video");
-                startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
-                clearTimerCount();
-//                serialCtrl.reOpenSerialCOM();
-            }
+//            if(getTimerCount() > (10*60*1000/200)) {
+//                Log.d(TAG, "Timeout to play video");
+//                startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
+//                clearTimerCount();
+////                serialCtrl.reOpenSerialCOM();
+//            }
         }
     };
 
@@ -539,11 +539,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause(){
         Log.i(TAG, "onStop");
-        Intent stopIntent = new Intent();
-        stopIntent.putExtra("url", mp3Url);
-        Log.d(TAG, "onCreate: stop PlayService");
-        stopIntent.setClass(MainActivity.this, PlayerService.class);
-        stopService(stopIntent);
+//        Intent stopIntent = new Intent();
+//        stopIntent.putExtra("url", mp3Url);
+//        Log.d(TAG, "onCreate: stop PlayService");
+//        stopIntent.setClass(MainActivity.this, PlayerService.class);
+//        stopService(stopIntent);
         super.onPause();
     }
 
@@ -563,7 +563,7 @@ public class MainActivity extends BaseActivity {
     protected void onRestart() {
         Log.i(TAG, "onRestart");
         countForPlayer = 0;
-        PlayerService.startAction(MainActivity.this, mp3Url);
+//        PlayerService.startAction(MainActivity.this, mp3Url);
         super.onRestart();
     }
 
