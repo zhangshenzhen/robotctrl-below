@@ -37,6 +37,9 @@ public class ADActivity extends Activity {
     /* 当前声音 */
     private int mVolume = -1;
     private final int singleOver = 1;
+    private final int videoInfo = 9999;
+    private final int PROGRESS = 2;
+    private static Handler contextHandler2 = null;
 //    private View mVolumeBrightnessLayout;
 
     @Override
@@ -93,7 +96,24 @@ public class ADActivity extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case singleOver:
+                    String percentString = "100%";
+                    Log.d(TAG, "进度: " + percentString);
+                    Message message = new Message();
+                    message.what = videoInfo;
+                    message.obj = percentString;
+                    contextHandler2.sendMessage(message);
                     ExpressionActivity.startAction(ADActivity.this, "12");
+                    break;
+                case PROGRESS:
+//                    float percent = (videoView.getCurrentPosition()%videoView.getDuration())*100;
+//                    String percentString = String.valueOf(percent)  + "%";
+                    String percentstartString = "0%";
+                    Log.d(TAG, "进度: " + percentstartString);
+                    Message message1 = new Message();
+                    message1.what = videoInfo;
+                    message1.obj = percentstartString;
+                    contextHandler2.sendMessage(message1);
+
             }
         }
     };
@@ -317,5 +337,8 @@ public class ADActivity extends Activity {
         startIntent.putExtra("mode", mode);
         startIntent.putExtra("fileName", str);
         context.startActivity(startIntent);
+    }
+    public static void setHandler(Handler handler){
+        ADActivity.contextHandler2 = handler;
     }
 }

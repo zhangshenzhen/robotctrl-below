@@ -187,6 +187,10 @@ public class SerialCtrl {
         return batteryNum;
     }
 
+    public void robotCharge(){
+        sendPortData(ComA, "FF20FF20");
+    }
+
 //    //----------------------------------------------------显示接收数据
 //    public void DispRecData(ComBean ComRecData){
 //        // Log.d("getbattery", "getbattery: "+String.format("%02x", ComRecData.bRec[2]).toUpperCase());

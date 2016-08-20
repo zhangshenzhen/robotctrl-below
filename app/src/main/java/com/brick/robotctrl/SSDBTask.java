@@ -37,7 +37,7 @@ public class SSDBTask extends TimerTask {
     private Handler contextHandler = null;
     private Context context = null;
     private SSDB ssdbClient = null;
-    public String serverIp = "60.171.108.155";
+    public String serverIp = "60.171.108.151";
     public int serverPort = 11028;
     public String robotName = "r00004A";
     public String robotLocation = "江苏南大电子信息技术股份有限公司";
@@ -154,12 +154,12 @@ public class SSDBTask extends TimerTask {
 //                    System.out.println(e.getMessage());
 //                    e.printStackTrace();
 //                }
-                SSDBQuery(ACTION_HSET, event[Key_Location], robotLocationGbk);
+                SSDBQuery(ACTION_HSET, event[Key_Location], robotLocation);
             }
         }.start();
 //        SSDBQuery(ACTION_HSET, event[Key_Location], robotLocation);
         pushFileList();
-        SSDBQuery(ACTION_HSET, "ForTest", "你好");
+//        SSDBQuery(ACTION_HSET, "ForTest", "你好");
     }
     public void pushFileList(){
         try {
@@ -233,7 +233,7 @@ public class SSDBTask extends TimerTask {
     public static final int Key_DirCtrl = 1;////
     public static final int Key_SetParam = 2;////
     public static final int Key_VideoPlay = 3;//
-//    public static final int Key_VideoInfo = 4;        // 视频播放时1s上传一次info，不需要接收该关键字
+    public static final int Key_VideoInfo = 4;        // 视频播放时1s上传一次info，不需要接收该关键字
     public static final int Key_VideoPlayList = 5;  //
     public static final int Key_RobotMsg = 6; //
     public static final int Key_BatteryVolt = 7;  //
@@ -493,10 +493,10 @@ public class SSDBTask extends TimerTask {
      * @param val      value for key
      */
     public synchronized void SSDBQuery(int codeType, String key, String val) {
-        val = "你好";
-        if ( val != null) {
-            try {
-                val = changeCharset(val, GBK);
+//        val = "你好";
+//        if ( val != null) {
+//            try {
+//                val = changeCharset(val, GBK);
 //                Log.d(TAG, "111111111111111: " + val.getBytes() + "\t" + val);
 //                String utf8 = new String(val.getBytes());
 //                Log.d(TAG, "222222222222222: " + utf8);
@@ -504,10 +504,10 @@ public class SSDBTask extends TimerTask {
 //                Log.d(TAG, "333333333333333: " + gbk);
 //                System.out.println(unicode);
 //                val = gbk;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         cmdList.add(CmdEntry.create(codeType, key, val));
     }
@@ -531,4 +531,5 @@ public class SSDBTask extends TimerTask {
         }
         return null;
     }
+
 }

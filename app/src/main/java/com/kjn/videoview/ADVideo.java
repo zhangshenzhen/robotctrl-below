@@ -17,15 +17,12 @@ public class ADVideo {
     private int index = 0;
     private static int per = 0;
     private Handler contextHandler = null;
-    private Handler contextHandler1 = null;
     private final int singleOver = 1;
+    private final int PROGRESS = 2;
 
     public ADVideo (VideoView videoView, Handler handler){
         this.videoView = videoView;
         this.contextHandler = handler;
-    }
-    public ADVideo (Handler handler){
-        this.contextHandler1 = handler;
     }
 
     public boolean getFiles(String url) {
@@ -94,7 +91,15 @@ public class ADVideo {
 
         videoView.setVideoPath(videoList.get(index));             //获得第一个video的路径
         Log.d(TAG, "play: starting play: " + videoList.get(index));
-        videoView.start();                                   //开始播放
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                videoView.start();                                   //开始播放
+//                contextHandler.sendEmptyMessage(PROGRESS);
+//                Log.d(TAG, "onPrepared: PROGRESS");
+            }
+        });
+
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
             @Override
             public void onCompletion(MediaPlayer mp) {//这是一个匿名类，对该父类mediaplayer.oncompletionlistener中的oncompletion进行了重写
@@ -108,7 +113,14 @@ public class ADVideo {
         index=findIndexOfStringInvideoList(str);
         videoView.setVideoPath(videoList.get(index));             //获得第一个video的路径
         Log.d(TAG, "play: starting play: " + videoList.get(index));
-        videoView.start();                                   //开始播放
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                videoView.start();                                   //开始播放
+                contextHandler.sendEmptyMessage(PROGRESS);
+                Log.d(TAG, "onPrepared: PROGRESS");
+            }
+        });
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
             @Override
             public void onCompletion(MediaPlayer mp) {//这是一个匿名类，对该父类mediaplayer.oncompletionlistener中的oncompletion进行了重写
@@ -117,8 +129,8 @@ public class ADVideo {
                 message.what = singleOver;
                 message.obj = "nihao";
                 contextHandler.sendMessage(message);
-                contextHandler1.sendMessage(message);
-//                SSDBTask.SSDBQuery(ACTION_HSET, event[Key_BatteryVolt], "");
+//                contextHandler.sendEmptyMessage(PROGRESS);
+//                Log.d(TAG, "onPrepared: PROGRESS over");
             }
         });
     }

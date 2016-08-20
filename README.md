@@ -66,8 +66,12 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 
     1. 修复由于协议问题导致的电机控制失败
 
-3. RobotCtrl_master_v1.17.10.0819_alpha
+3. RobotCtrl_master_v1.17.11.0819_alpha
 
     1. 智能语音
     2. 开机自启动
     3. 修复速度调控（串口测试）
+
+4.RobotCtrl_master_v1.18.11.0820_alpha
+
+    1.Single模式播放结束发送消息

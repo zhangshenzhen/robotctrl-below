@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity {
     Calendar currentTime = null;
 
     ADVideo adVideo1 = null;
-    private final int singleOver = 9999;
+    private final int videoInfo = 9999;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        adVideo1 = new ADVideo(handler);
+        ADActivity.setHandler(handler);
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler);
@@ -218,9 +218,9 @@ public class MainActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-
-                case singleOver:
-                    ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, "VideoInfo", null);
+                case videoInfo:
+                    ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_VideoInfo], (String)msg.obj);
+                    Log.d(TAG, "handleMessage: videoInfo");
 
                 case SSDBTask.Key_Event:
                     /**
@@ -245,6 +245,14 @@ public class MainActivity extends BaseActivity {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableDirCtl = false;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
+                    if (rlt.equals("Charge")) {
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        //SSDBTask.enableCharge = true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        //充电
+                        serialCtrl.robotCharge();
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("setparam")) {
@@ -439,7 +447,9 @@ public class MainActivity extends BaseActivity {
                 case SSDBTask.Key_DirCtrl:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:DirCtrl \tvalue:" + rlt);
-                    if ( !rlt.equals("")) {
+                    if (rlt.equals("EndDirCtl")) {
+                        SSDBTask.enableDirCtl = false;
+                    } else if ( !rlt.equals("")) {
                         serialCtrl.robotMove(rlt);
                     }
                     break;
