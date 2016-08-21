@@ -25,7 +25,7 @@ import java.util.List;
 public class AboutActivity extends BaseActivity {
     private final String TAG = "AboutActivity";
     public static FTPAsk ftp = null;
-    public static final String REMOTE_PATH = "\\东南\\";
+    public static final String REMOTE_PATH = "\\东南\\更新\\";
     public static String fileNameDownLoad;
     private String hostName = "218.2.191.50";
     private String userName = "user_seu";
@@ -33,6 +33,7 @@ public class AboutActivity extends BaseActivity {
     private String LOCAL_PATH = null;
     private List<FTPFile> remoteFile;
     public static String fileNameDown;
+    private boolean isAPK = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,6 @@ public class AboutActivity extends BaseActivity {
                 .getPath()+"/Movies";
         ftp = new FTPAsk(hostName, userName, password);
         remoteFile = new ArrayList<FTPFile>();
-//        userTimer = new UserTimer();
         new Thread() {
             @Override
             public void run() {
@@ -54,55 +54,76 @@ public class AboutActivity extends BaseActivity {
                     Log.d(TAG, "onCreate: 开始打开");
                     ftp.openConnect();
                     remoteFile = ftp.listFiles(REMOTE_PATH);
-                    for(int i = 0; i < remoteFile.size(); i++){
-                        Log.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
-                        if(remoteFile.get(i).getName().endsWith("RobotCtrl_master_v1.15.8.0817_alpha.apk")) {
-                            fileNameDown = remoteFile.get(i).getName();
-                            break;
+                    if (remoteFile.size() > 0) {
+                        for (int i = 0; i < remoteFile.size(); i++) {
+                            Log.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
+                            if (remoteFile.get(i).getName().endsWith(".apk")) {
+                                isAPK = true;
+                                fileNameDown = remoteFile.get(i).getName();
+                                break;
+                            }else if(remoteFile.get(i).getName().endsWith(".mp4") || remoteFile.get(i).getName().endsWith(".3gp") || remoteFile.get(i).getName().endsWith(".mp3") ){
+                                isAPK = false;
+                                fileNameDown = remoteFile.get(i).getName();
+                                Result result = null;
+                                try {
+                                    // 下载
+                                    result = ftp.download(REMOTE_PATH, fileNameDown, LOCAL_PATH);
+                                } catch (IOException e) {
+                                    System.out.println(e.toString());
+                                    System.out.println(e.getMessage());
+                                    e.printStackTrace();
+                                }
+                                if (result.isSucceed()) {
+                                    Log.e(TAG, "download ok...time:" + result.getTime()
+                                            + " and size:" + result.getResponse());
+                                } else {
+                                    Log.e(TAG, "download fail");
+                                }
+                            }
+                        }
+//                        File file = new File(LOCAL_PATH);
+//                        File[] files = file.listFiles();
+//                        for (int i = 0; i < files.length; i++) {
+//                            if (files[i].getAbsolutePath().endsWith(fileNameDown)) {
+//                                Log.d(TAG, "file exit: ");
+//                                boolean flag = (files[i].length() >= remoteFile.get(2).getSize());
+//                                Log.d(TAG, "flag: " + flag);
+//                            }
+//                        }
+                        if(isAPK) {
+                            Result result = null;
+                            try {
+                                // 下载
+                                result = ftp.download(REMOTE_PATH, fileNameDown, LOCAL_PATH);
+                            } catch (IOException e) {
+                                System.out.println(e.toString());
+                                System.out.println(e.getMessage());
+                                e.printStackTrace();
+                            }
+                            if (result.isSucceed()) {
+                                Log.e(TAG, "download ok...time:" + result.getTime()
+                                        + " and size:" + result.getResponse());
+                                ftp.closeConnect();
+                                String str = LOCAL_PATH + "/" + fileNameDown;
+                                Log.d(TAG, "str: " + str);
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.fromFile(new File(str)), "application/vnd.android.package-archive");
+                                startActivity(intent);
+                            } else {
+                                Log.e(TAG, "download fail");
+                            }
+                        }else{
+                            ftp.closeConnect();
+                            Log.d(TAG, "multvideo:download over ");
+                            Intent intent = new Intent();
+                            intent.setClass(AboutActivity.this, MainActivity.class);
+                            startActivity(intent);
                         }
                     }
-//                    fileNameDown = remoteFile.get(4).getName();
-//                    fileNameDownLoad = remoteFile.get(2).getName();
-//                    DownLoadService.startAction(AboutActivity.this);
-                    File file = new File(LOCAL_PATH);
-                    File[] files = file.listFiles();
-                    for (int i = 0; i < files.length; i++) {
-                        if(files[i].getAbsolutePath().endsWith(fileNameDown)){
-                            Log.d(TAG, "file exit: " );
-                            boolean flag = (files[i].length() >= remoteFile.get(2).getSize());
-                            Log.d(TAG, "flag: " + flag);
-                        }
-                    }
-
-                    Result result = null;
-                    try {
-                        // 下载
-
-                        result = ftp.download(REMOTE_PATH, fileNameDown, LOCAL_PATH);
-                    } catch (IOException e) {
-                        System.out.println(e.toString());
-                        System.out.println(e.getMessage());
+                }catch(Exception e){
                         e.printStackTrace();
                     }
-                    if (result.isSucceed()) {
-                        Log.e(TAG, "download ok...time:" + result.getTime()
-                                + " and size:" + result.getResponse());
-//                        Toast.makeText(AboutActivity.this, "下载成功", Toast.LENGTH_SHORT)
-//                                .show();
-                        String str = LOCAL_PATH + "/" +fileNameDown;
-                        Log.d(TAG, "str: " + str);
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setDataAndType(Uri.fromFile(new File(str)), "application/vnd.android.package-archive");
-                        startActivity(intent);
-                    } else {
-                        Log.e(TAG, "download fail");
-//                        Toast.makeText(AboutActivity.this, "下载失败", Toast.LENGTH_SHORT)
-//                                .show();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
         }.start();
     }
 

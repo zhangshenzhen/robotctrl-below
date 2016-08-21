@@ -29,7 +29,7 @@ public class FTPAsk {
     private String password;
     private FTPClient ftpClient;
     private List<FTPFile> list;
-    public static final String REMOTE_PATH = "\\";
+//    public static final String REMOTE_PATH = "\\";
     private String currentPath = "";
     private double response;
 
@@ -111,34 +111,15 @@ public class FTPAsk {
         boolean flag = true;
         // 创建输出流
         Log.d(TAG, "downloadSingle: 1");
-//        OutputStream outputStream = new FileOutputStream(localFile);
         // 统计流量
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(localFile));
         response += ftpFile.getSize();
         // 下载单个文件
         Log.d(TAG, "downloadSingle: 2");
-//        try{
-            flag = ftpClient.retrieveFile(localFile.getName(), out);
-//        flag = ftpClient.retrieveFile(new String(localFile.getName().getBytes("GBK"),"ISO-8859-1"),out);
-//        }catch(Exception e){
-//            System.out.println(e.toString());
-//            System.out.println(e.getMessage());
-//            e.printStackTrace();
-//        }
+        flag = ftpClient.retrieveFile(localFile.getName(), out);
         // 关闭文件流
         Log.d(TAG, "downloadSingle: 3");
         out.close();
-//        OutputStream outputStream = new FileOutputStream(localFile,true);
-//        // 统计流量
-//        response += ftpFile.getSize();
-//        // 下载单个文件
-//        Log.d(TAG, "downloadSingle: 2");
-////        ftpClient.setRestartOffset(localFile.length());
-//        InputStream inputStream = ftpClient.retrieveFileStream(localFile.getName());
-//        // 关闭文件流
-//        inputStream.close();
-//        outputStream.close();
-//        Log.d(TAG, "downloadSingle: 4");
         return flag;
     }
 
@@ -174,21 +155,6 @@ public class FTPAsk {
                 Date startTime = new Date();
                 flag = downloadSingle(file, ftpFile);
                 // 下载完时间
-//                Log.d(TAG, "download: for");
-//                for(;file.length() < ftpFile.getSize();){
-//                    Log.d(TAG, "downloadSingle: 1");
-//                    OutputStream outputStream = new FileOutputStream(file,true);
-//                    // 统计流量
-//                    response += ftpFile.getSize();
-//                    // 下载单个文件
-//                    Log.d(TAG, "downloadSingle: 2");
-//                    ftpClient.setRestartOffset(file.length());
-//                    InputStream inputStream = ftpClient.retrieveFileStream(file.getName());
-//                    // 关闭文件流
-////                    inputStream.close();
-//                    outputStream.close();
-//
-//                }
                 Date endTime = new Date();
                 // 返回值
                 result = new Result(flag, Util.getFormatTime(endTime.getTime() - startTime.getTime()), Util.getFormatSize(response));
