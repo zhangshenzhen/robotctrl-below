@@ -47,13 +47,19 @@
         android:layout_alignTop="@+id/leftEyeButton"
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@+id/leftEyeButton" />
-    <com.jly.batteryView.BatteryView
+    <!--<com.jly.batteryView.BatteryView-->
+        <!--android:id="@+id/battery_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignBottom="@+id/toolbar"-->
+        <!--android:layout_alignStart="@+id/rightEyeButton" />-->
+        <com.jly.batteryView.BatteryView
         android:id="@+id/battery_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/toolbar"
-        android:layout_alignStart="@+id/rightEyeButton" />
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/rightEyeButton" />
 
 </RelativeLayout>

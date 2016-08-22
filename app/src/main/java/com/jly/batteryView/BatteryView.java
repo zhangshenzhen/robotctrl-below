@@ -59,7 +59,7 @@ public class BatteryView extends View {
             paint2.setColor(Color.YELLOW);
             batteryFlag = 1;
         } else if(power_percent>=0.75f) {
-            paint2.setColor(Color.GREEN);
+            paint2.setColor(Color.BLACK);
             batteryFlag = 1;
         } else {
             paint2.setColor(Color.RED);
