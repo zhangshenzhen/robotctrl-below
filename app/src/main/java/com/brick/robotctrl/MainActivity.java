@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 clearTimerCount();
-                startActivity(new Intent().setClass(MainActivity.this, MenuActivity.class));
+                startActivity(new Intent().setClass(MainActivity.this, QuestTestActivity.class));
             }
         });
 

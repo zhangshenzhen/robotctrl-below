@@ -57,11 +57,7 @@ public class AboutActivity extends BaseActivity {
                     if (remoteFile.size() > 0) {
                         for (int i = 0; i < remoteFile.size(); i++) {
                             Log.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
-                            if (remoteFile.get(i).getName().endsWith(".apk")) {
-                                isAPK = true;
-                                fileNameDown = remoteFile.get(i).getName();
-                                break;
-                            }else if(remoteFile.get(i).getName().endsWith(".mp4") || remoteFile.get(i).getName().endsWith(".3gp") || remoteFile.get(i).getName().endsWith(".mp3") ){
+                            if (remoteFile.get(i).getName().endsWith(".mp4") || remoteFile.get(i).getName().endsWith(".3gp") || remoteFile.get(i).getName().endsWith(".mp3")) {
                                 isAPK = false;
                                 fileNameDown = remoteFile.get(i).getName();
                                 Result result = null;
@@ -79,6 +75,13 @@ public class AboutActivity extends BaseActivity {
                                 } else {
                                     Log.e(TAG, "download fail");
                                 }
+                            }
+                        }
+                        for (int i = 0; i < remoteFile.size(); i++) {
+                            if (remoteFile.get(i).getName().endsWith(".apk")) {
+                                isAPK = true;
+                                fileNameDown = remoteFile.get(i).getName();
+                                break;
                             }
                         }
 //                        File file = new File(LOCAL_PATH);
@@ -119,6 +122,12 @@ public class AboutActivity extends BaseActivity {
                             intent.setClass(AboutActivity.this, MainActivity.class);
                             startActivity(intent);
                         }
+                    }else{
+                        ftp.closeConnect();
+                        Log.d(TAG, "暂无更新");
+                        Intent intent = new Intent();
+                        intent.setClass(AboutActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 }catch(Exception e){
                         e.printStackTrace();
