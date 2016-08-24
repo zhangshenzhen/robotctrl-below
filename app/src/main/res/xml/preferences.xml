@@ -7,7 +7,7 @@
         android:summary="服务器地址、端口"
         android:title="服务器">
         <EditTextPreference
-            android:defaultValue="60.171.108.155"
+            android:defaultValue="60.171.108.151"
             android:inputType="textAutoCorrect"
             android:key="@string/serverIp"
             android:singleLine="true"
@@ -61,12 +61,12 @@
             android:positiveButtonText="OK"
             android:title="Sync frequency"/>
     </PreferenceCategory>
-    <Preference
-        android:summary="WiFi configuration"
-        android:title="WiFi">
-        <!--NOTE intent调用系统设置-->
-        <intent android:action="com.android.browser.ACTION_START" />
-    </Preference>
+    <!--<Preference-->
+        <!--android:summary="WiFi configuration"-->
+        <!--android:title="WiFi">-->
+        <!--&lt;!&ndash;NOTE intent调用系统设置&ndash;&gt;-->
+        <!--<intent android:action="com.android.browser.ACTION_START" />-->
+    <!--</Preference>-->
     <Preference
         android:summary="Set PCM IP/Port/Machine ID"
         android:title="Human Service">
