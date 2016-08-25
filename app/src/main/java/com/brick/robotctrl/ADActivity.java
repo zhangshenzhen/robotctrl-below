@@ -109,9 +109,7 @@ public class ADActivity extends Activity {
                     currentPosition = videoView.getCurrentPosition();
                     duration = videoView.getDuration();
                     int percent = ((currentPosition * 100) / duration);
-//                    float percent = (videoView.getCurrentPosition()%videoView.getDuration())*100;
-                   String percentprocessString = String.valueOf(percent)  + "%";
-                    //String percentstartString = "0%";
+                    String percentprocessString = String.valueOf(percent)  + "%";
                     Log.d(TAG, "进度: " + percentprocessString);
                     Message message1 = new Message();
                     message1.what = videoInfo;

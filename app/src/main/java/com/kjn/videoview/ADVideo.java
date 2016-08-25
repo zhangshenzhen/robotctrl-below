@@ -91,18 +91,16 @@ public class ADVideo {
     public void playSingleCycleWhat(String str)
     {
         index=findIndexOfStringInvideoList(str);
-
         videoView.setVideoPath(videoList.get(index));             //获得第一个video的路径
         Log.d(TAG, "play: starting play: " + videoList.get(index));
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 videoView.start();                                   //开始播放
-               contextHandler.sendEmptyMessage(PROGRESS);
+                contextHandler.sendEmptyMessage(PROGRESS);
                 Log.d(TAG, "onPrepared: PROGRESS");
             }
         });
-
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
             @Override
             public void onCompletion(MediaPlayer mp) {//这是一个匿名类，对该父类mediaplayer.oncompletionlistener中的oncompletion进行了重写
@@ -132,8 +130,6 @@ public class ADVideo {
                 message.what = singleOver;
                 message.obj = "nihao";
                 contextHandler.sendMessage(message);
-//                contextHandler.sendEmptyMessage(PROGRESS);
-//                Log.d(TAG, "onPrepared: PROGRESS over");
             }
         });
     }
@@ -157,10 +153,8 @@ public class ADVideo {
             public void onPrepared(MediaPlayer mp) {
                 videoView.start();                                   //开始播放
                 contextHandler.sendEmptyMessage(PROGRESS);
-                // Log.d(TAG, "onPrepared: PROGRESS");
             }
         });
-       // videoView.start();                                   //开始播放
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
             @Override
             public void onCompletion(MediaPlayer mp) {
