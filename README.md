@@ -81,9 +81,10 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 
 4. RobotCtrl_master_v1.18.11.0820_alpha
 
-    1.Single模式播放结束发送消息
+    1. Single模式播放结束发送消息
 
-5. RobotCtrl_master_v1.19.12.0825_alpha
+5. RobotCtrl_master_v1.19.13.0825_alpha
 
-    1.修复上传视频列表最后多一个空格
-    2.添加视频播放进度提交
+    1. 修复上传视频列表最后多一个空格
+    2. 添加视频播放进度提交
+    3. 0~100按比例映射到0~20

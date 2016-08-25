@@ -486,7 +486,7 @@ public class MainActivity extends BaseActivity {
                         } else if( volume < 0 ) {
                             volume = 0;
                         }
-                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
+                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume/5, 0);
                         SSDBTask.enableSetVolume = false;
                     }
                     break;
