@@ -28,7 +28,7 @@ public class ADActivity extends Activity {
     private String videoPath;
     private boolean flag = true;
     private boolean isOver = false;
-    private String fileName = null;
+    public static String fileName = null;
     private String mode = null;
     private GestureDetector mGestureDetector;
     private AudioManager mAudioManager;
@@ -105,14 +105,21 @@ public class ADActivity extends Activity {
                     ExpressionActivity.startAction(ADActivity.this, "12");
                     break;
                 case PROGRESS:
+                    int currentPosition,duration;
+                    currentPosition = videoView.getCurrentPosition();
+                    duration = videoView.getDuration();
+                    int percent = ((currentPosition * 100) / duration);
 //                    float percent = (videoView.getCurrentPosition()%videoView.getDuration())*100;
-//                    String percentString = String.valueOf(percent)  + "%";
-                    String percentstartString = "0%";
-                    Log.d(TAG, "进度: " + percentstartString);
+                   String percentprocessString = String.valueOf(percent)  + "%";
+                    //String percentstartString = "0%";
+                    Log.d(TAG, "进度: " + percentprocessString);
                     Message message1 = new Message();
                     message1.what = videoInfo;
-                    message1.obj = percentstartString;
+                    message1.obj = fileName+" "+percentprocessString;
                     contextHandler2.sendMessage(message1);
+                    if(!isDestroyed()){
+                        handler.sendEmptyMessageDelayed(PROGRESS,1000);
+                    }
 
             }
         }
@@ -216,6 +223,7 @@ public class ADActivity extends Activity {
     {
         videoPath = Environment.getExternalStorageDirectory()
                 .getPath()+"/Movies";
+        Log.d(TAG,"name"+ADActivity.fileName);
         flag = adVideo.getFiles(videoPath);
         if (flag) {
             adVideo.playCycleWhat(str);

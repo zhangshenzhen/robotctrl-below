@@ -6,6 +6,8 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.VideoView;
 
+import com.brick.robotctrl.ADActivity;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ public class ADVideo {
     private Handler contextHandler = null;
     private final int singleOver = 1;
     private final int PROGRESS = 2;
+    private String path;
 
     public ADVideo (VideoView videoView, Handler handler){
         this.videoView = videoView;
@@ -95,8 +98,8 @@ public class ADVideo {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 videoView.start();                                   //开始播放
-//                contextHandler.sendEmptyMessage(PROGRESS);
-//                Log.d(TAG, "onPrepared: PROGRESS");
+               contextHandler.sendEmptyMessage(PROGRESS);
+                Log.d(TAG, "onPrepared: PROGRESS");
             }
         });
 
@@ -141,12 +144,23 @@ public class ADVideo {
         Log.d(TAG, "next: 正在播放" + videoList.get(index));
         videoView.setVideoPath(videoList.get(index));
         videoView.start();
+        path=videoList.get(index);
+        ADActivity.fileName=path .substring(path .lastIndexOf("/") + 1, path .length());
+        Log.d(TAG, "name"+ADActivity.fileName);
     }
 
     public void  play(){                     //从已经检索到的音乐列表之中中挑选一首音乐来播放,播完后下一首
         videoView.setVideoPath(videoList.get(index));             //获得第一个video的路径
         Log.d(TAG, "play: starting play: " + videoList.get(index));
-        videoView.start();                                   //开始播放
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                videoView.start();                                   //开始播放
+                contextHandler.sendEmptyMessage(PROGRESS);
+                // Log.d(TAG, "onPrepared: PROGRESS");
+            }
+        });
+       // videoView.start();                                   //开始播放
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
             @Override
             public void onCompletion(MediaPlayer mp) {
