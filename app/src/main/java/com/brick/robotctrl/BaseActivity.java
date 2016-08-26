@@ -11,15 +11,21 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.IOException;
+
 public abstract class BaseActivity extends AppCompatActivity {
     private String TAG = "BaseActivity";
-//    UserTimer userTimer = null;
+    //    UserTimer userTimer = null;
     private static int timerOutCount = 0;
 
     protected AudioManager mAudioManager;
-    /** 最大声音 */
+    /**
+     * 最大声音
+     */
     private int mMaxVolume;
-    /** 当前声音 */
+    /**
+     * 当前声音
+     */
     private int mVolume = -1;
     private GestureDetector mGestureDetector;
 
@@ -34,6 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static int getTimerCount() {
         return timerOutCount;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,14 +107,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
-    /** 手势结束 */
+    /**
+     * 手势结束
+     */
     private void endGesture() {
         mVolume = -1;
     }
+
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
 
         @Override
-        public boolean onSingleTapConfirmed (MotionEvent e){
+        public boolean onSingleTapConfirmed(MotionEvent e) {
             Log.d(TAG, "onTouch: to MainActivity");
             clearTimerCount();
             return true;
@@ -115,8 +125,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
 
-
-        /** 滑动 */
+        /**
+         * 滑动
+         */
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                 float distanceX, float distanceY) {
@@ -134,6 +145,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             return super.onScroll(e1, e2, distanceX, distanceY);
         }
     }
+
     private void onVolumeSlide(float percent) {
         if (mVolume == -1) {
             mVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
@@ -160,5 +172,21 @@ public abstract class BaseActivity extends AppCompatActivity {
 //        lp.width = findViewById(R.id.operation_full).getLayoutParams().width
 //                * nextVolume / mMaxVolume;
 //        mOperationPercent.setLayoutParams(lp);
+    }
+
+    public void onReboot() {
+        try {
+            Runtime.getRuntime().exec("su -c \"/system/bin/shutdown\"");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onShutdown() {
+        try {
+            Runtime.getRuntime().exec("su -c \"/system/bin/shutdown\"");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
