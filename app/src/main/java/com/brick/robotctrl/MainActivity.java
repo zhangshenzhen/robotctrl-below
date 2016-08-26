@@ -1,10 +1,15 @@
 package com.brick.robotctrl;
 
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.jly.batteryView.BatteryView;
 import com.kjn.videoview.ADVideo;
@@ -47,6 +53,11 @@ public class MainActivity extends BaseActivity {
 
     ADVideo adVideo1 = null;
     private final int videoInfo = 9999;
+    private final int ssdbConn = 888;
+
+    private IntentFilter intentFilter;
+    private netWorkChangeReceiver netWorkChangeReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +73,16 @@ public class MainActivity extends BaseActivity {
 
         ADActivity.setHandler(handler);
 
+
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler);
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        //创建NetWorkChangeReceiver的实例，并调用registerReceiver()方法进行注册
+        netWorkChangeReceiver = new netWorkChangeReceiver();
+        registerReceiver(netWorkChangeReceiver, intentFilter);
+
 
         DispQueue = new DispQueueThread();      //获取电压显示线程
         DispQueue.start();
@@ -221,7 +240,10 @@ public class MainActivity extends BaseActivity {
                 case videoInfo:
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_VideoInfo], (String)msg.obj);
                     Log.d(TAG, "handleMessage: videoInfo");
-
+                    break;
+                case ssdbConn:
+                    ssdbTask.connect();
+                    break;
                 case SSDBTask.Key_Event:
                     /**
                      * 处理event方法
@@ -340,7 +362,7 @@ public class MainActivity extends BaseActivity {
                     if(!rlt.equals(""))   {
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);
                         SSDBTask.enableLocation=false;
-            }
+                    }
                     break;
                 case SSDBTask.Key_VideoPlay:
                     rlt=(String)msg.obj;
@@ -585,6 +607,7 @@ public class MainActivity extends BaseActivity {
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(presChangeListener);
         ssdbTask.disConnect();
         serialCtrl.closeSerialCOM();
+        unregisterReceiver(netWorkChangeReceiver);
         super.onDestroy();
     }
 
@@ -616,4 +639,22 @@ public class MainActivity extends BaseActivity {
             Log.d(TAG, "run: while over");
         }
     }
+
+    class netWorkChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //通过getSystemService()方法得到connectionManager这个系统服务类，专门用于管理网络连接
+            ConnectivityManager connectionManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectionManager.getActiveNetworkInfo();
+            if(networkInfo != null && networkInfo.isAvailable()){
+                Toast.makeText(context, "network is available",Toast.LENGTH_SHORT).show();
+                handler.sendEmptyMessage(ssdbConn);
+            }else{
+                Toast.makeText(context, "network is unavailable", Toast.LENGTH_SHORT).show();
+                SettingsActivity.activityStart(MainActivity.this);
+            }
+        }
+    }
+
+
 }
