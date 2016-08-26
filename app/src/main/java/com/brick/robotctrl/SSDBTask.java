@@ -181,7 +181,8 @@ public class SSDBTask extends TimerTask {
                     }
                 }
                 videoPlayList = videoPlayList + files[files.length-1].getAbsolutePath().substring(files[files.length-1].getAbsolutePath().lastIndexOf("/") + 1);
-            }else{
+            }
+            if(files.length == 1){
                 videoPlayList = files[0].getAbsolutePath().substring(files[0].getAbsolutePath().lastIndexOf("/") + 1);
             }
             Log.d(TAG, "SSDBTask: "  + videoPlayList);
