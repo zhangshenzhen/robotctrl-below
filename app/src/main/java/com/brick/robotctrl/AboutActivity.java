@@ -1,13 +1,10 @@
 package com.brick.robotctrl;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.kjn.ftpabout.FTPAsk;
 import com.kjn.ftpabout.Result;
@@ -39,7 +36,7 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         LOCAL_PATH = Environment.getExternalStorageDirectory()
-                .getPath()+"/Movies";
+                .getPath()+"/Download";
         ftp = new FTPAsk(hostName, userName, password);
         remoteFile = new ArrayList<FTPFile>();
         new Thread() {

@@ -39,7 +39,9 @@ public class ADActivity extends Activity {
     private final int singleOver = 1;
     private final int videoInfo = 9999;
     private final int PROGRESS = 2;
+    private final int Pause = 3;
     private static Handler contextHandler2 = null;
+    private String path;
 //    private View mVolumeBrightnessLayout;
 
     @Override
@@ -49,6 +51,7 @@ public class ADActivity extends Activity {
         setContentView(R.layout.activity_ad);
         Intent intent = getIntent();
         fileName = intent.getStringExtra("fileName");
+        Log.d(TAG, "onCreate: filename" + fileName);
         mode = intent.getStringExtra("mode");
 
         // videoview 实现
@@ -74,11 +77,12 @@ public class ADActivity extends Activity {
             case "Cycle":
                 videoCycleFrom(fileName);
                 break;
-            case "stop":
+            case "Stop":
                 videoStop();
                 break;
-            case "pause":
-                videopause();
+            case "Pause":
+                handler.sendEmptyMessage(Pause);
+
                 break;
         }
 //        View decorView = getWindow().getDecorView();
@@ -95,6 +99,10 @@ public class ADActivity extends Activity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
+                case Pause:
+                    videopause();
+                    Log.d(TAG, "onCreate: pause");
+                    break;
                 case singleOver:
                     String percentString = "100%";
                     Log.d(TAG, "进度: " + percentString);
@@ -105,6 +113,7 @@ public class ADActivity extends Activity {
                     ExpressionActivity.startAction(ADActivity.this, "12");
                     break;
                 case PROGRESS:
+
                     int currentPosition,duration;
                     currentPosition = videoView.getCurrentPosition();
                     duration = videoView.getDuration();
@@ -115,7 +124,7 @@ public class ADActivity extends Activity {
                     message1.what = videoInfo;
                     message1.obj = fileName+" "+percentprocessString;
                     contextHandler2.sendMessage(message1);
-                    if(!isDestroyed()){
+                    if(videoView.isPlaying()){
                         handler.sendEmptyMessageDelayed(PROGRESS,1000);
                     }
 
@@ -234,12 +243,14 @@ public class ADActivity extends Activity {
 
     public void videopause(){
         adVideo.pause();
+        Log.d(TAG, "videopause: ");
     }
 
     @Override
     protected void onStop() {
         Log.i(TAG, "onStop");
         super.onStop();
+        finish();
     }
 
     @Override

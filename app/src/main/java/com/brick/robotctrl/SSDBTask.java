@@ -5,11 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.EventLog;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,7 +15,6 @@ import com.kjn.videoview.HttpAsk;
 import com.udpwork.ssdb.SSDB;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Timer;
@@ -116,7 +113,7 @@ public class SSDBTask extends TimerTask {
             e.printStackTrace();
         }
         timer.schedule(this, 50, 50);
-        connect();
+//        connect();
         new Thread() {
             @Override
             public void run() {
@@ -146,7 +143,7 @@ public class SSDBTask extends TimerTask {
                 SSDBQuery(ACTION_HSET, event[Key_Location], robotLocation);
             }
         }.start();
-        pushFileList();
+//        pushFileList();
     }
     public void pushFileList(){
         try {
@@ -208,6 +205,7 @@ public class SSDBTask extends TimerTask {
                 Toast.makeText(context, "Connecting to " + serverIp + ":" + serverPort, Toast.LENGTH_SHORT).show();
             }
         });
+        pushFileList();
     }
 
     public void disConnect() {
@@ -270,6 +268,7 @@ public class SSDBTask extends TimerTask {
         } catch (Exception e) {
             e.printStackTrace();
 //            SSDBQuery(ACTION_CONNECT);
+
         }
     }
     @Override

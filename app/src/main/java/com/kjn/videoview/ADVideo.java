@@ -21,7 +21,7 @@ public class ADVideo {
     private Handler contextHandler = null;
     private final int singleOver = 1;
     private final int PROGRESS = 2;
-    private String path;
+    public static String path;
 
     public ADVideo (VideoView videoView, Handler handler){
         this.videoView = videoView;
@@ -142,7 +142,7 @@ public class ADVideo {
         videoView.start();
         path=videoList.get(index);
         ADActivity.fileName=path .substring(path .lastIndexOf("/") + 1, path .length());
-        Log.d(TAG, "name"+ADActivity.fileName);
+        //Log.d(TAG, "name"+ADActivity.fileName);
     }
 
     public void  play(){                     //从已经检索到的音乐列表之中中挑选一首音乐来播放,播完后下一首
@@ -165,6 +165,7 @@ public class ADVideo {
 
     public void pause(){
         videoView.pause();
+        Log.d(TAG, "pause: ");
         per = videoView.getCurrentPosition();
     }
 
