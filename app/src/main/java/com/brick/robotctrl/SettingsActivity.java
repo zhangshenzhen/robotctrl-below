@@ -85,7 +85,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serverIp)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serverPort)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.robotName)));
-            bindPreferenceSummaryToValue(findPreference("robotIDKey"));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.list)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serialCOM)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serialBaud)));
