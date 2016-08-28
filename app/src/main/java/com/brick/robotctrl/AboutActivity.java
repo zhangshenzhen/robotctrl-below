@@ -27,7 +27,8 @@ public class AboutActivity extends BaseActivity {
     private String hostName = "218.2.191.50";
     private String userName = "user_seu";
     private String password = "seu23456";
-    private String LOCAL_PATH = null;
+    private String MLOCAL_PATH = null;
+    private String ALOCAL_PATH = null;
     private List<FTPFile> remoteFile;
     public static String fileNameDown;
     private boolean isAPK = false;
@@ -37,6 +38,8 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.activity_about);
         ftp = new FTPAsk(hostName, userName, password);
         remoteFile = new ArrayList<FTPFile>();
+        MLOCAL_PATH = Environment.getExternalStorageDirectory().getPath()+"/Movies";
+        ALOCAL_PATH = Environment.getExternalStorageDirectory().getPath()+"/Download";
         new Thread() {
             @Override
             public void run() {
@@ -48,6 +51,10 @@ public class AboutActivity extends BaseActivity {
                     // 打开FTP服务
                     Log.d(TAG, "onCreate: 开始打开");
                     ftp.openConnect();
+                    File mfile = new File(MLOCAL_PATH);
+                    File[] mfiles = mfile.listFiles();
+                    File afile = new File(ALOCAL_PATH);
+                    File[] afiles = afile.listFiles();
                     remoteFile = ftp.listFiles(REMOTE_PATH);
                     if (remoteFile.size() > 0) {
                         for (int i = 0; i < remoteFile.size(); i++) {
@@ -58,9 +65,7 @@ public class AboutActivity extends BaseActivity {
                                 Result result = null;
                                 try {
                                     // 下载
-                                    LOCAL_PATH = Environment.getExternalStorageDirectory()
-                                            .getPath()+"/Movies";
-                                    result = ftp.download(REMOTE_PATH, fileNameDown, LOCAL_PATH);
+                                    result = ftp.download(REMOTE_PATH, fileNameDown, MLOCAL_PATH);
                                 } catch (IOException e) {
                                     System.out.println(e.toString());
                                     System.out.println(e.getMessage());
@@ -70,10 +75,12 @@ public class AboutActivity extends BaseActivity {
                                     Log.e(TAG, "download ok...time:" + result.getTime()
                                             + " and size:" + result.getResponse());
                                 } else {
-                                    Log.e(TAG, "download fail");
+                                    Log.e(TAG, "Movies download fail");
                                 }
                             }
                         }
+                        checkFile(mfiles, remoteFile);                              //删除本地Movies多余文件
+                        checkFile(afiles, remoteFile);                              //删除本地APK多余文件
                         for (int i = 0; i < remoteFile.size(); i++) {
                             if (remoteFile.get(i).getName().endsWith(".apk")) {
                                 isAPK = true;
@@ -81,22 +88,11 @@ public class AboutActivity extends BaseActivity {
                                 break;
                             }
                         }
-//                        File file = new File(LOCAL_PATH);
-//                        File[] files = file.listFiles();
-//                        for (int i = 0; i < files.length; i++) {
-//                            if (files[i].getAbsolutePath().endsWith(fileNameDown)) {
-//                                Log.d(TAG, "file exit: ");
-//                                boolean flag = (files[i].length() >= remoteFile.get(2).getSize());
-//                                Log.d(TAG, "flag: " + flag);
-//                            }
-//                        }
                         if(isAPK) {
                             Result result = null;
                             try {
                                 // 下载
-                                LOCAL_PATH = Environment.getExternalStorageDirectory()
-                                        .getPath()+"/Download";
-                                result = ftp.download(REMOTE_PATH, fileNameDown, LOCAL_PATH);
+                                result = ftp.download(REMOTE_PATH, fileNameDown, ALOCAL_PATH);
                             } catch (IOException e) {
                                 System.out.println(e.toString());
                                 System.out.println(e.getMessage());
@@ -106,13 +102,13 @@ public class AboutActivity extends BaseActivity {
                                 Log.e(TAG, "download ok...time:" + result.getTime()
                                         + " and size:" + result.getResponse());
                                 ftp.closeConnect();
-                                String str = LOCAL_PATH + "/" + fileNameDown;
+                                String str = ALOCAL_PATH + "/" + fileNameDown;
                                 Log.d(TAG, "str: " + str);
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setDataAndType(Uri.fromFile(new File(str)), "application/vnd.android.package-archive");
                                 startActivity(intent);
                             } else {
-                                Log.e(TAG, "download fail");
+                                Log.e(TAG, "APK download fail");
                             }
                         }else{
                             ftp.closeConnect();
@@ -133,6 +129,21 @@ public class AboutActivity extends BaseActivity {
                     }
                 }
         }.start();
+    }
+
+    public void checkFile(File[] files, List<FTPFile> remoteFile){
+        boolean flag = true;
+        for (int j = 0; j < files.length; j++) {
+            for(int i = 0; i < remoteFile.size(); i++) {
+                if (files[j].getAbsolutePath().endsWith(remoteFile.get(i).getName())) {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                files[j].delete();
+            }
+        }
     }
 
     @Override

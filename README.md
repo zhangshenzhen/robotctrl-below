@@ -34,8 +34,8 @@
 
 2016-08-23
 
-- [ ] 播放进度提交
-- [ ] 网络状态检测
+- [x] 播放进度提交
+- [x] 网络状态检测
 - [ ] 电量值写入SSDB
 - [ ] 变声系统（双平台无缝衔接）
 
@@ -91,7 +91,7 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 
 6. RobotCtrl_master_v1.20.16.0828_alpha
 
-    1.网络状态接收器，网络恢复重连ssdb
-    2.修改apk更新下载到Download
-    3.修复视频播放暂停，停止以及进度提交的bug
-    4.去除settingActivity中多余的的robotIDkey
+    1. 网络状态接收器，网络恢复重连ssdb
+    2. 修改apk更新下载到Download
+    3. 修复视频播放暂停，停止以及进度提交的bug
+    4. 去除settingActivity中多余的的robotIDkey

@@ -108,7 +108,7 @@ public class FTPAsk {
      * @throws IOException
      */
     public boolean downloadSingle(File localFile, FTPFile ftpFile) throws IOException {
-        boolean flag = true;
+        boolean flag = false;
         // 创建输出流
         Log.d(TAG, "downloadSingle: 1");
         // 统计流量
@@ -134,7 +134,7 @@ public class FTPAsk {
         return list;
     }
     public Result download(String remotePath, String fileName, String localPath) throws IOException {
-        boolean flag = true;
+        boolean flag = false;
         Result result = null;
         // 初始化FTP当前目录
         currentPath = remotePath;
@@ -152,12 +152,16 @@ public class FTPAsk {
                 // 创建本地目录
                 File file = new File(localPath + "/" + fileName);
                 // 下载前时间
-                Date startTime = new Date();
-                flag = downloadSingle(file, ftpFile);
-                // 下载完时间
-                Date endTime = new Date();
-                // 返回值
-                result = new Result(flag, Util.getFormatTime(endTime.getTime() - startTime.getTime()), Util.getFormatSize(response));
+                if(!file.exists()) {
+                    Date startTime = new Date();
+                    flag = downloadSingle(file, ftpFile);
+                    // 下载完时间
+                    Date endTime = new Date();
+                    // 返回值
+                    result = new Result(flag, Util.getFormatTime(endTime.getTime() - startTime.getTime()), Util.getFormatSize(response));
+                }else{
+                    Log.d(TAG, "download: 文件已存在" + fileName);
+                }
             }
         }
         return result;
