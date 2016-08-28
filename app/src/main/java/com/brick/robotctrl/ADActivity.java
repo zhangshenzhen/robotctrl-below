@@ -39,7 +39,6 @@ public class ADActivity extends Activity {
     private final int singleOver = 1;
     private final int videoInfo = 9999;
     private final int PROGRESS = 2;
-    private final int Pause = 3;
     private static Handler contextHandler2 = null;
     private String path;
 //    private View mVolumeBrightnessLayout;
@@ -77,13 +76,6 @@ public class ADActivity extends Activity {
             case "Cycle":
                 videoCycleFrom(fileName);
                 break;
-            case "Stop":
-                videoStop();
-                break;
-            case "Pause":
-                handler.sendEmptyMessage(Pause);
-
-                break;
         }
 //        View decorView = getWindow().getDecorView();
 ////        Hide both the navigation bar and the status bar.
@@ -99,10 +91,6 @@ public class ADActivity extends Activity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case Pause:
-                    videopause();
-                    Log.d(TAG, "onCreate: pause");
-                    break;
                 case singleOver:
                     String percentString = "100%";
                     Log.d(TAG, "进度: " + percentString);
@@ -113,7 +101,6 @@ public class ADActivity extends Activity {
                     ExpressionActivity.startAction(ADActivity.this, "12");
                     break;
                 case PROGRESS:
-
                     int currentPosition,duration;
                     currentPosition = videoView.getCurrentPosition();
                     duration = videoView.getDuration();

@@ -386,10 +386,10 @@ public class MainActivity extends BaseActivity {
 //                                }
                                 break;
                             case "Pause":
-                                ADActivity.startAction(MainActivity.this, strArray[0], null);
+                                ADVideo.pause();
                                 break;
                             case "Stop":
-                                ADActivity.startAction(MainActivity.this, strArray[0], null);
+                                ADVideo.stopPlayBack();
                                 ExpressionActivity.startAction(MainActivity.this, "12");
                                 break;
                             case "Single":

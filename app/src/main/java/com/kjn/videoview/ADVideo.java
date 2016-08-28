@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ADVideo {
     private final String TAG = "ADVideo";
-    private VideoView videoView;
+    private static VideoView videoView;
     private List<String> videoList;
     private int index = 0;
     private static int per = 0;
@@ -163,7 +163,7 @@ public class ADVideo {
         });
     }
 
-    public void pause(){
+    public static void pause(){
         videoView.pause();
         Log.d(TAG, "pause: ");
         per = videoView.getCurrentPosition();
@@ -176,7 +176,7 @@ public class ADVideo {
 
     }
 
-    public void stopPlayBack(){
+    public static void stopPlayBack(){
         videoView.stopPlayback();
     }
 
