@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
@@ -17,7 +18,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private String TAG = "BaseActivity";
     //    UserTimer userTimer = null;
     private static int timerOutCount = 0;
-
+    private int screenWidth;
+    private int screenHeight;
     protected AudioManager mAudioManager;
     /**
      * 最大声音
@@ -44,6 +46,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        screenWidth = getWindowManager().getDefaultDisplay().getWidth();       // 屏幕宽（像素，如：480px）
+        screenHeight = getWindowManager().getDefaultDisplay().getHeight();      // 屏幕高（像素，如：800p）
 
         View decorView = getWindow().getDecorView();
 //        Hide both the navigation bar and the status bar.
@@ -116,10 +120,34 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
 
+        long[] mHitsL = new long[5];
+        long[] mHitsR = new long[5];
+
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            Log.d(TAG, "onTouch: to MainActivity");
-            clearTimerCount();
+            float x = e.getX();
+            float y = e.getY();
+            Log.d(TAG, "onTouch: x:" + x + "y:" + y);
+
+            if (y < screenHeight / 2) {
+                if (x < screenWidth / 2) {
+                    System.arraycopy(mHitsL, 1, mHitsL, 0, mHitsL.length - 1);
+                    mHitsL[mHitsL.length - 1] = SystemClock.uptimeMillis();
+                    //Log.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
+                    if (mHitsL[0] >= (SystemClock.uptimeMillis() - 3000)) {
+                        Log.d(TAG,"onPreferenceClick:shutdown");
+                        onShutdown();
+                    }
+                } else {
+                    System.arraycopy(mHitsR, 1, mHitsR, 0, mHitsR.length - 1);
+                    mHitsR[mHitsR.length - 1] = SystemClock.uptimeMillis();
+                    //Log.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
+                    if (mHitsR[0] >= (SystemClock.uptimeMillis() - 3000)) {
+                        Log.d(TAG,"onPreferenceClick:reboot");
+                        onReboot();
+                    }
+                }
+            }
             return true;
 
         }
@@ -176,7 +204,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void onReboot() {
         try {
-            Runtime.getRuntime().exec("su -c \"/system/bin/shutdown\"");
+            Runtime.getRuntime().exec("su -c \"/system/bin/reboot\"");
         } catch (IOException e) {
             e.printStackTrace();
         }
