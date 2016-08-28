@@ -165,7 +165,6 @@ public class ADVideo {
 
     public static void pause(){
         videoView.pause();
-        Log.d(TAG, "pause: ");
         per = videoView.getCurrentPosition();
     }
 

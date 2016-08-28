@@ -35,8 +35,6 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        LOCAL_PATH = Environment.getExternalStorageDirectory()
-                .getPath()+"/Download";
         ftp = new FTPAsk(hostName, userName, password);
         remoteFile = new ArrayList<FTPFile>();
         new Thread() {
@@ -60,6 +58,8 @@ public class AboutActivity extends BaseActivity {
                                 Result result = null;
                                 try {
                                     // 下载
+                                    LOCAL_PATH = Environment.getExternalStorageDirectory()
+                                            .getPath()+"/Movies";
                                     result = ftp.download(REMOTE_PATH, fileNameDown, LOCAL_PATH);
                                 } catch (IOException e) {
                                     System.out.println(e.toString());
@@ -94,6 +94,8 @@ public class AboutActivity extends BaseActivity {
                             Result result = null;
                             try {
                                 // 下载
+                                LOCAL_PATH = Environment.getExternalStorageDirectory()
+                                        .getPath()+"/Download";
                                 result = ftp.download(REMOTE_PATH, fileNameDown, LOCAL_PATH);
                             } catch (IOException e) {
                                 System.out.println(e.toString());
