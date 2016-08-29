@@ -19,8 +19,8 @@ public class ADVideo {
     private int index = 0;
     private static int per = 0;
     private Handler contextHandler = null;
-    private final int singleOver = 1;
-    private final int PROGRESS = 2;
+    private final int singleOver = 101;
+    private final int PROGRESS = 102;
     public static String path;
 
     public ADVideo (VideoView videoView, Handler handler){

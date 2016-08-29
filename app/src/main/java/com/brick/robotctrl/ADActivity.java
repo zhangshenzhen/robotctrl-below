@@ -36,9 +36,9 @@ public class ADActivity extends Activity {
     private int mMaxVolume;
     /* 当前声音 */
     private int mVolume = -1;
-    private final int singleOver = 1;
+    private final int singleOver = 101;
     private final int videoInfo = 9999;
-    private final int PROGRESS = 2;
+    private final int PROGRESS = 102;
     private static Handler contextHandler2 = null;
     private String path;
 //    private View mVolumeBrightnessLayout;

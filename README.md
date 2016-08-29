@@ -95,3 +95,8 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
     2. 修改apk更新下载到Download
     3. 修复视频播放暂停，停止以及进度提交的bug
     4. 去除settingActivity中多余的的robotIDkey
+
+7. RobotCtrl_master_v1.21.17.0829_alpha
+
+    1. 添加ftp同步更新功能
+    2. 检查ssdb发送请求

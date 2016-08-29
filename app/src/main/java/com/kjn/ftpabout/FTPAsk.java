@@ -29,7 +29,6 @@ public class FTPAsk {
     private String password;
     private FTPClient ftpClient;
     private List<FTPFile> list;
-//    public static final String REMOTE_PATH = "\\";
     private String currentPath = "";
     private double response;
 
@@ -133,7 +132,7 @@ public class FTPAsk {
         }
         return list;
     }
-    public Result download(String remotePath, String fileName, String localPath) throws IOException {
+    public boolean download(String remotePath, String fileName, String localPath) throws IOException {
         boolean flag = false;
         Result result = null;
         // 初始化FTP当前目录
@@ -152,19 +151,21 @@ public class FTPAsk {
                 // 创建本地目录
                 File file = new File(localPath + "/" + fileName);
                 // 下载前时间
-                if(!file.exists()) {
+
                     Date startTime = new Date();
+                if(!file.exists()) {
                     flag = downloadSingle(file, ftpFile);
                     // 下载完时间
-                    Date endTime = new Date();
-                    // 返回值
-                    result = new Result(flag, Util.getFormatTime(endTime.getTime() - startTime.getTime()), Util.getFormatSize(response));
                 }else{
                     Log.d(TAG, "download: 文件已存在" + fileName);
                 }
+                    Date endTime = new Date();
+                    // 返回值
+//                    result = new Result(flag, Util.getFormatTime(endTime.getTime() - startTime.getTime()), Util.getFormatSize(response));
+
             }
         }
-        return result;
+        return flag;
     }
 
 

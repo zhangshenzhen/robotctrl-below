@@ -29,6 +29,7 @@ public class AboutActivity extends BaseActivity {
     private String password = "seu23456";
     private String MLOCAL_PATH = null;
     private String ALOCAL_PATH = null;
+    private boolean fflag = false;
     private List<FTPFile> remoteFile;
     public static String fileNameDown;
     private boolean isAPK = false;
@@ -65,15 +66,15 @@ public class AboutActivity extends BaseActivity {
                                 Result result = null;
                                 try {
                                     // 下载
-                                    result = ftp.download(REMOTE_PATH, fileNameDown, MLOCAL_PATH);
+                                    fflag = ftp.download(REMOTE_PATH, fileNameDown, MLOCAL_PATH);
                                 } catch (IOException e) {
                                     System.out.println(e.toString());
                                     System.out.println(e.getMessage());
                                     e.printStackTrace();
                                 }
-                                if (result.isSucceed()) {
-                                    Log.e(TAG, "download ok...time:" + result.getTime()
-                                            + " and size:" + result.getResponse());
+                                if (fflag) {
+                                    Log.e(TAG, "download ok...time:"
+                                            + " and size:" );
                                 } else {
                                     Log.e(TAG, "Movies download fail");
                                 }
@@ -92,15 +93,15 @@ public class AboutActivity extends BaseActivity {
                             Result result = null;
                             try {
                                 // 下载
-                                result = ftp.download(REMOTE_PATH, fileNameDown, ALOCAL_PATH);
+                                fflag = ftp.download(REMOTE_PATH, fileNameDown, ALOCAL_PATH);
                             } catch (IOException e) {
                                 System.out.println(e.toString());
                                 System.out.println(e.getMessage());
                                 e.printStackTrace();
                             }
-                            if (result.isSucceed()) {
-                                Log.e(TAG, "download ok...time:" + result.getTime()
-                                        + " and size:" + result.getResponse());
+                            if (fflag) {
+                                Log.e(TAG, "download ok...time:"
+                                        + " and size:" );
                                 ftp.closeConnect();
                                 String str = ALOCAL_PATH + "/" + fileNameDown;
                                 Log.d(TAG, "str: " + str);
@@ -109,6 +110,9 @@ public class AboutActivity extends BaseActivity {
                                 startActivity(intent);
                             } else {
                                 Log.e(TAG, "APK download fail");
+                                Intent intent = new Intent();
+                                intent.setClass(AboutActivity.this, MainActivity.class);
+                                startActivity(intent);
                             }
                         }else{
                             ftp.closeConnect();
@@ -132,15 +136,19 @@ public class AboutActivity extends BaseActivity {
     }
 
     public void checkFile(File[] files, List<FTPFile> remoteFile){
-        boolean flag = true;
+
+        Log.d(TAG, "checkFile: 开始");
         for (int j = 0; j < files.length; j++) {
+            boolean flag = true;
             for(int i = 0; i < remoteFile.size(); i++) {
                 if (files[j].getAbsolutePath().endsWith(remoteFile.get(i).getName())) {
+                    Log.d(TAG, "checkFile: 存在");
                     flag = false;
                     break;
                 }
             }
             if(flag){
+                Log.d(TAG, "checkFile: 删除");
                 files[j].delete();
             }
         }

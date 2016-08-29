@@ -19,7 +19,7 @@ import java.io.IOException;
 public class DownLoadService extends Service {
     private static final String TAG = "DownLoadService";
     private String LOCAL_PATH = null;
-    
+    private boolean flag = false;
     
     @Override
     public IBinder onBind(Intent arg0) {
@@ -43,14 +43,14 @@ public class DownLoadService extends Service {
                     Log.d(TAG, "REMOTE_PATH: " + AboutActivity.REMOTE_PATH);
                     Log.d(TAG, "fileNameDown: " + AboutActivity.fileNameDownLoad);
                     Log.d(TAG, "LOCAL_PATH: " + LOCAL_PATH);
-                    result = AboutActivity.ftp.download(AboutActivity.REMOTE_PATH, AboutActivity.fileNameDownLoad, LOCAL_PATH);
+                    flag = AboutActivity.ftp.download(AboutActivity.REMOTE_PATH, AboutActivity.fileNameDownLoad, LOCAL_PATH);
                     Log.d(TAG, "result: " );
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (result.isSucceed()) {
-                    Log.e(TAG, "download ok...time:" + result.getTime()
-                            + " and size:" + result.getResponse());
+                if (flag) {
+                    Log.e(TAG, "download ok...time:"
+                            + " and size:" );
                 } else {
                     Log.e(TAG, "download fail");
                 }

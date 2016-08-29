@@ -358,7 +358,7 @@ public class MainActivity extends BaseActivity {
                  */
                 case SSDBTask.Key_Location:
                     rlt=(String)msg.obj;
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    Log.d(TAG,"handleMessage: ------------------Key:Location \tvalue:" + rlt);
                     if(!rlt.equals(""))   {
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);
                         SSDBTask.enableLocation=false;
