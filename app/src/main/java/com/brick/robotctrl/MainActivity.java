@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         ADActivity.setHandler(handler);
-
+        AboutActivity.setHandler(handler);
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler);
@@ -420,8 +420,8 @@ public class MainActivity extends BaseActivity {
                 case SSDBTask.Key_VideoPlayList:
                     rlt=(String)msg.obj;
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    ssdbTask.pushFileList();
                     if(!rlt.equals(""))   {
-                        //!!!!!!!!!!!执行videoPlayList操作
                         SSDBTask.enableVideoPlayList=false;
                     }
                     break;

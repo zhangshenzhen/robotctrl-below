@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 
 import com.kjn.ftpabout.FTPAsk;
@@ -33,6 +34,7 @@ public class AboutActivity extends BaseActivity {
     private List<FTPFile> remoteFile;
     public static String fileNameDown;
     private boolean isAPK = false;
+    private static Handler contextHandler = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +83,7 @@ public class AboutActivity extends BaseActivity {
                             }
                         }
                         checkFile(mfiles, remoteFile);                              //删除本地Movies多余文件
+                        contextHandler.sendEmptyMessage(SSDBTask.Key_VideoPlayList);
                         checkFile(afiles, remoteFile);                              //删除本地APK多余文件
                         for (int i = 0; i < remoteFile.size(); i++) {
                             if (remoteFile.get(i).getName().endsWith(".apk")) {
@@ -152,6 +155,10 @@ public class AboutActivity extends BaseActivity {
                 files[j].delete();
             }
         }
+    }
+
+    public static void setHandler(Handler handler){
+        AboutActivity.contextHandler = handler;
     }
 
     @Override
