@@ -421,9 +421,10 @@ public class MainActivity extends BaseActivity {
                     rlt=(String)msg.obj;
                     Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     ssdbTask.pushFileList();
-                    if(!rlt.equals(""))   {
-                        SSDBTask.enableVideoPlayList=false;
-                    }
+//                    if(!rlt.equals(""))   {
+//                        Log.d(TAG, "videoplaylist: hehe");
+//                        SSDBTask.enableVideoPlayList=false;
+//                    }
                     break;
                 case SSDBTask.Key_RobotMsg:
                     rlt=(String)msg.obj;

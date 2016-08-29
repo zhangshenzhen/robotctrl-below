@@ -154,6 +154,7 @@ public class SSDBTask extends TimerTask {
                 Log.d(TAG, "pushFileList: 为空");
             }
             if (files.length > 1) {
+                videoPlayList = null;
                 for (int i = 0; i < files.length - 1; i++) {
                     if (
                             files[i].getAbsolutePath().endsWith(".avi") ||
