@@ -26,7 +26,7 @@ public class SerialCtrl {
 
     public static ComBean ComRecDatatmp = null;    //暂存电池电压的值
     public static int batteryNum = 0;         //最终电压值
-    public static boolean readyForRead = false;
+    public static int [] RmShake ={0,0,0};              //去除电压值的抖动
 
     public SerialCtrl(Context context, Handler handler) {
         assert context != null;
@@ -90,17 +90,30 @@ public class SerialCtrl {
             // receive data
             ComRecDatatmp = ComRecData;
             try {
-                if ((ComRecData.bRec.length > 2)) {// && Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16) {
+                //if ((ComRecData.bRec.length > 2)) {// &&
+                if(Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16) {
                     Log.d("getbattery", "getbattery: " + Integer.parseInt(String.format("%02x", ComRecData.bRec[2]).toUpperCase(), 16));
-                    batteryNum = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
+                    for(int i=0;i<3;i++)
+                        RmShake[i] = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
+                    batteryNum=GetMid(RmShake,3);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d(TAG, "onDataReceived: ");
             }
-//            else {
-//                batteryNum = ComRecDatatmp.bRec[2];
-//            }
+        }
+        public int GetMid( int r[], int n) {      //冒泡排序,取中间值
+            int i= n -1;                          //初始时,最后位置保持不变
+            while ( i> 0) {
+                int pos= 0;                       //每趟开始时,无记录交换
+                for (int j= 0; j< i; j++)
+                    if (r[j]> r[j+1]) {
+                        pos= j;                   //记录交换的位置
+                        int tmp = r[j]; r[j]=r[j+1];r[j+1]=tmp;
+                    }
+                i= pos;                           //为下一趟排序作准备
+            }
+            return r[n/2];
         }
     }
 
