@@ -26,7 +26,8 @@ public class SerialCtrl {
 
     public static ComBean ComRecDatatmp = null;    //暂存电池电压的值
     public static int batteryNum = 0;         //最终电压值
-    public static int [] RmShake ={0,0,0};              //去除电压值的抖动
+    public static int loop=0;                 //用于for循环的循环变量
+    public static int [] RmShake ={0,0,0,0,0};              //去除电压值的抖动
 
     public SerialCtrl(Context context, Handler handler) {
         assert context != null;
@@ -90,19 +91,20 @@ public class SerialCtrl {
             // receive data
             ComRecDatatmp = ComRecData;
             try {
-                //if ((ComRecData.bRec.length > 2)) {// &&
                 if(Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16) {
                     Log.d("getbattery", "getbattery: " + Integer.parseInt(String.format("%02x", ComRecData.bRec[2]).toUpperCase(), 16));
-                    for(int i=0;i<3;i++)
-                        RmShake[i] = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
-                    batteryNum=GetMid(RmShake,3);
+                    RmShake[loop++] = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
+                    if(loop==5) {
+                        batteryNum = GetMid(RmShake, 5);                  //更新电池值
+                        loop=0;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d(TAG, "onDataReceived: ");
             }
         }
-        public int GetMid( int r[], int n) {      //冒泡排序,取中间值
+        public int GetMid( int r[], int n) {      //冒泡排序,取中间值，去除最大值和最小值
             int i= n -1;                          //初始时,最后位置保持不变
             while ( i> 0) {
                 int pos= 0;                       //每趟开始时,无记录交换

@@ -50,15 +50,15 @@ public class BatteryView extends View {
                 battery_left + battery_width, battery_top + battery_height);
         canvas.drawRect(rect, paint);
 
-        float power_percent = mPower / 255.0f;
+        float power_percent = mPower / 54.0f;
 
         Paint paint2 = new Paint(paint);
 
         paint2.setStyle(Paint.Style.FILL);
-        if(power_percent>0.78f&&power_percent<0.88f) {
+        if(power_percent>0.3f&&power_percent<0.5f) {
             paint2.setColor(Color.YELLOW);
             batteryFlag = 1;
-        } else if(power_percent>=0.88f) {
+        } else if(power_percent>=0.5f) {
             paint2.setColor(Color.BLACK);
             batteryFlag = 1;
         } else {
@@ -88,7 +88,7 @@ public class BatteryView extends View {
         canvas.drawRect(rect3, paint3);
     }
     public void setPower(int power) {
-        mPower = power;
+        mPower = power-200;
         if(mPower < 0) {
             mPower = 0;
         }
