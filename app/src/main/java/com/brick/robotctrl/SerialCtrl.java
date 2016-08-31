@@ -213,23 +213,24 @@ public class SerialCtrl {
         Log.d(TAG, "setRobotRate: ");
         String[] splitRate = rate.split(" ");
         int exeRate, exeRateBCC, turnRate, turnRateBCC, headRate, headRateBCC, timeoutTimeBCC;
-        exeRate = Integer.parseInt(splitRate[0])/2;
-        turnRate = Integer.parseInt(splitRate[1])/2;
-        headRate = Integer.parseInt(splitRate[2])/2;
-        exeRateBCC = 0xFF & 0x16 & exeRate;
-        turnRateBCC =  0xFF & 0x16 & turnRate;
-        headRateBCC =  0xFF & 0x16 & headRate;
+        exeRate = Integer.parseInt(splitRate[0])*2;
+        turnRate = Integer.parseInt(splitRate[1])*2;
+        headRate = Integer.parseInt(splitRate[2])*2;
+        exeRateBCC = (0xFF ^ 0x06 )^exeRate;
+        turnRateBCC = ( 0xFF ^ 0x07) ^ turnRate;
+        headRateBCC = ( 0xFF ^ 0x08) ^ headRate;
 //        timeoutTimeBCC =  0xFF & 0x16 & (Integer.parseInt(splitRate[3]));
 
         for (int i=0; i < 4; i++) {
             Log.d(TAG, "setRobotRate: "+ splitRate[i]);
         }
-        sendPortData(ComA, "FF16" + String.valueOf(exeRate) + String.valueOf(exeRateBCC));
-        Log.d(TAG, "setRobotRate: " + "FF16" + String.valueOf(exeRate) + String.valueOf(exeRateBCC));
-        sendPortData(ComA, "FF17" + String.valueOf(turnRate) + String.valueOf(turnRateBCC));
-        Log.d(TAG, "setRobotRate: " + "FF17" + String.valueOf(turnRate) + String.valueOf(turnRateBCC));
-        sendPortData(ComA, "FF18" + String.valueOf(headRate) + String.valueOf(headRateBCC));
-        Log.d(TAG, "setRobotRate: " + "FF18" + String.valueOf(headRate) + String.valueOf(headRateBCC));
+        sendPortData(ComA, "FF06" + Integer.toHexString(exeRate) + Integer.toHexString(exeRateBCC));
+        //Log.d(TAG, "setRobotRate: " +Integer.toHexString(exeRate));
+        Log.d(TAG, "setRobotRate: " + "FF06" +Integer.toHexString(exeRate) + Integer.toHexString(exeRateBCC));
+        sendPortData(ComA, "FF07" + Integer.toHexString(turnRate) +Integer.toHexString(turnRateBCC));
+        Log.d(TAG, "setRobotRate: " + "FF07" +Integer.toHexString(turnRate) +Integer.toHexString(turnRateBCC));
+        sendPortData(ComA, "FF08" + Integer.toHexString(headRate) +Integer.toHexString(headRateBCC));
+        Log.d(TAG, "setRobotRate: " + "FF08" + Integer.toHexString(headRate) +Integer.toHexString(headRateBCC));
 //        sendPortData(ComA, "FF16"+splitRate[3]+String.valueOf(timeoutTimeBCC));
     }
 }

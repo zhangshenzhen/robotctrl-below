@@ -55,10 +55,10 @@ public class BatteryView extends View {
         Paint paint2 = new Paint(paint);
 
         paint2.setStyle(Paint.Style.FILL);
-        if(power_percent>0.5f&&power_percent<0.75f) {
+        if(power_percent>0.78f&&power_percent<0.88f) {
             paint2.setColor(Color.YELLOW);
             batteryFlag = 1;
-        } else if(power_percent>=0.75f) {
+        } else if(power_percent>=0.88f) {
             paint2.setColor(Color.BLACK);
             batteryFlag = 1;
         } else {
