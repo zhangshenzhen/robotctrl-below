@@ -80,7 +80,15 @@
             android:targetClass="com.android.browser.BrowserActivity" />
     </Preference>
     <Preference
-        android:summary="RobotCtrl_master_v1.21.18.0831_alpha"
+        android:summary="Open Email"
+        android:title="Set Email">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.asus.email"
+            android:targetClass="com.android.email.activity.Welcome" />
+    </Preference>
+    <Preference
+        android:summary="RobotCtrl_master_v1.22.18.0831_alpha"
         android:title="About">
     </Preference>
     <Preference
