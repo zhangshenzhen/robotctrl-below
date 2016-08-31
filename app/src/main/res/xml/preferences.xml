@@ -80,7 +80,7 @@
             android:targetClass="com.android.browser.BrowserActivity" />
     </Preference>
     <Preference
-        android:summary="RobotCtrl_master_v1.21.17.0829_alpha"
+        android:summary="RobotCtrl_master_v1.21.18.0831_alpha"
         android:title="About">
     </Preference>
     <Preference

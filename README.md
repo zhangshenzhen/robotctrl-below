@@ -100,3 +100,6 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 
     1. 添加ftp同步更新功能
     2. 检查ssdb发送请求
+8. RobotCtrl_master_v1.21.18.0831_alpha
+    1.修改机器人速度调节
+    2.更改电池电压值显示范围
