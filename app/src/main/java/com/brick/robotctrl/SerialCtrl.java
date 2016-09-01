@@ -92,7 +92,7 @@ public class SerialCtrl {
             ComRecDatatmp = ComRecData;
             try {
                 if(Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16) {
-                    Log.d("getbattery", "getbattery: " + Integer.parseInt(String.format("%02x", ComRecData.bRec[2]).toUpperCase(), 16));
+                    Log.d("getbattery", "getbattery: " + batteryNum);
                     RmShake[loop++] = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
                     if(loop==5) {
                         batteryNum = GetMid(RmShake, 5);                  //更新电池值
