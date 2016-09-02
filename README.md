@@ -100,11 +100,15 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 
     1. 添加ftp同步更新功能
     2. 检查ssdb发送请求
-8. RobotCtrl_master_v1.22.18.0831_alpha
-    1.修改机器人速度调节
-    2.更改电池电压值显示范围
-    3.修复电池bug，for循环不起作用
-    4.增加发生异常自动将错误log信息发送到指定邮箱，在setting中添加email设置
-9. RobotCtrl_master_v1.22.18.0831_alpha
-    1.调整电池低电量和充满电量的范围
+
+8. RobotCtrl_master_v1.22.20.0831_alpha
+
+    1. 修改机器人速度调节
+    2. 更改电池电压值显示范围
+    3. 修复电池bug，for循环不起作用
+    4. 增加发生异常自动将错误log信息发送到指定邮箱，在setting中添加email设置
+
+9. RobotCtrl_master_v1.22.21.0901_alpha
+
+    1. 调整电池低电量和充满电量的范围
 
