@@ -515,6 +515,8 @@ public class QuestTestActivity extends BaseActivity {
 	public void onRestart() {
         mBtnRecogRealTimeMode.setClickable(true);
         humanButton.setClickable(true);
+        mResult.setText(null);
+        mState.setText("状态");
         //firtAsk();
 		super.onRestart();
 	}
