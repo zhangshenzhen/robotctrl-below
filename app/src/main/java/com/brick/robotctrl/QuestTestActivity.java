@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +60,7 @@ public class QuestTestActivity extends BaseActivity {
      */
     private AccountInfo mAccountInfo;
 
-    private TextView mResult;
+    private EditText mResult;
     private TextView mState;
     private TextView mError;
     private ListView mGrammarLv;
@@ -112,7 +113,7 @@ public class QuestTestActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cativity_test);
-        mResult = (TextView) findViewById(R.id.resultview);
+        mResult = (EditText) findViewById(R.id.resultview);
         mState = (TextView) findViewById(R.id.stateview);
         mBtnRecogRealTimeMode = (Button) findViewById(R.id.begin_recog_real_time_mode);
         gf =(GifView)findViewById(R.id.gif1);
@@ -259,12 +260,85 @@ public class QuestTestActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 mBtnRecogRealTimeMode.setClickable(false);
-                if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
-                    asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
-                    PlayerService.stopAction(QuestTestActivity.this);
-                    mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
-                } else {
-                    Log.e("recorder", "录音机未处于空闲状态，请稍等");
+                if(mResult.getText().toString() == "") {
+                    if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
+                        asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
+                        PlayerService.stopAction(QuestTestActivity.this);
+                        mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
+                    } else {
+                        Log.e("recorder", "录音机未处于空闲状态，请稍等");
+                    }
+                }else{
+                    query = mResult.getText().toString();
+                    new Thread(){
+                        @Override
+                        public void run() {
+                            Jason jts = new Jason();
+                            Log.i(TAG,"进入新线程");
+                            try {
+                                result = jts.ask(query);                               //把网络访问的代码放在这里
+                                if (result != null) {
+                                    Log.i(TAG, "进入解析");
+                                    Gson gson = new Gson();
+                                    Type type = new TypeToken<JsonBean>() {}.getType();
+                                    JsonBean jsonBean = gson.fromJson(result, type);
+                                    System.out.println(jsonBean.getResult());
+                                    resultShow = jsonBean.getSingleNode().getAnswerMsg();
+                                    Log.d(TAG, "run: " +  resultShow);
+                                    showItem.clear();
+                                    showNum.clear();
+                                    if (jsonBean.getVagueNode() != null) {
+                                        if (jsonBean.getAnswerTypeId() == 6) {
+                                            if (jsonBean.getSingleNode().getScore() != 100.0) {
+                                                for (int i = 0; i < jsonBean.getVagueNode().getItemList().size(); i++) {
+                                                    showItem.add(jsonBean.getVagueNode().getItemList().get(i).getQuestion());
+                                                    showNum.add(jsonBean.getVagueNode().getItemList().get(i).getNum());
+                                                }
+                                                if (resultShow != null) {
+                                                    Intent intent = new Intent(QuestTestActivity.this, ManyQueryActivity.class);
+                                                    intent.putExtra("extra_showResult", resultShow);
+                                                    intent.putStringArrayListExtra("extra_showItem", showItem);
+                                                    intent.putIntegerArrayListExtra("extra_showNum", showNum);
+                                                    startActivity(intent);
+                                                }
+                                            } else {
+                                                Log.d(TAG, "run: " + 111);
+                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
+                                                intent.putExtra("extra_showResult", resultShow);
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    } else {
+                                        Log.d(TAG,resultShow);
+                                        if (resultShow != null) {
+                                            if (jsonBean.getAnswerTypeId() == 1) {
+                                                Intent intent = new Intent(QuestTestActivity.this, NoQueryActivity.class);
+                                                resultShow = "请输入问题！";
+                                                intent.putExtra("extra_showResult",resultShow);
+                                                startActivity(intent);
+                                            } else if (jsonBean.getAnswerTypeId() == 3) {
+                                                Intent intent = new Intent(QuestTestActivity.this, NoAnswerQueryActivity.class);
+                                                resultShow = "抱歉，机器人无法理解您的意思,请转人工服务！";
+                                                intent.putExtra("extra_showResult",resultShow);
+                                                startActivity(intent);
+                                            } else if(jsonBean.getAnswerTypeId() == 6){
+                                                Log.d(TAG, "run: "+ 222);
+                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
+                                                intent.putExtra("extra_showResult", resultShow);
+                                                startActivity(intent);
+                                            } else {
+                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
+                                                intent.putExtra("extra_showResult", resultShow);
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    }
+                                }
+                            } catch (HttpException e) {
+                                System.out.println("heheda" + e);
+                            }
+                        }
+                    }.start();
                 }
             }
         });

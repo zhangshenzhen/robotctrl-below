@@ -59,12 +59,12 @@
             android:textSize="25sp"
             android:textColor="@color/accent_material_light" />
 
-        <TextView
+        <EditText
             android:id="@+id/resultview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/stateview"
-            android:text="所问问题"
+            android:hint="所问问题"
             android:textSize="25sp"
             android:textColor="@color/accent_material_light" />
 
