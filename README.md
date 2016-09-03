@@ -111,4 +111,9 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 9. RobotCtrl_master_v1.22.21.0901_alpha
 
     1. 调整电池低电量和充满电量的范围
+    
+10. RobotCtrl_master_v1.23.22.0903_alpha
+
+    1. 添加智能语音editxt输入
+    2. 修改智能语音相关服务器IP
 
