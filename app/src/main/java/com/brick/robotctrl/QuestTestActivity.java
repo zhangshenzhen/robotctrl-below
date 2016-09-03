@@ -1,6 +1,5 @@
 package com.brick.robotctrl;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -28,24 +26,19 @@ import com.sinovoice.hcicloudsdk.common.AuthExpireTime;
 import com.sinovoice.hcicloudsdk.common.HciErrorCode;
 import com.sinovoice.hcicloudsdk.common.InitParam;
 import com.sinovoice.hcicloudsdk.common.asr.AsrConfig;
-import com.sinovoice.hcicloudsdk.common.asr.AsrGrammarId;
 import com.sinovoice.hcicloudsdk.common.asr.AsrInitParam;
 import com.sinovoice.hcicloudsdk.common.asr.AsrRecogResult;
-import com.sinovoice.hcicloudsdk.recorder.ASRCommonRecorder;
 import com.sinovoice.hcicloudsdk.recorder.ASRRecorderListener;
 import com.sinovoice.hcicloudsdk.recorder.RecorderEvent;
 
 import org.apache.commons.httpclient.HttpException;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -126,6 +119,7 @@ public class QuestTestActivity extends BaseActivity {
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.e("recorder", "click");
                 humanButton.setClickable(false);
                 clearTimerCount();
                 ExpressionActivity.startExpressionActivity(QuestTestActivity.this, "12");
@@ -158,7 +152,7 @@ public class QuestTestActivity extends BaseActivity {
             Toast.makeText(getApplicationContext(), "hciInit error: " + HciCloudSys.hciGetErrorInfo(errCode),Toast.LENGTH_SHORT).show();
             return;
         }
-
+        Log.e("recorder", "starrt");
         // 获取授权/更新授权文件 :
         errCode = checkAuthAndUpdateAuth();
         if (errCode != HciErrorCode.HCI_ERR_NONE) {
@@ -173,7 +167,7 @@ public class QuestTestActivity extends BaseActivity {
         if (!capKey.equals("asr.cloud.grammar")) {
             mBtnRecogRealTimeMode.setEnabled(true);
         }
-
+        Log.e("recorder", "over");
         // 初始化录音机
         mAsrRecorder = new ASRRecorder();
 
@@ -233,7 +227,7 @@ public class QuestTestActivity extends BaseActivity {
 
         Log.v(TAG, "asr config:" + asrConfig.getStringConfig());
 
-        mp = new MediaPlayer();
+/*        mp = new MediaPlayer();
         mp.reset();
         try {
             mp.setDataSource(mp3Url);
@@ -253,18 +247,19 @@ public class QuestTestActivity extends BaseActivity {
             });
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
+        }*/
+        Log.e("recorder", "press00");
         mBtnRecogRealTimeMode.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
+                Log.e("recorder", "press1");
                 mBtnRecogRealTimeMode.setClickable(false);
-                if(mResult.getText().toString() == "") {
+                if(mResult.getText().toString().equals("") ) {
                     if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
                         asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
                         PlayerService.stopAction(QuestTestActivity.this);
                         mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
+                        Log.e("recorder", "press1");
                     } else {
                         Log.e("recorder", "录音机未处于空闲状态，请稍等");
                     }
@@ -520,7 +515,7 @@ public class QuestTestActivity extends BaseActivity {
 	public void onRestart() {
         mBtnRecogRealTimeMode.setClickable(true);
         humanButton.setClickable(true);
-        firtAsk();
+        //firtAsk();
 		super.onRestart();
 	}
 

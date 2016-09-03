@@ -34,7 +34,7 @@ public class Jason {
         json.put("msgID", "asdfg123");
         json.put("isQuestionQuery", 0);
         System.out.println(json);
-        String url = "http://60.171.108.152:8088/CSRBroker/queryAction";
+        String url = "http://yun.njuelectronics.com:8088/CSRBroker/queryAction";
 
         String retStr = doPostQuery(url, json.toString());
         System.out.println("005");
