@@ -36,6 +36,25 @@
             android:layout_weight="0.30"
             android:orientation="vertical">
 
+
+        <TextView
+            android:id="@+id/stateview"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/begin_recog_real_time_mode"
+            android:text="状态"
+            android:textSize="25sp"
+            android:textColor="@color/accent_material_light" />
+
+        <!--<EditText-->
+            <!--android:id="@+id/resultview"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/stateview"-->
+            <!--android:hint="所问问题"-->
+            <!--android:textSize="25sp"-->
+            <!--android:textColor="@color/accent_material_light" />-->
+
         <ListView
             android:id="@+id/msg_list_view"
             android:layout_width="match_parent"

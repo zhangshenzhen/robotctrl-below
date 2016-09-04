@@ -55,7 +55,7 @@ public class QuestTestActivity extends BaseActivity {
      * 加载用户信息工具类
      */
     private AccountInfo mAccountInfo;
-
+    private final int change = 101;
     private EditText mResult;
     private TextView mState;
     private TextView mError;
@@ -93,8 +93,8 @@ public class QuestTestActivity extends BaseActivity {
                             ref.get().mState.setText(msg.obj.toString());
                         break;
                     case 2:
-                        if (!msg.obj.toString().equalsIgnoreCase(""))
-                            ref.get().mResult.setText(msg.obj.toString());
+//                        if (!msg.obj.toString().equalsIgnoreCase(""))
+//                            ref.get().mResult.setText(msg.obj.toString());
                         break;
 //                    case 3:
 //                        if (!msg.obj.toString().equalsIgnoreCase(""))
@@ -114,7 +114,7 @@ public class QuestTestActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cativity_test);
 //        mResult = (EditText) findViewById(R.id.resultview);
-//        mState = (TextView) findViewById(R.id.stateview);
+        mState = (TextView) findViewById(R.id.stateview);
         mBtnRecogRealTimeMode = (Button) findViewById(R.id.begin_recog_real_time_mode);
         gf =(GifView)findViewById(R.id.gif1);
         gf.setGifImage(R.drawable.smile);
@@ -404,8 +404,16 @@ public class QuestTestActivity extends BaseActivity {
                     sResult = "识别结果为："
                             + arg1.getRecogItemList().get(0).getRecogResult();         //识别的文本信息
                     query = arg1.getRecogItemList().get(0).getRecogResult();
-                    Msg msg2=new Msg(R.drawable.head_man,query,Msg.TYPE_SEND);
-                    msgList.add(msg2);
+                    if(!"".equals(query)){
+                        Msg msg=new Msg(R.drawable.head_man,query,Msg.TYPE_SEND);
+                        msgList.add(msg);
+                        handler.sendEmptyMessage(change);
+
+                    }else{
+                        Msg msg=new Msg(R.drawable.head_man,null,Msg.TYPE_SEND);
+                        msgList.add(msg);
+                        handler.sendEmptyMessage(change);
+                    }
 //////////////////////////////////////////////
                     new Thread(){
                         @Override
@@ -444,54 +452,57 @@ public class QuestTestActivity extends BaseActivity {
 //                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
 //                                                intent.putExtra("extra_showResult", resultShow);
 //                                                startActivity(intent);
-                                                Msg msg3=new Msg(R.drawable.head_robot,resultShow,Msg.TYPE_RECEIVED);
-                                                msgList.add(msg3);
+                                                Msg msg=new Msg(R.drawable.head_man,resultShow,Msg.TYPE_SEND);
+                                                msgList.add(msg);
+                                                handler.sendEmptyMessage(change);
                                             }
                                         }
                                     } else {
                                         Log.d(TAG,resultShow);
                                         if (resultShow != null) {
                                             if (jsonBean.getAnswerTypeId() == 1) {
-//                                                Intent intent = new Intent(QuestTestActivity.this, NoQueryActivity.class);
-//                                                resultShow = "请输入问题！";
-//                                                intent.putExtra("extra_showResult",resultShow);
-//                                                startActivity(intent);
-                                                Msg msg3=new Msg(R.drawable.head_robot,"请输入问题~~",Msg.TYPE_RECEIVED);
-                                                msgList.add(msg3);
+                                                Msg msg=new Msg(R.drawable.head_man,"请输入问题",Msg.TYPE_SEND);
+                                                msgList.add(msg);
+                                                handler.sendEmptyMessage(change);
                                             } else if (jsonBean.getAnswerTypeId() == 3) {
 //                                                Intent intent = new Intent(QuestTestActivity.this, NoAnswerQueryActivity.class);
 //                                                resultShow = "抱歉，机器人无法理解您的意思,请转人工服务！";
 //                                                intent.putExtra("extra_showResult",resultShow);
 //                                                startActivity(intent);
-                                                Msg msg3=new Msg(R.drawable.head_robot,"抱歉，机器人无法理解您的意思,请转人工服务~~",Msg.TYPE_RECEIVED);
-                                                msgList.add(msg3);
+                                                Msg msg=new Msg(R.drawable.head_man,"抱歉，机器人无法理解您的意思,请转人工服务~~",Msg.TYPE_SEND);
+                                                msgList.add(msg);
+                                                handler.sendEmptyMessage(change);
                                             } else if(jsonBean.getAnswerTypeId() == 6){
 //                                                Log.d(TAG, "run: "+ 222);
 //                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
 //                                                intent.putExtra("extra_showResult", resultShow);
 //                                                startActivity(intent);
-                                                Msg msg3=new Msg(R.drawable.head_robot,resultShow,Msg.TYPE_RECEIVED);
-                                                msgList.add(msg3);
+
+                                                Msg msg=new Msg(R.drawable.head_man,resultShow,Msg.TYPE_SEND);
+                                                msgList.add(msg);
+                                                handler.sendEmptyMessage(change);
                                             } else {
 //                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
 //                                                intent.putExtra("extra_showResult", resultShow);
 //                                                startActivity(intent);
-                                                Msg msg3=new Msg(R.drawable.head_robot,resultShow,Msg.TYPE_RECEIVED);
-                                                msgList.add(msg3);
+                                                Msg msg=new Msg(R.drawable.head_man,resultShow,Msg.TYPE_SEND);
+                                                msgList.add(msg);
+                                                handler.sendEmptyMessage(change);
                                             }
                                         }
                                     }
                                 }
                             } catch (HttpException e) {
                                 System.out.println("heheda" + e);
-                            }
+                                 }
                         }
                     }.start();
                 } else {
                     sResult = "未能正确识别,请重新输入";
+//                    Message m = mUIHandle.obtainMessage(1, 2, 1, sResult);
+//                    mUIHandle.sendMessage(m);
                 }
-//                Message m = mUIHandle.obtainMessage(1, 2, 1, sResult);
-//                mUIHandle.sendMessage(m);
+
             }
         }
 
@@ -530,8 +541,8 @@ public class QuestTestActivity extends BaseActivity {
                 } else {
                     sResult = "未能正确识别,请重新输入";
                 }
-                Message m = mUIHandle.obtainMessage(1, 2, 1, sResult);
-                mUIHandle.sendMessage(m);
+//                Message m = mUIHandle.obtainMessage(1, 2, 1, sResult);
+//                mUIHandle.sendMessage(m);
             }
         }
     }
@@ -540,7 +551,7 @@ public class QuestTestActivity extends BaseActivity {
 	public void onRestart() {
         mBtnRecogRealTimeMode.setClickable(true);
         humanButton.setClickable(true);
-        mResult.setText(null);
+//        mResult.setText(null);
         mState.setText("状态");
         //firtAsk();
 		super.onRestart();
@@ -701,4 +712,18 @@ public class QuestTestActivity extends BaseActivity {
 //        Msg msg3=new Msg(R.drawable.head_robot,"This is Tom.Nice talking to you",Msg.TYPE_RECEIVED);
 //        msgList.add(msg3);
     }
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case change:
+                    Log.d(TAG, "handleMessage: first");
+                    adapter.notifyDataSetChanged();//当有新消息时刷新listview中的显示
+                    msgListView.setSelection(msgList.size());//将listview定位到最后一行
+                    Log.d(TAG, "handleMessage: second");
+                    break;
+            }
+        }
+    };
 }
