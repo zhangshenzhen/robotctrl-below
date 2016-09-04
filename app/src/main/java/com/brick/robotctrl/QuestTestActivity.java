@@ -18,11 +18,13 @@ import com.ant.liao.GifView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kjn.askquestion.AccountInfo;
+import com.kjn.askquestion.AccountInfoTts;
 import com.kjn.askquestion.Jason;
 import com.kjn.askquestion.JsonBean;
 import com.kjn.msgabout.Msg;
 import com.kjn.msgabout.MsgAdapter;
 import com.sinovoice.hcicloudsdk.android.asr.recorder.ASRRecorder;
+import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
 import com.sinovoice.hcicloudsdk.api.HciCloudSys;
 import com.sinovoice.hcicloudsdk.common.AuthExpireTime;
 import com.sinovoice.hcicloudsdk.common.HciErrorCode;
@@ -30,6 +32,11 @@ import com.sinovoice.hcicloudsdk.common.InitParam;
 import com.sinovoice.hcicloudsdk.common.asr.AsrConfig;
 import com.sinovoice.hcicloudsdk.common.asr.AsrInitParam;
 import com.sinovoice.hcicloudsdk.common.asr.AsrRecogResult;
+import com.sinovoice.hcicloudsdk.common.hwr.HwrInitParam;
+import com.sinovoice.hcicloudsdk.common.tts.TtsConfig;
+import com.sinovoice.hcicloudsdk.common.tts.TtsInitParam;
+import com.sinovoice.hcicloudsdk.player.TTSCommonPlayer;
+import com.sinovoice.hcicloudsdk.player.TTSPlayerListener;
 import com.sinovoice.hcicloudsdk.recorder.ASRRecorderListener;
 import com.sinovoice.hcicloudsdk.recorder.RecorderEvent;
 
@@ -56,6 +63,7 @@ public class QuestTestActivity extends BaseActivity {
      * 加载用户信息工具类
      */
     private AccountInfo mAccountInfo;
+    private AccountInfoTts mAccountInfoTts;
     private final int change = 101;
     private EditText mResult;
     private TextView mState;
@@ -77,6 +85,9 @@ public class QuestTestActivity extends BaseActivity {
     private ListView msgListView;
     private  MsgAdapter adapter;
     private List<Msg> msgList=new ArrayList<Msg>();
+    
+    private TtsConfig ttsConfig = null;
+    private TTSPlayer mTtsPlayer = null;
 
     private static class WeakRefHandler extends Handler {          //可以避免内存泄漏的Handler库
         private WeakReference<QuestTestActivity> ref = null;
@@ -125,10 +136,9 @@ public class QuestTestActivity extends BaseActivity {
         gf2.setGifImage(R.drawable.voice);
         gf2.setGifImageType(GifView.GifImageType.COVER);
 
-
         mUIHandle = new WeakRefHandler(this);
 
-        initMsgs();
+
         adapter=new MsgAdapter(QuestTestActivity.this,R.layout.msg_item,msgList);
         msgListView=(ListView)findViewById(R.id.msg_list_view);
         msgListView.setAdapter(adapter);
@@ -137,14 +147,29 @@ public class QuestTestActivity extends BaseActivity {
         boolean loadResult = mAccountInfo.loadAccountInfo(this);
         if (loadResult) {
             // 加载信息成功进入主界面
-            Toast.makeText(getApplicationContext(), "加载灵云账号成功",
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "加载灵云账号成功",
+//                    Toast.LENGTH_SHORT).show();
         } else {
             // 加载信息失败，显示失败界面
             Toast.makeText(getApplicationContext(), "加载灵云账号失败！请在assets/AccountInfo.txt文件中填写正确的灵云账户信息，账户需要从www.hcicloud.com开发者社区上注册申请。",
                     Toast.LENGTH_SHORT).show();
             return;
         }
+
+        mAccountInfoTts = AccountInfoTts.getInstance();
+        boolean loadResultTts = mAccountInfoTts.loadAccountInfo(this);
+        if (loadResultTts) {
+            // 加载信息成功进入主界面
+//            Toast.makeText(getApplicationContext(), "加载灵云账号Tts成功",
+//                    Toast.LENGTH_SHORT).show();
+        } else {
+            // 加载信息失败，显示失败界面
+            Toast.makeText(getApplicationContext(), "加载灵云账号Tts失败！请在assets/AccountInfo.txt文件中填写正确的灵云账户信息，账户需要从www.hcicloud.com开发者社区上注册申请。",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
 
         // 加载信息,返回InitParam, 获得配置参数的字符串
         InitParam initParam = getInitParam();
@@ -157,7 +182,7 @@ public class QuestTestActivity extends BaseActivity {
             Toast.makeText(getApplicationContext(), "hciInit error: " + HciCloudSys.hciGetErrorInfo(errCode),Toast.LENGTH_SHORT).show();
             return;
         }
-        Log.e("recorder", "starrt");
+
         // 获取授权/更新授权文件 :
         errCode = checkAuthAndUpdateAuth();
         if (errCode != HciErrorCode.HCI_ERR_NONE) {
@@ -166,6 +191,18 @@ public class QuestTestActivity extends BaseActivity {
             HciCloudSys.hciRelease();
             return;
         }
+        
+        
+        //TTS
+        boolean isPlayerInitSuccess = initPlayer();
+//        flag = isPlayerInitSuccess;
+        if (!isPlayerInitSuccess) {
+            Toast.makeText(this, "播放器初始化失败", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "播放器初始化失败");
+            return;
+        }
+
+        initMsgs();
 
         // 读取用户的调用的能力
         String capKey = mAccountInfo.getCapKey();
@@ -174,6 +211,7 @@ public class QuestTestActivity extends BaseActivity {
         }
         Log.e("recorder", "over");
         // 初始化录音机
+
         mAsrRecorder = new ASRRecorder();
 
         // 配置初始化参数
@@ -216,37 +254,91 @@ public class QuestTestActivity extends BaseActivity {
             }
         });
     }
-    // /////////////////////////////////////////////////////////////////////////////////////////
 
-//    private String loadGrammar(String fileName) {
-//        String grammar = "";
-//        try {
-//            InputStream is = null;
-//            try {
-//                is = getAssets().open(fileName);
-//                byte[] data = new byte[is.available()];
-//                is.read(data);
-//                grammar = new String(data);
-//            } finally {
-//                is.close();
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return grammar;
-//    }
+    private boolean initPlayer() {
+        // 读取用户的调用的能力
+        String capKey = mAccountInfoTts.getCapKey();
 
-//    private List<String> loadGrammarList(String WordlistGrammar) {
-//
-//        List<String> strList = new ArrayList<String>();
-//
-//        for (String msg : WordlistGrammar.split("\n")) {
-//            strList.add(msg.trim());
-//        }
-//
-//        return strList;
-//    }
+        // 构造Tts初始化的帮助类的实例
+        TtsInitParam ttsInitParam = new TtsInitParam();
+        // 获取App应用中的lib的路径
+        String dataPath = getBaseContext().getFilesDir().getAbsolutePath().replace("files", "lib");
+        ttsInitParam.addParam(TtsInitParam.PARAM_KEY_DATA_PATH, dataPath);
+        // 此处演示初始化的能力为tts.cloud.xiaokun, 用户可以根据自己可用的能力进行设置, 另外,此处可以传入多个能力值,并用;隔开
+        ttsInitParam.addParam(AsrInitParam.PARAM_KEY_INIT_CAP_KEYS, capKey);
+        // 使用lib下的资源文件,需要添加android_so的标记
+        ttsInitParam.addParam(HwrInitParam.PARAM_KEY_FILE_FLAG, "android_so");
+
+        mTtsPlayer = new TTSPlayer();
+
+        // 配置TTS初始化参数
+        ttsConfig = new TtsConfig();
+        mTtsPlayer.init(ttsInitParam.getStringConfig(), new TTSEventProcess());
+
+        if (mTtsPlayer.getPlayerState() == TTSPlayer.PLAYER_STATE_IDLE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // 云端合成,不启用编码传输(默认encode=none)
+    private void synth(String text) {
+        // 读取用户的调用的能力
+        String capKey = mAccountInfoTts.getCapKey();
+
+        // 配置播放器的属性。包括：音频格式，音库文件，语音风格，语速等等。详情见文档。
+        ttsConfig = new TtsConfig();
+        // 音频格式
+        ttsConfig.addParam(TtsConfig.BasicConfig.PARAM_KEY_AUDIO_FORMAT, "pcm16k16bit");
+        // 指定语音合成的能力(云端合成,发言人是XiaoKun)
+        ttsConfig.addParam(TtsConfig.SessionConfig.PARAM_KEY_CAP_KEY, capKey);
+        // 设置合成语速
+        ttsConfig.addParam(TtsConfig.BasicConfig.PARAM_KEY_SPEED, "5");
+        // property为私有云能力必选参数，公有云传此参数无效
+        ttsConfig.addParam("property", "cn_wangjing_common");
+
+        if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING
+                || mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PAUSE) {
+            mTtsPlayer.stop();
+        }
+
+        if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_IDLE) {
+            mTtsPlayer.play(text,
+                    ttsConfig.getStringConfig());
+        } else {
+            Toast.makeText(QuestTestActivity.this, "播放器内部状态错误",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // 播放器回调
+    private class TTSEventProcess implements TTSPlayerListener {
+
+        @Override
+        public void onPlayerEventPlayerError(TTSCommonPlayer.PlayerEvent playerEvent,
+                                             int errorCode) {
+            Log.i(TAG, "onError " + playerEvent.name() + " code: " + errorCode);
+        }
+
+        @Override
+        public void onPlayerEventProgressChange(TTSCommonPlayer.PlayerEvent playerEvent,
+                                                int start, int end) {
+            Log.i(TAG, "onProcessChange " + playerEvent.name() + " from "
+                    + start + " to " + end);
+        }
+
+        @Override
+        public void onPlayerEventStateChange(TTSCommonPlayer.PlayerEvent playerEvent) {
+            Log.i(TAG, "onStateChange " + playerEvent.name());
+        }
+
+    }
+    
+    
+    
+    
+
 
     private class ASRResultProcess implements ASRRecorderListener {
         @Override
@@ -294,6 +386,8 @@ public class QuestTestActivity extends BaseActivity {
                                     resultShow = jsonBean.getSingleNode().getAnswerMsg();
                                     Log.d(TAG, "run: " + resultShow);
                                     Msg msg = new Msg(R.drawable.head_robot, resultShow, Msg.TYPE_RECEIVED);
+                                    Log.d(TAG, "Tts");
+                                    synth(resultShow);
                                     msgList.add(msg);
                                     handler.sendEmptyMessage(change);
 
@@ -507,10 +601,7 @@ public class QuestTestActivity extends BaseActivity {
     private void initMsgs(){
         Msg msg1=new Msg(R.drawable.head_robot,"欢迎使用南大电子智能机器人，请问有什么问题？", Msg.TYPE_RECEIVED);
         msgList.add(msg1);
-//        Msg msg2=new Msg(R.drawable.head_man,"Hello Who is that?",Msg.TYPE_SEND);
-//        msgList.add(msg2);
-//        Msg msg3=new Msg(R.drawable.head_robot,"This is Tom.Nice talking to you",Msg.TYPE_RECEIVED);
-//        msgList.add(msg3);
+        synth("欢迎使用南大电子智能机器人，请问有什么问题？");
     }
     Handler handler = new Handler() {
         @Override

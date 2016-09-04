@@ -117,3 +117,7 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
     1. 添加智能语音editxt输入
     2. 修改智能语音相关服务器IP
 
+11. RobotCtrl_master_v1.23.23.0904_alpha
+
+    1.修改灵云智能语音部分
+

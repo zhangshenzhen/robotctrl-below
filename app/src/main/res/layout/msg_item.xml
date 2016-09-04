@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="0dp"
-            android:textColor="#f0f"/>
+            android:textColor="#f0f"
+            android:textSize="25sp"/>
     </LinearLayout>
 
 
@@ -36,7 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="0dp"/>
+            android:layout_margin="0dp"
+            android:textSize="25sp"/>
         <ImageView
             android:id="@+id/head_man"
             android:layout_width="wrap_content"

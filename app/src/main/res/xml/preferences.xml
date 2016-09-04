@@ -88,7 +88,7 @@
             android:targetClass="com.android.email.activity.Welcome" />
     </Preference>
     <Preference
-        android:summary="RobotCtrl_master_v1.23.22.0903_alpha"
+        android:summary="RobotCtrl_master_v1.23.23.0904_alpha"
         android:title="About">
     </Preference>
     <Preference
