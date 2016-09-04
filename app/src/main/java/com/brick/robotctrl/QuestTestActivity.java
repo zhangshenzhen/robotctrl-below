@@ -20,6 +20,8 @@ import com.google.gson.reflect.TypeToken;
 import com.kjn.askquestion.AccountInfo;
 import com.kjn.askquestion.Jason;
 import com.kjn.askquestion.JsonBean;
+import com.kjn.msgabout.Msg;
+import com.kjn.msgabout.MsgAdapter;
 import com.sinovoice.hcicloudsdk.android.asr.recorder.ASRRecorder;
 import com.sinovoice.hcicloudsdk.api.HciCloudSys;
 import com.sinovoice.hcicloudsdk.common.AuthExpireTime;
@@ -39,6 +41,7 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -69,6 +72,10 @@ public class QuestTestActivity extends BaseActivity {
     private ASRRecorder mAsrRecorder;
     private AsrConfig asrConfig = null;
     private String grammar = null;
+
+    private ListView msgListView;
+    private  MsgAdapter adapter;
+    private List<Msg> msgList=new ArrayList<Msg>();
 
     private static class WeakRefHandler extends Handler {          //可以避免内存泄漏的Handler库
         private WeakReference<QuestTestActivity> ref = null;
@@ -106,8 +113,8 @@ public class QuestTestActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cativity_test);
-        mResult = (EditText) findViewById(R.id.resultview);
-        mState = (TextView) findViewById(R.id.stateview);
+//        mResult = (EditText) findViewById(R.id.resultview);
+//        mState = (TextView) findViewById(R.id.stateview);
         mBtnRecogRealTimeMode = (Button) findViewById(R.id.begin_recog_real_time_mode);
         gf =(GifView)findViewById(R.id.gif1);
         gf.setGifImage(R.drawable.smile);
@@ -127,6 +134,11 @@ public class QuestTestActivity extends BaseActivity {
         });
 
         mUIHandle = new WeakRefHandler(this);
+
+        initMsgs();
+        adapter=new MsgAdapter(QuestTestActivity.this,R.layout.msg_item,msgList);
+        msgListView=(ListView)findViewById(R.id.msg_list_view);
+        msgListView.setAdapter(adapter);
 
         mAccountInfo = AccountInfo.getInstance();
         boolean loadResult = mAccountInfo.loadAccountInfo(this);
@@ -254,7 +266,7 @@ public class QuestTestActivity extends BaseActivity {
             public void onClick(View v) {
                 Log.e("recorder", "press1");
                 mBtnRecogRealTimeMode.setClickable(false);
-                if(mResult.getText().toString().equals("") ) {
+//                if(mResult.getText().toString().equals("") ) {
                     if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
                         asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
                         PlayerService.stopAction(QuestTestActivity.this);
@@ -263,78 +275,78 @@ public class QuestTestActivity extends BaseActivity {
                     } else {
                         Log.e("recorder", "录音机未处于空闲状态，请稍等");
                     }
-                }else{
-                    query = mResult.getText().toString();
-                    new Thread(){
-                        @Override
-                        public void run() {
-                            Jason jts = new Jason();
-                            Log.i(TAG,"进入新线程");
-                            try {
-                                result = jts.ask(query);                               //把网络访问的代码放在这里
-                                if (result != null) {
-                                    Log.i(TAG, "进入解析");
-                                    Gson gson = new Gson();
-                                    Type type = new TypeToken<JsonBean>() {}.getType();
-                                    JsonBean jsonBean = gson.fromJson(result, type);
-                                    System.out.println(jsonBean.getResult());
-                                    resultShow = jsonBean.getSingleNode().getAnswerMsg();
-                                    Log.d(TAG, "run: " +  resultShow);
-                                    showItem.clear();
-                                    showNum.clear();
-                                    if (jsonBean.getVagueNode() != null) {
-                                        if (jsonBean.getAnswerTypeId() == 6) {
-                                            if (jsonBean.getSingleNode().getScore() != 100.0) {
-                                                for (int i = 0; i < jsonBean.getVagueNode().getItemList().size(); i++) {
-                                                    showItem.add(jsonBean.getVagueNode().getItemList().get(i).getQuestion());
-                                                    showNum.add(jsonBean.getVagueNode().getItemList().get(i).getNum());
-                                                }
-                                                if (resultShow != null) {
-                                                    Intent intent = new Intent(QuestTestActivity.this, ManyQueryActivity.class);
-                                                    intent.putExtra("extra_showResult", resultShow);
-                                                    intent.putStringArrayListExtra("extra_showItem", showItem);
-                                                    intent.putIntegerArrayListExtra("extra_showNum", showNum);
-                                                    startActivity(intent);
-                                                }
-                                            } else {
-                                                Log.d(TAG, "run: " + 111);
-                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
-                                                intent.putExtra("extra_showResult", resultShow);
-                                                startActivity(intent);
-                                            }
-                                        }
-                                    } else {
-                                        Log.d(TAG,resultShow);
-                                        if (resultShow != null) {
-                                            if (jsonBean.getAnswerTypeId() == 1) {
-                                                Intent intent = new Intent(QuestTestActivity.this, NoQueryActivity.class);
-                                                resultShow = "请输入问题！";
-                                                intent.putExtra("extra_showResult",resultShow);
-                                                startActivity(intent);
-                                            } else if (jsonBean.getAnswerTypeId() == 3) {
-                                                Intent intent = new Intent(QuestTestActivity.this, NoAnswerQueryActivity.class);
-                                                resultShow = "抱歉，机器人无法理解您的意思,请转人工服务！";
-                                                intent.putExtra("extra_showResult",resultShow);
-                                                startActivity(intent);
-                                            } else if(jsonBean.getAnswerTypeId() == 6){
-                                                Log.d(TAG, "run: "+ 222);
-                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
-                                                intent.putExtra("extra_showResult", resultShow);
-                                                startActivity(intent);
-                                            } else {
-                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
-                                                intent.putExtra("extra_showResult", resultShow);
-                                                startActivity(intent);
-                                            }
-                                        }
-                                    }
-                                }
-                            } catch (HttpException e) {
-                                System.out.println("heheda" + e);
-                            }
-                        }
-                    }.start();
-                }
+//                }else{
+//                    query = mResult.getText().toString();
+//                    new Thread(){
+//                        @Override
+//                        public void run() {
+//                            Jason jts = new Jason();
+//                            Log.i(TAG,"进入新线程");
+//                            try {
+//                                result = jts.ask(query);                               //把网络访问的代码放在这里
+//                                if (result != null) {
+//                                    Log.i(TAG, "进入解析");
+//                                    Gson gson = new Gson();
+//                                    Type type = new TypeToken<JsonBean>() {}.getType();
+//                                    JsonBean jsonBean = gson.fromJson(result, type);
+//                                    System.out.println(jsonBean.getResult());
+//                                    resultShow = jsonBean.getSingleNode().getAnswerMsg();
+//                                    Log.d(TAG, "run: " +  resultShow);
+//                                    showItem.clear();
+//                                    showNum.clear();
+//                                    if (jsonBean.getVagueNode() != null) {
+//                                        if (jsonBean.getAnswerTypeId() == 6) {
+//                                            if (jsonBean.getSingleNode().getScore() != 100.0) {
+//                                                for (int i = 0; i < jsonBean.getVagueNode().getItemList().size(); i++) {
+//                                                    showItem.add(jsonBean.getVagueNode().getItemList().get(i).getQuestion());
+//                                                    showNum.add(jsonBean.getVagueNode().getItemList().get(i).getNum());
+//                                                }
+//                                                if (resultShow != null) {
+//                                                    Intent intent = new Intent(QuestTestActivity.this, ManyQueryActivity.class);
+//                                                    intent.putExtra("extra_showResult", resultShow);
+//                                                    intent.putStringArrayListExtra("extra_showItem", showItem);
+//                                                    intent.putIntegerArrayListExtra("extra_showNum", showNum);
+//                                                    startActivity(intent);
+//                                                }
+//                                            } else {
+//                                                Log.d(TAG, "run: " + 111);
+//                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
+//                                                intent.putExtra("extra_showResult", resultShow);
+//                                                startActivity(intent);
+//                                            }
+//                                        }
+//                                    } else {
+//                                        Log.d(TAG,resultShow);
+//                                        if (resultShow != null) {
+//                                            if (jsonBean.getAnswerTypeId() == 1) {
+//                                                Intent intent = new Intent(QuestTestActivity.this, NoQueryActivity.class);
+//                                                resultShow = "请输入问题！";
+//                                                intent.putExtra("extra_showResult",resultShow);
+//                                                startActivity(intent);
+//                                            } else if (jsonBean.getAnswerTypeId() == 3) {
+//                                                Intent intent = new Intent(QuestTestActivity.this, NoAnswerQueryActivity.class);
+//                                                resultShow = "抱歉，机器人无法理解您的意思,请转人工服务！";
+//                                                intent.putExtra("extra_showResult",resultShow);
+//                                                startActivity(intent);
+//                                            } else if(jsonBean.getAnswerTypeId() == 6){
+//                                                Log.d(TAG, "run: "+ 222);
+//                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
+//                                                intent.putExtra("extra_showResult", resultShow);
+//                                                startActivity(intent);
+//                                            } else {
+//                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
+//                                                intent.putExtra("extra_showResult", resultShow);
+//                                                startActivity(intent);
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            } catch (HttpException e) {
+//                                System.out.println("heheda" + e);
+//                            }
+//                        }
+//                    }.start();
+//                }
             }
         });
     }
@@ -392,6 +404,8 @@ public class QuestTestActivity extends BaseActivity {
                     sResult = "识别结果为："
                             + arg1.getRecogItemList().get(0).getRecogResult();         //识别的文本信息
                     query = arg1.getRecogItemList().get(0).getRecogResult();
+                    Msg msg2=new Msg(R.drawable.head_man,query,Msg.TYPE_SEND);
+                    msgList.add(msg2);
 //////////////////////////////////////////////
                     new Thread(){
                         @Override
@@ -408,6 +422,7 @@ public class QuestTestActivity extends BaseActivity {
                                     System.out.println(jsonBean.getResult());
                                     resultShow = jsonBean.getSingleNode().getAnswerMsg();
                                     Log.d(TAG, "run: " +  resultShow);
+
                                     showItem.clear();
                                     showNum.clear();
                                     if (jsonBean.getVagueNode() != null) {
@@ -426,33 +441,43 @@ public class QuestTestActivity extends BaseActivity {
                                                 }
                                             } else {
                                                 Log.d(TAG, "run: " + 111);
-                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
-                                                intent.putExtra("extra_showResult", resultShow);
-                                                startActivity(intent);
+//                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
+//                                                intent.putExtra("extra_showResult", resultShow);
+//                                                startActivity(intent);
+                                                Msg msg3=new Msg(R.drawable.head_robot,resultShow,Msg.TYPE_RECEIVED);
+                                                msgList.add(msg3);
                                             }
                                         }
                                     } else {
                                         Log.d(TAG,resultShow);
                                         if (resultShow != null) {
                                             if (jsonBean.getAnswerTypeId() == 1) {
-                                                Intent intent = new Intent(QuestTestActivity.this, NoQueryActivity.class);
-                                                resultShow = "请输入问题！";
-                                                intent.putExtra("extra_showResult",resultShow);
-                                                startActivity(intent);
+//                                                Intent intent = new Intent(QuestTestActivity.this, NoQueryActivity.class);
+//                                                resultShow = "请输入问题！";
+//                                                intent.putExtra("extra_showResult",resultShow);
+//                                                startActivity(intent);
+                                                Msg msg3=new Msg(R.drawable.head_robot,"请输入问题~~",Msg.TYPE_RECEIVED);
+                                                msgList.add(msg3);
                                             } else if (jsonBean.getAnswerTypeId() == 3) {
-                                                Intent intent = new Intent(QuestTestActivity.this, NoAnswerQueryActivity.class);
-                                                resultShow = "抱歉，机器人无法理解您的意思,请转人工服务！";
-                                                intent.putExtra("extra_showResult",resultShow);
-                                                startActivity(intent);
+//                                                Intent intent = new Intent(QuestTestActivity.this, NoAnswerQueryActivity.class);
+//                                                resultShow = "抱歉，机器人无法理解您的意思,请转人工服务！";
+//                                                intent.putExtra("extra_showResult",resultShow);
+//                                                startActivity(intent);
+                                                Msg msg3=new Msg(R.drawable.head_robot,"抱歉，机器人无法理解您的意思,请转人工服务~~",Msg.TYPE_RECEIVED);
+                                                msgList.add(msg3);
                                             } else if(jsonBean.getAnswerTypeId() == 6){
-                                                Log.d(TAG, "run: "+ 222);
-                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
-                                                intent.putExtra("extra_showResult", resultShow);
-                                                startActivity(intent);
+//                                                Log.d(TAG, "run: "+ 222);
+//                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
+//                                                intent.putExtra("extra_showResult", resultShow);
+//                                                startActivity(intent);
+                                                Msg msg3=new Msg(R.drawable.head_robot,resultShow,Msg.TYPE_RECEIVED);
+                                                msgList.add(msg3);
                                             } else {
-                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
-                                                intent.putExtra("extra_showResult", resultShow);
-                                                startActivity(intent);
+//                                                Intent intent = new Intent(QuestTestActivity.this, ShowSureQueryActivity.class);
+//                                                intent.putExtra("extra_showResult", resultShow);
+//                                                startActivity(intent);
+                                                Msg msg3=new Msg(R.drawable.head_robot,resultShow,Msg.TYPE_RECEIVED);
+                                                msgList.add(msg3);
                                             }
                                         }
                                     }
@@ -465,8 +490,8 @@ public class QuestTestActivity extends BaseActivity {
                 } else {
                     sResult = "未能正确识别,请重新输入";
                 }
-                Message m = mUIHandle.obtainMessage(1, 2, 1, sResult);
-                mUIHandle.sendMessage(m);
+//                Message m = mUIHandle.obtainMessage(1, 2, 1, sResult);
+//                mUIHandle.sendMessage(m);
             }
         }
 
@@ -666,5 +691,14 @@ public class QuestTestActivity extends BaseActivity {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void initMsgs(){
+        Msg msg1=new Msg(R.drawable.head_robot,"欢迎使用南大电子智能机器人，请问有什么问题？", Msg.TYPE_RECEIVED);
+        msgList.add(msg1);
+//        Msg msg2=new Msg(R.drawable.head_man,"Hello Who is that?",Msg.TYPE_SEND);
+//        msgList.add(msg2);
+//        Msg msg3=new Msg(R.drawable.head_robot,"This is Tom.Nice talking to you",Msg.TYPE_RECEIVED);
+//        msgList.add(msg3);
     }
 }

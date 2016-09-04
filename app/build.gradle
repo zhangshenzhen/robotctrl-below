@@ -21,7 +21,7 @@ android {
         applicationId "com.brick.robotctrl"        // applicationId是一个app的标识
         minSdkVersion 21
         targetSdkVersion 22
-        versionCode 1                                 //  对消费者不可见，仅用于应用市场、程序内部识别版本，判断新旧等用途
+        versionCode 2                                 //  对消费者不可见，仅用于应用市场、程序内部识别版本，判断新旧等用途
         versionName apkVersion                       // 展示给消费者，消费者会通过它认知自己安装的版本，下文提到的版本号都是说VersionName
 
         ndk {
