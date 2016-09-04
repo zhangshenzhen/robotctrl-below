@@ -2,8 +2,6 @@ package com.kjn.ftpabout;
 
 import android.util.Log;
 
-import com.kjn.ftpabout.Result;
-
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
@@ -13,8 +11,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -157,7 +153,18 @@ public class FTPAsk {
                     flag = downloadSingle(file, ftpFile);
                     // 下载完时间
                 }else{
-                    Log.d(TAG, "download: 文件已存在" + fileName);
+                    long lRemoteSize = ftpFiles[0].getSize();
+                    long localSize = file.length();
+                    if(localSize>=lRemoteSize){
+                        Log.d(TAG, "download: 文件已存在" + fileName);
+                    }
+                    else {
+                        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file, true));
+                        ftpClient.setRestartOffset(localSize);
+                        flag = ftpClient.retrieveFile(file.getName(), out);
+                        out.close();
+
+                    }
                 }
                     Date endTime = new Date();
                     // 返回值
