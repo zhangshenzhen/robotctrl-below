@@ -64,7 +64,7 @@ public class QuestTestActivity extends BaseActivity {
     public String query;
     public String result;
     public String data;
-    private Button humanButton;
+    // private Button humanButton;
     private MediaPlayer mp;
     public String resultShow;
     ArrayList<String> showItem = new ArrayList<String>();
@@ -112,7 +112,7 @@ public class QuestTestActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cativity_test);
+        setContentView(R.layout.activity_test_v2);
 //        mResult = (EditText) findViewById(R.id.resultview);
         mState = (TextView) findViewById(R.id.stateview);
         mBtnRecogRealTimeMode = (Button) findViewById(R.id.begin_recog_real_time_mode);
@@ -122,16 +122,17 @@ public class QuestTestActivity extends BaseActivity {
         //gf.setShowDimension(640,400);
 //        PlayerService.startPlayerService(QuestTestActivity.this, mp3Url);
 
+        /*
         humanButton = (Button) findViewById(R.id.humanButton);
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.e("recorder", "click");
-                humanButton.setClickable(false);
+                // humanButton.setClickable(false);
                 clearTimerCount();
                 ExpressionActivity.startExpressionActivity(QuestTestActivity.this, "12");
             }
-        });
+        });*/
 
         mUIHandle = new WeakRefHandler(this);
 
@@ -265,7 +266,8 @@ public class QuestTestActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Log.e("recorder", "press1");
-                mBtnRecogRealTimeMode.setClickable(false);
+               // mBtnRecogRealTimeMode.setClickable(false);
+                mBtnRecogRealTimeMode.setClickable(true);
 //                if(mResult.getText().toString().equals("") ) {
                     if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
                         asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
@@ -550,7 +552,7 @@ public class QuestTestActivity extends BaseActivity {
 	@Override
 	public void onRestart() {
         mBtnRecogRealTimeMode.setClickable(true);
-        humanButton.setClickable(true);
+       // humanButton.setClickable(true);
 //        mResult.setText(null);
         mState.setText("状态");
         //firtAsk();
