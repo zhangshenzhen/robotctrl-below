@@ -359,46 +359,49 @@ public class QuestTestActivity extends BaseActivity {
             if (arg1 != null) {
                 if (arg1.getRecogItemList().size() > 0) {
                     query = arg1.getRecogItemList().get(0).getRecogResult();
-                    if(!"".equals(query)){
-                        Msg msg=new Msg(R.drawable.head_man,query,Msg.TYPE_SEND);
+                    if(!"".equals(query)) {
+                        Msg msg = new Msg(R.drawable.head_man, query, Msg.TYPE_SEND);
                         msgList.add(msg);
                         handler.sendEmptyMessage(change);
-                    }else{
-                        Msg msg=new Msg(R.drawable.head_man,null,Msg.TYPE_SEND);
-                        msgList.add(msg);
-                        handler.sendEmptyMessage(change);
-                    }
+//                    }else{
+//                        Msg msg=new Msg(R.drawable.head_man,null,Msg.TYPE_SEND);
+//                        msgList.add(msg);
+//                        handler.sendEmptyMessage(change);
+//                    }
 //////////////////////////////////////////////
-                    new Thread(){
-                        @Override
-                        public void run() {
-                            Jason jts = new Jason();
-                            Log.i(TAG,"进入新线程");
-                            try {
-                                result = jts.ask(query);                               //把网络访问的代码放在这里
-                                if (result != null) {
-                                    Log.i(TAG, "进入解析");
-                                    Gson gson = new Gson();
-                                    Type type = new TypeToken<JsonBean>() {
-                                    }.getType();
-                                    JsonBean jsonBean = gson.fromJson(result, type);
-                                    System.out.println(jsonBean.getResult());
-                                    resultShow = jsonBean.getSingleNode().getAnswerMsg();
-                                    Log.d(TAG, "run: " + resultShow);
-                                    Msg msg = new Msg(R.drawable.head_robot, resultShow, Msg.TYPE_RECEIVED);
-                                    Log.d(TAG, "Tts");
-                                    synth(resultShow);
-                                    msgList.add(msg);
-                                    handler.sendEmptyMessage(change);
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                Jason jts = new Jason();
+                                Log.i(TAG, "进入新线程");
+                                try {
+                                    result = jts.ask(query);                               //把网络访问的代码放在这里
+                                    if (result != null) {
+                                        Log.i(TAG, "进入解析");
+                                        Gson gson = new Gson();
+                                        Type type = new TypeToken<JsonBean>() {
+                                        }.getType();
+                                        JsonBean jsonBean = gson.fromJson(result, type);
+                                        System.out.println(jsonBean.getResult());
+                                        resultShow = jsonBean.getSingleNode().getAnswerMsg();
+                                        Log.d(TAG, "run: " + resultShow);
+                                        Msg msg = new Msg(R.drawable.head_robot, resultShow, Msg.TYPE_RECEIVED);
+                                        Log.d(TAG, "Tts");
+                                        synth(resultShow);
+                                        msgList.add(msg);
+                                        handler.sendEmptyMessage(change);
 
+                                    }
+                                } catch (HttpException e) {
+                                    System.out.println("heheda" + e);
                                 }
-                            } catch (HttpException e) {
-                                System.out.println("heheda" + e);
                             }
-                        }
-                    }.start();
+                        }.start();
+                    }else{
+                        gf2.setClickable(true);
+                    }
                 } else {
-
+                    Log.d(TAG, "onRecorderEventRecogFinsh: kong");
                 }
             }
         }
