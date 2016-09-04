@@ -3,13 +3,15 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:weightSum="1">
+              android:weightSum="1"
+    >
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.7"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:background="#ffffff">
         <com.ant.liao.GifView
             android:id="@+id/gif1"
             android:layout_width="wrap_content"
@@ -21,16 +23,16 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.3">
+        <!--<Button-->
+            <!--android:id="@+id/begin_recog_real_time_mode"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:background="#0A0A0A"-->
+            <!--android:text="语音咨询"-->
+            <!--android:textColor="#FFFFFF"-->
+            <!--android:textSize="30sp"/>-->
 
-        <Button
-            android:id="@+id/begin_recog_real_time_mode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#0A0A0A"
-            android:text="语音咨询"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"/>
 
         <TextView
             android:id="@+id/stateview"
@@ -45,11 +47,16 @@
             android:id="@+id/msg_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/begin_recog_real_time_mode"
+            android:layout_above="@+id/gif2"
             android:layout_below="@+id/stateview"
             android:divider="#00000000">
         </ListView>
-
+        <com.ant.liao.GifView
+            android:id="@+id/gif2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_horizontal|center_vertical"/>
 
     </RelativeLayout>
     
