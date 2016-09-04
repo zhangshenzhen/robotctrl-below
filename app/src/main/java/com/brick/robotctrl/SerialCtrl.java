@@ -27,7 +27,7 @@ public class SerialCtrl {
     public static ComBean ComRecDatatmp = null;    //暂存电池电压的值
     public static int batteryNum = 0;         //最终电压值
     public static int loop=0;                 //用于for循环的循环变量
-    public static int [] RmShake ={0,0,0,0,0};              //去除电压值的抖动
+    public static int [] RmShake ={0,0,0,0,0,0,0};              //去除电压值的抖动
 
     public SerialCtrl(Context context, Handler handler) {
         assert context != null;
@@ -92,11 +92,11 @@ public class SerialCtrl {
             ComRecDatatmp = ComRecData;
             try {
                 if(Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16) {
-                    Log.d("getbattery", "getbattery: " + batteryNum);
                     RmShake[loop++] = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
-                    if(loop==5) {
-                        batteryNum = GetMid(RmShake, 5);                  //更新电池值
+                    if(loop==7) {
+                        batteryNum = GetMid(RmShake, 7);                  //更新电池值
                         loop=0;
+                        Log.d("getbattery", "getbattery: " + batteryNum);
                     }
                 }
             } catch (Exception e) {

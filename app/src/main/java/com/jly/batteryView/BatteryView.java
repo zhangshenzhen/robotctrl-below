@@ -14,7 +14,7 @@ import android.view.View;
  */
 public class BatteryView extends View {
 
-    private static int mPower =40;
+    private static int mPower =35;
 
     private short batteryFlag = 0;
 
@@ -50,7 +50,7 @@ public class BatteryView extends View {
                 battery_left + battery_width, battery_top + battery_height);
         canvas.drawRect(rect, paint);
 
-        float power_percent = mPower/40.0f;
+        float power_percent = mPower/35.0f;
 
         Paint paint2 = new Paint(paint);
 
@@ -59,7 +59,7 @@ public class BatteryView extends View {
             paint2.setColor(Color.YELLOW);
             batteryFlag = 1;
         } else if(power_percent>=0.5f) {
-            paint2.setColor(Color.BLACK);
+            paint2.setColor(Color.GREEN);
             batteryFlag = 1;
         } else {
             paint2.setColor(Color.RED);
@@ -78,7 +78,7 @@ public class BatteryView extends View {
             batteryFlag = 0;
         }
         Paint paint3 = new Paint(paint);
-        paint2.setColor(Color.BLACK);
+        paint2.setColor(Color.GREEN);
         paint2.setStyle(Paint.Style.FILL);
         int h_left = battery_left + battery_width;
         int h_top = battery_top + battery_height / 2 - battery_head_height / 2;
