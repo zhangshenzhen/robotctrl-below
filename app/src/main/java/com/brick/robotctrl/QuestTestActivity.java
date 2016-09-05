@@ -477,6 +477,9 @@ public class QuestTestActivity extends BaseActivity {
             mAsrRecorder.cancel();
             Log.d(TAG, "onStop: okkk");
         }
+        if(mTtsPlayer.canStop()){
+            mTtsPlayer.stop();
+        }
         Log.d(TAG, "onStop: ok");
         super.onStop();
 	}
