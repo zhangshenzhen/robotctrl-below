@@ -122,3 +122,6 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
     1.修改灵云智能语音部分
     2.添加FTP断点续传功能
 
+12. RobotCtrl_master_v1.24.24.0905_alpha
+
+    1.智能语音提问按钮5s逻辑
