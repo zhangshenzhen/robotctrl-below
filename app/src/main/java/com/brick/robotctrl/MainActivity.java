@@ -164,6 +164,12 @@ public class MainActivity extends BaseActivity {
         Timer timer = new Timer(true);
         timer.schedule(queryTask, 200, 200); //改指令执行后延时1000ms后执行run，之后每1000ms执行一次run
         // timer.cancel(); //退出计时器
+
+        AboutActivity about = new AboutActivity();
+        AboutActivity.MyThread tt = about.new MyThread();
+
+        tt.start();
+        Log.d(TAG, "onCreate: 456");
     }
 
     private int countForPlayer = 0;//播放计数器
