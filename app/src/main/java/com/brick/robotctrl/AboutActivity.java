@@ -69,7 +69,7 @@ public class AboutActivity extends BaseActivity {
         public String ALOCAL_PATH = null;
 
 
-        final String REMOTE_PATH = "\\东南\\测试\\";
+        final String REMOTE_PATH = "\\东南\\更新\\";
         String fileNameDownLoad;
 
 
