@@ -88,6 +88,7 @@ public class QuestTestActivity extends BaseActivity {
     
     private TtsConfig ttsConfig = null;
     private TTSPlayer mTtsPlayer = null;
+    public long lastClickTime;
 
     private static class WeakRefHandler extends Handler {          //可以避免内存泄漏的Handler库
         private WeakReference<QuestTestActivity> ref = null;
@@ -237,13 +238,20 @@ public class QuestTestActivity extends BaseActivity {
         // PARAM_KEY_ENCODE 音频编码压缩格式，使用OPUS可以有效减小数据流量
         asrConfig.addParam(AsrConfig.AudioConfig.PARAM_KEY_ENCODE, AsrConfig.AudioConfig.VALUE_OF_PARAM_ENCODE_SPEEX);
         // 其他配置，此处可以全部选取缺省值
+        asrConfig.addParam(AsrConfig.VadConfig.PARAM_KEY_VAD_HEAD, "0");
+//        asrConfig.addParam(AsrConfig.VadConfig.PARAM_KEY_VAD_HEAD, AsrConfig.VadConfig.PARAM_KEY_VAD_SEG );
 
 
         gf2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("recorder", "press1");
-                gf2.setClickable(false);
+//                Log.d("recorder", "press1");
+//                gf2.setClickable(false);
+//                gf2.setEnabled(false);
+                if(isFastDoubleClick()) {
+                    if(mTtsPlayer.canStop()){
+                        mTtsPlayer.stop();
+                    }
                     if (mAsrRecorder.getRecorderState() == ASRRecorder.RECORDER_STATE_IDLE) {
                         asrConfig.addParam(AsrConfig.SessionConfig.PARAM_KEY_REALTIME, "yes");
                         PlayerService.stopAction(QuestTestActivity.this);
@@ -251,6 +259,7 @@ public class QuestTestActivity extends BaseActivity {
                     } else {
                         Log.e("recorder", "录音机未处于空闲状态，请稍等");
                     }
+                }
             }
         });
     }
@@ -310,6 +319,9 @@ public class QuestTestActivity extends BaseActivity {
             Toast.makeText(QuestTestActivity.this, "播放器内部状态错误",
                     Toast.LENGTH_SHORT).show();
         }
+        if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STOP_FLAG_PROMPT){
+
+        }
     }
 
     // 播放器回调
@@ -331,6 +343,11 @@ public class QuestTestActivity extends BaseActivity {
         @Override
         public void onPlayerEventStateChange(TTSCommonPlayer.PlayerEvent playerEvent) {
             Log.i(TAG, "onStateChange " + playerEvent.name());
+//            Log.d(TAG, "onPlayerEventStateChange: hehe");
+//            if(playerEvent.name().equals( TTSCommonPlayer.PlayerEvent.PLAYER_EVENT_END)){
+////                gf2.setClickable(true);
+//                Log.d(TAG, "synth: haha");
+//            }
         }
 
     }
@@ -398,7 +415,7 @@ public class QuestTestActivity extends BaseActivity {
                             }
                         }.start();
                     }else{
-                        gf2.setClickable(true);
+//                        gf2.setClickable(true);
                     }
                 } else {
                     Log.d(TAG, "onRecorderEventRecogFinsh: kong");
@@ -449,7 +466,7 @@ public class QuestTestActivity extends BaseActivity {
 
 	@Override
 	public void onRestart() {
-        gf2.setClickable(true);
+//        gf2.setClickable(true);
         mState.setText("状态");
 		super.onRestart();
 	}
@@ -459,6 +476,9 @@ public class QuestTestActivity extends BaseActivity {
         if(mAsrRecorder != null) {
             mAsrRecorder.cancel();
             Log.d(TAG, "onStop: okkk");
+        }
+        if(mTtsPlayer.canStop()){
+            mTtsPlayer.stop();
         }
         Log.d(TAG, "onStop: ok");
         super.onStop();
@@ -614,9 +634,18 @@ public class QuestTestActivity extends BaseActivity {
                 case change:
                     adapter.notifyDataSetChanged();//当有新消息时刷新listview中的显示
                     msgListView.setSelection(msgList.size());//将listview定位到最后一行
-                    gf2.setClickable(true);
+
                     break;
             }
         }
     };
+
+    private boolean isFastDoubleClick(){
+        long time = System.currentTimeMillis();
+        if (time - lastClickTime < 5000){
+            return false;
+        }
+        lastClickTime = time;
+        return true;
+    }
 }
