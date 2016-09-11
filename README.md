@@ -126,3 +126,7 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 
     1.智能语音提问按钮5s逻辑
     2.退出界面打断TTS
+
+13. RobotCtrl_master_v1.25.25.0912_alpha
+
+    1.循环播放图片
