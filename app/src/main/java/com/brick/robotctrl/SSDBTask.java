@@ -159,7 +159,8 @@ public class SSDBTask extends TimerTask {
                     if (
                             files[i].getAbsolutePath().endsWith(".avi") ||
                                     files[i].getAbsolutePath().endsWith(".mp4") ||
-                                    files[i].getAbsolutePath().endsWith(".3gp")
+                                    files[i].getAbsolutePath().endsWith(".3gp") ||
+                                    files[i].getAbsolutePath().endsWith(".jpg")
                         //  files[i].getAbsolutePath().endsWith(".flv")
                         // files[i].getAbsolutePath().endsWith(".gif")||
                         // files[i].getAbsolutePath().endsWith(".mkv")||

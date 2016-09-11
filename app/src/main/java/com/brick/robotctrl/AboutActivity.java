@@ -105,7 +105,7 @@ public class AboutActivity extends BaseActivity {
                 if (remoteFile.size() > 0) {
                     for (int i = 0; i < remoteFile.size(); i++) {
                         Log.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
-                        if (remoteFile.get(i).getName().endsWith(".mp4") || remoteFile.get(i).getName().endsWith(".3gp") || remoteFile.get(i).getName().endsWith(".mp3")) {
+                        if (remoteFile.get(i).getName().endsWith(".mp4") || remoteFile.get(i).getName().endsWith(".3gp") || remoteFile.get(i).getName().endsWith(".mp3") || remoteFile.get(i).getName().endsWith(".jpg") ) {
                             isAPK = false;
                             fileNameDown = remoteFile.get(i).getName();
                             Result result = null;

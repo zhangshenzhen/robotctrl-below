@@ -80,6 +80,12 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
         <activity
+            android:name=".ImageActivity"
+            android:label="@string/title_activity_ad"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
+        <activity
             android:name=".ShowSureQueryActivity"
             android:label="提问"
             android:launchMode="singleTask"

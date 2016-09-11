@@ -392,29 +392,50 @@ public class MainActivity extends BaseActivity {
 //                                }
                                 break;
                             case "Pause":
-                                ADVideo.pause();
+                                ActivityManager em = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+                                ComponentName en = em.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                                if ( en.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
+                                    ADVideo.pause();
+                                }
+
                                 break;
                             case "Stop":
-                                ADVideo.stopPlayBack();
-                                ExpressionActivity.startAction(MainActivity.this, "12");
-                                break;
-                            case "Single":
                                 ActivityManager bm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                                 ComponentName bn = bm.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                                if ( !bn.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
-                                    ADActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
+                                if ( bn.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
+                                    ADVideo.stopPlayBack();
+                                    ExpressionActivity.startAction(MainActivity.this, "12");
+                                }else if(bn.getClassName().equals("com.brick.robotctrl.ImageActivity")){
+                                    ExpressionActivity.startAction(MainActivity.this, "12");
+                                }
+                                break;
+                            case "Single":
+                                ActivityManager dm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+                                ComponentName dn = dm.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                                if ( !dn.getClassName().equals("com.brick.robotctrl.ADActivity") ||
+                                        !dn.getClassName().equals("com.brick.robotctrl.ImageActivity")) {
+                                    if (strArray[1].endsWith(".jpg")) {
+                                        ImageActivity.startAction(MainActivity.this,strArray[0], strArray[1]);
+                                    }else {
+                                        ADActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
+                                    }
                                 }
                             case "Cycle":
                                 ActivityManager cm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                                 ComponentName cn = cm.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                                if ( !cn.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
-                                    ADActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
+                                if ( !cn.getClassName().equals("com.brick.robotctrl.ADActivity") ||
+                                        !cn.getClassName().equals("com.brick.robotctrl.ImageActivity")) {
+                                    if (strArray[1].endsWith(".jpg")) {
+                                        ImageActivity.startAction(MainActivity.this,strArray[0], strArray[1]);
+                                    }else {
+                                        ADActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
+                                    }
                                 }
                                 break;
                             case "SingleCycle":
-                                ActivityManager dm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
-                                ComponentName dn = dm.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                                if ( !dn.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
+                                ActivityManager fm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+                                ComponentName fn = fm.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                                if ( !fn.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
                                     ADActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
                                 }
                                 break;
