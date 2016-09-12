@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -52,6 +53,21 @@ public class ImageActivity extends Activity{
                 showcycle(fileName);
                 break;
         }
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imagefilePath = Environment.getExternalStorageDirectory()
+                        .getPath()+"/Movies";
+                if (++index >= videoList.size()) {
+                    index = 0;
+                }
+                String imagefileName=videoList.get(index);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 2;
+                Bitmap bm = BitmapFactory.decodeFile(imagefileName, options);
+                imageView.setImageBitmap(bm);
+            }
+        });
     }
     Handler handler = new Handler() {
         @Override
