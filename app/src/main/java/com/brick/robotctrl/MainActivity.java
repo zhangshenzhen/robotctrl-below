@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.jly.batteryView.BatteryView;
 import com.kjn.videoview.ADVideo;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -545,6 +547,10 @@ public class MainActivity extends BaseActivity {
                     Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                     startActivityForResult(intent, 0);
                     break;
+                case SSDBTask.key_ApkUpdate :
+                    Intent intentA = new Intent(Intent.ACTION_VIEW);
+                    intentA.setDataAndType(Uri.fromFile(new File((String) msg.obj)), "application/vnd.android.package-archive");
+                    startActivity(intentA);
                 default:
                     break;
             }

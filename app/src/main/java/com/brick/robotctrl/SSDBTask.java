@@ -234,6 +234,7 @@ public class SSDBTask extends TimerTask {
     public static final int Key_DisableAudio = 12;
     public static final int Key_SetVolume = 13;
 	public static final int Key_EndVideo=14;
+    public static final int key_ApkUpdate=16;               //用来更新apk的，跟ssdb没关系，放在这里只是为了统一,15被谁用了
     public static final String[] event = new String[]{"event", "DirCtl", "param",
             "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt",
             "NetworkDelay", "Location", "Brow", "CurrentTime", "DisableAudio",

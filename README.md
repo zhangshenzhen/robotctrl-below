@@ -132,3 +132,7 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
     1.循环播放图片
 14. RobotCtrl_master_v1.26.25.0912_alpha
     1.添加同时更新两个apk
+
+15. RobotCtrl_master_v1.26.26.0912_alpha
+
+       1. 修复以前版本中存在的bug(开机自动更新apk，报空指针的错)

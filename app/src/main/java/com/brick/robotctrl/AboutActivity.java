@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Button;
 
@@ -22,11 +23,13 @@ import java.util.List;
  * Created by li on 2016/8/8.
  */
 public class AboutActivity extends BaseActivity {
-    private final String TAG = "AboutActivity";
+    public final String TAG = "AboutActivity";
 
 
-    private static Handler contextHandler = null;
+    public static Handler contextHandler = null;
     private Button uploadButton;
+//    public Intent intentM = new Intent(Intent.ACTION_VIEW);
+//    public Intent intentA = new Intent(Intent.ACTION_VIEW);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,7 @@ public class AboutActivity extends BaseActivity {
         public String password = "seu23456";
         public String MLOCAL_PATH = null;
         public String ALOCAL_PATH = null;
+
 
 
         final String REMOTE_PATH = "\\东南\\更新\\";
@@ -148,22 +152,23 @@ public class AboutActivity extends BaseActivity {
                         if(fflag[0]||fflag[1]) {
                             ftp.closeConnect();
                             if (fflag[0]) {
-                                Log.e(TAG, "download ok...time:"
-                                        + " and size:");
                                 String strM = ALOCAL_PATH + "/" + AfileNameDown[1];
                                 Log.d(TAG, "str: " + strM);
-                                Intent intentM = new Intent(Intent.ACTION_VIEW);
-                                intentM.setDataAndType(Uri.fromFile(new File(strM)), "application/vnd.android.package-archive");
-                                startActivity(intentM);
+
+                                Message AUpdateRob = new Message();
+                                AUpdateRob.what = SSDBTask.key_ApkUpdate;
+                                AUpdateRob.obj =strM;
+                                contextHandler.sendMessage(AUpdateRob);
+
                             }
                             if (fflag[1]) {
-                                Log.e(TAG, "download ok...time:"
-                                        + " and size:");
                                 String strA = ALOCAL_PATH + "/" + AfileNameDown[0];
                                 Log.d(TAG, "str: " + strA);
-                                Intent intentA = new Intent(Intent.ACTION_VIEW);
-                                intentA.setDataAndType(Uri.fromFile(new File(strA)), "application/vnd.android.package-archive");
-                                startActivity(intentA);
+
+                                Message AUpdatePcm = new Message();
+                                AUpdatePcm.what = SSDBTask.key_ApkUpdate;
+                                AUpdatePcm.obj =strA;
+                                contextHandler.sendMessage(AUpdatePcm);
                             }
                         }
                         else {
