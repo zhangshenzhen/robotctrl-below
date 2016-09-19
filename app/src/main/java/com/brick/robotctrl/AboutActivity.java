@@ -73,10 +73,11 @@ public class AboutActivity extends BaseActivity {
         String fileNameDownLoad;
 
 
-        boolean fflag = false;
+        boolean fflag [] = {false,false};
         List<FTPFile> remoteFile;
         List<File> localFile;
-        String fileNameDown;
+        String MfileNameDown;
+        String AfileNameDown [] =new String[2];
         boolean isAPK = false;
 
         @Override
@@ -107,18 +108,18 @@ public class AboutActivity extends BaseActivity {
                         Log.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
                         if (remoteFile.get(i).getName().endsWith(".mp4") || remoteFile.get(i).getName().endsWith(".3gp") || remoteFile.get(i).getName().endsWith(".mp3") || remoteFile.get(i).getName().endsWith(".jpg") ) {
                             isAPK = false;
-                            fileNameDown = remoteFile.get(i).getName();
+                            MfileNameDown = remoteFile.get(i).getName();
                             Result result = null;
                             try {
                                 // 下载
-                                fflag = ftp.download(REMOTE_PATH, fileNameDown, MLOCAL_PATH);
+                                fflag[0] = ftp.download(REMOTE_PATH, MfileNameDown, MLOCAL_PATH);
 
                             } catch (Exception e) {
                                 System.out.println(e.toString());
                                 System.out.println(e.getMessage());
                                 e.printStackTrace();
                             }
-                            if (fflag) {
+                            if (fflag[0]) {
                                 Log.e(TAG, "download ok...time:"
                                         + " and size:" );
                             } else {
@@ -129,33 +130,43 @@ public class AboutActivity extends BaseActivity {
                     checkFile(mfiles, remoteFile);                              //删除本地Movies多余文件
                     contextHandler.sendEmptyMessage(SSDBTask.Key_VideoPlayList);
                     checkFile(afiles, remoteFile);                              //删除本地APK多余文件
-                    for (int i = 0; i < remoteFile.size(); i++) {
+                    for (int i = 0,j=0,k=0; i < remoteFile.size(); i++) {
                         if (remoteFile.get(i).getName().endsWith(".apk")) {
                             isAPK = true;
-                            fileNameDown = remoteFile.get(i).getName();
-                            break;
+                            AfileNameDown[j] = remoteFile.get(i).getName();
+                            try {                                               //Modified by jiangly  ,同时更新两个apk
+                                // 下载
+                                fflag[k++] = ftp.download(REMOTE_PATH, AfileNameDown[j++], ALOCAL_PATH);
+                            } catch (IOException e) {
+                                System.out.println(e.toString());
+                                System.out.println(e.getMessage());
+                                e.printStackTrace();
+                            }
                         }
                     }
                     if(isAPK) {
-                        Result result = null;
-                        try {
-                            // 下载
-                            fflag = ftp.download(REMOTE_PATH, fileNameDown, ALOCAL_PATH);
-                        } catch (IOException e) {
-                            System.out.println(e.toString());
-                            System.out.println(e.getMessage());
-                            e.printStackTrace();
-                        }
-                        if (fflag) {
-                            Log.e(TAG, "download ok...time:"
-                                    + " and size:" );
+                        if(fflag[0]||fflag[1]) {
                             ftp.closeConnect();
-                            String str = ALOCAL_PATH + "/" + fileNameDown;
-                            Log.d(TAG, "str: " + str);
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.fromFile(new File(str)), "application/vnd.android.package-archive");
-                            startActivity(intent);
-                        } else {
+                            if (fflag[0]) {
+                                Log.e(TAG, "download ok...time:"
+                                        + " and size:");
+                                String strM = ALOCAL_PATH + "/" + AfileNameDown[1];
+                                Log.d(TAG, "str: " + strM);
+                                Intent intentM = new Intent(Intent.ACTION_VIEW);
+                                intentM.setDataAndType(Uri.fromFile(new File(strM)), "application/vnd.android.package-archive");
+                                startActivity(intentM);
+                            }
+                            if (fflag[1]) {
+                                Log.e(TAG, "download ok...time:"
+                                        + " and size:");
+                                String strA = ALOCAL_PATH + "/" + AfileNameDown[0];
+                                Log.d(TAG, "str: " + strA);
+                                Intent intentA = new Intent(Intent.ACTION_VIEW);
+                                intentA.setDataAndType(Uri.fromFile(new File(strA)), "application/vnd.android.package-archive");
+                                startActivity(intentA);
+                            }
+                        }
+                        else {
                             Log.e(TAG, "APK download fail");
                             ftp.closeConnect();
                             /*ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);//获得运行activity
@@ -173,9 +184,9 @@ public class AboutActivity extends BaseActivity {
                         /*ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);//获得运行activity
                         ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
                         if ( !an.getClassName().equals("com.brick.robotctrl.MainActivity") ){*/
-                            Intent intent = new Intent();
-                            intent.setClass(AboutActivity.this, MainActivity.class);
-                            startActivity(intent);//}
+                        Intent intent = new Intent();
+                        intent.setClass(AboutActivity.this, MainActivity.class);
+                        startActivity(intent);//}
                     }
                 }else{
                     ftp.closeConnect();
@@ -183,10 +194,10 @@ public class AboutActivity extends BaseActivity {
                    /* ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);//获得运行activity
                     ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
                     if ( !an.getClassName().equals("com.brick.robotctrl.MainActivity") ){*/
-                        Intent intent = new Intent();
-                        intent.setClass(AboutActivity.this, MainActivity.class);
-                        startActivity(intent);
-             //   }
+                    Intent intent = new Intent();
+                    intent.setClass(AboutActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    //   }
                 }
             }catch(Exception e){
                 e.printStackTrace();

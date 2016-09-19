@@ -130,3 +130,5 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 13. RobotCtrl_master_v1.25.25.0912_alpha
 
     1.循环播放图片
+14. RobotCtrl_master_v1.26.25.0912_alpha
+    1.添加同时更新两个apk
