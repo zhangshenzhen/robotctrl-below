@@ -57,6 +57,8 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 - commit_id代表发布时commit的id号
 
 **注意首先填写功能添加列表和BUG修复列表，最后相应更新版本号。**
+**NUM4为发布日期，不要存在太多的版本号，只有在发布，或者有必要更新版本号时才产生新的版本号**
+**新产生的apk版本要备份到ftp中**
 
 ## 版本更新
 
@@ -119,20 +121,24 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 
 11. RobotCtrl_master_v1.24.23.0904_alpha
 
-    1.修改灵云智能语音部分
-    2.添加FTP断点续传功能
+    1. 修改灵云智能语音部分
+    2. 添加FTP断点续传功能
 
 12. RobotCtrl_master_v1.24.25.0905_alpha
 
-    1.智能语音提问按钮5s逻辑
-    2.退出界面打断TTS
+    1. 智能语音提问按钮5s逻辑
+    2. 退出界面打断TTS
 
 13. RobotCtrl_master_v1.25.25.0912_alpha
 
-    1.循环播放图片
+    1. 循环播放图片
+
 14. RobotCtrl_master_v1.26.25.0912_alpha
-    1.添加同时更新两个apk
 
-15. RobotCtrl_master_v1.26.26.0912_alpha
+    1. 添加同时更新两个apk
 
-       1. 修复以前版本中存在的bug(开机自动更新apk，报空指针的错)
+15. RobotCtrl_master_v1.27.27.0921_alpha
+
+    1. 修复以前版本中存在的bug(开机自动更新apk，报空指针的错)
+    2. 修改安装APK的顺序，解决pcm APK安装问题
+    3. ftp中增加以robotName为命名的目录，并以此为目录作为更新，如果该目录不存在，则更新/东南/更新目录
