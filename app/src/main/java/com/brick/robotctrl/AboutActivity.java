@@ -103,6 +103,7 @@ public class AboutActivity extends BaseActivity {
                 File[] mfiles = mfile.listFiles();
                 File afile = new File(ALOCAL_PATH);
                 File[] afiles = afile.listFiles();
+                Log.d(TAG, "run: " + REMOTE_PATH);
                 try {
                     remoteFile = ftp.listFiles(REMOTE_PATH);
                 }catch (Exception e){
@@ -111,6 +112,11 @@ public class AboutActivity extends BaseActivity {
                     remoteFile = ftp.listFiles(REMOTE_PATH);
                 }
 
+                if (remoteFile.size() <=0 ) {
+                    REMOTE_PATH = "\\东南\\更新\\";             // 目录不存在不会报异常，这里采用判断文件个数来决定目录位置
+                    remoteFile = ftp.listFiles(REMOTE_PATH);
+                }
+                Log.d(TAG, "run: " + REMOTE_PATH);
                 if (remoteFile.size() > 0) {
                     for (int i = 0; i < remoteFile.size(); i++) {
                         Log.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
@@ -256,7 +262,7 @@ public class AboutActivity extends BaseActivity {
 
     public static void startAction(Context context, String robotName) {
         Intent aboutIntent = new Intent();
-        aboutIntent.setClass(context, ExpressionActivity.class);
+        aboutIntent.setClass(context, AboutActivity.class);
         aboutIntent.putExtra("robotName", robotName);
         context.startActivity(aboutIntent);
     }
