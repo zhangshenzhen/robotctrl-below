@@ -71,16 +71,12 @@ public class AboutActivity extends BaseActivity {
         public String MLOCAL_PATH = null;
         public String ALOCAL_PATH = null;
 
-
-
         final String REMOTE_PATH = "\\东南\\更新\\";
         String fileNameDownLoad;
-
 
         boolean fflag [] = {false,false};
         List<FTPFile> remoteFile;
         List<File> localFile;
-        String MfileNameDown;
         String AfileNameDown [] =new String[2];
         boolean isAPK = false;
 
@@ -112,11 +108,9 @@ public class AboutActivity extends BaseActivity {
                         Log.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
                         if (remoteFile.get(i).getName().endsWith(".mp4") || remoteFile.get(i).getName().endsWith(".3gp") || remoteFile.get(i).getName().endsWith(".mp3") || remoteFile.get(i).getName().endsWith(".jpg") ) {
                             isAPK = false;
-                            MfileNameDown = remoteFile.get(i).getName();
-                            Result result = null;
                             try {
                                 // 下载
-                                fflag[0] = ftp.download(REMOTE_PATH, MfileNameDown, MLOCAL_PATH);
+                                fflag[0] = ftp.download(REMOTE_PATH, remoteFile.get(i).getName(), MLOCAL_PATH);
 
                             } catch (Exception e) {
                                 System.out.println(e.toString());
@@ -131,9 +125,9 @@ public class AboutActivity extends BaseActivity {
                             }
                         }
                     }
-                    checkFile(mfiles, remoteFile);                              //删除本地Movies多余文件
-                    contextHandler.sendEmptyMessage(SSDBTask.Key_VideoPlayList);
-                    checkFile(afiles, remoteFile);                              //删除本地APK多余文件
+                    checkFile(mfiles, remoteFile);                                      //删除本地Movies多余文件
+                    contextHandler.sendEmptyMessage(SSDBTask.Key_VideoPlayList);       // 重新上传视频列表
+                    checkFile(afiles, remoteFile);                                      //删除本地APK多余文件
                     for (int i = 0,j=0,k=0; i < remoteFile.size(); i++) {
                         if (remoteFile.get(i).getName().endsWith(".apk")) {
                             isAPK = true;
