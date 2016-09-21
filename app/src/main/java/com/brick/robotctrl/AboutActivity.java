@@ -151,7 +151,7 @@ public class AboutActivity extends BaseActivity {
                     if(isAPK) {
                         if(fflag[0]||fflag[1]) {
                             ftp.closeConnect();
-                            if (fflag[0]) {
+                            if (fflag[1]) {
                                 String strM = ALOCAL_PATH + "/" + AfileNameDown[1];
                                 Log.d(TAG, "str: " + strM);
 
@@ -161,7 +161,7 @@ public class AboutActivity extends BaseActivity {
                                 contextHandler.sendMessage(AUpdateRob);
 
                             }
-                            if (fflag[1]) {
+                            if (fflag[0]) {
                                 String strA = ALOCAL_PATH + "/" + AfileNameDown[0];
                                 Log.d(TAG, "str: " + strA);
 
