@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 clearTimerCount();
-                startActivity(new Intent().setClass(MainActivity.this, AboutActivity.class));
+                AboutActivity.startAction(MainActivity.this, ssdbTask.robotName);
             }
         });
 

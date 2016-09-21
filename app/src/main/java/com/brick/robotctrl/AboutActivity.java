@@ -1,5 +1,6 @@
 package com.brick.robotctrl;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,9 +25,9 @@ import java.util.List;
  */
 public class AboutActivity extends BaseActivity {
     public final String TAG = "AboutActivity";
-
-
     public static Handler contextHandler = null;
+    private String robotName = null;
+
     private Button uploadButton;
 //    public Intent intentM = new Intent(Intent.ACTION_VIEW);
 //    public Intent intentA = new Intent(Intent.ACTION_VIEW);
@@ -35,7 +36,8 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-
+        Intent intent = getIntent();
+        robotName = intent.getStringExtra("robotName");
 
      /*   uploadButton = (Button)findViewById(R.id.uploadButton);
         uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -71,8 +73,7 @@ public class AboutActivity extends BaseActivity {
         public String MLOCAL_PATH = null;
         public String ALOCAL_PATH = null;
 
-        final String REMOTE_PATH = "\\东南\\更新\\";
-        String fileNameDownLoad;
+        private String REMOTE_PATH = "\\update\\" + robotName;                     //"\\东南\\更新\\";
 
         boolean fflag [] = {false,false};
         List<FTPFile> remoteFile;
@@ -102,7 +103,14 @@ public class AboutActivity extends BaseActivity {
                 File[] mfiles = mfile.listFiles();
                 File afile = new File(ALOCAL_PATH);
                 File[] afiles = afile.listFiles();
-                remoteFile = ftp.listFiles(REMOTE_PATH);
+                try {
+                    remoteFile = ftp.listFiles(REMOTE_PATH);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    REMOTE_PATH = "\\东南\\更新\\";             // 和之前的目录兼容
+                    remoteFile = ftp.listFiles(REMOTE_PATH);
+                }
+
                 if (remoteFile.size() > 0) {
                     for (int i = 0; i < remoteFile.size(); i++) {
                         Log.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
@@ -244,5 +252,12 @@ public class AboutActivity extends BaseActivity {
     protected void onDestroy() {
         Log.i(TAG, "onDestroy");
         super.onDestroy();
+    }
+
+    public static void startAction(Context context, String robotName) {
+        Intent aboutIntent = new Intent();
+        aboutIntent.setClass(context, ExpressionActivity.class);
+        aboutIntent.putExtra("robotName", robotName);
+        context.startActivity(aboutIntent);
     }
 }
