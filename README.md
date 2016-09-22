@@ -143,4 +143,4 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
     2. 修改安装APK的顺序，解决pcm APK安装问题
     3. ftp中增加以robotName为命名的目录，并以此为目录作为更新，如果该目录不存在，则更新/东南/更新目录
     4. 连接SSDB连接失败给出提示，并在5s后自动重连，无限次重复直到连接上(修复SSDB连接问题)
-    5. 更改ftp目录为：1.robotName; 2. common
+    5. 更改ftp目录为：1.robotName; 2. common； 修改SSDB默认地址：192.168.0.192
