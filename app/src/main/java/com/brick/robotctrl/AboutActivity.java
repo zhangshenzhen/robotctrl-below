@@ -68,12 +68,12 @@ public class AboutActivity extends BaseActivity {
     public class  MyThread extends Thread{
         public FTPAsk ftp = null ;
         public String hostName = "218.2.191.50";
-        public String userName = "user_seu";
-        public String password = "seu23456";
+        public String userName = "test1";
+        public String password = "test1";
         public String MLOCAL_PATH = null;
         public String ALOCAL_PATH = null;
 
-        private String REMOTE_PATH = "\\update\\" + robotName;                     //"\\东南\\更新\\";
+        private String REMOTE_PATH = "\\" + robotName;                     //"\\东南\\更新\\";
 
         boolean fflag [] = {false,false};
         List<FTPFile> remoteFile;
@@ -108,12 +108,12 @@ public class AboutActivity extends BaseActivity {
                     remoteFile = ftp.listFiles(REMOTE_PATH);
                 }catch (Exception e){
                     e.printStackTrace();
-                    REMOTE_PATH = "\\东南\\更新\\";             // 和之前的目录兼容
+                    REMOTE_PATH = "\\common\\";             // 和之前的目录兼容
                     remoteFile = ftp.listFiles(REMOTE_PATH);
                 }
 
                 if (remoteFile.size() <=0 ) {
-                    REMOTE_PATH = "\\东南\\更新\\";             // 目录不存在不会报异常，这里采用判断文件个数来决定目录位置
+                    REMOTE_PATH = "\\common\\";             // 目录不存在不会报异常，这里采用判断文件个数来决定目录位置
                     remoteFile = ftp.listFiles(REMOTE_PATH);
                 }
                 Log.d(TAG, "run: " + REMOTE_PATH);
