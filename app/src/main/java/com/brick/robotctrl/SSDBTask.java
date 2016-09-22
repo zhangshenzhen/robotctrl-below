@@ -123,7 +123,7 @@ public class SSDBTask extends TimerTask {
                     Log.d(TAG, "HttpAsk: " + str);
                     String[] strArray = str.split(" ");
 //					for(int i = 0; i < strArray.length; i++){
-//						Log.d(TAG, "strArray: " +strArray[i]);;
+//						Log.d(TAG, "strArray: " +strArray[i]);
 //					}
                     String ans = HttpAsk.posturl("http://60.171.108.151:8076/rb/t_getproperty.aspx?action=queryall&"+strArray[1]+"&"+strArray[2]);
                     String[] strArray1 = ans.split(" ");
@@ -213,10 +213,11 @@ public class SSDBTask extends TimerTask {
     public void disConnect() {
         if (ssdbClient != null) {
             SSDBQuery(ACTION_DISCONNECT);
+            stop = true;
         }
     }
 
-    public boolean stop = false;
+    public boolean stop = true;
 
 
     public static final int Key_Event = 0;
@@ -299,10 +300,10 @@ public class SSDBTask extends TimerTask {
                         stop = false;
                     } catch (Exception e) {
                         Log.d(TAG, "run: ACTION_CONNECT_FAILED");
-                        Message message = new Message();
-                        message.what = ACTION_CONNECT_FAILED;
+//                        Message message = new Message();
+//                        message.what = ACTION_CONNECT_FAILED;
 //                        message.obj = new String(, "GBK");
-                        contextHandler.sendMessage(message);
+//                        contextHandler.sendMessage(message);
                         stop = true;
                         e.printStackTrace();
                     }
@@ -334,6 +335,8 @@ public class SSDBTask extends TimerTask {
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
+                            iCount = 5;                     // 快速重新获取
+                            stop = true;
 //                            SSDBQuery(ACTION_CONNECT);    // 异常处理不应该是重新连接
                         }
                     }

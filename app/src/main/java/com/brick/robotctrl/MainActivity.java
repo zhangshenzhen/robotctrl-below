@@ -174,15 +174,37 @@ public class MainActivity extends BaseActivity {
         Log.d(TAG, "onCreate: 456");
     }
 
+    private void threadToUiToast(final String message, final int toastLength) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(getApplicationContext(), message, toastLength).show();
+            }
+        });
+    }
+
     private int countForPlayer = 0;//播放计数器
+    private int countForReconnectSSDB = 0;
     private int countForAlive = 0;//复活计数器
     private String strTimeFormat = null;
     private String disableAudio = "No";
     TimerTask queryTask = new TimerTask() {
         @Override
         public void run() {
-            if ( !ssdbTask.stop )                   // 发起读请求
+//            Log.d(TAG, "run: stop: " + ssdbTask.stop);
+            if ( !ssdbTask.stop ) {                  // 发起读请求
                 ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!
+            } else {
+                countForReconnectSSDB++;
+                if (countForReconnectSSDB % (1000/200) == 0) {
+                    Log.d(TAG, "run: "+ countForReconnectSSDB);
+                    threadToUiToast("ssdb reconnect after " + (5-countForReconnectSSDB/(1000/200)) + "s", Toast.LENGTH_SHORT);
+                    if (countForReconnectSSDB == 5*1000/200) {
+                        threadToUiToast("ssdb reconnecting...", Toast.LENGTH_SHORT);
+                        ssdbTask.connect();
+                        countForReconnectSSDB = 0;
+                    }
+                }
+            }
 
             if ( countForAlive++ > 5*1000/200 ) {//显示时间
                 currentTime = Calendar.getInstance();
@@ -543,9 +565,10 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case SSDBTask.ACTION_CONNECT_FAILED:
-                    Log.d(TAG, "handleMessage: connect ssdb failure!");
-                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivityForResult(intent, 0);
+//                    Log.d(TAG, "handleMessage: connect ssdb failure!");
+//                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+//                    startActivityForResult(intent, 0);
+                    Toast.makeText(getApplicationContext(), "ssdb server connect error, reconnect after 10s",Toast.LENGTH_SHORT).show();
                     break;
                 case SSDBTask.key_ApkUpdate :
                     Intent intentA = new Intent(Intent.ACTION_VIEW);
@@ -655,7 +678,7 @@ public class MainActivity extends BaseActivity {
                 try {
                     while( true ) {
                         batteryVoltVal = serialCtrl.getBattery();
-                        Log.d("abc", "run: batteryVoltVal = " + batteryVoltVal);
+//                        Log.d("abc", "run: batteryVoltVal = " + batteryVoltVal);
                         if ( batteryVoltVal != 0) {
                             runOnUiThread(new Runnable() {
                                 public void run() {
@@ -680,15 +703,12 @@ public class MainActivity extends BaseActivity {
             //通过getSystemService()方法得到connectionManager这个系统服务类，专门用于管理网络连接
             ConnectivityManager connectionManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectionManager.getActiveNetworkInfo();
-            if(networkInfo != null && networkInfo.isAvailable()){
-                Toast.makeText(context, "network is available",Toast.LENGTH_SHORT).show();
+            if((networkInfo != null && networkInfo.isAvailable()) && ssdbTask.stop) {
+                Toast.makeText(context, "network is available, ssdb server haven't started, starting connect ssdb server",Toast.LENGTH_SHORT).show();
                 handler.sendEmptyMessage(ssdbConn);
             }else{
                 Toast.makeText(context, "network is unavailable", Toast.LENGTH_SHORT).show();
-                SettingsActivity.activityStart(MainActivity.this);
             }
         }
     }
-
-
 }
