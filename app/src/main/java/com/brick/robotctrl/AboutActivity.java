@@ -61,7 +61,7 @@ public class AboutActivity extends BaseActivity {
             }
         });*/
 
-        Thread t = new MyThread();
+        Thread t = new MyThread(robotName);
         t.start();
     }
 
@@ -72,8 +72,7 @@ public class AboutActivity extends BaseActivity {
         public String password = "test1";
         public String MLOCAL_PATH = null;
         public String ALOCAL_PATH = null;
-
-        private String REMOTE_PATH = "\\" + robotName;                     //"\\东南\\更新\\";
+        private String robotName = null;
 
         boolean fflag [] = {false,false};
         List<FTPFile> remoteFile;
@@ -81,10 +80,15 @@ public class AboutActivity extends BaseActivity {
         String AfileNameDown [] =new String[2];
         boolean isAPK = false;
 
+        public MyThread(String robotName) {
+            this.robotName = robotName;
+        }
+
         @Override
         public void run() {
             remoteFile = new ArrayList<FTPFile>();
             localFile = new ArrayList<File>();
+            String REMOTE_PATH = "\\" + robotName;                     //"\\东南\\更新\\";
 
             ftp = new FTPAsk(hostName, userName, password);
             MLOCAL_PATH = Environment.getExternalStorageDirectory().getPath()+"/Movies";

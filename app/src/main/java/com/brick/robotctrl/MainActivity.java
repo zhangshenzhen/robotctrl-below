@@ -168,7 +168,7 @@ public class MainActivity extends BaseActivity {
         // timer.cancel(); //退出计时器
 
         AboutActivity about = new AboutActivity();
-        AboutActivity.MyThread tt = about.new MyThread();
+        AboutActivity.MyThread tt = about.new MyThread(ssdbTask.robotName);
 
         tt.start();
         Log.d(TAG, "onCreate: 456");
