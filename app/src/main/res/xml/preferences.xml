@@ -7,7 +7,7 @@
         android:summary="服务器地址、端口"
         android:title="服务器">
         <EditTextPreference
-            android:defaultValue="60.171.108.151"
+            android:defaultValue="60.171.108.192"
             android:inputType="textAutoCorrect"
             android:key="@string/serverIp"
             android:singleLine="true"
