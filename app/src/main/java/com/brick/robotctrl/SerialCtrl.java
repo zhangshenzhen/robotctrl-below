@@ -96,11 +96,11 @@ public class SerialCtrl {
                     if(loop==7) {
                         batteryNum = GetMid(RmShake, 7);                  //更新电池值
                         loop=0;
-                        Log.d("getbattery", "getbattery: " + batteryNum);
+                        Log.d("onDataReceived", "getbattery: " + batteryNum);
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
                 Log.d(TAG, "onDataReceived: ");
             }
         }
