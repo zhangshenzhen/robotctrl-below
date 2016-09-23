@@ -74,7 +74,7 @@ public class AboutActivity extends BaseActivity {
         public String ALOCAL_PATH = null;
         private String robotName = null;
 
-        boolean fflag [] = {false,false};
+        boolean downloadSuccessFlag = false;
         List<FTPFile> remoteFile;
         List<File> localFile;
         String AfileNameDown [] =new String[2];
@@ -128,31 +128,26 @@ public class AboutActivity extends BaseActivity {
                             isAPK = false;
                             try {
                                 // 下载
-                                fflag[0] = ftp.download(REMOTE_PATH, remoteFile.get(i).getName(), MLOCAL_PATH);
-
+                                downloadSuccessFlag = ftp.download(REMOTE_PATH, remoteFile.get(i).getName(), MLOCAL_PATH);
+                                if ( downloadSuccessFlag ) {
+                                    Log.d(TAG, "Movies " + remoteFile.get(i).getName() + " download success");
+                                } else {
+                                    Log.d(TAG, "Movies " + remoteFile.get(i).getName() + " no need to download!!");
+                                }
                             } catch (Exception e) {
                                 System.out.println(e.toString());
                                 System.out.println(e.getMessage());
                                 e.printStackTrace();
                             }
-                            if (fflag[0]) {
-                                Log.e(TAG, "download ok...time:"
-                                        + " and size:" );
-                            } else {
-                                Log.e(TAG, "Movies download fail");
-                            }
-                        }
-                    }
-                    checkFile(mfiles, remoteFile);                                      //删除本地Movies多余文件
-                    contextHandler.sendEmptyMessage(SSDBTask.Key_VideoPlayList);       // 重新上传视频列表
-                    checkFile(afiles, remoteFile);                                      //删除本地APK多余文件
-                    for (int i = 0,j=0,k=0; i < remoteFile.size(); i++) {
-                        if (remoteFile.get(i).getName().endsWith(".apk")) {
-                            isAPK = true;
-                            AfileNameDown[j] = remoteFile.get(i).getName();
+                        } else if (remoteFile.get(i).getName().endsWith(".apk")) {
                             try {                                               //Modified by jiangly  ,同时更新两个apk
                                 // 下载
-                                fflag[k++] = ftp.download(REMOTE_PATH, AfileNameDown[j++], ALOCAL_PATH);
+                                downloadSuccessFlag = ftp.download(REMOTE_PATH, remoteFile.get(i).getName(), ALOCAL_PATH);
+                                if ( downloadSuccessFlag ) {
+                                    Log.d(TAG, "Apk " + remoteFile.get(i).getName() + " download success");
+                                } else {
+                                    Log.d(TAG, "Apk " + remoteFile.get(i).getName() + " no need to download!!");
+                                }
                             } catch (IOException e) {
                                 System.out.println(e.toString());
                                 System.out.println(e.getMessage());
@@ -160,62 +155,19 @@ public class AboutActivity extends BaseActivity {
                             }
                         }
                     }
-                    if(isAPK) {
-                        if(fflag[0]||fflag[1]) {
-                            ftp.closeConnect();
-                            if (fflag[1]) {
-                                String strM = ALOCAL_PATH + "/" + AfileNameDown[1];
-                                Log.d(TAG, "str: " + strM);
-
-                                Message AUpdateRob = new Message();
-                                AUpdateRob.what = SSDBTask.key_ApkUpdate;
-                                AUpdateRob.obj =strM;
-                                contextHandler.sendMessage(AUpdateRob);
-
-                            }
-                            if (fflag[0]) {
-                                String strA = ALOCAL_PATH + "/" + AfileNameDown[0];
-                                Log.d(TAG, "str: " + strA);
-
-                                Message AUpdatePcm = new Message();
-                                AUpdatePcm.what = SSDBTask.key_ApkUpdate;
-                                AUpdatePcm.obj =strA;
-                                contextHandler.sendMessage(AUpdatePcm);
-                            }
-                        }
-                        else {
-                            Log.e(TAG, "APK download fail");
-                            ftp.closeConnect();
-                            /*ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);//获得运行activity
-                            ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                           // Log.d(TAG, "run: "+an.getClassName());
-                            if ( !an.getClassName().equals("com.brick.robotctrl.MainActivity") ){*/
-                            Intent intent = new Intent();
-                            intent.setClass(AboutActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            //}
-                        }
-                    }else{
-                        ftp.closeConnect();
-                        Log.d(TAG, "multvideo:download over ");
-                        /*ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);//获得运行activity
-                        ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                        if ( !an.getClassName().equals("com.brick.robotctrl.MainActivity") ){*/
-                        Intent intent = new Intent();
-                        intent.setClass(AboutActivity.this, MainActivity.class);
-                        startActivity(intent);//}
-                    }
+                    checkFile(mfiles, remoteFile);                                      //删除本地Movies多余文件
+                    contextHandler.sendEmptyMessage(SSDBTask.Key_VideoPlayList);       // 重新上传视频列表
+                    checkFile(afiles, remoteFile);                                      //删除本地APK多余文件
                 }else{
-                    ftp.closeConnect();
                     Log.d(TAG, "暂无更新");
-                   /* ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);//获得运行activity
-                    ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                    if ( !an.getClassName().equals("com.brick.robotctrl.MainActivity") ){*/
-                    Intent intent = new Intent();
-                    intent.setClass(AboutActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    //   }
                 }
+                ftp.closeConnect();
+                contextHandler.sendEmptyMessage(SSDBTask.key_ApkUpdate);
+
+                // replace finish()?
+                Intent intent = new Intent();
+                intent.setClass(AboutActivity.this, MainActivity.class);
+                startActivity(intent);
             }catch(Exception e){
                 e.printStackTrace();
             }

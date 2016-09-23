@@ -7,11 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -29,6 +33,7 @@ import com.kjn.videoview.ADVideo;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -571,14 +576,37 @@ public class MainActivity extends BaseActivity {
                     Toast.makeText(getApplicationContext(), "ssdb server connect error, reconnect after 10s",Toast.LENGTH_SHORT).show();
                     break;
                 case SSDBTask.key_ApkUpdate :
-                    Intent intentA = new Intent(Intent.ACTION_VIEW);
-                    intentA.setDataAndType(Uri.fromFile(new File((String) msg.obj)), "application/vnd.android.package-archive");
-                    startActivity(intentA);
+                    final String archiveFilePath = getInstallApkFullPath();
+                    if ( !(archiveFilePath == null) ) {                 // 判断字符串是否为空要用==， 不要用equals方法
+                        Log.d(TAG, "run: start to install apk: " + archiveFilePath);
+                        Intent intentA = new Intent(Intent.ACTION_VIEW);
+                        intentA.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intentA.setDataAndType(Uri.fromFile(new File((String) archiveFilePath)), "application/vnd.android.package-archive");
+                        startActivity(intentA);
+//                        android.os.Process.killProcess(android.os.Process.myPid());
+                    } else {
+                        Log.d(TAG, "no apk need to install");
+                    }
                 default:
                     break;
             }
         }
     };
+
+    private String getInstallApkFullPath() {
+        String apkDirPath = Environment.getExternalStorageDirectory().getPath()+"/Download";
+        File apkFile = new File(apkDirPath);
+        File[] apkFiles = apkFile.listFiles();
+
+        for (int i = 0; i < apkFiles.length; i++) {
+            if (needUpdate(apkFiles[i].getAbsolutePath())) {
+                Log.d(TAG, "run: start to install apk: " + apkFiles[i].getAbsolutePath());
+                return apkFiles[i].getAbsolutePath();
+            }
+        }
+        return null;
+    }
+
 
     // relative menu
     Menu menu = null;
@@ -671,8 +699,8 @@ public class MainActivity extends BaseActivity {
     //----------------------------------------------------电池电压刷新显示线程
     private int batteryVoltVal = 0;
     public class DispQueueThread extends Thread{
-        @Override
-        public void run() {
+            @Override
+            public void run() {
             super.run();
             while(!isInterrupted()) {
                 try {
@@ -710,5 +738,66 @@ public class MainActivity extends BaseActivity {
                 Toast.makeText(context, "network is unavailable", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private boolean needUpdate(String archiveFilePath) {
+        PackageManager pm = getPackageManager();
+        PackageInfo info = pm.getPackageArchiveInfo( archiveFilePath, PackageManager.GET_ACTIVITIES);
+        if (info != null) {
+            try {
+                ApplicationInfo apkInfo = info.applicationInfo;
+//                String appName = pm.getApplicationLabel(apkInfo).toString();
+                String packageName = apkInfo.packageName;   //得到安装包名称
+                String versionName = info.versionName;            //得到版本信息
+                int versionCode = info.versionCode;            //得到版本信息
+
+//              Drawable icon = pm.getApplicationIcon(appInfo);//得到图标信息
+//              appName:RobotCtrl packagename: com.brick.robotctrl version: v1.27.31
+                Log.d(TAG, "apkInfo:packagename: " + packageName + " versionName: " + versionName + " versionCode: " + versionCode);
+
+                String appVersionName = getVersion(packageName);
+                Log.d(TAG, "apkInstalled: appVersionName: " + appVersionName);
+
+
+                if ( versionName.equals(null) ) {
+                    threadToUiToast("尚未安装播放器，接下来安装", Toast.LENGTH_SHORT);
+                    return true;
+                } else if (!versionName.equals(appVersionName)) {
+                    threadToUiToast("播放器需要更新，接下来更新", Toast.LENGTH_SHORT);
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 获取版本号
+     * @return 当前应用的版本号
+     */
+    private String getVersion(String packageName) {
+//        try {
+//            PackageInfo info = packagemanager.getPackageInfo(this.getPackageName(), 0);
+//            String version = info.versionName;
+//            return version;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+        PackageManager pManager = MainActivity.this.getPackageManager();
+        //获取手机内所有应用
+        List<PackageInfo> paklist = pManager.getInstalledPackages(0);
+        for (int i = 0; i < paklist.size(); i++) {
+            PackageInfo appInfo = (PackageInfo) paklist.get(i);
+            if ( appInfo.packageName.equals(packageName) ) {
+                Log.d(TAG, "getVersion: " + packageName + " version: " + appInfo.versionName);
+                return appInfo.versionName;
+            }
+        }
+        return null;
     }
 }
