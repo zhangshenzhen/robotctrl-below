@@ -133,7 +133,7 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
 
     1. 循环播放图片
 
-14. RobotCtrl_master_v1.26.25.0912_alpha
+14. RobotCtrl_master_v1.26.25.0913_alpha
 
     1. 添加同时更新两个apk
 
@@ -145,3 +145,9 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
     4. 连接SSDB连接失败给出提示，并在5s后自动重连，无限次重复直到连接上(修复SSDB连接问题)
     5. 更改ftp目录为：1.robotName; 2. common； 修改SSDB默认地址：60.171.108.192
     6. 修复开机启动时更新无法获取robotName问题
+
+16. RobotCtrl_master_v1.27.33.0923_alpha
+
+    1. 修复安装完成后不会显示完成打开问题
+    2. 优化ftp下载问题
+    3. 优化apk安装问题
