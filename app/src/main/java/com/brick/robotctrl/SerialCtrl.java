@@ -96,7 +96,7 @@ public class SerialCtrl {
                     if(loop==7) {
                         batteryNum = GetMid(RmShake, 7);                  //更新电池值
                         loop=0;
-                        Log.d("onDataReceived", "getbattery: " + batteryNum);
+//                        Log.d("onDataReceived", "getbattery: " + batteryNum);
                     }
                 }
             } catch (Exception e) {
