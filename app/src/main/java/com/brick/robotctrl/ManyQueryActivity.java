@@ -45,7 +45,7 @@ public class ManyQueryActivity extends BaseActivity {
             public void onClick(View view) {
                 humanButton.setClickable(false);
                 clearTimerCount();
-                ExpressionActivity.startAction(ManyQueryActivity.this, "12");
+                ExpressionActivity.startAction(ManyQueryActivity.this, 0);
             }
         });
 

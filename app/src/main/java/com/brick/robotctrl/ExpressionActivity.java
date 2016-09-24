@@ -17,7 +17,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 	private static final String TAG = "ExpressionActivity";
 
 	private static GifView gifView;
-	private String index = null;
+	private int index = 0;
 //	UserTimer userTimer = null;
 	private static int currentIndex = -1;
 	private GestureDetector mGestureDetector;
@@ -79,7 +79,8 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		Log.e("TAG" + "  getDefaultDisplay", "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);
 
 		Intent intent = getIntent();
-		index = intent.getStringExtra("index");
+//		index = intent.getStringExtra("index");
+		index = intent.getIntExtra("index", 0);
 
 //		userTimer = new UserTimer();
 
@@ -89,7 +90,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		gifView.setGifImageType(GifImageType.COVER);
 		//gifView.setShowDimension(screenWidth, screenHeight);
 
-		changeExpression(Integer.parseInt(index));
+		changeExpression(index);
 		mGestureDetector = new GestureDetector(this, new ExGestureListener());
 	}
 
@@ -165,18 +166,18 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		changeExpression(index);
 	}
 
-	public static void startAction(Context context, String index) {
+	public static void startAction(Context context, int index) {
 		Intent changeMotionIntent = new Intent();
 		changeMotionIntent.setClass(context, ExpressionActivity.class);
 		changeMotionIntent.putExtra("index", index);
 		context.startActivity(changeMotionIntent);
 	}
-	public static void startExpressionActivity(Context context, String index) {
-		Intent changeMotionIntent = new Intent();
-		changeMotionIntent.setClass(context, ExpressionActivity.class);
-		changeMotionIntent.putExtra("index", index);
-		context.startActivity(changeMotionIntent);
-	}
+//	public static void startExpressinActivity(Context context, String index) {
+//		Intent changeMotionIntent = new Intent();
+//		changeMotionIntent.setClass(context, ExpressionActivity.class);
+//		changeMotionIntent.putExtra("index", index);
+//		context.startActivity(changeMotionIntent);
+//	}
     @Override
     protected void onStop() {
         Log.i(TAG, "onStop");

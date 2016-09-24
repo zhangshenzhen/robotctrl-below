@@ -107,7 +107,7 @@ public class ShowSureQueryActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 clearTimerCount();
-                ExpressionActivity.startAction(ShowSureQueryActivity.this, "12");
+                ExpressionActivity.startAction(ShowSureQueryActivity.this, 0);
             }
         });
 

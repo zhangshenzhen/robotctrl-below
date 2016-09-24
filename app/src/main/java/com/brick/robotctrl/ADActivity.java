@@ -98,7 +98,7 @@ public class ADActivity extends Activity {
                     message.what = videoInfo;
                     message.obj = percentString;
                     contextHandler2.sendMessage(message);
-                    ExpressionActivity.startAction(ADActivity.this, "12");
+                    ExpressionActivity.startAction(ADActivity.this, 0);
                     break;
                 case PROGRESS:
                     int currentPosition,duration;

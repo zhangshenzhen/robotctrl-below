@@ -54,7 +54,7 @@ public class MainActivity extends BaseActivity {
     private boolean serialChanged = false;
     private boolean robotLocationChanged = false;
 
-    private String mp3Url = "/sdcard/Movies/qianqian.mp3";
+    private String mp3Url = Environment.getExternalStorageDirectory().getPath() + "/Movies/qianqian.mp3";
 
     Calendar currentTime = null;
 
@@ -295,7 +295,7 @@ public class MainActivity extends BaseActivity {
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                         ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
                         if ( !an.getClassName().equals("com.brick.robotctrl.ExpressionActivity") ) {
-                            ExpressionActivity.startAction(MainActivity.this, "12");
+                            ExpressionActivity.startAction(MainActivity.this, 0);
                         }
                     }
                     if (rlt.equals("EndDirCtl")) {
@@ -326,7 +326,7 @@ public class MainActivity extends BaseActivity {
                     }
                     if(rlt.equals("SetVolume")) {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
-                        ssdbTask.enableSetVolume = true;
+                        SSDBTask.enableSetVolume = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                     }
 					if (rlt.equals("EndVideo")){
@@ -433,9 +433,9 @@ public class MainActivity extends BaseActivity {
                                 ComponentName bn = bm.getRunningTasks(1).get(0).topActivity;//得到某一活动
                                 if ( bn.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
                                     ADVideo.stopPlayBack();
-                                    ExpressionActivity.startAction(MainActivity.this, "12");
+                                    ExpressionActivity.startAction(MainActivity.this, 0);
                                 }else if(bn.getClassName().equals("com.brick.robotctrl.ImageActivity")){
-                                    ExpressionActivity.startAction(MainActivity.this, "12");
+                                    ExpressionActivity.startAction(MainActivity.this, 0);
                                 }
                                 break;
                             case "Single":
@@ -581,7 +581,7 @@ public class MainActivity extends BaseActivity {
                         Log.d(TAG, "run: start to install apk: " + archiveFilePath);
                         Intent intentA = new Intent(Intent.ACTION_VIEW);
                         intentA.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intentA.setDataAndType(Uri.fromFile(new File((String) archiveFilePath)), "application/vnd.android.package-archive");
+                        intentA.setDataAndType(Uri.fromFile(new File(archiveFilePath)), "application/vnd.android.package-archive");
                         startActivity(intentA);
 //                        android.os.Process.killProcess(android.os.Process.myPid());
                     } else {
@@ -792,7 +792,7 @@ public class MainActivity extends BaseActivity {
         //获取手机内所有应用
         List<PackageInfo> paklist = pManager.getInstalledPackages(0);
         for (int i = 0; i < paklist.size(); i++) {
-            PackageInfo appInfo = (PackageInfo) paklist.get(i);
+            PackageInfo appInfo = paklist.get(i);
             if ( appInfo.packageName.equals(packageName) ) {
                 Log.d(TAG, "getVersion: " + packageName + " version: " + appInfo.versionName);
                 return appInfo.versionName;
