@@ -178,8 +178,6 @@ public class MainActivity extends BaseActivity {
 
         tt.start();
         Log.d(TAG, "onCreate: 456");
-
-        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, "appVersion", getString(R.string.appVersion));
     }
 
     private void threadToUiToast(final String message, final int toastLength) {
