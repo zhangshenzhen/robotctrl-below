@@ -57,7 +57,7 @@ public class ShowSureQueryActivity extends BaseActivity {
         setContentView(R.layout.activity_showsurequery );
 
         showGf =(GifView)findViewById(R.id.gif4);
-        showGf.setGifImage(R.drawable.jiaoaodeyi);
+        showGf.setGifImage(R.drawable.deyi);
         showGf.setGifImageType(GifView.GifImageType.COVER);
 
         text = (TextView) findViewById(R.id.singleshow);
