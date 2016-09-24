@@ -172,12 +172,14 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		changeMotionIntent.putExtra("index", index);
 		context.startActivity(changeMotionIntent);
 	}
-//	public static void startExpressinActivity(Context context, String index) {
-//		Intent changeMotionIntent = new Intent();
-//		changeMotionIntent.setClass(context, ExpressionActivity.class);
-//		changeMotionIntent.putExtra("index", index);
-//		context.startActivity(changeMotionIntent);
-//	}
+
+	// 接收尚未写好，需要再try中判断传递的参数是什么类型
+	public static void startAction(Context context, String expName) {
+		Intent changeMotionIntent = new Intent();
+		changeMotionIntent.setClass(context, ExpressionActivity.class);
+		changeMotionIntent.putExtra("expName", expName);
+		context.startActivity(changeMotionIntent);
+	}
     @Override
     protected void onStop() {
         Log.i(TAG, "onStop");
