@@ -151,3 +151,9 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
     1. 修复安装完成后不会显示完成打开问题
     2. 优化ftp下载问题
     3. 优化apk安装问题
+
+17. RobotCtrl_master_v1.28.35.0924_alpha
+
+    1. 修复说话和害怕表情互换的问题
+    2. 优化表情的调用函数
+    3. 添加开机上报appVersion功能

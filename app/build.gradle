@@ -3,7 +3,7 @@ import java.text.SimpleDateFormat
 apply plugin: 'com.android.application'
 
 def apkName = "RobotCtrl_master"
-def apkVersion = "v1.27.33"
+def apkVersion = "v1.28.35"
 
 def buildTime() {
     def df = new SimpleDateFormat("MMdd")
@@ -33,6 +33,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     android.applicationVariants.all {
         variant -> variant.outputs.each {
             output -> output.outputFile = new File(output.outputFile.parent, apkName + "_" + defaultConfig.versionName + "." + buildTime() + "_alpha.apk" );

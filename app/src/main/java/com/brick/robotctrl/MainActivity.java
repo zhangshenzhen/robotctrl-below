@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.jly.batteryView.BatteryView;
 import com.kjn.videoview.ADVideo;
+import com.udpwork.ssdb.SSDB;
 
 import java.io.File;
 import java.util.Calendar;
@@ -177,6 +178,8 @@ public class MainActivity extends BaseActivity {
 
         tt.start();
         Log.d(TAG, "onCreate: 456");
+
+        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, "appVersion", getString(R.string.appVersion));
     }
 
     private void threadToUiToast(final String message, final int toastLength) {
