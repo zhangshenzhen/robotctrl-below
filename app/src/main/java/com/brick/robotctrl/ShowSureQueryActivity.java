@@ -1,6 +1,5 @@
 package com.brick.robotctrl;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -10,11 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.ant.liao.GifView;
 import com.kjn.askquestion.AccountInfoTts;
-import com.kjn.videoview.ADVideo;
 import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
 import com.sinovoice.hcicloudsdk.api.HciCloudSys;
 import com.sinovoice.hcicloudsdk.common.AuthExpireTime;
@@ -32,9 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by ${kang} on 2016/6/22.
- */
 
 public class ShowSureQueryActivity extends BaseActivity {
     public static final String TAG = "ShowSureQueryActivity";
@@ -49,7 +43,7 @@ public class ShowSureQueryActivity extends BaseActivity {
     private String showText = null;
     private TtsConfig ttsConfig = null;
     private TTSPlayer mTtsPlayer = null;
-    public String mp3Url = "/sdcard/Movies/record3.m4a";
+    public String mp3Url = Environment.getExternalStorageDirectory().getPath() + "/Movies/record3.m4a";
     private MediaPlayer mp;
 //    private boolean flag = true;
 //    ADVideo adVideo = null;
@@ -113,7 +107,7 @@ public class ShowSureQueryActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 clearTimerCount();
-                ExpressionActivity.startExpressionActivity(ShowSureQueryActivity.this, "12");
+                ExpressionActivity.startAction(ShowSureQueryActivity.this, "12");
             }
         });
 

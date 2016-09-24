@@ -1,6 +1,5 @@
 package com.brick.robotctrl;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,15 +19,13 @@ import org.apache.commons.httpclient.HttpException;
 
 import java.util.ArrayList;
 
-/**
- * Created by kjnijk on 2016-06-24.
- */
+
 public class ManyQueryActivity extends BaseActivity {
     String TAG ="ManyQueryActivity";
     private GifView showGf;
     String data;
-    ArrayList<String> showItem = new ArrayList<String>();
-    ArrayList<Integer> showNum = new ArrayList<Integer>();
+    ArrayList<String> showItem = new ArrayList<>();
+    ArrayList<Integer> showNum = new ArrayList<>();
     public String result;
     public String resultShow;
     String num = "no";
@@ -48,7 +45,7 @@ public class ManyQueryActivity extends BaseActivity {
             public void onClick(View view) {
                 humanButton.setClickable(false);
                 clearTimerCount();
-                ExpressionActivity.startExpressionActivity(ManyQueryActivity.this, "12");
+                ExpressionActivity.startAction(ManyQueryActivity.this, "12");
             }
         });
 
@@ -71,7 +68,7 @@ public class ManyQueryActivity extends BaseActivity {
         showItem = intent.getStringArrayListExtra("extra_showItem");
         showNum = intent.getIntegerArrayListExtra("extra_showNum");
         queryListView = (ListView) findViewById(R.id.listView);
-        ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, showItem);
+        ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, showItem);
         queryListView.setAdapter(myArrayAdapter);
 
         queryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -111,7 +108,7 @@ public class ManyQueryActivity extends BaseActivity {
                     Log.d(TAG, "点击成功");
                 }
                 queryListView.setEnabled(false);
-                if(num != "no") {
+                if(num.equals("no")) {
                     new Thread() {
                         @Override
                         public void run() {
