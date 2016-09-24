@@ -86,13 +86,13 @@ public class AboutActivity extends BaseActivity {
 
         @Override
         public void run() {
-            remoteFile = new ArrayList<FTPFile>();
-            localFile = new ArrayList<File>();
+            remoteFile = new ArrayList<FTPFile>();//remote file arry
+            localFile = new ArrayList<File>();//local file arry
             String REMOTE_PATH = "\\" + robotName;                     //"\\东南\\更新\\";
 
             ftp = new FTPAsk(hostName, userName, password);
-            MLOCAL_PATH = Environment.getExternalStorageDirectory().getPath()+"/Movies";
-            ALOCAL_PATH = Environment.getExternalStorageDirectory().getPath()+"/Download";
+            MLOCAL_PATH = Environment.getExternalStorageDirectory().getPath()+"/Movies";//local
+            ALOCAL_PATH = Environment.getExternalStorageDirectory().getPath()+"/Download";//local
             Log.d(TAG, "onCreate: 789");
             try {
 //            if (ftp != null) {
@@ -103,8 +103,8 @@ public class AboutActivity extends BaseActivity {
                 Log.d(TAG, "onCreate: 开始打开");
                 ftp.openConnect();
                 Log.d(TAG, "onCreate: 123");
-                File mfile = new File(MLOCAL_PATH);
-                File[] mfiles = mfile.listFiles();
+                File mfile = new File(MLOCAL_PATH);//local movies path
+                File[] mfiles = mfile.listFiles();//local download path
                 File afile = new File(ALOCAL_PATH);
                 File[] afiles = afile.listFiles();
                 Log.d(TAG, "run: " + REMOTE_PATH);
@@ -124,11 +124,12 @@ public class AboutActivity extends BaseActivity {
                 if (remoteFile.size() > 0) {
                     for (int i = 0; i < remoteFile.size(); i++) {
                         Log.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
-                        if (remoteFile.get(i).getName().endsWith(".mp4") || remoteFile.get(i).getName().endsWith(".3gp") || remoteFile.get(i).getName().endsWith(".mp3") || remoteFile.get(i).getName().endsWith(".jpg") ) {
+                        if (remoteFile.get(i).getName().endsWith(".mp4") || remoteFile.get(i).getName().endsWith(".3gp")
+                                || remoteFile.get(i).getName().endsWith(".mp3") || remoteFile.get(i).getName().endsWith(".jpg") ) {
                             isAPK = false;
                             try {
                                 // 下载
-                                downloadSuccessFlag = ftp.download(REMOTE_PATH, remoteFile.get(i).getName(), MLOCAL_PATH);
+                                downloadSuccessFlag = ftp.download(REMOTE_PATH, remoteFile.get(i).getName(), MLOCAL_PATH);//下载格式(远程路径字符串，远程文件名，本地电影文件夹)
                                 if ( downloadSuccessFlag ) {
                                     Log.d(TAG, "Movies " + remoteFile.get(i).getName() + " download success");
                                 } else {
