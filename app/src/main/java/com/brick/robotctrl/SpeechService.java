@@ -32,7 +32,7 @@ import java.util.Locale;
  */
 public class SpeechService extends Service{
     //public static StringBuffer sentenceToSpeak="";
-    public static String sentenceToSpeak="hello from speechservice";
+    public static String sentenceToSpeak="";
     private String robotName;
     public static final String TAG="SpeechService";
     private AccountInfoTts mAccountInfo;
@@ -112,21 +112,12 @@ public class SpeechService extends Service{
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-
-                    //从数据库中取字符串 //数据库字符串置为空
-
-//                    Log.d(TAG,"sentenceToSpeak="+sentenceToSpeak);
-                   // sentenceToSpeakTemp=sentenceToSpeak;
-
-                   // sentenceToSpeakTemp=sentenceToSpeak;
-                    sentenceToSpeakTemp = "你好";
-
-                    if (!sentenceToSpeakTemp.equals("")){
-                        synth(sentenceToSpeakTemp);
-                    }
-
-
+                sentenceToSpeakTemp=sentenceToSpeak;
+                sentenceToSpeak="";
+                if (!sentenceToSpeakTemp.equals("")){
+                    synth(sentenceToSpeakTemp);
+                }
+                stopSelf();
             }
         }).start();
 

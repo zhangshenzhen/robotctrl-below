@@ -1,6 +1,7 @@
 package com.brick.robotctrl;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.Handler;
@@ -236,6 +237,7 @@ public class SSDBTask extends TimerTask {
     public static final int Key_SetVolume = 13;
 	public static final int Key_EndVideo=14;
     public static final int key_ApkUpdate=16;               //用来更新apk的，跟ssdb没关系，放在这里只是为了统一,15被谁用了
+    public static final int Key_Message=17;
 
     public static final String[] event = new String[]{"event", "DirCtl", "param",
             "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt",
@@ -454,13 +456,16 @@ public class SSDBTask extends TimerTask {
                     break;
             }
         }
+////////////////////////////人工语音服务////////////////////////////////
 
         try {
-            byte[] rlt = ssdbClient.hget(robotName, event[Key_VideoPlay]);
+            byte[] rlt = ssdbClient.hget(robotName, event[Key_Message]);
+            ssdbClient.hset(robotName, event[Key_Message], "");
             if (rlt != null) {
-              // SpeechService.sentenceToSpeak = new String(rlt, "GBK");
-                SpeechService.sentenceToSpeak="你好from ssdbtask";
-                ssdbClient.hset(robotName, event[Key_VideoPlay], "");
+                Message message = new Message();
+                message.what = Key_Message;
+                message.obj = new String(rlt, "GBK");
+                contextHandler.sendMessage(message);
             }
         } catch (Exception e) {
             e.printStackTrace();

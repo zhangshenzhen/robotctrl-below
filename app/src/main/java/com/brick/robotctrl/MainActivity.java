@@ -572,6 +572,19 @@ public class MainActivity extends BaseActivity {
                         SSDBTask.enableSetVolume = false;
                     }
                     break;
+                case SSDBTask.Key_Message:
+                    rlt=(String)msg.obj;
+                    Log.d(TAG, "handleMessage: ------------------Key:Message \tvalue:" + rlt);
+                    if ( !rlt.equals("") ) {
+                        SpeechService.sentenceToSpeak=rlt;
+                        Intent startIntent=new Intent(MainActivity.this,SpeechService.class);
+                        startService(startIntent);
+                    }
+                    break;
+
+
+
+
                 case SSDBTask.ACTION_CONNECT_FAILED:
 //                    Log.d(TAG, "handleMessage: connect ssdb failure!");
 //                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
