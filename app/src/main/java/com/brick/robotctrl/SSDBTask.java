@@ -458,8 +458,9 @@ public class SSDBTask extends TimerTask {
         try {
             byte[] rlt = ssdbClient.hget(robotName, event[Key_VideoPlay]);
             if (rlt != null) {
-               //SpeechService.sentenceToSpeak = new String(rlt, "GBK");
-                SpeechService.sentenceToSpeak="你好";
+              // SpeechService.sentenceToSpeak = new String(rlt, "GBK");
+                SpeechService.sentenceToSpeak="你好from ssdbtask";
+                ssdbClient.hset(robotName, event[Key_VideoPlay], "");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -696,6 +696,8 @@ public class MainActivity extends BaseActivity {
         ssdbTask.disConnect();
         serialCtrl.closeSerialCOM();
         unregisterReceiver(netWorkChangeReceiver);
+        Intent stopSpeechServiceIntent=new Intent(this,SpeechService.class);
+        stopService(stopSpeechServiceIntent);
         super.onDestroy();
     }
 

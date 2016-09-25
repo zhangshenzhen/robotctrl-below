@@ -8,7 +8,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.kjn.askquestion.AccountInfo;
+
+import com.kjn.askquestion.AccountInfoTts;
 import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
 import com.sinovoice.hcicloudsdk.api.HciCloudSys;
 import com.sinovoice.hcicloudsdk.common.AuthExpireTime;
@@ -30,10 +31,11 @@ import java.util.Locale;
  * Created by brick on 2016-09-24.
  */
 public class SpeechService extends Service{
-    public static String sentenceToSpeak="";
+    //public static StringBuffer sentenceToSpeak="";
+    public static String sentenceToSpeak="hello from speechservice";
     private String robotName;
     public static final String TAG="SpeechService";
-    private AccountInfo mAccountInfo;
+    private AccountInfoTts mAccountInfo;
     private TtsConfig ttsConfig = null;
     private TTSPlayer mTtsPlayer = null;
     String sentenceToSpeakTemp="";
@@ -45,12 +47,18 @@ public class SpeechService extends Service{
 
 
     @Override
+    public void onDestroy() {
+        stopSelf();
+        super.onDestroy();
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
 
 
 
-        mAccountInfo = AccountInfo.getInstance();
+        mAccountInfo = AccountInfoTts.getInstance();
         boolean loadResult = mAccountInfo.loadAccountInfo(this);
         if (loadResult) {
             // 加载信息成功进入主界面
@@ -66,7 +74,7 @@ public class SpeechService extends Service{
         // 加载信息,返回InitParam, 获得配置参数的字符串
         InitParam initParam = getInitParam();
         String strConfig = initParam.getStringConfig();
-        Log.i(TAG,"\nhciInit config:" + strConfig);
+        Log.i(TAG, "\nhciInit config:" + strConfig);
 
         // 初始化
         int errCode = HciCloudSys.hciInit(strConfig, this);
@@ -74,7 +82,6 @@ public class SpeechService extends Service{
             Toast.makeText(getApplicationContext(), "hciInit error: " + HciCloudSys.hciGetErrorInfo(errCode),Toast.LENGTH_SHORT).show();
             return;
         }
-
 
         // 获取授权/更新授权文件 :
         errCode = checkAuthAndUpdateAuth();
@@ -87,18 +94,17 @@ public class SpeechService extends Service{
 
         //传入了capKey初始化TTS播发器
         boolean isPlayerInitSuccess = initPlayer();
+//        flag = isPlayerInitSuccess;
         if (!isPlayerInitSuccess) {
             Toast.makeText(this, "播放器初始化失败", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "播放器初始化失败");
             return;
         }
 
 
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -107,16 +113,20 @@ public class SpeechService extends Service{
             @Override
             public void run() {
 
-                while(true){
+
                     //从数据库中取字符串 //数据库字符串置为空
-                    Log.d(TAG,"sentenceToSpeakTemp="+sentenceToSpeak);
-                    sentenceToSpeakTemp=sentenceToSpeak;
-                    sentenceToSpeak="";
+
+//                    Log.d(TAG,"sentenceToSpeak="+sentenceToSpeak);
+                   // sentenceToSpeakTemp=sentenceToSpeak;
+
+                   // sentenceToSpeakTemp=sentenceToSpeak;
+                    sentenceToSpeakTemp = "你好";
+
                     if (!sentenceToSpeakTemp.equals("")){
                         synth(sentenceToSpeakTemp);
                     }
 
-                }
+
             }
         }).start();
 
@@ -236,15 +246,15 @@ public class SpeechService extends Service{
         initparam.addParam(InitParam.AuthParam.PARAM_KEY_AUTO_CLOUD_AUTH, "no");
 
         // 灵云云服务的接口地址，此项必填
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_CLOUD_URL, AccountInfo
+        initparam.addParam(InitParam.AuthParam.PARAM_KEY_CLOUD_URL, AccountInfoTts
                 .getInstance().getCloudUrl());
 
         // 开发者Key，此项必填，由捷通华声提供
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_DEVELOPER_KEY, AccountInfo
+        initparam.addParam(InitParam.AuthParam.PARAM_KEY_DEVELOPER_KEY, AccountInfoTts
                 .getInstance().getDeveloperKey());
 
         // 应用Key，此项必填，由捷通华声提供
-        initparam.addParam(InitParam.AuthParam.PARAM_KEY_APP_KEY, AccountInfo
+        initparam.addParam(InitParam.AuthParam.PARAM_KEY_APP_KEY, AccountInfoTts
                 .getInstance().getAppKey());
 
         // 配置日志参数
