@@ -236,6 +236,7 @@ public class SSDBTask extends TimerTask {
     public static final int Key_SetVolume = 13;
 	public static final int Key_EndVideo=14;
     public static final int key_ApkUpdate=16;               //用来更新apk的，跟ssdb没关系，放在这里只是为了统一,15被谁用了
+
     public static final String[] event = new String[]{"event", "DirCtl", "param",
             "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt",
             "NetworkDelay", "Location", "Brow", "CurrentTime", "DisableAudio",
@@ -278,6 +279,7 @@ public class SSDBTask extends TimerTask {
     @Override
     public synchronized void run() {
 //        Log.d(TAG, "run: stop:" + stop);
+
         if (stop) {
             return;
         }
@@ -452,6 +454,18 @@ public class SSDBTask extends TimerTask {
                     break;
             }
         }
+
+        try {
+            byte[] rlt = ssdbClient.hget(robotName, event[Key_VideoPlay]);
+            if (rlt != null) {
+               //SpeechService.sentenceToSpeak = new String(rlt, "GBK");
+                SpeechService.sentenceToSpeak="你好";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void SSDBQuery(int codeType) {

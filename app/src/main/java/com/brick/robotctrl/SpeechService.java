@@ -30,10 +30,13 @@ import java.util.Locale;
  * Created by brick on 2016-09-24.
  */
 public class SpeechService extends Service{
+    public static String sentenceToSpeak="";
+    private String robotName;
     public static final String TAG="SpeechService";
     private AccountInfo mAccountInfo;
     private TtsConfig ttsConfig = null;
     private TTSPlayer mTtsPlayer = null;
+    String sentenceToSpeakTemp="";
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -44,6 +47,8 @@ public class SpeechService extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
+
+
 
         mAccountInfo = AccountInfo.getInstance();
         boolean loadResult = mAccountInfo.loadAccountInfo(this);
@@ -97,8 +102,23 @@ public class SpeechService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        robotName= intent.getStringExtra("robotName");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
+                while(true){
+                    //从数据库中取字符串 //数据库字符串置为空
+                    Log.d(TAG,"sentenceToSpeakTemp="+sentenceToSpeak);
+                    sentenceToSpeakTemp=sentenceToSpeak;
+                    sentenceToSpeak="";
+                    if (!sentenceToSpeakTemp.equals("")){
+                        synth(sentenceToSpeakTemp);
+                    }
 
+                }
+            }
+        }).start();
 
 
         return super.onStartCommand(intent, flags, startId);
@@ -258,5 +278,34 @@ public class SpeechService extends Service{
         }
 
         return initparam;
+    }
+    // 云端合成,不启用编码传输(默认encode=none)
+    private void synth(String text) {
+        // 读取用户的调用的能力
+        String capKey = mAccountInfo.getCapKey();
+
+        // 配置播放器的属性。包括：音频格式，音库文件，语音风格，语速等等。详情见文档。
+        ttsConfig = new TtsConfig();
+        // 音频格式
+        ttsConfig.addParam(TtsConfig.BasicConfig.PARAM_KEY_AUDIO_FORMAT, "pcm16k16bit");
+        // 指定语音合成的能力(云端合成,发言人是XiaoKun)
+        ttsConfig.addParam(TtsConfig.SessionConfig.PARAM_KEY_CAP_KEY, capKey);
+        // 设置合成语速
+        ttsConfig.addParam(TtsConfig.BasicConfig.PARAM_KEY_SPEED, "5");
+        // property为私有云能力必选参数，公有云传此参数无效
+        ttsConfig.addParam("property", "cn_xiaokun_common");
+
+        if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PLAYING
+                || mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_PAUSE) {
+            mTtsPlayer.stop();
+        }
+
+        if (mTtsPlayer.getPlayerState() == TTSCommonPlayer.PLAYER_STATE_IDLE) {
+            mTtsPlayer.play(text,
+                    ttsConfig.getStringConfig());
+        } else {
+            Toast.makeText(SpeechService.this, "播放器内部状态错误",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }

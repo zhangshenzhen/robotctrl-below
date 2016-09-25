@@ -83,7 +83,6 @@ public class MainActivity extends BaseActivity {
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler);
-
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         //创建NetWorkChangeReceiver的实例，并调用registerReceiver()方法进行注册
@@ -177,6 +176,10 @@ public class MainActivity extends BaseActivity {
 
         tt.start();
         Log.d(TAG, "onCreate: 456");
+        Intent startSpeechService=new Intent(MainActivity.this,SpeechService.class);
+        Log.d(TAG,"startSpeechService");
+        startService(startSpeechService);
+        //SpeechService.sentenceToSpeak="你好";
     }
 
     private void threadToUiToast(final String message, final int toastLength) {

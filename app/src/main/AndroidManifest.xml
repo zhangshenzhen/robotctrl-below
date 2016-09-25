@@ -40,6 +40,11 @@
             </intent-filter>
         </activity>
         <service android:name=".PlayerService"/>
+
+        <service android:name=".SpeechService">
+
+        </service>
+
         <activity
             android:name=".SettingsActivity"
             android:icon="@drawable/ic_action_settings"
