@@ -385,6 +385,18 @@ public class MainActivity extends BaseActivity {
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
+                    if(rlt.equals("reboot")){
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                        MainActivity.super.onReboot();
+                    }
+                    if(rlt.equals("shutdown")){
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                        MainActivity.super.onShutdown();
+                    }
                     break;
                 /**
                  * 处理具体的event事件
