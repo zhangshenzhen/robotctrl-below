@@ -223,27 +223,26 @@ public class SSDBTask extends TimerTask {
 
 
     public static final int Key_Event = 0;
-    public static final int Key_DirCtrl = 1;////
-    public static final int Key_SetParam = 2;////
-    public static final int Key_VideoPlay = 3;//
+    public static final int Key_DirCtrl = 1;
+    public static final int Key_SetParam = 2;
+    public static final int Key_VideoPlay = 3;
     public static final int Key_VideoInfo = 4;        // 视频播放时1s上传一次info，不需要接收该关键字
-    public static final int Key_VideoPlayList = 5;  //
-    public static final int Key_RobotMsg = 6; //
-    public static final int Key_BatteryVolt = 7;  //
-    public static final int Key_NetworkDelay = 8;//
-    public static final int Key_Location = 9;////
-    public static final int Key_ChangeBrow = 10;////
-    public static final int Key_CurrentTime = 11;//
+    public static final int Key_VideoPlayList = 5;
+    public static final int Key_RobotMsg = 6;
+    public static final int Key_BatteryVolt = 7;
+    public static final int Key_NetworkDelay = 8;
+    public static final int Key_Location = 9;
+    public static final int Key_ChangeBrow = 10;
+    public static final int Key_CurrentTime = 11;
     public static final int Key_DisableAudio = 12;
     public static final int Key_SetVolume = 13;
 	public static final int Key_EndVideo=14;
-    public static final int key_ApkUpdate=16;               //用来更新apk的，跟ssdb没关系，放在这里只是为了统一,15被谁用了
-    public static final int Key_Message=17;
+    public static final int key_ApkUpdate=15;               //用来更新apk的，跟ssdb没关系，放在这里只是为了统一,15被谁用了
+    public static final int Key_Message=16;
 
-    public static final String[] event = new String[]{"event", "DirCtl", "param",
-            "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt",
-            "NetworkDelay", "Location", "Brow", "CurrentTime", "DisableAudio",
-            "Volume","EndVideo","", "Message"};
+    public static final String[] event = new String[]{
+            "event", "DirCtl", "param", "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt", "NetworkDelay", "Location",
+            "Brow", "CurrentTime", "DisableAudio", "Volume","EndVideo", "", "Message"};
    ////////////////////////gaowei/////////////////////////////
     public static boolean enableForbidAudio=false;
     public static boolean enableCurrentTime=false;
@@ -387,8 +386,6 @@ public class SSDBTask extends TimerTask {
                     }else{
 //                        SSDBQuery(ACTION_HSET, event[Key_DisableAudio]);
                     }
-                    // by gaowei end
-                    ////////////////////////////////////////////////////////////// 200ms check
                     if (enableDirCtl) {             // check control move
                         try {
                             byte[] rlt = ssdbClient.hget(robotName, event[Key_DirCtrl]);          // check move control
@@ -472,11 +469,6 @@ public class SSDBTask extends TimerTask {
                     break;
             }
         }
-////////////////////////////人工语音服务////////////////////////////////
-
-
-
-
     }
 
     public void SSDBQuery(int codeType) {
