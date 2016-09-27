@@ -243,7 +243,7 @@ public class SSDBTask extends TimerTask {
     public static final String[] event = new String[]{"event", "DirCtl", "param",
             "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt",
             "NetworkDelay", "Location", "Brow", "CurrentTime", "DisableAudio",
-            "Volume","EndVideo"};
+            "Volume","EndVideo","", "Message"};
    ////////////////////////gaowei/////////////////////////////
     public static boolean enableForbidAudio=false;
     public static boolean enableCurrentTime=false;
@@ -260,6 +260,7 @@ public class SSDBTask extends TimerTask {
     public static boolean enableSetParameter = false;
     public static boolean enableSetVolume = false;
 	// public static boolean enableEndVideo = false;
+    public static boolean enableGetMessage = false;
 
     private int iCount = 0;
 
@@ -453,24 +454,27 @@ public class SSDBTask extends TimerTask {
 //                    else {
 //                        SSDBQuery(ACTION_HSET, event[Key_ChangeBrow], "");      // 后面不能清
 //                    }
+                    if( enableGetMessage ) {
+                        try {
+                            byte[] rlt = ssdbClient.hget(robotName, event[Key_Message]);
+                            ssdbClient.hset(robotName, event[Key_Message], "");
+                            if (rlt != null) {
+                                Message message = new Message();
+                                message.what = Key_Message;
+                                message.obj = new String(rlt, "GBK");
+                                contextHandler.sendMessage(message);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 default:
                     break;
             }
         }
 ////////////////////////////人工语音服务////////////////////////////////
 
-        try {
-            byte[] rlt = ssdbClient.hget(robotName, event[Key_Message]);
-            ssdbClient.hset(robotName, event[Key_Message], "");
-            if (rlt != null) {
-                Message message = new Message();
-                message.what = Key_Message;
-                message.obj = new String(rlt, "GBK");
-                contextHandler.sendMessage(message);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
 
     }

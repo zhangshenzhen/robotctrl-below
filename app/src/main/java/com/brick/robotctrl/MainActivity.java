@@ -400,6 +400,12 @@ public class MainActivity extends BaseActivity {
                         Log.d(TAG, "handleMessage: clear Event");
                         MainActivity.super.onShutdown();
                     }
+                    if(rlt.equals("message")){
+                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        ssdbTask.enableGetMessage = true;
+                        ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
+                        Log.d(TAG, "handleMessage: clear Event");
+                    }
                     break;
                 /**
                  * 处理具体的event事件
@@ -589,9 +595,7 @@ public class MainActivity extends BaseActivity {
                     rlt=(String)msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:Message \tvalue:" + rlt);
                     if ( !rlt.equals("") ) {
-                        SpeechService.sentenceToSpeak=rlt;
-                        Intent startIntent=new Intent(MainActivity.this,SpeechService.class);
-                        startService(startIntent);
+                        SpeechService.startAction(MainActivity.this, rlt);
                     }
                     break;
 

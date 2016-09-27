@@ -1,6 +1,7 @@
 package com.brick.robotctrl;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.IBinder;
@@ -32,8 +33,7 @@ import java.util.Locale;
  */
 public class SpeechService extends Service{
     //public static StringBuffer sentenceToSpeak="";
-    public static String sentenceToSpeak="";
-    private String robotName;
+    public String sentenceToSpeak = null;
     public static final String TAG="SpeechService";
     private AccountInfoTts mAccountInfo;
     private TtsConfig ttsConfig = null;
@@ -104,11 +104,10 @@ public class SpeechService extends Service{
 
     }
 
-
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        robotName= intent.getStringExtra("robotName");
+
+        sentenceToSpeak = intent.getStringExtra("speechContext");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -120,12 +119,8 @@ public class SpeechService extends Service{
                 stopSelf();
             }
         }).start();
-
-
         return super.onStartCommand(intent, flags, startId);
     }
-
-
 
     // 播放器回调
     private class TTSEventProcess implements TTSPlayerListener {
@@ -308,5 +303,14 @@ public class SpeechService extends Service{
             Toast.makeText(SpeechService.this, "播放器内部状态错误",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static void startAction(Context context, String speechContext) {
+
+        Intent startIntent = new Intent();
+        startIntent.putExtra("speechContext", speechContext);
+        Log.d("", "SpeechService: starting SpeechService");
+        startIntent.setClass(context, SpeechService.class);
+        context.startService(startIntent);       //启动服务
     }
 }
