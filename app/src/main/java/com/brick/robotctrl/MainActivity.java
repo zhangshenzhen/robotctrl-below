@@ -30,7 +30,6 @@ import android.widget.Toast;
 
 import com.jly.batteryView.BatteryView;
 import com.kjn.videoview.ADVideo;
-import com.udpwork.ssdb.SSDB;
 
 import java.io.File;
 import java.util.Calendar;
@@ -597,16 +596,6 @@ public class MainActivity extends BaseActivity {
                     if ( !rlt.equals("") ) {
                         SpeechService.startAction(MainActivity.this, rlt);
                     }
-                    break;
-
-
-
-
-                case SSDBTask.ACTION_CONNECT_FAILED:
-//                    Log.d(TAG, "handleMessage: connect ssdb failure!");
-//                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-//                    startActivityForResult(intent, 0);
-                    Toast.makeText(getApplicationContext(), "ssdb server connect error, reconnect after 10s",Toast.LENGTH_SHORT).show();
                     break;
                 case SSDBTask.key_ApkUpdate :
                     final String archiveFilePath = getInstallApkFullPath();

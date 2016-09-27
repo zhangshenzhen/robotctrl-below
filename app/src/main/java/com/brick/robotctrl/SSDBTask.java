@@ -1,7 +1,6 @@
 package com.brick.robotctrl;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.Handler;
@@ -29,8 +28,6 @@ public class SSDBTask extends TimerTask {
     private static final int ACTION_DISCONNECT = 0x0002;
     public static final int ACTION_HSET = 0x0004;
     public static final int ACTION_HGET = 0x0008;
-
-    public static final int ACTION_CONNECT_FAILED = 0x000F;
 
     private Handler contextHandler = null;
     private Context context = null;
@@ -305,10 +302,6 @@ public class SSDBTask extends TimerTask {
                         stop = false;
                     } catch (Exception e) {
                         Log.d(TAG, "run: ACTION_CONNECT_FAILED");
-//                        Message message = new Message();
-//                        message.what = ACTION_CONNECT_FAILED;
-//                        message.obj = new String(, "GBK");
-//                        contextHandler.sendMessage(message);
                         stop = true;
                         e.printStackTrace();
                     }
