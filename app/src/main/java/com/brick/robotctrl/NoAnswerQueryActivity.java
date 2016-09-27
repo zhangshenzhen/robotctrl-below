@@ -2,6 +2,7 @@ package com.brick.robotctrl;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +14,7 @@ import com.ant.liao.GifView;
  */
 public class NoAnswerQueryActivity extends BaseActivity {
     private static final String TAG = "NoAnswerQueryActivity";
-    private String mp3Url = "/sdcard/Movies/record2.m4a";         //播放的MP3文件
+    private String mp3Url = Environment.getExternalStorageDirectory().getPath() + "/Movies/record2.m4a";         //播放的MP3文件
     private GifView gf;
     private TextView text;
     private String showText;
@@ -43,7 +44,7 @@ public class NoAnswerQueryActivity extends BaseActivity {
             public void onClick(View view) {
                 humanButton.setClickable(false);
                 clearTimerCount();
-                ExpressionActivity.startExpressionActivity(NoAnswerQueryActivity.this, "12");
+                ExpressionActivity.startAction(NoAnswerQueryActivity.this, 0);
             }
         });
 

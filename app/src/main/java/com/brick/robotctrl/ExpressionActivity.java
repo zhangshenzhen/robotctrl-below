@@ -17,28 +17,28 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 	private static final String TAG = "ExpressionActivity";
 
 	private static GifView gifView;
-	private String index = null;
+	private int index = 0;
 //	UserTimer userTimer = null;
 	private static int currentIndex = -1;
 	private GestureDetector mGestureDetector;
 	private int screenWidth;
 	private int screenHeight;
 	enum EXPRESSION {
-		机器人害怕(R.drawable.haipa, "机器人说话", 0),
-		机器人害羞(R.drawable.haixiu, "机器人害羞", 1),
-		机器人花痴(R.drawable.huachi, "机器人花痴", 2),
-		机器人欢呼(R.drawable.huanhu, "机器人欢呼", 3),
-		机器人骄傲得意(R.drawable.jiaoaodeyi, "机器人骄傲得意", 4),
-		机器人金币(R.drawable.jinbi, "机器人金币", 5),
-		机器人困惑(R.drawable.kunhuo, "机器人困惑", 6),
-		机器人流泪(R.drawable.liulei, "机器人流泪", 7),
-		机器人生气(R.drawable.shengqi, "机器人生气", 8),
-		机器人说话(R.drawable.shuohua, "机器人害怕", 9),
-		机器人思索(R.drawable.sisuo, "机器人思索", 10),
-		机器人叹气(R.drawable.tanqi, "机器人叹气", 11),
-		机器人微笑(R.drawable.weixiao, "机器人微笑", 12),
-		机器人羡慕(R.drawable.xianmu, "机器人羡慕", 13),
-		机器人兴奋(R.drawable.xingfen, "机器人兴奋", 14);
+		机器人说话(R.drawable.shuohua, "shuohua", 0),
+		机器人害羞(R.drawable.haixiu, "haixiu", 1),
+		机器人花痴(R.drawable.huachi, "huachi", 2),
+		机器人欢呼(R.drawable.huanhu, "huanhu", 3),
+		机器人得意(R.drawable.deyi, "deyi", 4),
+		机器人财迷(R.drawable.caimi, "caimi", 5),
+		机器人困惑(R.drawable.kunhuo, "kunhuo", 6),
+		机器人流泪(R.drawable.liulei, "liulei", 7),
+		机器人生气(R.drawable.shengqi, "shengqi", 8),
+		机器人害怕(R.drawable.haipa, "haipa", 9),
+		机器人思索(R.drawable.sisuo, "sisuo", 10),
+		机器人叹气(R.drawable.tanqi, "tanqi", 11),
+		机器人微笑(R.drawable.weixiao, "weixiao", 12),
+		机器人羡慕(R.drawable.xianmu, "xianmu", 13),
+		机器人兴奋(R.drawable.xingfen, "xingfen", 14);
 		private int id;
 		private String name;
 		private int index;
@@ -79,7 +79,8 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		Log.e("TAG" + "  getDefaultDisplay", "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);
 
 		Intent intent = getIntent();
-		index = intent.getStringExtra("index");
+//		index = intent.getStringExtra("index");
+		index = intent.getIntExtra("index", 0);
 
 //		userTimer = new UserTimer();
 
@@ -89,7 +90,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		gifView.setGifImageType(GifImageType.COVER);
 		//gifView.setShowDimension(screenWidth, screenHeight);
 
-		changeExpression(Integer.parseInt(index));
+		changeExpression(index);
 		mGestureDetector = new GestureDetector(this, new ExGestureListener());
 	}
 
@@ -165,16 +166,18 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		changeExpression(index);
 	}
 
-	public static void startAction(Context context, String index) {
+	public static void startAction(Context context, int index) {
 		Intent changeMotionIntent = new Intent();
 		changeMotionIntent.setClass(context, ExpressionActivity.class);
 		changeMotionIntent.putExtra("index", index);
 		context.startActivity(changeMotionIntent);
 	}
-	public static void startExpressionActivity(Context context, String index) {
+
+	// 接收尚未写好，需要再try中判断传递的参数是什么类型
+	public static void startAction(Context context, String expName) {
 		Intent changeMotionIntent = new Intent();
 		changeMotionIntent.setClass(context, ExpressionActivity.class);
-		changeMotionIntent.putExtra("index", index);
+		changeMotionIntent.putExtra("expName", expName);
 		context.startActivity(changeMotionIntent);
 	}
     @Override

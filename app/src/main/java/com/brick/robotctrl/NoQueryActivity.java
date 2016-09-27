@@ -1,9 +1,8 @@
 package com.brick.robotctrl;
 
-import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,14 +10,9 @@ import android.widget.TextView;
 
 import com.ant.liao.GifView;
 
-import java.util.TimerTask;
-
-/**
- * Created by kjnijk on 2016-06-24.
- */
 public class NoQueryActivity extends BaseActivity {
     private static final String TAG = "NoQueryActivity";
-    private String mp3Url = "/sdcard/Movies/record4.m4a";         //播放的MP3文件
+    private String mp3Url = Environment.getExternalStorageDirectory().getPath() + "/Movies/record4.m4a";         //播放的MP3文件
     private GifView gf;
 
     private TextView text;
@@ -48,7 +42,7 @@ public class NoQueryActivity extends BaseActivity {
             public void onClick(View view) {
                 humanButton.setClickable(false);
                 clearTimerCount();
-                ExpressionActivity.startExpressionActivity(NoQueryActivity.this, "12");
+                ExpressionActivity.startAction(NoQueryActivity.this, 0);
             }
         });
 

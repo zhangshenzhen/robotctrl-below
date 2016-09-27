@@ -20,5 +20,6 @@
     <string name="title_activity_menu">MenuActivity</string>
     <string name="title_activity_ad">ADActivity</string>
     <string name="title_activity_test">TestActivity</string>
+    <string name="appVersion">RobotCtrl_master_v1.29.36.0924_alpha</string>
 
 </resources>

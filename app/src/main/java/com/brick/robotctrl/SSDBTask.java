@@ -141,7 +141,6 @@ public class SSDBTask extends TimerTask {
                     // TODO: handle exception
                 }
                 Log.d(TAG, "serverSite: " + robotLocation);
-                SSDBQuery(ACTION_HSET, event[Key_Location], robotLocation);
             }
         }.start();
 //        pushFileList();
@@ -209,6 +208,8 @@ public class SSDBTask extends TimerTask {
             }
         });
         pushFileList();
+        SSDBQuery(ACTION_HSET, "appVersion", context.getString(R.string.appVersion));
+        SSDBQuery(ACTION_HSET, event[Key_Location], robotLocation);
     }
 
     public void disConnect() {

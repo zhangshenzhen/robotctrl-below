@@ -1,8 +1,10 @@
 package com.brick.robotctrl;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -151,7 +153,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         }
 
-
         /**
          * 滑动
          */
@@ -207,13 +208,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+//        Log.d(TAG, "onReboot: start to reboot");
+//        PowerManager pManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
+//        pManager.reboot("");
     }
 
     public void onShutdown() {
-        try {
-            Runtime.getRuntime().exec("su -c \"/system/bin/shutdown\"");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Runtime.getRuntime().exec("su -c \"/system/bin/reboot -p\"");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Intent intent = new Intent(Intent.ACTION_REQUEST_SHUTDOWN);
+//        intent.putExtra(Intent.EXTRA_KEY_CONFIRM, false);
+//        //其中false换成true,会弹出是否关机的确认窗口
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
+
+//        Intent intent = new Intent(Intent.ACTION_REQUEST_SHUTDOWN);
+//        intent.putExtra(Intent.EXTRA_KEY_CONFIRM, false);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
     }
 }

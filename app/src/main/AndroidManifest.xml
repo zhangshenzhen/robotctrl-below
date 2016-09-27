@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.brick.robotctrl">
+    package="com.brick.robotctrl"
+    android:sharedUserId="android.uid.system">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -15,6 +16,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.RECEIVE_HOME"/>
+    <!--<uses-permission android:name="android.permission.SHUTDOWN"/>-->
 
 
     <application
