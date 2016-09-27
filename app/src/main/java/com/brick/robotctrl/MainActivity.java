@@ -175,11 +175,6 @@ public class MainActivity extends BaseActivity {
         AboutActivity.MyThread tt = about.new MyThread(ssdbTask.robotName);
 
         tt.start();
-        Log.d(TAG, "onCreate: 456");
-        Intent startSpeechService=new Intent(MainActivity.this,SpeechService.class);
-        Log.d(TAG,"startSpeechService");
-        startService(startSpeechService);
-        //SpeechService.sentenceToSpeak="你好";
     }
 
     private void threadToUiToast(final String message, final int toastLength) {
