@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -37,6 +38,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import zime.ui.ZIMEAVDemoActivity;
+
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
@@ -46,6 +49,8 @@ public class MainActivity extends BaseActivity {
     ImageView rightEyeButton = null;
     SSDBTask ssdbTask = null;
     SerialCtrl serialCtrl = null;
+
+    Button ZIMEButton;
 
     DispQueueThread DispQueue=null;//刷新电压显示线程
     public BatteryView mBatteryView = null;
@@ -113,6 +118,15 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        ZIMEButton = (Button)findViewById(R.id.ZIMEButton);
+        ZIMEButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,ZIMEAVDemoActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
         presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             private final String robotName = getString(R.string.robotName);
@@ -176,7 +190,6 @@ public class MainActivity extends BaseActivity {
 
         tt.start();
     }
-
     private void threadToUiToast(final String message, final int toastLength) {
         runOnUiThread(new Runnable() {
             public void run() {

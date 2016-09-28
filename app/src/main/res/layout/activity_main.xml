@@ -20,7 +20,7 @@
         android:elevation="4dp"
         android:navigationIcon="@drawable/ic_action_settings"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/AppTheme.Settings"/>
+        app:popupTheme="@style/AppTheme.Settings" />
 
     <ImageButton
         android:layout_width="200dp"
@@ -30,10 +30,9 @@
         android:src="@drawable/siri"
         android:scaleType="centerCrop"
         android:background="#51cdb5"
-        android:layout_marginTop="182dp"
-        android:layout_below="@+id/toolbar"
-        android:layout_toEndOf="@+id/toolbar"
-        android:layout_marginStart="128dp" />
+        android:layout_marginTop="99dp"
+        android:layout_below="@+id/ZIMEButton"
+        android:layout_toEndOf="@+id/toolbar" />
 
     <ImageButton
         android:layout_width="200dp"
@@ -42,11 +41,19 @@
         android:longClickable="true"
         android:src="@drawable/function"
         android:scaleType="centerCrop"
-        android:layout_marginEnd="130dp"
         android:background="#51cdb5"
+        android:layout_marginEnd="68dp"
         android:layout_alignTop="@+id/leftEyeButton"
+        android:layout_alignEnd="@+id/battery_view" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="202dp"
+        android:id="@+id/ZIMEButton"
+        android:background="#101211"
+        android:text="ZIME"
         android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/leftEyeButton" />
+        android:layout_alignBottom="@+id/toolbar" />
     <!--<com.jly.batteryView.BatteryView-->
         <!--android:id="@+id/battery_view"-->
         <!--android:layout_width="wrap_content"-->
