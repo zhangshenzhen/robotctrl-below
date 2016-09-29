@@ -59,4 +59,5 @@ dependencies {
     compile files('libs/hcicloud_recorder-5.0.jar')
     compile files('libs/json-lib-2.4-jdk15.jar')
     compile files('libs/hcicloud_player-5.0.jar')
+    compile files('libs/javabase64-1.3.1.jar')
 }
