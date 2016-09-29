@@ -70,4 +70,12 @@
             android:layout_toEndOf="@+id/leftEyeButton"
             android:layout_marginStart="360dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID CARD"
+        android:id="@+id/IDButton"
+        android:layout_below="@+id/ZIMEButton"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
