@@ -622,9 +622,9 @@ public class QuestTestActivity extends BaseActivity {
     }
 
     private void initMsgs(){
-        Msg msg1=new Msg(R.drawable.head_robot,"欢迎使用南大电子智能机器人，请问有什么问题？", Msg.TYPE_RECEIVED);
+        Msg msg1=new Msg(R.drawable.head_robot,"欢迎使用红石智能机器人，请问有什么问题？", Msg.TYPE_RECEIVED);
         msgList.add(msg1);
-        synth("欢迎使用南大电子智能机器人，请问有什么问题？");
+        synth("欢迎使用红石智能机器人，请问有什么问题？");
     }
     Handler handler = new Handler() {
         @Override

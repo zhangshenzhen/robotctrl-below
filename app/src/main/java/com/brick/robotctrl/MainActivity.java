@@ -103,14 +103,14 @@ public class MainActivity extends BaseActivity {
         mBatteryView = (BatteryView) findViewById(R.id.battery_view);
         mBatteryView.setPower(SerialCtrl.batteryNum);
 
-        leftEyeButton = (ImageView) findViewById(R.id.leftEyeButton);
-        leftEyeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearTimerCount();
-                startActivity(new Intent().setClass(MainActivity.this, QuestTestActivity.class));
-            }
-        });
+//        leftEyeButton = (ImageView) findViewById(R.id.leftEyeButton);
+//        leftEyeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                clearTimerCount();
+//                startActivity(new Intent().setClass(MainActivity.this, QuestTestActivity.class));
+//            }
+//        });
 
         rightEyeButton = (ImageView) findViewById(R.id.rightEyeButton);
         rightEyeButton.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +129,7 @@ public class MainActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-        IDButton = (Button) findViewById(R.id    .IDButton);
+        IDButton = (Button)findViewById(R.id.IDButtonTest);
         IDButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
