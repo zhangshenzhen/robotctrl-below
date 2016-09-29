@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jly.batteryView.BatteryView;
+import com.jly.idcard.IDcard;
 import com.kjn.videoview.ADVideo;
 
 import java.io.File;
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity {
     SerialCtrl serialCtrl = null;
 
     Button ZIMEButton;
+    Button IDButton;
 
     DispQueueThread DispQueue=null;//刷新电压显示线程
     public BatteryView mBatteryView = null;
@@ -123,6 +125,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,ZIMEAVDemoActivity.class);
+                startActivity(intent);
+            }
+        });
+        IDButton = (Button) findViewById(R.id    .IDButton);
+        IDButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, IDcard.class);
                 startActivity(intent);
             }
         });
@@ -603,6 +613,7 @@ public class MainActivity extends BaseActivity {
                     Log.d(TAG, "handleMessage: ------------------Key:Message \tvalue:" + rlt);
                     if ( !rlt.equals("") ) {
                         SpeechService.startAction(MainActivity.this, rlt);
+                        SSDBTask.enableGetMessage = false;
                     }
                     break;
                 case SSDBTask.key_ApkUpdate :
