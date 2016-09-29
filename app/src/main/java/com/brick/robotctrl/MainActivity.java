@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import it.sauronsoftware.base64.Base64;
 import zime.ui.ZIMEAVDemoActivity;
 
 
@@ -286,6 +287,13 @@ public class MainActivity extends BaseActivity {
 //            }
         }
     };
+
+    public static String Base64Decode(String base64EncodedData) {
+
+        String base64EncodedBytes = Base64.decode(base64EncodedData);
+        Log.d(TAG, "Base64Decode: base64EncodedBytes " + base64EncodedBytes);
+        return base64EncodedBytes;
+    }
 
     // receive ssdb server info
     Handler handler = new Handler() {
@@ -612,7 +620,7 @@ public class MainActivity extends BaseActivity {
                     rlt=(String)msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:Message \tvalue:" + rlt);
                     if ( !rlt.equals("") ) {
-                        SpeechService.startAction(MainActivity.this, rlt);
+                        SpeechService.startAction(MainActivity.this, Base64Decode(rlt));
                         SSDBTask.enableGetMessage = false;
                     }
                     break;
