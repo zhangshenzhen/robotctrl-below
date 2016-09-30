@@ -74,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ID CARD"
-        android:id="@+id/IDButton"
+        android:id="@+id/IDButtonTest"
         android:layout_below="@+id/ZIMEButton"
         android:layout_alignParentEnd="true" />
 
