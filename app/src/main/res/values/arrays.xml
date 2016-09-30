@@ -67,4 +67,97 @@
         <item>ERROR</item>
         <item>FATAL/SYSTEM</item>
     </string-array>
+
+    <!--RG2-->
+    <string-array name="education">
+        <item>高中</item>
+        <item>中技</item>
+        <item>中专</item>
+        <item>大专</item>
+        <item>硕士</item>
+        <item>博士/博士后</item>
+        <item>MBA/EMBA</item>
+    </string-array>
+
+    <string-array name="residential_type">
+        <item>普通</item>
+        <item>商用</item>
+    </string-array>
+
+    <string-array name="company_type">
+        <item>机关、事业</item>
+        <item>大型国有股份制</item>
+        <item>外商独资</item>
+        <item>中外合作企业</item>
+        <item>私营、集体</item>
+        <item>个体</item>
+    </string-array>
+
+
+    <string-array name="user_post">
+        <item>机关事业类-厅局级以上</item>
+        <item>机关事业类-处级</item>
+        <item>机关事业类-科级</item>
+        <item>机关事业类-一般员工</item>
+        <item>机关事业类-临时工</item>
+        <item>其他类-企业负责人</item>
+        <item>其他类-高级管理人员</item>
+        <item>其他类-中高级管理人员</item>
+        <item>其他类-初级管理人员</item>
+        <item>其他类-一般人员</item>
+        <item>其他类-专业技术人员</item>
+        <item>其他类-临时工</item>
+    </string-array>
+
+
+    <string-array name="salary">
+        <item>15000元以下</item>
+        <item>15000元-19999元</item>
+        <item>20000元-24999元</item>
+        <item>25000元-29999元</item>
+        <item>30000元-39999元</item>
+        <item>40000元-49999元</item>
+        <item>50000元-79999元</item>
+        <item>80000元以上</item>
+    </string-array>
+
+    <string-array name="work_years">
+        <item>1年以下</item>
+        <item>1年</item>
+        <item>2年</item>
+        <item>3年</item>
+        <item>4年</item>
+        <item>5年</item>
+        <item>6年以上</item>
+    </string-array>
+
+    <string-array name="industry">
+        <item>金融/保险(一般从业人员)</item>
+        <item>金融/保险(销售人员)</item>
+        <item>政府机关</item>
+        <item>旅游/饭店/宾馆/娱乐</item>
+        <item>能源及通信服务</item>
+        <item>公共事业</item>
+        <item>邮政/交通运输/物流业</item>
+        <item>批发/零售/百货业</item>
+        <item>轻工业</item>
+        <item>房地产/基础建设/物管</item>
+        <item>国内贸易公司</item>
+        <item>制造业</item>
+        <item>律师/会计师/咨询/培训</item>
+        <item>进出口贸易</item>
+        <item>IT产业</item>
+        <item>媒体/出版/广告/文艺</item>
+        <item>医疗</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="company_personnel">
+        <item>10人以下</item>
+        <item>10人-49人</item>
+        <item>50人-99人</item>
+        <item>100人-500人</item>
+        <item>500人-999人</item>
+        <item>1000人以上</item>
+    </string-array>
 </resources>
