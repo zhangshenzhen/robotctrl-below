@@ -448,7 +448,6 @@ public class SSDBTask extends TimerTask {
                     if( enableGetMessage ) {
                         try {
                             byte[] rlt = ssdbClient.hget(robotName, event[Key_Message]);
-                            ssdbClient.hset(robotName, event[Key_Message], "");
                             if (rlt != null) {
                                 Message message = new Message();
                                 message.what = Key_Message;
