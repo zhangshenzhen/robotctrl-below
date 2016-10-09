@@ -141,7 +141,7 @@ public class QuestTestActivity extends BaseActivity {
 
 
         adapter=new MsgAdapter(QuestTestActivity.this,R.layout.msg_item,msgList);
-        msgListView=(ListView)findViewById(R.id.msg_list_view);
+        msgListView=(ListView)findViewById(R.id.msg_list_view);//128行指定了加载的范围
         msgListView.setAdapter(adapter);
 
         mAccountInfo = AccountInfo.getInstance();
@@ -248,7 +248,7 @@ public class QuestTestActivity extends BaseActivity {
 //                Log.d("recorder", "press1");
 //                gf2.setClickable(false);
 //                gf2.setEnabled(false);
-                if(isFastDoubleClick()) {
+                if(isFastDoubleClick()) {//时间足够长则返回真
                     if(mTtsPlayer.canStop()){
                         mTtsPlayer.stop();
                     }
