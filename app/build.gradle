@@ -11,6 +11,7 @@ def buildTime() {
     return df.format(new Date())
 }
 
+
 android {
     compileSdkVersion 22
     buildToolsVersion "23.0.3"

@@ -13,7 +13,6 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -41,6 +40,7 @@ import java.util.TimerTask;
 
 import it.sauronsoftware.base64.Base64;
 import zime.ui.ZIMEAVDemoActivity;
+import zime.ui.ZIMEAVDemoService;
 
 
 public class MainActivity extends BaseActivity {
@@ -200,7 +200,12 @@ public class MainActivity extends BaseActivity {
         AboutActivity.MyThread tt = about.new MyThread(ssdbTask.robotName);
 
         tt.start();
+
+       Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
+        startService(startIntent); // 启动服务
+        Log.d(TAG, "ZIMEService");
     }
+
     private void threadToUiToast(final String message, final int toastLength) {
         runOnUiThread(new Runnable() {
             public void run() {

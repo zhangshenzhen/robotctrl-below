@@ -203,6 +203,9 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
 
+        <service android:name="zime.ui.ZIMEAVDemoService">
+        </service>
+
     </application>
 
 </manifest>

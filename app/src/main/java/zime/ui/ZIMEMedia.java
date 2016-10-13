@@ -154,8 +154,8 @@ public class ZIMEMedia {
 				}
 			}
 
-			T_ZIMEVideoSwitchLevel[] levels = mZIMEConfig.GetAllResOfQualitySet();
-			resultCode = ZIMEVideoClientJNI.SetVideoQualityLevelSet(mChannelId, levels.length, levels);
+			//T_ZIMEVideoSwitchLevel[] levels = mZIMEConfig.GetAllResOfQualitySet();
+			//resultCode = ZIMEVideoClientJNI.SetVideoQualityLevelSet(mChannelId, levels.length, levels);
 			if(resultCode != 0){
 				Log.e(ZIMETAG, "SetVideoQualityLevelSet failed!, ret = " + resultCode);
 				return;

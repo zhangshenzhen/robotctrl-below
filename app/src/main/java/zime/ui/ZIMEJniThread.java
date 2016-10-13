@@ -76,7 +76,7 @@ public class ZIMEJniThread extends Thread
 
 
 
-				((ZIMEAVDemoActivity) mActivity).GetDownLinkQosToShow(DownLinkQos);
+				//((ZIMEAVDemoActivity) mActivity).GetDownLinkQosToShow(DownLinkQos);
 
 //		    	Log.e(ZIMETAG, "############# 音视频上行参数：" );
 //		    	Log.e(ZIMETAG, "############# A码率" + " " + uplinkAudioQosStat.iCurBitrate + " ,V码率" + uplinkVideoQosStat.iCurBitrate);
