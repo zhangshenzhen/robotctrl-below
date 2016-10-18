@@ -27,6 +27,21 @@ android {
             ldLibs "log"
         }
     }
+    signingConfigs {
+        release {
+            storeFile file("../signAPK/RobotCtrl.jks")
+            storePassword 'abc123'
+            keyAlias 'SignOfRobotCtrl'
+            keyPassword 'abc123'
+        }
+
+        debug {
+            storeFile file("../signAPK/RobotCtrl.jks")
+            storePassword 'abc123'
+            keyAlias 'SignOfRobotCtrl'
+            keyPassword 'abc123'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
