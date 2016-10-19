@@ -593,22 +593,31 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case SSDBTask.key_ApkUpdate :
-                    final String archiveFilePath = getInstallApkFullPath();
-                    if ( !(archiveFilePath == null) ) {                 // 判断字符串是否为空要用==， 不要用equals方法
-                        Log.d(TAG, "run: start to install apk: " + archiveFilePath);
-                        Intent intentA = new Intent(Intent.ACTION_VIEW);
-                        intentA.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intentA.setDataAndType(Uri.fromFile(new File(archiveFilePath)), "application/vnd.android.package-archive");
-                        startActivity(intentA);
-//                        android.os.Process.killProcess(android.os.Process.myPid());
-                    } else {
-                        Log.d(TAG, "no apk need to install");
-                    }
+                    checkUpdateApk();
                 default:
                     break;
             }
         }
     };
+
+    private void checkUpdateApk() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final String archiveFilePath = getInstallApkFullPath();
+                if ( !(archiveFilePath == null) ) {                 // 判断字符串是否为空要用==， 不要用equals方法
+                    Log.d(TAG, "run: start to install apk: " + archiveFilePath);
+                    Intent intentA = new Intent(Intent.ACTION_VIEW);
+                    intentA.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentA.setDataAndType(Uri.fromFile(new File(archiveFilePath)), "application/vnd.android.package-archive");
+                    startActivity(intentA);
+//                        android.os.Process.killProcess(android.os.Process.myPid());
+                } else {
+                    Log.d(TAG, "no apk need to install");
+                }
+            }
+        }).start();
+    }
 
     private String getInstallApkFullPath() {
         String apkDirPath = Environment.getExternalStorageDirectory().getPath()+"/Download";
