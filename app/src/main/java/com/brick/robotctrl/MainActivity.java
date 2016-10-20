@@ -13,7 +13,6 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -31,7 +30,10 @@ import android.widget.Toast;
 import com.jly.batteryView.BatteryView;
 import com.kjn.videoview.ADVideo;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
@@ -41,7 +43,6 @@ import java.util.TimerTask;
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
-
     ImageView leftEyeButton = null;
     ImageView rightEyeButton = null;
     SSDBTask ssdbTask = null;
@@ -607,11 +608,54 @@ public class MainActivity extends BaseActivity {
                 final String archiveFilePath = getInstallApkFullPath();
                 if ( !(archiveFilePath == null) ) {                 // 判断字符串是否为空要用==， 不要用equals方法
                     Log.d(TAG, "run: start to install apk: " + archiveFilePath);
-                    Intent intentA = new Intent(Intent.ACTION_VIEW);
-                    intentA.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intentA.setDataAndType(Uri.fromFile(new File(archiveFilePath)), "application/vnd.android.package-archive");
-                    startActivity(intentA);
+//                    Intent intentA = new Intent(Intent.ACTION_VIEW);
+//                    intentA.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    intentA.setDataAndType(Uri.fromFile(new File(archiveFilePath)), "application/vnd.android.package-archive");
+//                    startActivity(intentA);
 //                        android.os.Process.killProcess(android.os.Process.myPid());
+//                } else {
+//                    Log.d(TAG, "no apk need to install");
+//                }
+                    String[] args = { "pm", "install", "-r", archiveFilePath };
+                    String result = "";
+                    ProcessBuilder processBuilder = new ProcessBuilder(args);
+                    Process process = null;
+                    InputStream errIs = null;
+                    InputStream inIs = null;
+                    try {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        int read = -1;
+                        process = processBuilder.start();
+                        errIs = process.getErrorStream();
+                        while ((read = errIs.read()) != -1) {
+                            baos.write(read);
+                        }
+                        baos.write('*');
+                        inIs = process.getInputStream();
+                        while ((read = inIs.read()) != -1) {
+                            baos.write(read);
+                        }
+                        byte[] data = baos.toByteArray();
+                        result = new String(data);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            if (errIs != null) {
+                                errIs.close();
+                            }
+                            if (inIs != null) {
+                                inIs.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (process != null) {
+                            process.destroy();
+                        }
+                    }
                 } else {
                     Log.d(TAG, "no apk need to install");
                 }

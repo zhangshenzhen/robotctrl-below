@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.RECEIVE_HOME"/>
     <!--<uses-permission android:name="android.permission.SHUTDOWN"/>-->
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
 
 
     <application
