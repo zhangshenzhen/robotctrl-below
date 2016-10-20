@@ -11,7 +11,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -19,6 +18,7 @@ import android.view.View;
 import android.widget.VideoView;
 
 import com.kjn.videoview.ADVideo;
+import com.zhangyt.log.LogUtil;
 
 public class ADActivity extends Activity {
     private final String TAG = "ADActivity";
@@ -50,7 +50,7 @@ public class ADActivity extends Activity {
         setContentView(R.layout.activity_ad);
         Intent intent = getIntent();
         fileName = intent.getStringExtra("fileName");
-        Log.d(TAG, "onCreate: filename" + fileName);
+        LogUtil.d(TAG, "onCreate: filename" + fileName);
         mode = intent.getStringExtra("mode");
 
         // videoview 实现
@@ -93,7 +93,7 @@ public class ADActivity extends Activity {
             switch (msg.what) {
                 case singleOver:
                     String percentString = "100%";
-                    Log.d(TAG, "进度: " + percentString);
+                    LogUtil.d(TAG, "进度: " + percentString);
                     Message message = new Message();
                     message.what = videoInfo;
                     message.obj = percentString;
@@ -106,7 +106,7 @@ public class ADActivity extends Activity {
                     duration = videoView.getDuration();
                     int percent = ((currentPosition * 100) / duration);
                     String percentprocessString = String.valueOf(percent)  + "%";
-                    Log.d(TAG, "进度: " + percentprocessString);
+                    LogUtil.d(TAG, "进度: " + percentprocessString);
                     Message message1 = new Message();
                     message1.what = videoInfo;
                     message1.obj = fileName+" "+percentprocessString;
@@ -140,7 +140,7 @@ public class ADActivity extends Activity {
 
 //    @Override
 //    public boolean onTouch(View v, MotionEvent event){
-//        Log.d(TAG, "onTouch: to MainActivity");
+//        LogUtil.d(TAG, "onTouch: to MainActivity");
 //        startActivity(new Intent().setClass(ADActivity.this, MainActivity.class));
 //        return true;
 //    }
@@ -168,7 +168,7 @@ public class ADActivity extends Activity {
                 try {
 //                    File file = new File(videoPath);
 //                    File[] files = file.listFiles();
-//                    Log.d(TAG, "filename: " + fileName);
+//                    LogUtil.d(TAG, "filename: " + fileName);
 //                    for (int i = 0; i < files.length; i++) {
 //                        if (files[i].getAbsolutePath().endsWith(fileName)) {
 //                            videoPath = files[i].toString();
@@ -179,13 +179,13 @@ public class ADActivity extends Activity {
 //                        }
 //                    }
 //                    videoView.setVideoPath(videoPath);
-//                    Log.d(TAG, "play: starting play: " + videoPath);
+//                    LogUtil.d(TAG, "play: starting play: " + videoPath);
 //                    videoView.start();
                     if(adVideo.getFiles(videoPath)){
                         adVideo.playSingleCycleWhat(fileName);
                     }
                 } catch (Exception e) {
-                    Log.d("getfile", "查找异常!");
+                    LogUtil.d("getfile", "查找异常!");
                     System.out.println(e.toString());
                     System.out.println(e.getMessage());
                     e.printStackTrace();
@@ -201,10 +201,10 @@ public class ADActivity extends Activity {
                 try {
                     if (adVideo.getFiles(videoPath)) {
                         adVideo.playSingleWhat(fileName);
-                        Log.d(TAG, "videoPlayTargetSingle: " + isOver);
+                        LogUtil.d(TAG, "videoPlayTargetSingle: " + isOver);
                     }
                 } catch (Exception e) {
-                    Log.d("getfile", "查找异常!");
+                    LogUtil.d("getfile", "查找异常!");
                     System.out.println(e.toString());
                     System.out.println(e.getMessage());
                     e.printStackTrace();
@@ -217,7 +217,7 @@ public class ADActivity extends Activity {
     {
         videoPath = Environment.getExternalStorageDirectory()
                 .getPath()+"/Movies";
-        Log.d(TAG,"name"+ADActivity.fileName);
+        LogUtil.d(TAG,"name"+ADActivity.fileName);
         flag = adVideo.getFiles(videoPath);
         if (flag) {
             adVideo.playCycleWhat(str);
@@ -230,19 +230,19 @@ public class ADActivity extends Activity {
 
     public void videopause(){
         adVideo.pause();
-        Log.d(TAG, "videopause: ");
+        LogUtil.d(TAG, "videopause: ");
     }
 
     @Override
     protected void onStop() {
-        Log.i(TAG, "onStop");
+        LogUtil.i(TAG, "onStop");
         super.onStop();
         finish();
     }
 
     @Override
     protected void onRestart() {
-        Log.i(TAG, "onRestart");
+        LogUtil.i(TAG, "onRestart");
         View decorView = getWindow().getDecorView();
 //        Hide both the navigation bar and the status bar.
 //        SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
@@ -256,7 +256,7 @@ public class ADActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        Log.i(TAG, "onDestroy");
+        LogUtil.i(TAG, "onDestroy");
         super.onDestroy();
     }
 
@@ -283,7 +283,7 @@ public class ADActivity extends Activity {
 
         @Override
         public boolean onSingleTapConfirmed (MotionEvent e){
-            Log.d(TAG, "onTouch: to MainActivity");
+            LogUtil.d(TAG, "onTouch: to MainActivity");
 //            startActivity(new Intent().setClass(ADActivity.this, ExpressionActivity.class));
             return true;
         }

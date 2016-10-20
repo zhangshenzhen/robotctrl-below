@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.view.View.OnClickListener;
 
 import com.ant.liao.GifView;
 import com.ant.liao.GifView.GifImageType;
+import com.zhangyt.log.LogUtil;
 
 public class ExpressionActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "ExpressionActivity";
@@ -76,7 +76,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 
 		screenWidth = getWindowManager().getDefaultDisplay().getWidth();       // 屏幕宽（像素，如：480px）
 		screenHeight = getWindowManager().getDefaultDisplay().getHeight();      // 屏幕高（像素，如：800p）
-		Log.e("TAG" + "  getDefaultDisplay", "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);
+		LogUtil.e("TAG" + "  getDefaultDisplay", "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);
 
 		Intent intent = getIntent();
 //		index = intent.getStringExtra("index");
@@ -119,23 +119,23 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 		public boolean onSingleTapConfirmed(MotionEvent e) {
 			float x = e.getX();
 			float y = e.getY();
-			Log.d(TAG, "onTouch: x:" + x + "y:" + y);
+			LogUtil.d(TAG, "onTouch: x:" + x + "y:" + y);
 
 			if (y < screenHeight / 2) {
 				if (x < screenWidth / 2) {
 					System.arraycopy(mHitsL, 1, mHitsL, 0, mHitsL.length - 1);
 					mHitsL[mHitsL.length - 1] = SystemClock.uptimeMillis();
-					//Log.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
+					//LogUtil.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
 					if (mHitsL[0] >= (SystemClock.uptimeMillis() - 3000)) {
-						//Log.d(TAG,"onPreferenceClick:进入");
+						//LogUtil.d(TAG,"onPreferenceClick:进入");
 						startActivity(new Intent().setClass(ExpressionActivity.this, SettingsActivity.class));
 					}
 				} else {
 					System.arraycopy(mHitsR, 1, mHitsR, 0, mHitsR.length - 1);
 					mHitsR[mHitsR.length - 1] = SystemClock.uptimeMillis();
-					//Log.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
+					//LogUtil.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
 					if (mHitsR[0] >= (SystemClock.uptimeMillis() - 3000)) {
-						//Log.d(TAG,"onPreferenceClick:进入");
+						//LogUtil.d(TAG,"onPreferenceClick:进入");
 						startActivity(new Intent().setClass(ExpressionActivity.this, AboutActivity.class));
 					}
 				}
@@ -146,7 +146,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 
 
 	public static void changeExpression(int index) {
-		Log.d(TAG, "changeExpression: current expression:" + currentIndex + "\tset expression:" + index);
+		LogUtil.d(TAG, "changeExpression: current expression:" + currentIndex + "\tset expression:" + index);
 		if ( currentIndex != index ) {
 			System.gc();
 			gifView.setGifImage(EXPRESSION.getExpression(index).id);
@@ -182,7 +182,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 	}
     @Override
     protected void onStop() {
-        Log.i(TAG, "onStop");
+        LogUtil.i(TAG, "onStop");
         currentIndex = -1;		// restart expression
         super.onStop();
     }

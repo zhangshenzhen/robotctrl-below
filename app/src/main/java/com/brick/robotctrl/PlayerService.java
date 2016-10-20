@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.IBinder;
-import android.util.Log;
+
+import com.zhangyt.log.LogUtil;
+
 import java.io.File;
 
 @SuppressLint("NewApi")
@@ -32,7 +34,7 @@ public class PlayerService extends Service {
         }
 //        path = intent.getStringExtra("url");
         path = mp3Url;
-        Log.d(TAG, "onStartCommand: " + path);
+        LogUtil.d(TAG, "onStartCommand: " + path);
 //        int msg = intent.getIntExtra("MSG", 0);
 //        if(msg == AppConstant.PlayerMsg.PLAY_MSG) {
         play(0);
@@ -59,7 +61,7 @@ public class PlayerService extends Service {
      * 暂停音乐
      */
     private void pause() {
-        Log.d(TAG, "pause: ");
+        LogUtil.d(TAG, "pause: ");
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             isPause = true;
@@ -70,7 +72,7 @@ public class PlayerService extends Service {
      * 停止音乐
      */
     private void stop() {
-        Log.d(TAG, "stop: ");
+        LogUtil.d(TAG, "stop: ");
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             try {
@@ -84,7 +86,7 @@ public class PlayerService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy: ");
+        LogUtil.d(TAG, "onDestroy: ");
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -114,7 +116,7 @@ public class PlayerService extends Service {
     public static void startAction(Context context, String url) {
         File file = new File(url);
         if ( !file.exists() ) {
-            Log.d(TAG, "startPlayerService: File:" + url + " not exist! startPlayerService no effective");
+            LogUtil.d(TAG, "startPlayerService: File:" + url + " not exist! startPlayerService no effective");
             return;
         }
         stopAction(context);
@@ -123,14 +125,14 @@ public class PlayerService extends Service {
 //        playIntent.putExtra("url", url);
         mp3Url = url;
 //        intent.putExtra("MSG", 0);
-        Log.d("", "startPlayerService: starting PlayService");
+        LogUtil.d("", "startPlayerService: starting PlayService");
         playIntent.setClass(context, PlayerService.class);
         context.startService(playIntent);       //启动服务
     }
 
     public static void stopAction(Context context) {
         Intent stopIntent = new Intent();
-        Log.d("", "stopPlayerService: starting stopService");
+        LogUtil.d("", "stopPlayerService: starting stopService");
         stopIntent.setClass(context, PlayerService.class);
         context.stopService(stopIntent);       //关闭服务
     }

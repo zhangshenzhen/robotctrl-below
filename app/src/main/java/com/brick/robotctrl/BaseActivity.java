@@ -1,17 +1,16 @@
 package com.brick.robotctrl;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.zhangyt.log.LogUtil;
 
 import java.io.IOException;
 
@@ -66,20 +65,20 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        Log.d(TAG, "onStop: ");
+        LogUtil.d(TAG, "onStop: ");
         super.onStop();
     }
 
     @Override
     protected void onRestart() {
-        Log.d(TAG, "onRestart: ");
+        LogUtil.d(TAG, "onRestart: ");
         super.onRestart();
     }
 
     @Override
     protected void onResume() {
         clearTimerCount();
-        Log.d(TAG, "onResume: ");
+        LogUtil.d(TAG, "onResume: ");
         View decorView = getWindow().getDecorView();
 //        Hide both the navigation bar and the status bar.
 //        SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
@@ -93,7 +92,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "onDestroy: ");
+        LogUtil.d(TAG, "onDestroy: ");
         super.onDestroy();
     }
 
@@ -128,23 +127,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         public boolean onSingleTapConfirmed(MotionEvent e) {
             float x = e.getX();
             float y = e.getY();
-            Log.d(TAG, "onTouch: x:" + x + "y:" + y);
+            LogUtil.d(TAG, "onTouch: x:" + x + "y:" + y);
 
             if (y < screenHeight / 2) {
                 if (x < screenWidth / 2) {
                     System.arraycopy(mHitsL, 1, mHitsL, 0, mHitsL.length - 1);
                     mHitsL[mHitsL.length - 1] = SystemClock.uptimeMillis();
-                    //Log.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
+                    //LogUtil.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
                     if (mHitsL[0] >= (SystemClock.uptimeMillis() - 3000)) {
-                        Log.d(TAG,"onPreferenceClick:shutdown");
+                        LogUtil.d(TAG,"onPreferenceClick:shutdown");
                         onShutdown();
                     }
                 } else {
                     System.arraycopy(mHitsR, 1, mHitsR, 0, mHitsR.length - 1);
                     mHitsR[mHitsR.length - 1] = SystemClock.uptimeMillis();
-                    //Log.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
+                    //LogUtil.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
                     if (mHitsR[0] >= (SystemClock.uptimeMillis() - 3000)) {
-                        Log.d(TAG,"onPreferenceClick:reboot");
+                        LogUtil.d(TAG,"onPreferenceClick:reboot");
                         onReboot();
                     }
                 }
@@ -208,7 +207,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        Log.d(TAG, "onReboot: start to reboot");
+//        LogUtil.d(TAG, "onReboot: start to reboot");
 //        PowerManager pManager=(PowerManager) getSystemService(Context.POWER_SERVICE);
 //        pManager.reboot("");
     }

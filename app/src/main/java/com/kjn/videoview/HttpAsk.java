@@ -1,18 +1,12 @@
 package com.kjn.videoview;
 
-import android.util.Log;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -44,7 +38,7 @@ public class HttpAsk {
             }
             is.close();
             result=sb.toString();
-//            Log.d(TAG, "posturl: " + result);
+//            LogUtil.d(TAG, "posturl: " + result);
         }catch(Exception e){
             return "Fail to convert net stream!";
         }

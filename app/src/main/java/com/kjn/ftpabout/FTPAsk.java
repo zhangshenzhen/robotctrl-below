@@ -1,6 +1,6 @@
 package com.kjn.ftpabout;
 
-import android.util.Log;
+import com.zhangyt.log.LogUtil;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPClientConfig;
@@ -55,7 +55,7 @@ public class FTPAsk {
         ftpClient.connect(hostName,2121);
         // 获取响应值
         reply = ftpClient.getReplyCode();
-        Log.d(TAG, "openConnect: " + reply);
+        LogUtil.d(TAG, "openConnect: " + reply);
         if (!FTPReply.isPositiveCompletion(reply)) {
             // 断开连接
             ftpClient.disconnect();
@@ -105,15 +105,15 @@ public class FTPAsk {
     public boolean downloadSingle(File localFile, FTPFile ftpFile) throws IOException {
         boolean flag = false;
         // 创建输出流
-        Log.d(TAG, "downloadSingle: 1");
+        LogUtil.d(TAG, "downloadSingle: 1");
         // 统计流量
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(localFile));
         response += ftpFile.getSize();
         // 下载单个文件
-        Log.d(TAG, "downloadSingle: 2");
+        LogUtil.d(TAG, "downloadSingle: 2");
         flag = ftpClient.retrieveFile(localFile.getName(), out);
         // 关闭文件流
-        Log.d(TAG, "downloadSingle: 3");
+        LogUtil.d(TAG, "downloadSingle: 3");
         out.close();
         return flag;
     }
@@ -123,7 +123,7 @@ public class FTPAsk {
         FTPFile[] files = ftpClient.listFiles(remotePath);
         // 遍历并且添加到集合
         for (FTPFile file : files) {
-            Log.d(TAG, "listFiles: " + files);
+            LogUtil.d(TAG, "listFiles: " + files);
             list.add(file);
         }
         return list;
@@ -156,7 +156,7 @@ public class FTPAsk {
                     long lRemoteSize = ftpFiles[0].getSize();
                     long localSize = file.length();
                     if(localSize>=lRemoteSize){
-                        Log.d(TAG, "download: 文件已存在" + fileName);
+                        LogUtil.d(TAG, "download: 文件已存在" + fileName);
                     }
                     else {
                         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file, true));

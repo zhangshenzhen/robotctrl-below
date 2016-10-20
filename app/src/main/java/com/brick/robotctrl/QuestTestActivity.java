@@ -1,14 +1,11 @@
 package com.brick.robotctrl;
 
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,6 +36,7 @@ import com.sinovoice.hcicloudsdk.player.TTSCommonPlayer;
 import com.sinovoice.hcicloudsdk.player.TTSPlayerListener;
 import com.sinovoice.hcicloudsdk.recorder.ASRRecorderListener;
 import com.sinovoice.hcicloudsdk.recorder.RecorderEvent;
+import com.zhangyt.log.LogUtil;
 
 import org.apache.commons.httpclient.HttpException;
 
@@ -175,7 +173,7 @@ public class QuestTestActivity extends BaseActivity {
         // 加载信息,返回InitParam, 获得配置参数的字符串
         InitParam initParam = getInitParam();
         String strConfig = initParam.getStringConfig();
-        Log.i(TAG,"\nhciInit config:" + strConfig);
+        LogUtil.i(TAG,"\nhciInit config:" + strConfig);
 
         // 初始化
         int errCode = HciCloudSys.hciInit(strConfig, this);
@@ -199,7 +197,7 @@ public class QuestTestActivity extends BaseActivity {
 //        flag = isPlayerInitSuccess;
         if (!isPlayerInitSuccess) {
             Toast.makeText(this, "播放器初始化失败", Toast.LENGTH_LONG).show();
-            Log.d(TAG, "播放器初始化失败");
+            LogUtil.d(TAG, "播放器初始化失败");
             return;
         }
 
@@ -210,7 +208,7 @@ public class QuestTestActivity extends BaseActivity {
         if (!capKey.equals("asr.cloud.grammar")) {
             gf2.setEnabled(true);
         }
-        Log.e("recorder", "over");
+        LogUtil.e("recorder", "over");
         // 初始化录音机
 
         mAsrRecorder = new ASRRecorder();
@@ -218,11 +216,11 @@ public class QuestTestActivity extends BaseActivity {
         // 配置初始化参数
         AsrInitParam asrInitParam = new AsrInitParam();
         String dataPath = getFilesDir().getPath().replace("files", "lib");
-        Log.i(TAG,"dataPath" + dataPath);
+        LogUtil.i(TAG,"dataPath" + dataPath);
         asrInitParam.addParam(AsrInitParam.PARAM_KEY_INIT_CAP_KEYS, capKey);
         asrInitParam.addParam(AsrInitParam.PARAM_KEY_DATA_PATH, dataPath);
         asrInitParam.addParam(AsrInitParam.PARAM_KEY_FILE_FLAG, AsrInitParam.VALUE_OF_PARAM_FILE_FLAG_ANDROID_SO);
-        Log.v(TAG, "init parameters:" + asrInitParam.getStringConfig());
+        LogUtil.v(TAG, "init parameters:" + asrInitParam.getStringConfig());
 
         // 设置初始化参数
         mAsrRecorder.init(asrInitParam.getStringConfig(),
@@ -245,7 +243,7 @@ public class QuestTestActivity extends BaseActivity {
         gf2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Log.d("recorder", "press1");
+//                LogUtil.d("recorder", "press1");
 //                gf2.setClickable(false);
 //                gf2.setEnabled(false);
                 if(isFastDoubleClick()) {//时间足够长则返回真
@@ -257,7 +255,7 @@ public class QuestTestActivity extends BaseActivity {
                         PlayerService.stopAction(QuestTestActivity.this);
                         mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
                     } else {
-                        Log.e("recorder", "录音机未处于空闲状态，请稍等");
+                        LogUtil.e("recorder", "录音机未处于空闲状态，请稍等");
                     }
                 }
             }
@@ -330,23 +328,23 @@ public class QuestTestActivity extends BaseActivity {
         @Override
         public void onPlayerEventPlayerError(TTSCommonPlayer.PlayerEvent playerEvent,
                                              int errorCode) {
-            Log.i(TAG, "onError " + playerEvent.name() + " code: " + errorCode);
+            LogUtil.i(TAG, "onError " + playerEvent.name() + " code: " + errorCode);
         }
 
         @Override
         public void onPlayerEventProgressChange(TTSCommonPlayer.PlayerEvent playerEvent,
                                                 int start, int end) {
-            Log.i(TAG, "onProcessChange " + playerEvent.name() + " from "
+            LogUtil.i(TAG, "onProcessChange " + playerEvent.name() + " from "
                     + start + " to " + end);
         }
 
         @Override
         public void onPlayerEventStateChange(TTSCommonPlayer.PlayerEvent playerEvent) {
-            Log.i(TAG, "onStateChange " + playerEvent.name());
-//            Log.d(TAG, "onPlayerEventStateChange: hehe");
+            LogUtil.i(TAG, "onStateChange " + playerEvent.name());
+//            LogUtil.d(TAG, "onPlayerEventStateChange: hehe");
 //            if(playerEvent.name().equals( TTSCommonPlayer.PlayerEvent.PLAYER_EVENT_END)){
 ////                gf2.setClickable(true);
-//                Log.d(TAG, "synth: haha");
+//                LogUtil.d(TAG, "synth: haha");
 //            }
         }
 
@@ -390,20 +388,20 @@ public class QuestTestActivity extends BaseActivity {
                             @Override
                             public void run() {
                                 Jason jts = new Jason();
-                                Log.i(TAG, "进入新线程");
+                                LogUtil.i(TAG, "进入新线程");
                                 try {
                                     result = jts.ask(query);                               //把网络访问的代码放在这里
                                     if (result != null) {
-                                        Log.i(TAG, "进入解析");
+                                        LogUtil.i(TAG, "进入解析");
                                         Gson gson = new Gson();
                                         Type type = new TypeToken<JsonBean>() {
                                         }.getType();
                                         JsonBean jsonBean = gson.fromJson(result, type);
                                         System.out.println(jsonBean.getResult());
                                         resultShow = jsonBean.getSingleNode().getAnswerMsg();
-                                        Log.d(TAG, "run: " + resultShow);
+                                        LogUtil.d(TAG, "run: " + resultShow);
                                         Msg msg = new Msg(R.drawable.head_robot, resultShow, Msg.TYPE_RECEIVED);
-                                        Log.d(TAG, "Tts");
+                                        LogUtil.d(TAG, "Tts");
                                         synth(resultShow);
                                         msgList.add(msg);
                                         handler.sendEmptyMessage(change);
@@ -418,7 +416,7 @@ public class QuestTestActivity extends BaseActivity {
 //                        gf2.setClickable(true);
                     }
                 } else {
-                    Log.d(TAG, "onRecorderEventRecogFinsh: kong");
+                    LogUtil.d(TAG, "onRecorderEventRecogFinsh: kong");
                 }
             }
         }
@@ -475,12 +473,12 @@ public class QuestTestActivity extends BaseActivity {
 	public void onStop() {
         if(mAsrRecorder != null) {
             mAsrRecorder.cancel();
-            Log.d(TAG, "onStop: okkk");
+            LogUtil.d(TAG, "onStop: okkk");
         }
         if(mTtsPlayer.canStop()){
             mTtsPlayer.stop();
         }
-        Log.d(TAG, "onStop: ok");
+        LogUtil.d(TAG, "onStop: ok");
         super.onStop();
 	}
 
@@ -491,7 +489,7 @@ public class QuestTestActivity extends BaseActivity {
             mAsrRecorder.release();
             HciCloudSys.hciRelease();
         }
-        Log.i(TAG, "onDestroy()");
+        LogUtil.i(TAG, "onDestroy()");
         super.onDestroy();
     }
 
@@ -512,12 +510,12 @@ public class QuestTestActivity extends BaseActivity {
             Date date = new Date(objExpireTime.getExpireTime() * 1000);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                     Locale.CHINA);
-            Log.i(TAG, "expire time: " + sdf.format(date));
+            LogUtil.i(TAG, "expire time: " + sdf.format(date));
 
             if (objExpireTime.getExpireTime() * 1000 > System
                     .currentTimeMillis()) {
                 // 已经成功获取了授权,并且距离授权到期有充足的时间(>7天)
-                Log.i(TAG, "checkAuth success");
+                LogUtil.i(TAG, "checkAuth success");
                 return initResult;
             }
 
@@ -526,10 +524,10 @@ public class QuestTestActivity extends BaseActivity {
         // 获取过期时间失败或者已经过期
         initResult = HciCloudSys.hciCheckAuth();
         if (initResult == HciErrorCode.HCI_ERR_NONE) {
-            Log.i(TAG, "checkAuth success");
+            LogUtil.i(TAG, "checkAuth success");
             return initResult;
         } else {
-            Log.e(TAG, "checkAuth failed: " + initResult);
+            LogUtil.e(TAG, "checkAuth failed: " + initResult);
             return initResult;
         }
     }
@@ -612,7 +610,7 @@ public class QuestTestActivity extends BaseActivity {
                         PlayerService.stopAction(QuestTestActivity.this);
                         mAsrRecorder.start(asrConfig.getStringConfig(), grammar);
                     } else {
-                        Log.e("recorder", "录音机未处于空闲状态，请稍等");
+                        LogUtil.e("recorder", "录音机未处于空闲状态，请稍等");
                     }
                 }
             });

@@ -1,7 +1,8 @@
 package com.kjn.askquestion;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.zhangyt.log.LogUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -65,7 +66,7 @@ public class AccountInfoTts {
                     if (sInfo.length == 2){
                         if(sInfo[1] == null || sInfo[1].length() <= 0){
                             isSuccess = false;
-                            Log.e("AccountInfo", sInfo[0] + "is null");
+                            LogUtil.e("AccountInfo", sInfo[0] + "is null");
                             break;
                         }
                         mAccountMap.put(sInfo[0], sInfo[1]);

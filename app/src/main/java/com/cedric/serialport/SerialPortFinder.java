@@ -16,14 +16,14 @@
 
 package com.cedric.serialport;
 
+import com.zhangyt.log.LogUtil;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.util.Iterator;
 import java.util.Vector;
-
-import android.util.Log;
 
 public class SerialPortFinder {
 
@@ -43,7 +43,7 @@ public class SerialPortFinder {
 				int i;
 				for (i=0; i<files.length; i++) {
 					if (files[i].getAbsolutePath().startsWith(mDeviceRoot)) {
-						Log.d(TAG, "Found new device: " + files[i]);
+						LogUtil.d(TAG, "Found new device: " + files[i]);
 						mDevices.add(files[i]);
 					}
 				}
@@ -70,7 +70,7 @@ public class SerialPortFinder {
 				String drivername = l.substring(0, 0x15).trim();
 				String[] w = l.split(" +");
 				if ((w.length >= 5) && (w[w.length-1].equals("serial"))) {
-					Log.d(TAG, "Found new driver " + drivername + " on " + w[w.length-4]);
+					LogUtil.d(TAG, "Found new driver " + drivername + " on " + w[w.length-4]);
 					mDrivers.add(new Driver(drivername, w[w.length-4]));
 				}
 			}

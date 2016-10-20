@@ -1,7 +1,5 @@
 package com.ant.liao;
 
-import java.io.InputStream;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -12,8 +10,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
+
+import com.zhangyt.log.LogUtil;
+
+import java.io.InputStream;
 
 /**
  * GifView<br>
@@ -30,19 +31,19 @@ public class GifView extends View implements GifAction{
 	private GifDecoder gifDecoder = null;
 	/**当前要画的帧的图*/
 	private Bitmap currentImage = null;
-	
+
 	private boolean isRun = true;
-	
+
 	private boolean pause = false;
-	
+
 	private int showWidth = -1;
 	private int showHeight = -1;
 	private Rect rect = null;
-	
+
 	private DrawThread drawThread = null;
-	
+
 	private GifImageType animationType = GifImageType.SYNC_DECODER;
-	
+
 	/**
 	 * 解码过程中，Gif动画显示的方式<br>
 	 * 如果图片较大，那么解码过程会比较长，这个解码过程中，gif如何显示
@@ -53,28 +54,28 @@ public class GifView extends View implements GifAction{
 		WAIT_FINISH (0),
 		SYNC_DECODER (1),
 		COVER (2);
-		
+
 		GifImageType(int i){
 			nativeInt = i;
 		}
 		final int nativeInt;
 	}
-	
-	
+
+
 	public GifView(Context context) {
         super(context);
-        
+
     }
-    
+
     public GifView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
-    
+
     public GifView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        
+
     }
-    
+
 
     private void setGifDecoderImage(byte[] gif){
     	if(gifDecoder != null){
@@ -93,7 +94,7 @@ public class GifView extends View implements GifAction{
     	gifDecoder = new GifDecoder(is,this);
     	gifDecoder.start();
     }
-    
+
     /**
      * 以字节数据形式设置gif图片
      * @param gif 图片
@@ -101,7 +102,7 @@ public class GifView extends View implements GifAction{
     public void setGifImage(byte[] gif){
     	setGifDecoderImage(gif);
     }
-    
+
     /**
      * 以字节流形式设置gif图片
      * @param is 图片
@@ -109,7 +110,7 @@ public class GifView extends View implements GifAction{
     public void setGifImage(InputStream is){
     	setGifDecoderImage(is);
     }
-    
+
     /**
      * 以资源形式设置gif图片
      * @param resId gif图片的资源ID
@@ -119,7 +120,7 @@ public class GifView extends View implements GifAction{
     	InputStream is = r.openRawResource(resId);
     	setGifDecoderImage(is);
     }
-    
+
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if(gifDecoder == null)
@@ -140,7 +141,7 @@ public class GifView extends View implements GifAction{
         }
         canvas.restoreToCount(saveCount);
     }
-    
+
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     	int pleft = getPaddingLeft();
         int pright = getPaddingRight();
@@ -149,10 +150,10 @@ public class GifView extends View implements GifAction{
 
         int widthSize;
         int heightSize;
-        
+
         int w;
         int h;
-        
+
         if(gifDecoder == null){
         	w = 1;
         	h = 1;
@@ -160,19 +161,19 @@ public class GifView extends View implements GifAction{
         	w = gifDecoder.width;
         	h = gifDecoder.height;
         }
-        
+
         w += pleft + pright;
         h += ptop + pbottom;
-            
+
         w = Math.max(w, getSuggestedMinimumWidth());
         h = Math.max(h, getSuggestedMinimumHeight());
 
         widthSize = resolveSize(w, widthMeasureSpec);
         heightSize = resolveSize(h, heightMeasureSpec);
-        
+
         setMeasuredDimension(widthSize, heightSize);
     }
-    
+
     /**
      * 只显示第一帧图片<br>
      * 调用本方法后，gif不会显示动画，只会显示gif的第一帧图
@@ -184,20 +185,20 @@ public class GifView extends View implements GifAction{
     	currentImage = gifDecoder.getImage();
     	invalidate();
     }
-    
+
 
     public void showAnimation(){
     	if(pause){
     		pause = false;
     	}
     }
-    
+
 
     public void setGifImageType(GifImageType type){
     	if(gifDecoder == null)
     		animationType = type;
     }
-    
+
     /**
      * 设置要显示的图片的大小<br>
      * 当设置了图片大小 之后，会按照设置的大小来显示gif（按设置后的大小来进行拉伸或压缩）
@@ -215,7 +216,7 @@ public class GifView extends View implements GifAction{
 			rect.bottom = height;
     	}
     }
-    
+
     public void parseOk(boolean parseStatus,int frameIndex){
     	if(parseStatus){
     		if(gifDecoder != null){
@@ -225,7 +226,7 @@ public class GifView extends View implements GifAction{
     					if(gifDecoder.getFrameCount() > 1){
     	    				DrawThread dt = new DrawThread();
 							aa++;
-							Log.e("gif","aa="+aa);
+							LogUtil.e("gif","aa="+aa);
     	    	    		dt.start();
     	    			}else{
     	    				reDraw();
@@ -241,7 +242,7 @@ public class GifView extends View implements GifAction{
     						if(drawThread == null){
         						drawThread = new DrawThread();
 								aa++;
-								Log.e("gif","aa="+aa);
+								LogUtil.e("gif","aa="+aa);
         						drawThread.start();
         					}
     					}else{
@@ -259,27 +260,27 @@ public class GifView extends View implements GifAction{
     					if(drawThread == null){
     						drawThread = new DrawThread();
 							aa++;
-							Log.e("gif","aa="+aa);
+							LogUtil.e("gif","aa="+aa);
     						drawThread.start();
     					}
     				}
     				break;
     			}
- 
+
     		}else{
-    			Log.e("gif","parse error");
+    			LogUtil.e("gif","parse error");
     		}
-    		
+
     	}
     }
-    
+
     private void reDraw(){
     	if(redrawHandler != null){
 			Message msg = redrawHandler.obtainMessage();
 			redrawHandler.sendMessage(msg);
     	}
     }
-    
+
     private Handler redrawHandler = new Handler(){
     	public void handleMessage(Message msg) {
     		invalidate();
@@ -314,7 +315,7 @@ public class GifView extends View implements GifAction{
 						}
 					}catch (Exception e)
 					{
-						Log.d("TAG", "run: gifdecoder.next error");
+						LogUtil.d("TAG", "run: gifdecoder.next error");
 					}
 				} else {
 					SystemClock.sleep(50);

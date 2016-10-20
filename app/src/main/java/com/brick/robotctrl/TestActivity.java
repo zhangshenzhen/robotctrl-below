@@ -1,16 +1,9 @@
 package com.brick.robotctrl;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.RelativeLayout;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import com.zhangyt.log.LogUtil;
 
 public class TestActivity extends BaseActivity  {
     private final String TAG = "TestActivity";
@@ -27,20 +20,20 @@ public class TestActivity extends BaseActivity  {
 
     @Override
     protected void onStop() {
-        Log.i(TAG, "onStop");
+        LogUtil.i(TAG, "onStop");
         super.onStop();
     }
 
     @Override
     protected void onRestart() {
-        Log.i(TAG, "onRestart");
+        LogUtil.i(TAG, "onRestart");
         clearTimerCount();
         super.onRestart();
     }
 
     @Override
     protected void onDestroy() {
-        Log.i(TAG, "onDestroy");
+        LogUtil.i(TAG, "onDestroy");
         super.onDestroy();
     }
 }
