@@ -9,9 +9,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Looper;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import com.zhangyt.log.LogUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -80,7 +81,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         if (ex == null || mContext == null)
             return false;
         final String crashReport = getCrashReport(mContext, ex);
-        Log.i("error", crashReport);
+        LogUtil.i("error", crashReport);
         new Thread() {
             public void run() {
                 Looper.prepare();
@@ -123,7 +124,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private void sendAppCrashReport(final Context context,
                                     final String crashReport, final File file) {
         // TODO Auto-generated method stub
-        Log.d("sendAppCrash", "begin");
+        LogUtil.d("sendAppCrash", "begin");
         AlertDialog mDialog = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 //        builder.setIcon(android.R.drawable.personvoice);

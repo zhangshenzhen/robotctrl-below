@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +22,7 @@ import com.sinovoice.hcicloudsdk.common.tts.TtsConfig;
 import com.sinovoice.hcicloudsdk.common.tts.TtsInitParam;
 import com.sinovoice.hcicloudsdk.player.TTSCommonPlayer;
 import com.sinovoice.hcicloudsdk.player.TTSPlayerListener;
+import com.zhangyt.log.LogUtil;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -127,7 +127,7 @@ public class ShowSureQueryActivity extends BaseActivity {
         // 加载信息,返回InitParam, 获得配置参数的字符串
         InitParam initParam = getInitParam();
         String strConfig = initParam.getStringConfig();
-        Log.i(TAG, "\nhciInit config:" + strConfig);
+        LogUtil.i(TAG, "\nhciInit config:" + strConfig);
 
         // 初始化
         int errCode = HciCloudSys.hciInit(strConfig, this);
@@ -150,16 +150,16 @@ public class ShowSureQueryActivity extends BaseActivity {
         flag = isPlayerInitSuccess;
         if (!isPlayerInitSuccess) {
             Toast.makeText(this, "播放器初始化失败", Toast.LENGTH_LONG).show();
-            Log.d(TAG, "播放器初始化失败");
+            LogUtil.d(TAG, "播放器初始化失败");
             return;
         }
 
-        Log.d(TAG,"播放声音");
+        LogUtil.d(TAG,"播放声音");
         if (showText != null){
-            Log.d(TAG,"yao播放声音");
+            LogUtil.d(TAG,"yao播放声音");
             if (mTtsPlayer != null) {
                 try {
-                    Log.d(TAG,"播放声音ing");
+                    LogUtil.d(TAG,"播放声音ing");
                     synth(showText);
                 } catch (IllegalStateException ex) {
                     Toast.makeText(getBaseContext(), "状态错误", Toast.LENGTH_SHORT)
@@ -277,19 +277,19 @@ public class ShowSureQueryActivity extends BaseActivity {
         @Override
         public void onPlayerEventPlayerError(TTSCommonPlayer.PlayerEvent playerEvent,
                                              int errorCode) {
-            Log.i(TAG, "onError " + playerEvent.name() + " code: " + errorCode);
+            LogUtil.i(TAG, "onError " + playerEvent.name() + " code: " + errorCode);
         }
 
         @Override
         public void onPlayerEventProgressChange(TTSCommonPlayer.PlayerEvent playerEvent,
                                                 int start, int end) {
-            Log.i(TAG, "onProcessChange " + playerEvent.name() + " from "
+            LogUtil.i(TAG, "onProcessChange " + playerEvent.name() + " from "
                     + start + " to " + end);
         }
 
         @Override
         public void onPlayerEventStateChange(TTSCommonPlayer.PlayerEvent playerEvent) {
-            Log.i(TAG, "onStateChange " + playerEvent.name());
+            LogUtil.i(TAG, "onStateChange " + playerEvent.name());
         }
 
     }
@@ -310,12 +310,12 @@ public class ShowSureQueryActivity extends BaseActivity {
             Date date = new Date(objExpireTime.getExpireTime() * 1000);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
                     Locale.CHINA);
-            Log.i(TAG, "expire time: " + sdf.format(date));
+            LogUtil.i(TAG, "expire time: " + sdf.format(date));
 
             if (objExpireTime.getExpireTime() * 1000 > System
                     .currentTimeMillis()) {
                 // 已经成功获取了授权,并且距离授权到期有充足的时间(>7天)
-                Log.i(TAG, "checkAuth success");
+                LogUtil.i(TAG, "checkAuth success");
                 return initResult;
             }
 
@@ -324,10 +324,10 @@ public class ShowSureQueryActivity extends BaseActivity {
         // 获取过期时间失败或者已经过期
         initResult = HciCloudSys.hciCheckAuth();
         if (initResult == HciErrorCode.HCI_ERR_NONE) {
-            Log.i(TAG, "checkAuth success");
+            LogUtil.i(TAG, "checkAuth success");
             return initResult;
         } else {
-            Log.e(TAG, "checkAuth failed: " + initResult);
+            LogUtil.e(TAG, "checkAuth failed: " + initResult);
             return initResult;
         }
     }

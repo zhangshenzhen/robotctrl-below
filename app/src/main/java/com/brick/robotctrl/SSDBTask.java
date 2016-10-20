@@ -8,11 +8,11 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.kjn.videoview.HttpAsk;
 import com.udpwork.ssdb.SSDB;
+import com.zhangyt.log.LogUtil;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -118,26 +118,26 @@ public class SSDBTask extends TimerTask {
                 // 需要花时间计算的方法
                 try {
                     String str = HttpAsk.posturl("http://60.171.108.151:8076/rb/t_loginbyrobot.aspx?action=login&robotcode=r00004&password=123456");
-                    Log.d(TAG, "HttpAsk: " + str);
+                    LogUtil.d(TAG, "HttpAsk: " + str);
                     String[] strArray = str.split(" ");
 //					for(int i = 0; i < strArray.length; i++){
-//						Log.d(TAG, "strArray: " +strArray[i]);
+//						LogUtil.d(TAG, "strArray: " +strArray[i]);
 //					}
                     String ans = HttpAsk.posturl("http://60.171.108.151:8076/rb/t_getproperty.aspx?action=queryall&"+strArray[1]+"&"+strArray[2]);
                     String[] strArray1 = ans.split(" ");
 //					for(int i = 0; i < strArray1.length; i++){
-//						Log.d(TAG, "strArray: " +strArray1[i]);;
+//						LogUtil.d(TAG, "strArray: " +strArray1[i]);;
 //					}
                     String[] strArray3 = strArray1[1].split("=");
 //					for(int i = 0; i < strArray3.length; i++){
-//						Log.d(TAG, "strArray: " +strArray3[i]);;
+//						LogUtil.d(TAG, "strArray: " +strArray3[i]);;
 //					}
                     robotLocation = strArray3[1];
 
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
-                Log.d(TAG, "serverSite: " + robotLocation);
+                LogUtil.d(TAG, "serverSite: " + robotLocation);
             }
         }.start();
 //        pushFileList();
@@ -148,7 +148,7 @@ public class SSDBTask extends TimerTask {
                     .getPath()+"/Movies");
             File[] files = file.listFiles();
             if (files.length == 0){
-                Log.d(TAG, "pushFileList: 为空");
+                LogUtil.d(TAG, "pushFileList: 为空");
             }
             if (files.length > 1) {
                 videoPlayList = null;
@@ -168,7 +168,7 @@ public class SSDBTask extends TimerTask {
                         //  files[i].getAbsolutePath().endsWith(".vob")
                         // files[i].getAbsolutePath().endsWith(".wmv")
                             ) {
-                        Log.d(TAG, "getFiles: " + files[i].getAbsolutePath().substring(files[i].getAbsolutePath().lastIndexOf("/") + 1));
+                        LogUtil.d(TAG, "getFiles: " + files[i].getAbsolutePath().substring(files[i].getAbsolutePath().lastIndexOf("/") + 1));
                         if (videoPlayList != null) {
                             videoPlayList = videoPlayList + files[i].getAbsolutePath().substring(files[i].getAbsolutePath().lastIndexOf("/") + 1) + " ";
                         } else {
@@ -181,10 +181,10 @@ public class SSDBTask extends TimerTask {
             if(files.length == 1){
                 videoPlayList = files[0].getAbsolutePath().substring(files[0].getAbsolutePath().lastIndexOf("/") + 1);
             }
-            Log.d(TAG, "SSDBTask: "  + videoPlayList);
+            LogUtil.d(TAG, "SSDBTask: "  + videoPlayList);
             SSDBQuery(ACTION_HSET, event[Key_VideoPlayList], videoPlayList);
         } catch (Exception e) {
-            Log.d("getfile", "查找异常!");
+            LogUtil.d("getfile", "查找异常!");
             System.out.println(e.toString());
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -278,7 +278,7 @@ public class SSDBTask extends TimerTask {
     }
     @Override
     public synchronized void run() {
-//        Log.d(TAG, "run: stop:" + stop);
+//        LogUtil.d(TAG, "run: stop:" + stop);
 
         if (stop) {
             return;
@@ -293,15 +293,15 @@ public class SSDBTask extends TimerTask {
             if (cmd == null) {
                 return;
             }
-//            Log.i(TAG, "run: " + cmd);
+//            LogUtil.i(TAG, "run: " + cmd);
             switch (cmd.cmdType) {
                 case ACTION_CONNECT:
                     try {
-                        Log.d(TAG, "run: ACTION_CONNECT");
+                        LogUtil.d(TAG, "run: ACTION_CONNECT");
                         ssdbClient = new SSDB(serverIp, serverPort);
                         stop = false;
                     } catch (Exception e) {
-                        Log.d(TAG, "run: ACTION_CONNECT_FAILED");
+                        LogUtil.d(TAG, "run: ACTION_CONNECT_FAILED");
                         stop = true;
                         e.printStackTrace();
                     }

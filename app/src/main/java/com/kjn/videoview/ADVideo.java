@@ -3,10 +3,10 @@ package com.kjn.videoview;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.widget.VideoView;
 
 import com.brick.robotctrl.ADActivity;
+import com.zhangyt.log.LogUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class ADVideo {
 
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isDirectory()) {
-                    Log.i(TAG, "getFiles find Directory");
+                    LogUtil.i(TAG, "getFiles find Directory");
                     getFiles(files[i].getAbsolutePath());
                 } else {
                     if (
@@ -62,13 +62,13 @@ public class ADVideo {
                 flag = false;
             }
         } catch (Exception e) {
-            Log.d("getfile", "查找异常!");
+            LogUtil.d("getfile", "查找异常!");
             System.out.println(e.toString());
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
 //        for(int i = 0; i<videoList.size(); i++) {
-//            Log.d(TAG, "getFiles: " + videoList.get(i));
+//            LogUtil.d(TAG, "getFiles: " + videoList.get(i));
 //        }
         return flag;
     }
@@ -85,27 +85,27 @@ public class ADVideo {
     public void playCycleWhat(String str)//从那个字符串表示的视频开始播放并循环
     {
         index=findIndexOfStringInvideoList(str);
-        Log.d(TAG, "playCycleWhat: " + index);
+        LogUtil.d(TAG, "playCycleWhat: " + index);
         play();
     }
     public void playSingleCycleWhat(String str)
     {
         index=findIndexOfStringInvideoList(str);
         videoView.setVideoPath(videoList.get(index));             //获得第一个video的路径
-        Log.d(TAG, "play: starting play: " + videoList.get(index));
+        LogUtil.d(TAG, "play: starting play: " + videoList.get(index));
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 videoView.start();                                   //开始播放
                 contextHandler.sendEmptyMessage(PROGRESS);
-                Log.d(TAG, "onPrepared: PROGRESS");
+                LogUtil.d(TAG, "onPrepared: PROGRESS");
             }
         });
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
             @Override
             public void onCompletion(MediaPlayer mp) {//这是一个匿名类，对该父类mediaplayer.oncompletionlistener中的oncompletion进行了重写
                 videoView.setVideoPath(videoList.get(index));
-                Log.d(TAG, "over play: starting play: " + videoList.get(index));
+                LogUtil.d(TAG, "over play: starting play: " + videoList.get(index));
                 videoView.start();
             }
         });
@@ -113,13 +113,13 @@ public class ADVideo {
     public void playSingleWhat(String str) {
         index=findIndexOfStringInvideoList(str);
         videoView.setVideoPath(videoList.get(index));             //获得第一个video的路径
-        Log.d(TAG, "play: starting play: " + videoList.get(index));
+        LogUtil.d(TAG, "play: starting play: " + videoList.get(index));
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 videoView.start();                                   //开始播放
                 contextHandler.sendEmptyMessage(PROGRESS);
-                Log.d(TAG, "onPrepared: PROGRESS");
+                LogUtil.d(TAG, "onPrepared: PROGRESS");
             }
         });
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {  //监听视频播放块结束时，做next操作
@@ -137,17 +137,17 @@ public class ADVideo {
         if (++index >= videoList.size()) {
             index = 0;
         }
-        Log.d(TAG, "next: 正在播放" + videoList.get(index));
+        LogUtil.d(TAG, "next: 正在播放" + videoList.get(index));
         videoView.setVideoPath(videoList.get(index));
         videoView.start();
         path=videoList.get(index);
         ADActivity.fileName=path .substring(path .lastIndexOf("/") + 1, path .length());
-        //Log.d(TAG, "name"+ADActivity.fileName);
+        //LogUtil.d(TAG, "name"+ADActivity.fileName);
     }
 
     public void  play(){                     //从已经检索到的音乐列表之中中挑选一首音乐来播放,播完后下一首
         videoView.setVideoPath(videoList.get(index));             //获得第一个video的路径
-        Log.d(TAG, "play: starting play: " + videoList.get(index));
+        LogUtil.d(TAG, "play: starting play: " + videoList.get(index));
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {

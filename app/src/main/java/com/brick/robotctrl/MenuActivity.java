@@ -2,12 +2,12 @@ package com.brick.robotctrl;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.jly.idcard.IDcard;
+import com.zhangyt.log.LogUtil;
 
 
 public class MenuActivity extends BaseActivity {
@@ -41,7 +41,7 @@ public class MenuActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 clearTimerCount();
-                Log.d(TAG, "onClick: starting ADActivity");
+                LogUtil.d(TAG, "onClick: starting ADActivity");
                 startActivity(new Intent().setClass(MenuActivity.this, ADActivity.class));
             }
         });
@@ -79,20 +79,20 @@ public class MenuActivity extends BaseActivity {
 
     @Override
     protected void onStop() {
-        Log.i(TAG, "onStop");
+        LogUtil.i(TAG, "onStop");
         super.onStop();
     }
 
     @Override
     protected void onRestart() {
-        Log.i(TAG, "onRestart");
+        LogUtil.i(TAG, "onRestart");
         clearTimerCount();
         super.onRestart();
     }
 
     @Override
     protected void onDestroy() {
-        Log.i(TAG, "onDestroy");
+        LogUtil.i(TAG, "onDestroy");
         super.onDestroy();
     }
 }

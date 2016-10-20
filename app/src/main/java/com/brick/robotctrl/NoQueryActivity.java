@@ -3,12 +3,12 @@ package com.brick.robotctrl;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.ant.liao.GifView;
+import com.zhangyt.log.LogUtil;
 
 public class NoQueryActivity extends BaseActivity {
     private static final String TAG = "NoQueryActivity";
@@ -27,7 +27,7 @@ public class NoQueryActivity extends BaseActivity {
         text = (TextView) findViewById(R.id.showText);
         Intent intent = getIntent();
         showText = intent.getStringExtra("extra_showResult");
-        Log.d("extra_showResult", showText);
+        LogUtil.d("extra_showResult", showText);
         text.setText(showText);
         PlayerService.startAction(NoQueryActivity.this, mp3Url);
 
@@ -59,10 +59,10 @@ public class NoQueryActivity extends BaseActivity {
 
     @Override
     protected void onStop() {
-        Log.i(TAG, "onStop");
+        LogUtil.i(TAG, "onStop");
         Intent stopIntent = new Intent();
         stopIntent.putExtra("url", mp3Url);
-        Log.d(TAG, "onCreate: starting PlayService");
+        LogUtil.d(TAG, "onCreate: starting PlayService");
         stopIntent.setClass(NoQueryActivity.this, PlayerService.class);
         stopService(stopIntent);
         super.onStop();
@@ -70,7 +70,7 @@ public class NoQueryActivity extends BaseActivity {
 
     @Override
     protected void onRestart() {
-        Log.i(TAG, "onRestart");
+        LogUtil.i(TAG, "onRestart");
         askButton.setClickable(true);
         humanButton.setClickable(true);
         super.onRestart();

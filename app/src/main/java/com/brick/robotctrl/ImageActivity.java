@@ -12,9 +12,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.zhangyt.log.LogUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class ImageActivity extends Activity{
         setContentView(R.layout.activity_image);
         Intent intent = getIntent();
         fileName = intent.getStringExtra("fileName");
-        Log.d(TAG, "onCreate: filename" + fileName);
+        LogUtil.d(TAG, "onCreate: filename" + fileName);
         mode = intent.getStringExtra("mode");
         imageView = (ImageView)findViewById(R.id.imageView);
         imagefilePath = Environment.getExternalStorageDirectory()
@@ -83,7 +84,7 @@ public class ImageActivity extends Activity{
                     if (++index >= videoList.size()) {
                         index = 0;
                     }
-                    Log.d(TAG, "handleMessage: 正在显示++");
+                    LogUtil.d(TAG, "handleMessage: 正在显示++");
                     ActivityManager dm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                     ComponentName dn = dm.getRunningTasks(1).get(0).topActivity;//得到某一活动
                     if ( dn.getClassName().equals("com.brick.robotctrl.ImageActivity")) {
@@ -135,7 +136,7 @@ public class ImageActivity extends Activity{
 
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isDirectory()) {
-                    Log.i(TAG, "getFiles find Directory");
+                    LogUtil.i(TAG, "getFiles find Directory");
                     getFiles(files[i].getAbsolutePath());
                 } else {
                     if (files[i].getAbsolutePath().endsWith(".jpg")
@@ -148,13 +149,13 @@ public class ImageActivity extends Activity{
                 flag = false;
             }
         } catch (Exception e) {
-            Log.d("getfile", "查找异常!");
+            LogUtil.d("getfile", "查找异常!");
             System.out.println(e.toString());
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
 //        for(int i = 0; i<videoList.size(); i++) {
-//            Log.d(TAG, "getFiles: " + videoList.get(i));
+//            LogUtil.d(TAG, "getFiles: " + videoList.get(i));
 //        }
         return flag;
     }

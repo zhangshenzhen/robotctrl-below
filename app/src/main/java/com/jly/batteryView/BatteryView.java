@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -72,7 +71,7 @@ public class BatteryView extends View {
             int p_top = battery_top + battery_inside_margin;
             int p_right = p_left - battery_inside_margin + (int)((battery_width - battery_inside_margin) * power_percent);
             int p_bottom = p_top + battery_height - battery_inside_margin * 2;
-//            Log.d("get", "p_left "+p_left+"p_top "+p_top+"p_right "+p_right+"p_bottom "+p_bottom);
+//            LogUtil.d("get", "p_left "+p_left+"p_top "+p_top+"p_right "+p_right+"p_bottom "+p_bottom);
             Rect rect2 = new Rect(p_left, p_top, p_right , p_bottom);
             canvas.drawRect(rect2, paint2);
             batteryFlag = 0;

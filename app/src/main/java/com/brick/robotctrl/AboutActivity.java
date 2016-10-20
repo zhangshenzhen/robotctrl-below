@@ -2,16 +2,13 @@ package com.brick.robotctrl;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.widget.Button;
 
 import com.kjn.ftpabout.FTPAsk;
-import com.kjn.ftpabout.Result;
+import com.zhangyt.log.LogUtil;
 
 import org.apache.commons.net.ftp.FTPFile;
 
@@ -93,21 +90,21 @@ public class AboutActivity extends BaseActivity {
             ftp = new FTPAsk(hostName, userName, password);
             MLOCAL_PATH = Environment.getExternalStorageDirectory().getPath()+"/Movies";//local
             ALOCAL_PATH = Environment.getExternalStorageDirectory().getPath()+"/Download";//local
-            Log.d(TAG, "onCreate: 789");
+            LogUtil.d(TAG, "onCreate: 789");
             try {
 //            if (ftp != null) {
 //                // 关闭FTP服务
 //                ftp.closeConnect();
 //            }
                 // 打开FTP服务
-                Log.d(TAG, "onCreate: 开始打开");
+                LogUtil.d(TAG, "onCreate: 开始打开");
                 ftp.openConnect();
-                Log.d(TAG, "onCreate: 123");
+                LogUtil.d(TAG, "onCreate: 123");
                 File mfile = new File(MLOCAL_PATH);//local movies path
                 File[] mfiles = mfile.listFiles();//local download path
                 File afile = new File(ALOCAL_PATH);
                 File[] afiles = afile.listFiles();
-                Log.d(TAG, "run: " + REMOTE_PATH);
+                LogUtil.d(TAG, "run: " + REMOTE_PATH);
                 try {
                     remoteFile = ftp.listFiles(REMOTE_PATH);
                 }catch (Exception e){
@@ -120,10 +117,10 @@ public class AboutActivity extends BaseActivity {
                     REMOTE_PATH = "\\common\\";             // 目录不存在不会报异常，这里采用判断文件个数来决定目录位置
                     remoteFile = ftp.listFiles(REMOTE_PATH);
                 }
-                Log.d(TAG, "run: " + REMOTE_PATH);
+                LogUtil.d(TAG, "run: " + REMOTE_PATH);
                 if (remoteFile.size() > 0) {
                     for (int i = 0; i < remoteFile.size(); i++) {
-                        Log.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
+                        LogUtil.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
                         if (remoteFile.get(i).getName().endsWith(".mp4") || remoteFile.get(i).getName().endsWith(".3gp")
                                 || remoteFile.get(i).getName().endsWith(".mp3") || remoteFile.get(i).getName().endsWith(".jpg") ) {
                             isAPK = false;
@@ -131,9 +128,9 @@ public class AboutActivity extends BaseActivity {
                                 // 下载
                                 downloadSuccessFlag = ftp.download(REMOTE_PATH, remoteFile.get(i).getName(), MLOCAL_PATH);//下载格式(远程路径字符串，远程文件名，本地电影文件夹)
                                 if ( downloadSuccessFlag ) {
-                                    Log.d(TAG, "Movies " + remoteFile.get(i).getName() + " download success");
+                                    LogUtil.d(TAG, "Movies " + remoteFile.get(i).getName() + " download success");
                                 } else {
-                                    Log.d(TAG, "Movies " + remoteFile.get(i).getName() + " no need to download!!");
+                                    LogUtil.d(TAG, "Movies " + remoteFile.get(i).getName() + " no need to download!!");
                                 }
                             } catch (Exception e) {
                                 System.out.println(e.toString());
@@ -145,9 +142,9 @@ public class AboutActivity extends BaseActivity {
                                 // 下载
                                 downloadSuccessFlag = ftp.download(REMOTE_PATH, remoteFile.get(i).getName(), ALOCAL_PATH);
                                 if ( downloadSuccessFlag ) {
-                                    Log.d(TAG, "Apk " + remoteFile.get(i).getName() + " download success");
+                                    LogUtil.d(TAG, "Apk " + remoteFile.get(i).getName() + " download success");
                                 } else {
-                                    Log.d(TAG, "Apk " + remoteFile.get(i).getName() + " no need to download!!");
+                                    LogUtil.d(TAG, "Apk " + remoteFile.get(i).getName() + " no need to download!!");
                                 }
                             } catch (IOException e) {
                                 System.out.println(e.toString());
@@ -160,7 +157,7 @@ public class AboutActivity extends BaseActivity {
                     contextHandler.sendEmptyMessage(SSDBTask.Key_VideoPlayList);       // 重新上传视频列表
                     checkFile(afiles, remoteFile);                                      //删除本地APK多余文件
                 }else{
-                    Log.d(TAG, "暂无更新");
+                    LogUtil.d(TAG, "暂无更新");
                 }
                 ftp.closeConnect();
                 contextHandler.sendEmptyMessage(SSDBTask.key_ApkUpdate);
@@ -177,18 +174,18 @@ public class AboutActivity extends BaseActivity {
 
     public void checkFile(File[] files, List<FTPFile> remoteFile){
 
-        Log.d(TAG, "checkFile: 开始");
+        LogUtil.d(TAG, "checkFile: 开始");
         for (int j = 0; j < files.length; j++) {
             boolean flag = true;
             for(int i = 0; i < remoteFile.size(); i++) {
                 if (files[j].getAbsolutePath().endsWith(remoteFile.get(i).getName())) {
-                    Log.d(TAG, "checkFile: 存在");
+                    LogUtil.d(TAG, "checkFile: 存在");
                     flag = false;
                     break;
                 }
             }
             if(flag){
-                Log.d(TAG, "checkFile: 删除");
+                LogUtil.d(TAG, "checkFile: 删除");
                 files[j].delete();
             }
         }
@@ -200,20 +197,20 @@ public class AboutActivity extends BaseActivity {
 
     @Override
     protected void onStop() {
-        Log.i(TAG, "onStop");
+        LogUtil.i(TAG, "onStop");
         super.onStop();
     }
 
     @Override
     protected void onRestart() {
-        Log.i(TAG, "onRestart");
+        LogUtil.i(TAG, "onRestart");
         clearTimerCount();
         super.onRestart();
     }
 
     @Override
     protected void onDestroy() {
-        Log.i(TAG, "onDestroy");
+        LogUtil.i(TAG, "onDestroy");
         super.onDestroy();
     }
 

@@ -2,7 +2,6 @@ package com.brick.robotctrl;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kjn.askquestion.Jason;
 import com.kjn.askquestion.JsonBean;
+import com.zhangyt.log.LogUtil;
 
 import org.apache.commons.httpclient.HttpException;
 
@@ -78,34 +78,34 @@ public class ManyQueryActivity extends BaseActivity {
                 clearTimerCount();
                 if (showNum.get(arg2).equals(0)) {
                     num = "0";
-                    Log.d(TAG, "点击成功");
+                    LogUtil.d(TAG, "点击成功");
                 } else if (showNum.get(arg2).equals(1)) {
                     num = "1";
-                    Log.d(TAG, "点击成功");
+                    LogUtil.d(TAG, "点击成功");
                 } else if (showNum.get(arg2).equals(2)) {
                     num = "2";
-                    Log.d(TAG, "点击成功");
+                    LogUtil.d(TAG, "点击成功");
                 } else if (showNum.get(arg2).equals(3)) {
                     num = "3";
-                    Log.d(TAG, "点击成功");
+                    LogUtil.d(TAG, "点击成功");
                 } else if (showNum.get(arg2).equals(4)) {
                     num = "4";
-                    Log.d(TAG, "点击成功");
+                    LogUtil.d(TAG, "点击成功");
                 } else if (showNum.get(arg2).equals(5)) {
                     num = "5";
-                    Log.d(TAG, "点击成功");
+                    LogUtil.d(TAG, "点击成功");
                 } else if (showNum.get(arg2).equals(6)) {
                     num = "6";
-                    Log.d(TAG, "点击成功");
+                    LogUtil.d(TAG, "点击成功");
                 } else if (showNum.get(arg2).equals(7)) {
                     num = "7";
-                    Log.d(TAG, "点击成功");
+                    LogUtil.d(TAG, "点击成功");
                 } else if (showNum.get(arg2).equals(8)) {
                     num = "8";
-                    Log.d(TAG, "点击成功");
+                    LogUtil.d(TAG, "点击成功");
                 } else if (showNum.get(arg2).equals(9)) {
                     num = "9";
-                    Log.d(TAG, "点击成功");
+                    LogUtil.d(TAG, "点击成功");
                 }
                 queryListView.setEnabled(false);
                 if(num.equals("no")) {
@@ -113,11 +113,11 @@ public class ManyQueryActivity extends BaseActivity {
                         @Override
                         public void run() {
                             Jason jts = new Jason();
-                            Log.i(TAG, "进入新线程edit");
+                            LogUtil.i(TAG, "进入新线程edit");
                             try {
                                 result = jts.ask(num);                               //把网络访问的代码放在这里
                                 if (result != null) {
-                                    Log.i(TAG, "进入解析2");
+                                    LogUtil.i(TAG, "进入解析2");
                                     Gson gson = new Gson();
                                     java.lang.reflect.Type type = new TypeToken<JsonBean>() {
                                     }.getType();
@@ -140,7 +140,7 @@ public class ManyQueryActivity extends BaseActivity {
                                         }
                                     } else {
                                         resultShow = jsonBean.getSingleNode().getAnswerMsg();
-                                        Log.d(TAG, resultShow);
+                                        LogUtil.d(TAG, resultShow);
                                         if (resultShow != null) {
                                             if (jsonBean.getAnswerTypeId() == 1) {
                                                 Intent intent = new Intent(ManyQueryActivity.this, NoQueryActivity.class);

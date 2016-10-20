@@ -10,9 +10,10 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.zhangyt.log.LogUtil;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         //NOTE1 用简单的GeneralPreferenceFragment配置界面 代替 默认的Headers 设置列表
         getFragmentManager().beginTransaction().
                 add(android.R.id.content, new GeneralPreferenceFragment()).commit();
-        Log.i(TAG, "onBuildHeaders");
+        LogUtil.i(TAG, "onBuildHeaders");
     }
 
     @Override
@@ -111,12 +112,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
            long[] mHits = new long[5];
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                //Log.d(TAG,"onPreferenceClick:点击有效");
+                //LogUtil.d(TAG,"onPreferenceClick:点击有效");
                 System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
                 mHits[mHits.length-1] = SystemClock.uptimeMillis();
-                //Log.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
+                //LogUtil.d(TAG, "onPreferenceClick:mHits" + mHits[4]+ ","+mHits[3]+"," + mHits[2]+"," + mHits[1]+"," + mHits[0]);
                 if (mHits[0] >= (SystemClock.uptimeMillis()-3000)) {
-                    //Log.d(TAG,"onPreferenceClick:进入");
+                    //LogUtil.d(TAG,"onPreferenceClick:进入");
                     if (preference.getKey().equals("robotIDKey")) {
                         developerPreference.setEnabled(true);
                     }

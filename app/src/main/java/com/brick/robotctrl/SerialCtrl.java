@@ -6,11 +6,11 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.bean.serialport.ComBean;
 import com.bean.serialport.SerialHelper;
+import com.zhangyt.log.LogUtil;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
@@ -61,7 +61,7 @@ public class SerialCtrl {
     }
 
     public void openSerialCOM() {
-        Log.d(TAG, "openSerialCOM: serialBaud:" + serialBaud + "\tserialCOM:" + serialCOM);
+        LogUtil.d(TAG, "openSerialCOM: serialBaud:" + serialBaud + "\tserialCOM:" + serialCOM);
         ShowMessage("Open " + serialCOM + " successful, the BaudRate is " + serialBaud);
         ComA.setBaudRate(serialBaud);
         ComA.setPort(serialCOM);
@@ -96,12 +96,12 @@ public class SerialCtrl {
                     if(loop==7) {
                         batteryNum = GetMid(RmShake, 7);                  //更新电池值
                         loop=0;
-//                        Log.d("onDataReceived", "getbattery: " + batteryNum);
+//                        LogUtil.d("onDataReceived", "getbattery: " + batteryNum);
                     }
                 }
             } catch (Exception e) {
 //                e.printStackTrace();
-                Log.d(TAG, "onDataReceived: ");
+                LogUtil.d(TAG, "onDataReceived: ");
             }
         }
         public int GetMid( int r[], int n) {      //冒泡排序,取中间值，去除最大值和最小值
@@ -161,7 +161,7 @@ public class SerialCtrl {
 
 // relative robot
     public void robotMove(String dir) {
-        Log.d(TAG, "robotMove: ");
+        LogUtil.d(TAG, "robotMove: ");
         switch (dir) {
             case "up":
                 sendPortData(ComA, "FF01FF01");
@@ -208,11 +208,11 @@ public class SerialCtrl {
 
 //    //----------------------------------------------------显示接收数据
 //    public void DispRecData(ComBean ComRecData){
-//        // Log.d("getbattery", "getbattery: "+String.format("%02x", ComRecData.bRec[2]).toUpperCase());
+//        // LogUtil.d("getbattery", "getbattery: "+String.format("%02x", ComRecData.bRec[2]).toUpperCase());
 //
 //    }
     public void setRobotRate(String rate) {
-        Log.d(TAG, "setRobotRate: ");
+        LogUtil.d(TAG, "setRobotRate: ");
         String[] splitRate = rate.split(" ");
         int exeRate, exeRateBCC, turnRate, turnRateBCC, headRate, headRateBCC, timeoutTimeBCC;
         exeRate = Integer.parseInt(splitRate[0])*2;
@@ -224,15 +224,15 @@ public class SerialCtrl {
 //        timeoutTimeBCC =  0xFF & 0x16 & (Integer.parseInt(splitRate[3]));
 
         for (int i=0; i < 4; i++) {
-            Log.d(TAG, "setRobotRate: "+ splitRate[i]);
+            LogUtil.d(TAG, "setRobotRate: "+ splitRate[i]);
         }
         sendPortData(ComA, "FF06" + Integer.toHexString(exeRate) + Integer.toHexString(exeRateBCC));
-        //Log.d(TAG, "setRobotRate: " +Integer.toHexString(exeRate));
-        Log.d(TAG, "setRobotRate: " + "FF06" +Integer.toHexString(exeRate) + Integer.toHexString(exeRateBCC));
+        //LogUtil.d(TAG, "setRobotRate: " +Integer.toHexString(exeRate));
+        LogUtil.d(TAG, "setRobotRate: " + "FF06" +Integer.toHexString(exeRate) + Integer.toHexString(exeRateBCC));
         sendPortData(ComA, "FF07" + Integer.toHexString(turnRate) +Integer.toHexString(turnRateBCC));
-        Log.d(TAG, "setRobotRate: " + "FF07" +Integer.toHexString(turnRate) +Integer.toHexString(turnRateBCC));
+        LogUtil.d(TAG, "setRobotRate: " + "FF07" +Integer.toHexString(turnRate) +Integer.toHexString(turnRateBCC));
         sendPortData(ComA, "FF08" + Integer.toHexString(headRate) +Integer.toHexString(headRateBCC));
-        Log.d(TAG, "setRobotRate: " + "FF08" + Integer.toHexString(headRate) +Integer.toHexString(headRateBCC));
+        LogUtil.d(TAG, "setRobotRate: " + "FF08" + Integer.toHexString(headRate) +Integer.toHexString(headRateBCC));
 //        sendPortData(ComA, "FF16"+splitRate[3]+String.valueOf(timeoutTimeBCC));
     }
 }
