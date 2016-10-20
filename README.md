@@ -160,7 +160,7 @@ RobotCtrl_vNUM1.NUM2.NUM3.NUM4_alpha（commit_id）
     4. 解决开机无法上传地理位置的bug
     5. 加入SSDB重启功能（event:reboot）和右上1/4重启（连续五次点击）
 
-18. RobotCtrl_master_v1.31.38.1019_alpha
+18. RobotCtrl_master_v1.31.38.1020_alpha
 
     1. 添加读取SSDB Message键位并TTS读出
     2. 系统签名加入到Android Studio中
