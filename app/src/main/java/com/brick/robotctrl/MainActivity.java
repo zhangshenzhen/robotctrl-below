@@ -39,6 +39,9 @@ import java.util.TimerTask;
 
 
 public class MainActivity extends BaseActivity {
+    private static int CurrentSysVol,CurrentMusVol;
+    private static int maxSysVol,maxMusVol;
+
     private static final String TAG = "MainActivity";
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
 
@@ -63,6 +66,9 @@ public class MainActivity extends BaseActivity {
     private final int ssdbConn = 888;
 
     private IntentFilter intentFilter;
+    private IntentFilter intentFilter1;
+    private AudioChangeReceiver audioChangeReceiver;
+
     private netWorkChangeReceiver netWorkChangeReceiver;
 
     @Override
@@ -82,11 +88,17 @@ public class MainActivity extends BaseActivity {
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler);
+
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         //创建NetWorkChangeReceiver的实例，并调用registerReceiver()方法进行注册
         netWorkChangeReceiver = new netWorkChangeReceiver();
         registerReceiver(netWorkChangeReceiver, intentFilter);
+
+        intentFilter1 = new IntentFilter();
+        intentFilter1.addAction("android.media.VOLUME_CHANGED_ACTION");
+        audioChangeReceiver = new AudioChangeReceiver();
+        registerReceiver(audioChangeReceiver,intentFilter1);
 
 
         DispQueue = new DispQueueThread();      //获取电压显示线程
@@ -176,6 +188,20 @@ public class MainActivity extends BaseActivity {
         tt.start();
     }
 
+    class AudioChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            maxSysVol = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_SYSTEM );
+            CurrentSysVol= mAudioManager.getStreamVolume( AudioManager.STREAM_SYSTEM );
+            LogUtil.e(TAG,"MaxSysVol=" + maxSysVol+"      CurrentSysVol=" + CurrentSysVol);
+            maxMusVol = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            CurrentMusVol = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
+            LogUtil.e(TAG,"MaxMusVol=" + maxMusVol+"      CurrentMusVol=" + CurrentMusVol);
+            ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, "CurrentMusVol", ""+(CurrentMusVol*5/3));
+            LogUtil.e(TAG,"ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, \"Return CurrentMusVol\", \"\"+CurrentMusVol);");
+        }
+    }
     private void threadToUiToast(final String message, final int toastLength) {
         runOnUiThread(new Runnable() {
             public void run() {
@@ -580,7 +606,7 @@ public class MainActivity extends BaseActivity {
                         } else if( volume < 0 ) {
                             volume = 0;
                         }
-                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume/5, 0);
+                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (volume*3/5), 0);
                         SSDBTask.enableSetVolume = false;
                     }
                     break;
@@ -718,6 +744,7 @@ public class MainActivity extends BaseActivity {
         ssdbTask.disConnect();
         serialCtrl.closeSerialCOM();
         unregisterReceiver(netWorkChangeReceiver);
+        unregisterReceiver(audioChangeReceiver);
         Intent stopSpeechServiceIntent=new Intent(this,SpeechService.class);
         stopService(stopSpeechServiceIntent);
         super.onDestroy();
