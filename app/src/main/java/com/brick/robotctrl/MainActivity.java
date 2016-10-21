@@ -41,7 +41,7 @@ import java.util.TimerTask;
 
 
 public class MainActivity extends BaseActivity {
-    private static int CurrentSysVol,CurrentMusVol;
+    private static int currentSysVol,currentMusVol;
     private static int maxSysVol,maxMusVol;
 
     private static final String TAG = "MainActivity";
@@ -97,7 +97,7 @@ public class MainActivity extends BaseActivity {
         //创建NetWorkChangeReceiver的实例，并调用registerReceiver()方法进行注册
         netWorkChangeReceiver = new netWorkChangeReceiver();
         registerReceiver(netWorkChangeReceiver, intentFilter);
-
+        // 广播监听音量值
         intentFilter1 = new IntentFilter();
         intentFilter1.addAction("android.media.VOLUME_CHANGED_ACTION");
         audioChangeReceiver = new AudioChangeReceiver();
@@ -196,13 +196,13 @@ public class MainActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             maxSysVol = mAudioManager.getStreamMaxVolume( AudioManager.STREAM_SYSTEM );
-            CurrentSysVol= mAudioManager.getStreamVolume( AudioManager.STREAM_SYSTEM );
-            LogUtil.e(TAG,"MaxSysVol=" + maxSysVol+"      CurrentSysVol=" + CurrentSysVol);
+            currentSysVol= mAudioManager.getStreamVolume( AudioManager.STREAM_SYSTEM );
+            LogUtil.d(TAG,"MaxSysVol=" + maxSysVol+"      CurrentSysVol=" + currentSysVol);
             maxMusVol = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-            CurrentMusVol = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
-            LogUtil.e(TAG,"MaxMusVol=" + maxMusVol+"      CurrentMusVol=" + CurrentMusVol);
-            ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, "CurrentMusVol", ""+(CurrentMusVol*5/3));
-            LogUtil.e(TAG,"ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, \"Return CurrentMusVol\", \"\"+CurrentMusVol);");
+            currentMusVol = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
+            LogUtil.d(TAG,"MaxMusVol=" + maxMusVol+"      CurrentMusVol=" + currentMusVol);
+            ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, "CurrentMusVol", ""+(currentMusVol*5/3));
+            //LogUtil.d(TAG,"ssdbTask.SSDBQuery(ssdbTask.ACTION_HSET, \"Return CurrentMusVol\", \"\"+CurrentMusVol);");
         }
     }
     private void threadToUiToast(final String message, final int toastLength) {
