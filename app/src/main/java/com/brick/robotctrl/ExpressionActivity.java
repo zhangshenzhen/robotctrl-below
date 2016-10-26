@@ -24,21 +24,28 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 	private int screenWidth;
 	private int screenHeight;
 	enum EXPRESSION {
-		机器人说话(R.drawable.shuohua, "shuohua", 0),
-		机器人害羞(R.drawable.haixiu, "haixiu", 1),
-		机器人花痴(R.drawable.huachi, "huachi", 2),
-		机器人欢呼(R.drawable.huanhu, "huanhu", 3),
-		机器人得意(R.drawable.deyi, "deyi", 4),
-		机器人财迷(R.drawable.caimi, "caimi", 5),
-		机器人困惑(R.drawable.kunhuo, "kunhuo", 6),
-		机器人流泪(R.drawable.liulei, "liulei", 7),
-		机器人生气(R.drawable.shengqi, "shengqi", 8),
-		机器人害怕(R.drawable.haipa, "haipa", 9),
-		机器人思索(R.drawable.sisuo, "sisuo", 10),
-		机器人叹气(R.drawable.tanqi, "tanqi", 11),
-		机器人微笑(R.drawable.weixiao, "weixiao", 12),
-		机器人羡慕(R.drawable.xianmu, "xianmu", 13),
-		机器人兴奋(R.drawable.xingfen, "xingfen", 14);
+		机器人得意(R.drawable.deyi, "deyi", 0),
+		机器人尴尬(R.drawable.ganga, "ganga", 1),
+		机器人好奇(R.drawable.haoqi, "haoqi", 2),
+		机器人怀疑(R.drawable.huaiyi, "huaiyi", 3),
+		机器人坏笑(R.drawable.huaixiao, "huaixiao", 4),
+		机器人惊讶(R.drawable.jingya, "jingya", 5),
+		机器人开心(R.drawable.kaixin, "kaixin", 6),
+		机器人瞌睡(R.drawable.keshui, "keshui", 7),
+		机器人可爱(R.drawable.keai, "keai", 8),
+		机器人可怜(R.drawable.kelian, "kelian", 9),
+		机器人哭泣(R.drawable.kuqi, "kuqi", 10),
+		机器人愤怒(R.drawable.fennu, "fennu", 11),
+		机器人亲亲(R.drawable.qinqin, "qinqin", 12),
+		机器人撒娇(R.drawable.sajiao, "sajiao", 13),
+		机器人调皮(R.drawable.tiaopi, "tiaopi", 14),
+		机器人委屈(R.drawable.weiqu, "weiqu", 15),
+		机器人温怒(R.drawable.wennu, "wennu", 16),
+		机器人荫郁(R.drawable.yinyu, "yinyu", 17),
+		机器人责问(R.drawable.zewen, "zewen", 18),
+		机器人眨眼(R.drawable.zhayan, "zhayan", 19),
+		机器人专注(R.drawable.zhuanzhu, "zhuanzhu", 20);
+
 		private int id;
 		private String name;
 		private int index;
@@ -60,7 +67,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 					return exp;
 				}
 			}
-			return EXPRESSION.机器人微笑;
+			return EXPRESSION.机器人可爱;
 		}
 		public static EXPRESSION getExpression( String name ) {
 			for ( EXPRESSION exp: EXPRESSION.values()) {
@@ -68,7 +75,7 @@ public class ExpressionActivity extends BaseActivity implements OnClickListener 
 					return exp;
 				}
 			}
-			return EXPRESSION.机器人微笑;
+			return EXPRESSION.机器人可爱;
 		}
 	}
 	public void onCreate(Bundle icicle) {
