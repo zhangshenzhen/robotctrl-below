@@ -229,7 +229,7 @@ public class VideoDeviceCallBack {
 		mRawData = i_Rawbuf;
 
 		this.mSurfaceHolder = ((SurfaceHolder) i_surfaceholder);
-		Log.d(TAG, "In Video ProducerStart, mSurfaceHolder = " + this.mSurfaceHolder + ", getSurface = " + this.mSurfaceHolder.getSurface());
+		//Log.d(TAG, "In Video ProducerStart, mSurfaceHolder = " + this.mSurfaceHolder + ", getSurface = " + this.mSurfaceHolder.getSurface());
 
 		return startCamera(i_nWidth, i_nHeight);
 	}

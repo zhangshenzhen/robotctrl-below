@@ -38,7 +38,7 @@ public class ZIMEDialogSetting extends Dialog {
 	private static ZIMEClientJni mAClient  = null;
 	private static ZIMEVideoClientJNI mAVClient = null;
 	private static ZIMEConfig mConfig;
-	private final static String QVGAStr = "qvga:10/150-15/200-15/280";
+	private final static String QVGAStr = "";
 	private final static String VGAStr = "vga:15/350-15/500-20/600";
 	private final static String _720pStr = "720p:10/900-15/1200-20/1500";
 
@@ -1167,18 +1167,19 @@ public class ZIMEDialogSetting extends Dialog {
 			return 0;
 		}
 
-		public ZIMEDialogSetting create(Handler handler)
+		public ZIMEDialogSetting create(/*Handler handler*/)
 		{
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			final ZIMEDialogSetting dialog = new ZIMEDialogSetting(context, R.style.Dialog);
 			View layout = inflater.inflate(R.layout.dialog_setting, null);
 
-			mHandler = handler;
+			//mHandler = handler;
 
 			// 接收IP
 			mRevTxtIP = (EditText)layout.findViewById(R.id.editTextRevIP);
-			mRevTxtIP.setText(mConfig.mRecvIP);
+			//mRevTxtIP.setText(mConfig.mRecvIP);
+			mRevTxtIP.setText("192.168.1.103");
 
 			// 设置音频编解码类型
 			mSpinnerAudioCodec  = (Spinner)layout.findViewById(R.id.spinnerAudioCodecType);

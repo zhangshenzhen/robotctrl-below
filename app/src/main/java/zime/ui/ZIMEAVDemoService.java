@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.util.Log;
 import android.view.SurfaceView;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import zime.media.VideoDeviceCallBack;
@@ -21,20 +21,9 @@ import zime.media.ZMCEVideoGLRender;
  * Created by li on 2016/10/10.
  */
 public class ZIMEAVDemoService extends Service {
-    private final static String ZIMETAG = "ZIMEAVDemoActivity";
+    private final static String ZIMETAG = "ZIMEAVDemoService";
 
     private Context mContext = null;
-    private Button mButtonStart;
-    private Button mButtonStop;
-    private Button mButtonConf;
-    private Button mButtonExit;
-    private Button mButtonStartSend;
-    private Button mButtonStartRecv;
-    private Button mButtonSendDTMF;
-    private Button mButtonSendOneIFrame;
-    private Button mButtonAstart;
-    private Button mButtonSwtich;
-    private TextView mTextViewDownQoS;
     private SurfaceView mSurfaceLocalView = null;
     private GLSurfaceView mSurfaceRemoteView = null;
     private ZIMEDialogSetting.Builder mDiaglogBuilder = null;
@@ -61,7 +50,7 @@ public class ZIMEAVDemoService extends Service {
     public String mStringDecodeTypeName = "";
     public  int  mYUVType = 19;
     public  static boolean  mSupportMediaCodec = false;
-    //Handler mHandler = null;
+    Handler mHandler = null;
     String mStrResSwitchInfo = "";
     public int mVResWidth_S = 0;
     public int mVResWidth_R = 0;
@@ -79,68 +68,106 @@ public class ZIMEAVDemoService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mContext = this;
+        am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+
+
+
 
         ZIMEVideoClientJNI.ZIMELoadLibrary();
+        Log.e(ZIMETAG,"1");
         mVideoClientJNI = new ZIMEVideoClientJNI();
         mAudioClientJNI = new ZIMEClientJni();
+        Log.e(ZIMETAG,"2");
         mZIMEConfig = new ZIMEConfig();
-        mVideoGLRender = new ZMCEVideoGLRender();
+        Log.e(ZIMETAG,"3");
 
+        mDiaglogBuilder = new ZIMEDialogSetting.Builder(mContext);
+        mDiaglogBuilder.SetZIMESDKClient(mVideoClientJNI, mAudioClientJNI, mZIMEConfig);
+        mDialogSetting = mDiaglogBuilder.create(/*mViewHandler*/);
+        mDialogSetting.setAudioManager(am);
+        Log.e(ZIMETAG,"4");
+
+        mDialogDTMFDialerBuilder = new ZIMEDialogDTMFDialer.DTMFDialerBuilder(mContext);
+        mDialogDTMFDialerBuilder.SetZIMESDKClient(mVideoClientJNI, mAudioClientJNI, mZIMEConfig);
+        mDialogDTMFDialer  = mDialogDTMFDialerBuilder.create();
+        Log.e(ZIMETAG,"5");
+
+        mZIMEJniThread = new ZIMEJniThread(mVideoClientJNI, mAudioClientJNI);
+        Log.e(ZIMETAG,"6");
+        /*mZIMEJniThread.SetActivity(ZIMEAVDemoActivity.this);
+        VideoDeviceCallBack.SetCurActivity(this);*/
+        Log.e(ZIMETAG,"7");
+        mZIMEJniThread.setAudioMan(am);
+
+        // opengl
+        mVideoGLRender = new ZMCEVideoGLRender();
+        //mVideoGLRender.SetGLSurface(mSurfaceRemoteView);
+        Log.e(ZIMETAG,"8");
+
+
+
+        Log.e(ZIMETAG,"x");
         int eRet = ZIMEVideoClientJNI.ConnectDevice(mZIMEConfig.mChannelId, m_iDeviceType);
         String logString = "surfaceCreated---ConnectDevice Device:" + m_iDeviceType + "----ret: " + eRet;
         Toast.makeText(mContext, logString, Toast.LENGTH_LONG).show();
         m_iDeviceType = DEVTYPE_DEFAULT_VALUE;
 
-        mZIMEJniThread = new ZIMEJniThread(mVideoClientJNI, mAudioClientJNI);
-        mZIMEJniThread.SetActivity(ZIMEAVDemoService.this);
-
         boolean mbHaveStart = false;
         if(mbHaveStart == false)
         {
+            Log.e(ZIMETAG,"y");
             mZIMEJniThread.start();
             mbHaveStart = true;
         }
-        am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        /*mDiaglogBuilder 	= new ZIMEDialogSetting.Builder(mContext);
-        mDiaglogBuilder.SetZIMESDKClient(mVideoClientJNI, mAudioClientJNI, mZIMEConfig);
-        //mDialogSetting = mDiaglogBuilder.create(mViewHandler);
-        am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        mDialogSetting.setAudioManager(am);*/
 
-        mDialogDTMFDialerBuilder = new ZIMEDialogDTMFDialer.DTMFDialerBuilder(mContext);
-        mDialogDTMFDialerBuilder.SetZIMESDKClient(mVideoClientJNI, mAudioClientJNI, mZIMEConfig);
-        mDialogDTMFDialer  = mDialogDTMFDialerBuilder.create();
+        for(int x = 0;x<10000;x++) {
+            for(int y = 0;y<1100;y++)
+            {}
+        }
 
-
-        //VideoDeviceCallBack.SetCurActivity(this);
-        mZIMEJniThread.setAudioMan(am);
-
+        Log.i(ZIMETAG, "-------------Start AV Button--------------");
         mZIMEJniThread.Input(ZIMEConfig.SET_PARAM, mZIMEConfig);
+        Log.e(ZIMETAG,"9");
         mZIMEJniThread.Input(ZIMEConfig.START, null);
-        //mVResWidth_S = mZIMEConfig.mWidth;
+        Log.e(ZIMETAG,"10");
 
         VideoDeviceCallBack.SetCodecType(ZIMEConfig.mCodecType);
 
         if(ZIMEConfig.mCodecType == ZIMEConfig.enumZIME_AMLOGICHARDWEAR)
         {
+            Log.e(ZIMETAG,"11");
             mVideoGLRender.useMediaCodecInfo(false, 0);
 
-            mVideoGLRender.setAmlogicEnable(true);
+            //mVideoGLRender.setAmlogicEnable(true);
         }
         else if(ZIMEConfig.mCodecType == ZIMEConfig.enumZIME_MediaCodec)
         {
             mVideoGLRender.useMediaCodecInfo(true, mYUVType);
 
-            mVideoGLRender.setAmlogicEnable(false);
+            //mVideoGLRender.setAmlogicEnable(false);
         }
         else
         {
             mVideoGLRender.useMediaCodecInfo(false, 0);
-            mVideoGLRender.setAmlogicEnable(false);
+            //mVideoGLRender.setAmlogicEnable(false);
         }
 
-        /*mZIMEJniThread.Input(ZIMEConfig.SET_AUDIOPARAM_BEFORSTART, mZIMEConfig);
-        mZIMEJniThread.Input(ZIMEConfig.ASTART_BY_AVCLIENTINTERFACE, null);*/
+        if(ZIMEConfig.mIsOnlyAudio)
+        {
+            //mButtonSwtich.setEnabled(false);
+            //mButtonSendOneIFrame.setEnabled(false);
+        }
+        else
+        {
+            //mButtonSwtich.setEnabled(true);
+            //mButtonSwtich.setText("SwitchA");
+            //ButtonSendOneIFrame.setEnabled(true);
+        }
+
+        mStarted = true;
+        mStopped = false;
+        mDialogSetting.setStatus(mStarted, mStopped);
+
 
         return super.onStartCommand(intent, flags, startId);
     }

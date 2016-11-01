@@ -277,6 +277,7 @@ public class ZIMEAVDemoActivity extends Activity {
 				Log.i(ZIMETAG, "1. surfaceCreated , holder = " + holder);
 				mSurfaceExist = true;
 				//按home键时走这个分支恢复画面
+				Log.e(ZIMETAG,"x");
 				int eRet = ZIMEVideoClientJNI.ConnectDevice(mZIMEConfig.mChannelId, m_iDeviceType);
 				String logString = "surfaceCreated---ConnectDevice Device:" + m_iDeviceType + "----ret: " + eRet;
 				Toast.makeText(mContext, logString, Toast.LENGTH_LONG).show();
@@ -293,6 +294,7 @@ public class ZIMEAVDemoActivity extends Activity {
 				mZIMEConfig.mLocalSurfaceHolder  = holder;
 				if(mbHaveStart == false)
 				{
+					Log.e(ZIMETAG,"y");
 					mZIMEJniThread.start();
 					mbHaveStart = true;
 				}
@@ -334,27 +336,35 @@ public class ZIMEAVDemoActivity extends Activity {
 		mSurfaceLocalView.getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
 		ZIMEVideoClientJNI.ZIMELoadLibrary();
+		Log.e(ZIMETAG,"1");
 		mVideoClientJNI = new ZIMEVideoClientJNI();
 		mAudioClientJNI = new ZIMEClientJni();
+		Log.e(ZIMETAG,"2");
 		mZIMEConfig = new ZIMEConfig();
+		Log.e(ZIMETAG,"3");
 
 		mDiaglogBuilder 	= new Builder(mContext);
 		mDiaglogBuilder.SetZIMESDKClient(mVideoClientJNI, mAudioClientJNI, mZIMEConfig);
-		mDialogSetting = mDiaglogBuilder.create(mViewHandler);
+		mDialogSetting = mDiaglogBuilder.create(/*mViewHandler*/);
 		mDialogSetting.setAudioManager(am);
+		Log.e(ZIMETAG,"4");
 
 		mDialogDTMFDialerBuilder = new DTMFDialerBuilder(mContext);
 		mDialogDTMFDialerBuilder.SetZIMESDKClient(mVideoClientJNI, mAudioClientJNI, mZIMEConfig);
 		mDialogDTMFDialer  = mDialogDTMFDialerBuilder.create();
+		Log.e(ZIMETAG,"5");
 
 		mZIMEJniThread = new ZIMEJniThread(mVideoClientJNI, mAudioClientJNI);
+		Log.e(ZIMETAG,"6");
 		mZIMEJniThread.SetActivity(ZIMEAVDemoActivity.this);
 		VideoDeviceCallBack.SetCurActivity(this);
+		Log.e(ZIMETAG,"7");
 		mZIMEJniThread.setAudioMan(am);
 
 		// opengl 
 		mVideoGLRender = new ZMCEVideoGLRender();
 		mVideoGLRender.SetGLSurface(mSurfaceRemoteView);
+		Log.e(ZIMETAG,"8");
 
 		//start AV
 		mButtonStart.setOnClickListener(new OnClickListener(){
@@ -363,13 +373,16 @@ public class ZIMEAVDemoActivity extends Activity {
 
 				Log.i(ZIMETAG, "-------------Start AV Button--------------");
 				mZIMEJniThread.Input(ZIMEConfig.SET_PARAM, mZIMEConfig);
+				Log.e(ZIMETAG,"9");
 				mZIMEJniThread.Input(ZIMEConfig.START, null);
+				Log.e(ZIMETAG,"10");
 				//mVResWidth_S = mZIMEConfig.mWidth;
 
 				VideoDeviceCallBack.SetCodecType(ZIMEConfig.mCodecType);
 
 				if(ZIMEConfig.mCodecType == ZIMEConfig.enumZIME_AMLOGICHARDWEAR)
 				{
+					Log.e(ZIMETAG,"11");
 					mVideoGLRender.useMediaCodecInfo(false, 0);
 
 					mVideoGLRender.setAmlogicEnable(true);
