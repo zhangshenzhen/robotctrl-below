@@ -389,7 +389,7 @@ public class ZIMEMedia {
 
 		ZIMEVideoClientJNI.SetSpeakerMode(false);
 		StartSend();
-		StartRecv();
+		//StartRecv();
 		mbHangup = false;
 		return;
 	}

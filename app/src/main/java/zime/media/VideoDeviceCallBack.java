@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
@@ -20,6 +21,7 @@ import android.view.SurfaceHolder;
 import java.io.IOException;
 import java.util.List;
 
+import zime.ui.ZIMEAVDemoService;
 import zime.ui.ZIMEConfig;
 
 public class VideoDeviceCallBack {
@@ -43,6 +45,7 @@ public class VideoDeviceCallBack {
 	private boolean mCapReady = false;
 
 	private SurfaceHolder mSurfaceHolder = null;
+	private SurfaceTexture surfaceTexture =null;
 	private static int mPlayWidth = 0;
 	private int mPlayHeight = 0;
 	private GLSurfaceView mRemote = null;
@@ -228,6 +231,7 @@ public class VideoDeviceCallBack {
 		Log.d(TAG, "Video ProducerStart enter.");
 		mRawData = i_Rawbuf;
 
+		this.surfaceTexture = ZIMEAVDemoService.surfaceTexture;
 		this.mSurfaceHolder = ((SurfaceHolder) i_surfaceholder);
 		//Log.d(TAG, "In Video ProducerStart, mSurfaceHolder = " + this.mSurfaceHolder + ", getSurface = " + this.mSurfaceHolder.getSurface());
 
@@ -276,10 +280,16 @@ public class VideoDeviceCallBack {
 		this.mFrameLen = rawDataLen;
 		this.mCapReady = false;
 
-		try {
+		/*try {
 			setPreview();
 		} catch (Exception e) {
 			Log.e(TAG, "mCamera.setPreviewDisplay failed, Reason:" + e);
+			return -1;
+		}*/
+		try {
+			mCamera.setPreviewTexture(surfaceTexture);
+		}catch (Exception e) {
+			Log.e(TAG, "mCamera.setPreviewTexture failed, Reason:" + e);
 			return -1;
 		}
 
@@ -289,7 +299,7 @@ public class VideoDeviceCallBack {
 					if ((VideoDeviceCallBack.this.mFrameYUV != null)
 							&& (data != null)
 							&& (data.length > 0)) {
-
+                        Log.e("12","12");
 						VideoDeviceCallBack.this.mCapReady = true;
 					}
 				}

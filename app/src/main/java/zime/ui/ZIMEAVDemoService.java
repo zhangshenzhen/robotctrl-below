@@ -3,7 +3,9 @@ package zime.ui;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
+import android.opengl.GLES11Ext;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.os.IBinder;
@@ -23,6 +25,7 @@ import zime.media.ZMCEVideoGLRender;
 public class ZIMEAVDemoService extends Service {
     private final static String ZIMETAG = "ZIMEAVDemoService";
 
+    public static SurfaceTexture surfaceTexture;
     private Context mContext = null;
     private SurfaceView mSurfaceLocalView = null;
     private GLSurfaceView mSurfaceRemoteView = null;
@@ -72,6 +75,7 @@ public class ZIMEAVDemoService extends Service {
 
 
 
+        surfaceTexture = new SurfaceTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES);
 
         ZIMEVideoClientJNI.ZIMELoadLibrary();
         Log.e(ZIMETAG,"1");

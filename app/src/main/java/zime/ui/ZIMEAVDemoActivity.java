@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.media.MediaCodecInfo;
+import android.opengl.GLES11Ext;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,6 +47,8 @@ import zime.ui.ZIMEDialogSetting.Builder;
 public class ZIMEAVDemoActivity extends Activity {
 
 	private final static String ZIMETAG = "ZIMEAVDemoActivity";
+
+	public static SurfaceTexture surfaceTexture;
 
 	private Context mContext = null;
 	private Button mButtonStart;
@@ -219,6 +223,8 @@ public class ZIMEAVDemoActivity extends Activity {
 		mSurfaceRemoteView 	= (GLSurfaceView)findViewById(R.id.RemoteView);
 
 		mTextViewDownQoS    = (TextView)findViewById(R.id.textViewDownQoS);
+
+		surfaceTexture = new SurfaceTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES);
 
 		mSurfaceLocalView.getHolder().setFixedSize(160, 120);
 		VideoDeviceCallBack.SetCurActivity(this);
