@@ -204,6 +204,8 @@ public class MainActivity extends BaseActivity {
         Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
         startService(startIntent); // 启动服务
         Log.d(TAG, "ZIMEService");
+
+        ExpressionActivity.startAction(MainActivity.this, 12);
     }
 
     private void threadToUiToast(final String message, final int toastLength) {
