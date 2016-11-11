@@ -17,7 +17,7 @@ import java.security.InvalidParameterException;
 
 public class SerialCtrl {
     public final String TAG = "SerialCtrl";
-    public String serialCOM = "ttySAC2";
+    public String serialCOM = "ttymxc0";
     public int serialBaud = 9600;
     SerialControl ComA = null;
 

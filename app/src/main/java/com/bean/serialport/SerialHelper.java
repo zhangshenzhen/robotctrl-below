@@ -1,11 +1,12 @@
 package com.bean.serialport;
 
+import com.cedric.serialport.SerialPort;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
-import com.cedric.serialport.SerialPort;
 
 /**
  * @author benjaminwan
@@ -17,7 +18,7 @@ public abstract class SerialHelper{
 	private InputStream mInputStream;
 	private ReadThread mReadThread;
 	private SendThread mSendThread;
-	private String sPort="/dev/ttySAC2";
+	private String sPort="/dev/ttymxc0";
 	private int iBaudRate=9600;
 	private boolean _isOpen=false;
 	private byte[] _bLoopData=new byte[]{0x30};

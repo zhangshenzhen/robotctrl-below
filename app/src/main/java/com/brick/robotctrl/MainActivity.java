@@ -201,9 +201,9 @@ public class MainActivity extends BaseActivity {
 
         tt.start();
 
-        Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
+        /*Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
         startService(startIntent); // 启动服务
-        Log.d(TAG, "ZIMEService");
+        Log.d(TAG, "ZIMEService");*/
     }
 
     private void threadToUiToast(final String message, final int toastLength) {

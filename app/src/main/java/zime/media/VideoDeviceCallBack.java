@@ -299,7 +299,7 @@ public class VideoDeviceCallBack {
 					if ((VideoDeviceCallBack.this.mFrameYUV != null)
 							&& (data != null)
 							&& (data.length > 0)) {
-                        Log.e("12","12");
+                        //Log.e("12","12");
 						VideoDeviceCallBack.this.mCapReady = true;
 					}
 				}
