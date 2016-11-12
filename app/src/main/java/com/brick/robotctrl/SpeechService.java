@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-
 import com.kjn.askquestion.AccountInfoTts;
 import com.sinovoice.hcicloudsdk.android.tts.player.TTSPlayer;
 import com.sinovoice.hcicloudsdk.api.HciCloudSys;
@@ -106,7 +105,6 @@ public class SpeechService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         sentenceToSpeak = intent.getStringExtra("speechContext");
         new Thread(new Runnable() {
             @Override

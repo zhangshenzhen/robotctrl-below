@@ -599,14 +599,14 @@ public class MainActivity extends BaseActivity {
                     Log.d(TAG, "handleMessage: ------------------Key:ChangeBrow \tvalue:" + rlt);
                     if ( !rlt.equals("") ) {
                         SSDBTask.enableChangeBrow = false;
-                        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-                        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-                        if (cn.getClassName().equals("com.brick.robotctrl.ExpressionActivity")) {
+//                        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+//                        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+//                        if (cn.getClassName().equals("com.brick.robotctrl.ExpressionActivity")) {
                             ExpressionActivity.changeExpression(Integer.parseInt(rlt));
                             Log.d(TAG, "handleMessage: changebrowed");
-                        } else {
-                            Log.d(TAG, "handleMessage: change brow failure because of current activity is not ExpressionActivity");
-                        }
+//                        } else {
+//                            Log.d(TAG, "handleMessage: change brow failure because of current activity is not ExpressionActivity");
+//                        }
                     }
                     break;
                 case SSDBTask.Key_SetVolume:
