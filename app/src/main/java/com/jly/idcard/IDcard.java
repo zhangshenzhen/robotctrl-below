@@ -44,7 +44,7 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
     private byte[] ExpireDate = new byte[18];
     private byte[] pErrMsg = new byte[20];
     private byte[] BmpFile = new byte[38556];
-    String port="/dev/ttySAC3";
+    String port="/dev/ttyUSB0";
 
     public LinearLayout llGroup;
     private publicSecurityIDCardLib iDCardDevice;
