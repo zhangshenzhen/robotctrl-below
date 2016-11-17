@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity {
 
     private IntentFilter intentFilter;
     private netWorkChangeReceiver netWorkChangeReceiver;
-
+    private Button printButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +111,20 @@ public class MainActivity extends BaseActivity {
 //                startActivity(new Intent().setClass(MainActivity.this, QuestTestActivity.class));
 //            }
 //        });
-
+        printButton=(Button)findViewById(R.id.Printer);
+        printButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String str="高";
+                String str1=null;
+                try {
+                    str1=new String(str.getBytes("utf-8"), "gbk");
+                }catch (Exception E){
+                    E.printStackTrace();
+                }
+                serialCtrl.sendPortText(serialCtrl.ComA,str1);
+            }
+        });
         rightEyeButton = (ImageView) findViewById(R.id.rightEyeButton);
         rightEyeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,8 +206,8 @@ public class MainActivity extends BaseActivity {
 
         // relative timer
         Timer timer = new Timer(true);
-        timer.schedule(queryTask, 200, 200); //改指令执行后延时1000ms后执行run，之后每1000ms执行一次run
-        // timer.cancel(); //退出计时器
+        timer.schedule(queryTask, 200, 200); //改指令执行后延时1000ms后执行run，之后每1000ms执行�?次run
+        // timer.cancel(); //�?出计时器
 
         AboutActivity about = new AboutActivity();
         AboutActivity.MyThread tt = about.new MyThread(ssdbTask.robotName);
@@ -206,6 +219,11 @@ public class MainActivity extends BaseActivity {
         Log.d(TAG, "ZIMEService");
 
         ExpressionActivity.startAction(MainActivity.this, 12);
+
+
+
+
+
     }
 
     private void threadToUiToast(final String message, final int toastLength) {
@@ -216,16 +234,16 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private int countForPlayer = 0;//播放计数器
+    private int countForPlayer = 0;//播放计数�?
     private int countForReconnectSSDB = 0;
-    private int countForAlive = 0;//复活计数器
+    private int countForAlive = 0;//复活计数�?
     private String strTimeFormat = null;
     private String disableAudio = "No";
     TimerTask queryTask = new TimerTask() {
         @Override
         public void run() {
 //            Log.d(TAG, "run: stop: " + ssdbTask.stop);
-            if ( !ssdbTask.stop ) {                  // 发起读请求
+            if ( !ssdbTask.stop ) {                  // 发起读请�?
                 ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!
             } else {
                 countForReconnectSSDB++;
@@ -271,7 +289,7 @@ public class MainActivity extends BaseActivity {
 //                    countForPlayer = 0;
 //                }
 //            }
-            if( cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {//什么意思
+            if( cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {//�?么意�?
                 if ( disableAudio.equals("No") ) {
                     disableAudio = "Yes";
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_DisableAudio], disableAudio);
@@ -318,8 +336,8 @@ public class MainActivity extends BaseActivity {
                 case SSDBTask.Key_Event:
                     /**
                      * 处理event方法
-                     * 1. 设置event事件使能，以获取事件内容；
-                     * 2. 清除服务器中该event事件；
+                     * 1. 设置event事件使能，以获取事件内容�?
+                     * 2. 清除服务器中该event事件�?
                      */
                     String rlt  = (String) msg.obj;
 //                    Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
@@ -441,9 +459,9 @@ public class MainActivity extends BaseActivity {
                     break;
                 /**
                  * 处理具体的event事件
-                 * 1. 根据event事件的持续性修改event事件的使能开关；
-                 * 2. 对获取的数据做一定的断言处理；
-                 * 3. 根据事件类型及事件内容改变robot行为；
+                 * 1. 根据event事件的持续�?�修改event事件的使能开关；
+                 * 2. 对获取的数据做一定的断言处理�?
+                 * 3. 根据事件类型及事件内容改变robot行为�?
                  */
                 case SSDBTask.Key_Location:
                     rlt=(String)msg.obj;
@@ -462,7 +480,7 @@ public class MainActivity extends BaseActivity {
                         switch (strArray[0]) {
                             case "Play":
                                 startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
-                                //singleTask 此Activity实例之上的其他Activity实例统统出栈，使此Activity实例成为栈顶对象，显示到幕前。   break;
+                                //singleTask 此Activity实例之上的其他Activity实例统统出栈，使此Activity实例成为栈顶对象，显示到幕前�?   break;
                                 break;
                             case "ContinuePlay":
                                 ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
@@ -633,7 +651,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case SSDBTask.key_ApkUpdate :
 //                    final String archiveFilePath = getInstallApkFullPath();
-//                    if ( !(archiveFilePath == null) ) {                 // 判断字符串是否为空要用==， 不要用equals方法
+//                    if ( !(archiveFilePath == null) ) {                 // 判断字符串是否为空要�?==�? 不要用equals方法
 //                        Log.d(TAG, "run: start to install apk: " + archiveFilePath);
 //                        Intent intentA = new Intent(Intent.ACTION_VIEW);
 //                        intentA.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -772,7 +790,7 @@ public class MainActivity extends BaseActivity {
                                 }
                             });
                         }
-                        Thread.sleep(1000);//显示性能高的话，可以把此数值调小。
+                        Thread.sleep(1000);//显示性能高的话，可以把此数�?�调小�??
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -805,7 +823,7 @@ public class MainActivity extends BaseActivity {
             try {
                 ApplicationInfo apkInfo = info.applicationInfo;
 //                String appName = pm.getApplicationLabel(apkInfo).toString();
-                String packageName = apkInfo.packageName;   //得到安装包名称
+                String packageName = apkInfo.packageName;   //得到安装包名�?
                 String versionName = info.versionName;            //得到版本信息
                 int versionCode = info.versionCode;            //得到版本信息
 
@@ -818,10 +836,10 @@ public class MainActivity extends BaseActivity {
 
 
                 if ( versionName.equals(null) ) {
-                    threadToUiToast("尚未安装播放器，接下来安装", Toast.LENGTH_SHORT);
+                    threadToUiToast("尚未安装播放器，接下来安�?", Toast.LENGTH_SHORT);
                     return true;
                 } else if (!versionName.equals(appVersionName)) {
-                    threadToUiToast("播放器需要更新，接下来更新", Toast.LENGTH_SHORT);
+                    threadToUiToast("播放器需要更新，接下来更�?", Toast.LENGTH_SHORT);
                     return true;
                 } else {
                     return false;
@@ -834,7 +852,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * 获取版本号
+     * 获取版本�?
      * @return 当前应用的版本号
      */
     private String getVersion(String packageName) {
@@ -847,7 +865,7 @@ public class MainActivity extends BaseActivity {
 //            return null;
 //        }
         PackageManager pManager = MainActivity.this.getPackageManager();
-        //获取手机内所有应用
+        //获取手机内所有应�?
         List<PackageInfo> paklist = pManager.getInstalledPackages(0);
         for (int i = 0; i < paklist.size(); i++) {
             PackageInfo appInfo = paklist.get(i);

@@ -120,10 +120,16 @@ public class SerialCtrl {
     }
 
     // send
-    private void sendPortData(SerialHelper ComPort,String sOut){
+    public  void sendPortData(SerialHelper ComPort,String sOut){
         if (ComPort!=null && ComPort.isOpen())
         {
             ComPort.sendHex(sOut);
+        }
+    }
+    public void sendPortText(SerialHelper ComPort,String sOut){
+        if (ComPort!=null && ComPort.isOpen())
+        {
+            ComPort.sendTxt(sOut);
         }
     }
     // close serial
