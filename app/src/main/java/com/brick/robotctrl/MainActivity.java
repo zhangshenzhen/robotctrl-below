@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity {
     ImageView rightEyeButton = null;
     SSDBTask ssdbTask = null;
     SerialCtrl serialCtrl = null;
-
+    SerialCtrl serialCtrlPrinter=null;
     Button ZIMEButton;
     Button IDButton;
 
@@ -90,7 +90,9 @@ public class MainActivity extends BaseActivity {
         AboutActivity.setHandler(handler);
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
-        serialCtrl = new SerialCtrl(MainActivity.this, handler);
+        serialCtrl = new SerialCtrl(MainActivity.this, handler,"ttymxc0",9600);
+        serialCtrlPrinter=new SerialCtrl(MainActivity.this, handler,"ttyUSB1",9600);
+       // serialCtrlPrinter.setSerialCOM("/dev/ttyUSB0");
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         //创建NetWorkChangeReceiver的实例，并调用registerReceiver()方法进行注册
@@ -115,6 +117,7 @@ public class MainActivity extends BaseActivity {
         printButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "onClick: "+serialCtrlPrinter.ComA);
                 String str="高";
                 String str1=null;
                 try {
@@ -122,7 +125,7 @@ public class MainActivity extends BaseActivity {
                 }catch (Exception E){
                     E.printStackTrace();
                 }
-                serialCtrl.sendPortText(serialCtrl.ComA,str1);
+                serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,str);
             }
         });
         rightEyeButton = (ImageView) findViewById(R.id.rightEyeButton);

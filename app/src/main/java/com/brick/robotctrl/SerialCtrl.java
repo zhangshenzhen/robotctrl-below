@@ -29,7 +29,9 @@ public class SerialCtrl {
     public static int loop=0;                 //用于for循环的循环变量
     public static int [] RmShake ={0,0,0,0,0,0,0};              //去除电压值的抖动
 
-    public SerialCtrl(Context context, Handler handler) {
+    public SerialCtrl(Context context, Handler handler,String serialCOM,int serialBaud ) {
+        this.serialCOM=serialCOM;
+        this.serialBaud=serialBaud;
         assert context != null;
         assert handler != null;
         this.context = context;
