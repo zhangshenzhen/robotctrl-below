@@ -90,8 +90,8 @@ public class MainActivity extends BaseActivity {
         AboutActivity.setHandler(handler);
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
-        serialCtrl = new SerialCtrl(MainActivity.this, handler,"ttymxc0",9600);
-        serialCtrlPrinter=new SerialCtrl(MainActivity.this, handler,"ttyUSB1",9600);
+        serialCtrl = new SerialCtrl(MainActivity.this, handler,"ttymxc0",9600,"robotctrl");
+        serialCtrlPrinter=new SerialCtrl(MainActivity.this, handler,"ttyUSB1",9600,"printer");
        // serialCtrlPrinter.setSerialCOM("/dev/ttyUSB0");
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -117,15 +117,15 @@ public class MainActivity extends BaseActivity {
         printButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: "+serialCtrlPrinter.ComA);
-                String str="高";
-                String str1=null;
+                Log.d(TAG, "onClick ");
+                String str="A高";
+                byte[] temp=null;
                 try {
-                    str1=new String(str.getBytes("utf-8"), "gbk");
+                   temp=str.getBytes("gbk");//这里写原编码方式
                 }catch (Exception E){
                     E.printStackTrace();
                 }
-                serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,str);
+               serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
             }
         });
         rightEyeButton = (ImageView) findViewById(R.id.rightEyeButton);
@@ -220,13 +220,7 @@ public class MainActivity extends BaseActivity {
         Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
         startService(startIntent); // 启动服务
         Log.d(TAG, "ZIMEService");
-
-        ExpressionActivity.startAction(MainActivity.this, 12);
-
-
-
-
-
+        //ExpressionActivity.startAction(MainActivity.this, 12);
     }
 
     private void threadToUiToast(final String message, final int toastLength) {
