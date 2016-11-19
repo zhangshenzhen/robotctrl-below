@@ -33,6 +33,7 @@ import com.jly.idcard.IDcard;
 import com.kjn.videoview.ADVideo;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
@@ -91,7 +92,7 @@ public class MainActivity extends BaseActivity {
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler,"ttymxc0",9600,"robotctrl");
-        serialCtrlPrinter=new SerialCtrl(MainActivity.this, handler,"ttyUSB1",9600,"printer");
+        serialCtrlPrinter=new SerialCtrl(MainActivity.this, handler,"ttyUSB0",9600,"printer");
        // serialCtrlPrinter.setSerialCOM("/dev/ttyUSB0");
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -118,7 +119,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick ");
-                String str="A高";
+                String str ="1234567890ABCDEFGHIJ中华人民共和";
+                String str1="中华人民共和1234567890ABCDEFGHIJ";
                 byte[] temp=null;
                 try {
                    temp=str.getBytes("gbk");//这里写原编码方式
@@ -126,6 +128,13 @@ public class MainActivity extends BaseActivity {
                     E.printStackTrace();
                 }
                serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
+                try {
+                    temp=str1.getBytes("gbk");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
+
             }
         });
         rightEyeButton = (ImageView) findViewById(R.id.rightEyeButton);
