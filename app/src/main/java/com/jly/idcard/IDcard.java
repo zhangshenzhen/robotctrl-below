@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import com.brick.robotctrl.BaseActivity;
 import com.brick.robotctrl.R;
+import com.brick.robotctrl.SSDBTask;
 import com.hdos.idCardUartDevice.JniReturnData;
+import com.kjn.msgabout.Msg;
 import com.hdos.idCardUartDevice.publicSecurityIDCardLib;
 import com.rg2.activity.TwoActivity;
 import com.rg2.listener.MyOnClickListener;
@@ -42,7 +44,7 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
     private byte[] ExpireDate = new byte[18];
     private byte[] pErrMsg = new byte[20];
     private byte[] BmpFile = new byte[38556];
-    String port="/dev/ttySAC3";
+    String port="/dev/ttyUSB0";
 
     public LinearLayout llGroup;
     private publicSecurityIDCardLib iDCardDevice;
@@ -59,7 +61,7 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_rg2);
 
-        //iDCardDevice = new publicSecurityIDCardLib();
+        iDCardDevice = new publicSecurityIDCardLib();
         //llGroup=(LinearLayout) findViewById(R.id.scrollView1);
 //        Thread tt = new Thread(new IDcard());
 //        tt.start();
@@ -70,7 +72,7 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
         mSubmitBtn = (Button) findViewById(R.id.btn_submit);
         mAddressTv.setOnClickListener(this);
         mSubmitBtn.setOnClickListener(this);
-        //hdler.sendEmptyMessage(1);
+        hdler.sendEmptyMessage(1);
     }
 
     /*身份证选卡*/

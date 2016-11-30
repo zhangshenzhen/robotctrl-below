@@ -17,6 +17,7 @@ import java.security.InvalidParameterException;
 
 public class SerialCtrl {
     public final String TAG = "SerialCtrl";
+    private String TAGElse;
     public String serialCOM = "ttymxc0";
     public int serialBaud = 9600;
     SerialControl ComA = null;
@@ -29,7 +30,10 @@ public class SerialCtrl {
     public static int loop=0;                 //用于for循环的循环变量
     public static int [] RmShake ={0,0,0,0,0,0,0};              //去除电压值的抖动
 
-    public SerialCtrl(Context context, Handler handler) {
+    public SerialCtrl(Context context, Handler handler,String serialCOM,int serialBaud,String TAG ) {
+        this.TAGElse=TAG;
+        this.serialCOM=serialCOM;
+        this.serialBaud=serialBaud;
         assert context != null;
         assert handler != null;
         this.context = context;
@@ -90,19 +94,23 @@ public class SerialCtrl {
         {
             // receive data
             ComRecDatatmp = ComRecData;
-            try {
-                if(Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16) {
-                    RmShake[loop++] = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
-                    if(loop==7) {
-                        batteryNum = GetMid(RmShake, 7);                  //更新电池值
-                        loop=0;
+            if(TAGElse.equals("robotctrl")) {
+                try {
+                    if (Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[1]).toUpperCase(), 16) == 16) {
+                        RmShake[loop++] = Integer.parseInt(String.format("%02x", ComRecDatatmp.bRec[2]).toUpperCase(), 16);
+                        if (loop == 7) {
+                            batteryNum = GetMid(RmShake, 7);                  //更新电池值
+                            loop = 0;
 //                        Log.d("onDataReceived", "getbattery: " + batteryNum);
+                        }
                     }
+                    Log.d(TAG, "onDataReceived: success" + TAGElse);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "onDataReceived: error" + TAGElse);
                 }
-            } catch (Exception e) {
-//                e.printStackTrace();
-                Log.d(TAG, "onDataReceived: ");
             }
+            Log.d(TAG, "enter onDataReceived:"+TAGElse);
         }
         public int GetMid( int r[], int n) {      //冒泡排序,取中间值，去除最大值和最小值
             int i= n -1;                          //初始时,最后位置保持不变
@@ -120,10 +128,22 @@ public class SerialCtrl {
     }
 
     // send
-    private void sendPortData(SerialHelper ComPort,String sOut){
+    public  void sendPortData(SerialHelper ComPort,String sOut){
         if (ComPort!=null && ComPort.isOpen())
         {
             ComPort.sendHex(sOut);
+        }
+    }
+    public  void sendPortText(SerialHelper ComPort,byte[] sOut){
+        if (ComPort!=null && ComPort.isOpen())
+        {
+            ComPort.sendTxt(sOut);
+        }
+    }
+    public void sendPortText(SerialHelper ComPort,String sOut){
+        if (ComPort!=null && ComPort.isOpen())
+        {
+            ComPort.sendTxt(sOut);
         }
     }
     // close serial

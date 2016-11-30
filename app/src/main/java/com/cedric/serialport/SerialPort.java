@@ -44,7 +44,7 @@ public class SerialPort {
 			try {
 				/* Missing read/write permission, trying to chmod the file */
 				Process su;
-				su = Runtime.getRuntime().exec("/system/bin/su");
+				su = Runtime.getRuntime().exec("/system/bin/su");//su代表一个su进程的抽象文件类型
 				String cmd = "chmod 666 " + device.getAbsolutePath() + "\n"
 						+ "exit\n";
 				su.getOutputStream().write(cmd.getBytes());

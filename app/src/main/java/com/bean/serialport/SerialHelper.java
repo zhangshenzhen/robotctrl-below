@@ -74,6 +74,9 @@ public abstract class SerialHelper{
 		byte[] bOutArray = SerialFunc.HexToByteArr(sHex);
 		send(bOutArray);		
 	}
+	public void sendTxt(byte[] bOutArray){
+		send(bOutArray);
+	}
 	//----------------------------------------------------
 	public void sendTxt(String sTxt){
 		byte[] bOutArray =sTxt.getBytes();
