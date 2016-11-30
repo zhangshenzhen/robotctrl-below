@@ -586,10 +586,10 @@ public class VideoDeviceCallBack {
 		}
 
 
-		mRender.setBuffer(this.mPlayWidth, this.mPlayHeight, i_iWidthStrideY, i_iWidthStrideUV);
+//		mRender.setBuffer(this.mPlayWidth, this.mPlayHeight, i_iWidthStrideY, i_iWidthStrideUV);
 		mRender.CopyTheRenderData(i_pFrameBuf, i_iBufLen);
 		SetRotateDegreeToRender(i_iDegree);
-		this.mRemote.requestRender();
+//		this.mRemote.requestRender();
 
 		return 0;
 	}
