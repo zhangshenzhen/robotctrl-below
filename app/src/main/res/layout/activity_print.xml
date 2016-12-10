@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical"
+              android:padding="20dp">
+
+
+  <LinearLayout
+      android:id="@+id/ll_top"
+      android:layout_centerInParent="true"
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+      <Button
+          android:id="@+id/btn_submit1"
+          android:layout_width="match_parent"
+          android:layout_margin="5dp"
+          android:layout_weight="1"
+          android:layout_height="wrap_content"
+          android:background="@drawable/common_red_bg_5dp"
+          android:text="确定"
+          android:textColor="@color/white"
+          android:textSize="20sp"/>
+
+      <Button
+          android:layout_weight="1"
+          android:id="@+id/btn_submit2"
+          android:layout_width="match_parent"
+          android:layout_margin="5dp"
+          android:layout_height="wrap_content"
+
+          android:background="@drawable/common_red_bg_5dp"
+          android:text="确定"
+          android:textColor="@color/white"
+          android:textSize="20sp"/>
+
+      <Button
+          android:id="@+id/btn_submit3"
+          android:layout_width="match_parent"
+          android:layout_margin="5dp"
+          android:layout_weight="1"
+          android:layout_height="wrap_content"
+          android:background="@drawable/common_red_bg_5dp"
+          android:text="确定"
+          android:textColor="@color/white"
+          android:textSize="20sp"/>
+
+  </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_below="@id/ll_top"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/ic_gf_logo"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_weight="1"
+            android:src="@drawable/ic_hs_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
+</RelativeLayout>

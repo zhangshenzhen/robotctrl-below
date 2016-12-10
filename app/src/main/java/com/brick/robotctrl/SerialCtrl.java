@@ -20,7 +20,7 @@ public class SerialCtrl {
     private String TAGElse;
     public String serialCOM = "ttymxc0";
     public int serialBaud = 9600;
-    SerialControl ComA = null;
+    public SerialControl ComA = null;
 
     private Handler contextHandler = null;
     private Context context = null;
