@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity {
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler,"ttymxc0",9600,"robotctrl");
-        serialCtrlPrinter=new SerialCtrl(MainActivity.this, handler,"ttyUSB0",9600,"printer");
+        serialCtrlPrinter=new SerialCtrl(MainActivity.this, handler,"ttyUSB1",9600,"printer");
        // serialCtrlPrinter.setSerialCOM("/dev/ttyUSB0");
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
