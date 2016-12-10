@@ -53,7 +53,7 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
     private TextView mIdNumberTv;
     private TextView mAddressTv;
     private Button mSubmitBtn;
-
+    private TextView mBackTv;
 
 
     @Override
@@ -72,6 +72,7 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
         mSubmitBtn = (Button) findViewById(R.id.btn_submit);
         mAddressTv.setOnClickListener(this);
         mSubmitBtn.setOnClickListener(this);
+        mBackTv.setOnClickListener(this);
         hdler.sendEmptyMessage(1);
     }
 
@@ -282,7 +283,12 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
                     mAddressTv.setText(content);
                 }
             });
-        } else if (v == mSubmitBtn) {
+        }
+        else if(v == mBackTv)
+        {
+            finish();
+        }
+        else if (v == mSubmitBtn) {
 
             String mUserName = mUserNameTv.getText().toString();
             String mIdNumber = mIdNumberTv.getText().toString();

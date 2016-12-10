@@ -35,7 +35,7 @@ public class FiveActivity extends BaseActivity
     private TextView mPostLevelTv;
     private TextView mSalaryTv;
     private TextView mWorkYearsTv;
-
+    private TextView mBackTv;
     @Override
     protected void initData()
     {
@@ -47,7 +47,7 @@ public class FiveActivity extends BaseActivity
     {
         setContentView(R.layout.activity_five);
         mSubmitBtn = (Button) findViewById(R.id.btn_submit);
-
+        mBackTv=(TextView)findViewById(R.id.tv_back);
         mCompanyNameEt = (EditText) findViewById(R.id.et_company_name);
         mCompanyPersonnelTv = (TextView) findViewById(R.id.tv_company_personnel);
         mCompanyProvinceEt = (EditText) findViewById(R.id.et_company_province);
@@ -73,6 +73,7 @@ public class FiveActivity extends BaseActivity
         mPostLevelTv.setOnClickListener(this);
         mSalaryTv.setOnClickListener(this);
         mWorkYearsTv.setOnClickListener(this);
+        mBackTv.setOnClickListener(this);
     }
 
     @Override
@@ -236,6 +237,9 @@ public class FiveActivity extends BaseActivity
             });
         }
 
-
+       else if(v == mBackTv)
+        {
+            finish();
+        }
     }
 }

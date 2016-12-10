@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+  >
+
+    <include layout="@layout/layout_head"></include>
+<ScrollView
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <LinearLayout
@@ -683,9 +693,10 @@
     </LinearLayout>
     <Button
         android:id="@+id/btn_submit"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
         android:background="@drawable/common_red_bg_5dp"
         android:text="确定"
         android:textColor="@color/white"
@@ -693,3 +704,4 @@
 
 </LinearLayout>
 </ScrollView>
+</LinearLayout>

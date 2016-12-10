@@ -34,7 +34,7 @@ public class ThreeActivity extends BaseActivity
     private EditText mDescAddressEt;//住宅具体门牌号
     private TextView mResidentialTypeTv;//住宅类型
     private TextView mResidenceTimeTv;//住宅年限
-
+private TextView mBackTv;
     private Button mSubmitBtn;
 
     @Override
@@ -58,6 +58,7 @@ public class ThreeActivity extends BaseActivity
         mDescAddressEt = (EditText) findViewById(R.id.et_desc_address);
         mResidentialTypeTv = (TextView) findViewById(R.id.tv_residential_type);
         mResidenceTimeTv = (TextView) findViewById(R.id.tv_residence_time);
+        mBackTv=(TextView)findViewById(R.id.tv_back);
     }
 
     @Override
@@ -68,6 +69,7 @@ public class ThreeActivity extends BaseActivity
         mResidentialAddressTv.setOnClickListener(this);
         mResidentialTypeTv.setOnClickListener(this);
         mResidenceTimeTv.setOnClickListener(this);
+        mBackTv.setOnClickListener(this);
     }
 
     @Override
@@ -197,6 +199,10 @@ public class ThreeActivity extends BaseActivity
                     mResidenceTimeTv.setText(content);
                 }
             });
+        }
+        else if(v == mBackTv)
+        {
+            finish();
         }
 
     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.brick.robotctrl.R;
 import com.rg2.utils.StringUtils;
@@ -25,6 +26,7 @@ public class FourActivity extends BaseActivity
     private EditText mRelativesPhoneEt;
     private EditText mContactNameEt;
     private EditText mContactPhoneEt;
+    private TextView mBackTv;
 
 
     @Override
@@ -42,12 +44,14 @@ public class FourActivity extends BaseActivity
         mRelativesPhoneEt = (EditText) findViewById(R.id.et_relatives_phone);
         mContactNameEt = (EditText) findViewById(R.id.et_contact_name);
         mContactPhoneEt = (EditText) findViewById(R.id.et_contact_phone);
+        mBackTv=(TextView)findViewById(R.id.tv_back);
     }
 
     @Override
     protected void initEvent()
     {
         mSubmitBtn.setOnClickListener(this);
+        mBackTv.setOnClickListener(this);
     }
 
     @Override
@@ -90,6 +94,10 @@ public class FourActivity extends BaseActivity
                 return;
             }
             startActivityForResult(new Intent(this,FiveActivity.class),1);
+        }
+        else if(v == mBackTv)
+        {
+            finish();
         }
     }
 
