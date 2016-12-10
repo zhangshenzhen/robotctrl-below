@@ -340,6 +340,7 @@ public class ZIMEConfig
 				if (aLine[0].compareToIgnoreCase("peer IP") == 0)
 				{
 					mRecvIP = aLine[1];
+					mRecvIP = "192.168.1.112";
 					if(aLine[1].compareToIgnoreCase("127.0.0.1") == 0){
 						mRecvIP = getLocalIpAddress();
 					}
