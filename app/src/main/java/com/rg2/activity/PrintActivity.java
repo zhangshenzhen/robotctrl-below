@@ -70,27 +70,26 @@ public class PrintActivity  extends BaseActivity{
         //  String str="中华人民共和";
         String time = StringUtils.getDateToString(new Date());
 
-           String str0 ="                                ";
-           String str ="                      "+"2016-12-12";
-           String str1 ="                                ";
-           String str2 ="                                ";
-
-          String str3 ="            7号            ";
-          String str4 ="                                ";
-           String str5 ="                                ";
-           String str6="对公业务    柜台031         ";
-           String str7 ="                                ";
-           String str8 ="                                ";
-           sendPortText(str0);
-           sendPortText(str);
-        sendPortText(str1);
-        sendPortText(str2);
-        sendPortText(str3);
-        sendPortText(str4);
-        sendPortText(str5);
-        sendPortText(str6);
+          String str0 ="                                ";
+          String str1 ="                      "+"2016-12-12";
+          String str2 ="                                ";
+          String str3 ="                                ";
+          String str4 ="               7号              ";
+          String str5 ="                                ";
+          String str6 ="                                ";
+          String str7="对公业务    柜台031               ";
+          String str8="                                 ";
+          String str9="                                 ";
+           sendPortText(str9);
+           sendPortText(str8);
         sendPortText(str7);
-        sendPortText(str8);
+        sendPortText(str6);
+        sendPortText(str5);
+        sendPortText(str4);
+        sendPortText(str3);
+        sendPortText(str2);
+        sendPortText(str1);
+        sendPortText(str0);
 
 
     }
@@ -99,56 +98,54 @@ public class PrintActivity  extends BaseActivity{
     {
         //  String str ="1234567890ABCDEFGHIJ中华人民共和";
         String time = StringUtils.getDateToString(new Date());
-        String str ="                      "+time;
-        String str1 ="            8号            ";
-        String str2="对私业务    柜台032         ";
-        byte[] temp=null;
-        try {
-            temp=str.getBytes("gbk");//这里写原编码方式
-        }catch (Exception E){
-            E.printStackTrace();
-        }
-        serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
-        try {
-            temp=str1.getBytes("gbk");//这里写原编码方式
-        }catch (Exception E){
-            E.printStackTrace();
-        }
-        serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
-        try {
-            temp=str2.getBytes("gbk");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
+
+        String str0 ="                                ";
+        String str1 ="                      "+"2016-12-12";
+        String str2 ="                                ";
+        String str3 ="                                ";
+        String str4 ="               8号              ";
+        String str5 ="                                ";
+        String str6 ="                                ";
+        String str7="对私业务    柜台032               ";
+        String str8="                                 ";
+        String str9="                                 ";
+        sendPortText(str9);
+        sendPortText(str8);
+        sendPortText(str7);
+        sendPortText(str6);
+        sendPortText(str5);
+        sendPortText(str4);
+        sendPortText(str3);
+        sendPortText(str2);
+        sendPortText(str1);
+        sendPortText(str0);
     }
 
     private  void print3()
     {
         //  String str ="1234567890ABCDEFGHIJ中华人民共和";
         String time = StringUtils.getDateToString(new Date());
-        String str ="                      "+time;
-        String str1 ="            9号            ";
-        String str2="理财业务    柜台033         ";
-        byte[] temp=null;
-        try {
-            temp=str.getBytes("gbk");//这里写原编码方式
-        }catch (Exception E){
-            E.printStackTrace();
-        }
-        serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
-        try {
-            temp=str1.getBytes("gbk");//这里写原编码方式
-        }catch (Exception E){
-            E.printStackTrace();
-        }
-        serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
-        try {
-            temp=str2.getBytes("gbk");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
+
+        String str0 ="                                ";
+        String str1 ="                      "+"2016-12-12";
+        String str2 ="                                ";
+        String str3 ="                                ";
+        String str4 ="               8号              ";
+        String str5 ="                                ";
+        String str6 ="                                ";
+        String str7="理财业务    柜台032               ";
+        String str8="                                 ";
+        String str9="                                 ";
+        sendPortText(str9);
+        sendPortText(str8);
+        sendPortText(str7);
+        sendPortText(str6);
+        sendPortText(str5);
+        sendPortText(str4);
+        sendPortText(str3);
+        sendPortText(str2);
+        sendPortText(str1);
+        sendPortText(str0);
     }
 
 

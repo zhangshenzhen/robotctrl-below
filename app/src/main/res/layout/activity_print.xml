@@ -16,36 +16,36 @@
       <Button
           android:id="@+id/btn_submit1"
           android:layout_width="match_parent"
-          android:layout_margin="5dp"
+          android:layout_margin="10dp"
           android:layout_weight="1"
-          android:layout_height="wrap_content"
+          android:layout_height="100dp"
           android:background="@drawable/common_red_bg_5dp"
           android:text="对公业务"
           android:textColor="@color/white"
-          android:textSize="20sp"/>
+          android:textSize="30sp"/>
 
       <Button
           android:layout_weight="1"
           android:id="@+id/btn_submit2"
           android:layout_width="match_parent"
-          android:layout_margin="5dp"
-          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:layout_height="100dp"
 
           android:background="@drawable/common_red_bg_5dp"
           android:text="对私业务"
           android:textColor="@color/white"
-          android:textSize="20sp"/>
+          android:textSize="30sp"/>
 
       <Button
           android:id="@+id/btn_submit3"
           android:layout_width="match_parent"
           android:layout_margin="5dp"
           android:layout_weight="1"
-          android:layout_height="wrap_content"
+          android:layout_height="100dp"
           android:background="@drawable/common_red_bg_5dp"
           android:text="理财业务"
           android:textColor="@color/white"
-          android:textSize="20sp"/>
+          android:textSize="30sp"/>
 
   </LinearLayout>
 
@@ -54,7 +54,7 @@
         android:layout_below="@id/ll_top"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:gravity="center_vertical"
         android:layout_height="wrap_content">
 
