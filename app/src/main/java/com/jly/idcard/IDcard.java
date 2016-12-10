@@ -109,7 +109,13 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    getCard();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            getCard();
+                        }
+                    }).start();
+
 
                         break;
             }
@@ -142,9 +148,16 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
 
                 LogUtil.e("TAG", new String(name, "Unicode"));
                 LogUtil.e("TAG", new String(IDNo, "Unicode"));
-                mUserNameTv.setText(new String(name, "Unicode"));
-                mIdNumberTv.setText(new String(IDNo, "Unicode"));
-
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        try {
+                            mUserNameTv.setText(new String(name, "Unicode"));
+                            mIdNumberTv.setText(new String(IDNo, "Unicode"));
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
