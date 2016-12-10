@@ -58,9 +58,10 @@
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@+id/toolbar" />
     <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
         android:id="@+id/Printer"
+        android:textSize="30dp"
         android:background="@drawable/common_red_bg_5dp"
         android:text="取号"
         android:layout_marginTop="200dp"
@@ -83,10 +84,11 @@
             android:layout_marginStart="360dp" />
 
     <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
         android:text="办理信用卡"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
+        android:textSize="30dp"
         android:background="@drawable/common_red_bg_5dp"
         android:id="@+id/IDButtonTest"
         android:layout_below="@+id/Printer"

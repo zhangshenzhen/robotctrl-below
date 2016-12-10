@@ -67,29 +67,32 @@ public class PrintActivity  extends BaseActivity{
     private  void print1()
     {
        //  String str ="1234567890ABCDEFGHIJ中华人民共和";
+        //  String str="中华人民共和";
         String time = StringUtils.getDateToString(new Date());
-           String str ="                      "+time;
-          String str1 ="            7号            ";
-           String str2="对公业务    柜台031         ";
-        byte[] temp=null;
-        try {
-            temp=str.getBytes("gbk");//这里写原编码方式
-        }catch (Exception E){
-            E.printStackTrace();
-        }
-        serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
-        try {
-            temp=str1.getBytes("gbk");//这里写原编码方式
-        }catch (Exception E){
-            E.printStackTrace();
-        }
-        serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
-        try {
-            temp=str2.getBytes("gbk");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
+
+           String str0 ="                                ";
+           String str ="                      "+"2016-12-12";
+           String str1 ="                                ";
+           String str2 ="                                ";
+
+          String str3 ="            7号            ";
+          String str4 ="                                ";
+           String str5 ="                                ";
+           String str6="对公业务    柜台031         ";
+           String str7 ="                                ";
+           String str8 ="                                ";
+           sendPortText(str0);
+           sendPortText(str);
+        sendPortText(str1);
+        sendPortText(str2);
+        sendPortText(str3);
+        sendPortText(str4);
+        sendPortText(str5);
+        sendPortText(str6);
+        sendPortText(str7);
+        sendPortText(str8);
+
+
     }
 
     private  void print2()
@@ -147,4 +150,18 @@ public class PrintActivity  extends BaseActivity{
         }
         serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
     }
+
+
+    private void sendPortText(String content)
+    {
+        byte[] temp = null;
+        try {
+            temp=content.getBytes("gbk");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
+    }
+
+
 }
