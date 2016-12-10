@@ -54,8 +54,8 @@
         android:layout_below="@id/ll_top"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="60dp"
-        android:gravity="center_vertical"
+        android:layout_marginTop="120dp"
+        android:gravity="center"
         android:layout_height="wrap_content">
 
         <ImageView
@@ -68,6 +68,7 @@
             android:layout_weight="1"
             android:src="@drawable/ic_hs_logo"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content" />
     </LinearLayout>
 

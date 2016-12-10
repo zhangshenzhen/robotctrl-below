@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -110,7 +112,13 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    getCard();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            getCard();
+                        }
+                    }).start();
+
 
                         break;
             }
@@ -143,9 +151,16 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
 
                 LogUtil.e("TAG", new String(name, "Unicode"));
                 LogUtil.e("TAG", new String(IDNo, "Unicode"));
-                mUserNameTv.setText(new String(name, "Unicode"));
-                mIdNumberTv.setText(new String(IDNo, "Unicode"));
-
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        try {
+                            mUserNameTv.setText(new String(name, "Unicode"));
+                            mIdNumberTv.setText(new String(IDNo, "Unicode"));
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
@@ -320,6 +335,17 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
         {
             finish();
         }
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        float x,y;
+        x = event.getX();
+        //250
+        y=event.getY();
+        Log.d("IDcard", "dispatchTouchEvent: "+x+":"+" "+y);
+        event.setLocation(x*1280/1024,y*750/768);
+
+        return super.dispatchTouchEvent(event);
     }
 }
 

@@ -2,6 +2,8 @@ package com.rg2.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -47,5 +49,17 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
     public void onClick(View v)
     {
 
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        float x,y;
+        x = event.getX();
+        //250
+        y=event.getY();
+        Log.d("TAG", "dispatchTouchEvent: "+x+":"+" "+y);
+        event.setLocation(x*1280/1024,y*750/768);
+
+        return super.dispatchTouchEvent(event);
     }
 }

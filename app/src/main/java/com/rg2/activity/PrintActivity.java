@@ -70,16 +70,20 @@ public class PrintActivity  extends BaseActivity{
         //  String str="中华人民共和";
         String time = StringUtils.getDateToString(new Date());
 
-        String str0 ="1234567890ABCDEFGHIJ中华人民共和";//"                                ";
-        String str1 ="1234567890ABCDEFGHIJ中华人民共和";//"                      2016-12-12";
-        String str2 ="1234567890ABCDEFGHIJ中华人民共和";//"                                ";
-        String str3 ="1234567890ABCDEFGHIJ中华人民共和";//"                                ";
-        String str4 ="1234567890ABCDEFGHIJ中华人民共和";//"               7号              ";
-        String str5 ="1234567890ABCDEFGHIJ中华人民共和";//"                                ";
-        String str6 ="1234567890ABCDEFGHIJ中华人民共和";//"                                ";
-        String str7 ="1234567890ABCDEFGHIJ中华人民共和";//"对公业务    柜台031               ";
-        String str8 ="1234567890ABCDEFGHIJ中华人民共和";//"                                 ";
-        String str9 ="1234567890ABCDEFGHIJ中华人民共和";//"                                 ";
+        String str0 ="                                ";
+        String str1 ="                      2016-12-12";
+        String str2 ="                                ";
+        String str3 ="                                ";
+        String str4 ="               8号              ";
+        String str5 ="                                ";
+        String str6 ="                                ";
+        String str7 ="对公业务    柜台032             ";
+        String str8 ="                                ";
+        String str9 ="                                ";
+        sendPortText(str9);
+        sendPortText(str9);
+        sendPortText(str9);
+        sendPortText(str9);
         sendPortText(str9);
         sendPortText(str8);
         sendPortText(str7);
@@ -90,6 +94,10 @@ public class PrintActivity  extends BaseActivity{
         sendPortText(str2);
         sendPortText(str1);
         sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
     }
 
     private  void print2()
@@ -98,15 +106,19 @@ public class PrintActivity  extends BaseActivity{
         String time = StringUtils.getDateToString(new Date());
 
         String str0 ="                                ";
-        String str1 ="                      "+"2016-12-12";
+        String str1 ="                      2016-12-12";
         String str2 ="                                ";
         String str3 ="                                ";
         String str4 ="               8号              ";
         String str5 ="                                ";
         String str6 ="                                ";
-        String str7 ="对私业务    柜台032              ";
+        String str7 ="对私业务    柜台032             ";
         String str8 ="                                ";
         String str9 ="                                ";
+        sendPortText(str9);
+        sendPortText(str9);
+        sendPortText(str9);
+        sendPortText(str9);
         sendPortText(str9);
         sendPortText(str8);
         sendPortText(str7);
@@ -116,6 +128,10 @@ public class PrintActivity  extends BaseActivity{
         sendPortText(str3);
         sendPortText(str2);
         sendPortText(str1);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
         sendPortText(str0);
     }
 
@@ -131,9 +147,13 @@ public class PrintActivity  extends BaseActivity{
         String str4 ="               8号              ";
         String str5 ="                                ";
         String str6 ="                                ";
-        String str7 ="理财业务    柜台032              ";
+        String str7 ="理财业务    柜台032             ";
         String str8 ="                                ";
         String str9 ="                                ";
+        sendPortText(str9);
+        sendPortText(str9);
+        sendPortText(str9);
+        sendPortText(str9);
         sendPortText(str9);
         sendPortText(str8);
         sendPortText(str7);
@@ -143,6 +163,10 @@ public class PrintActivity  extends BaseActivity{
         sendPortText(str3);
         sendPortText(str2);
         sendPortText(str1);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
         sendPortText(str0);
     }
 
