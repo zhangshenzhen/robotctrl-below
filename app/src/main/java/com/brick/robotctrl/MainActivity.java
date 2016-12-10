@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.jly.batteryView.BatteryView;
 import com.jly.idcard.IDcard;
 import com.kjn.videoview.ADVideo;
+import com.rg2.activity.PrintActivity;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -118,22 +119,24 @@ public class MainActivity extends BaseActivity {
         printButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick ");
-                String str ="1234567890ABCDEFGHIJ中华人民共和";
-                String str1="中华人民共和1234567890ABCDEFGHIJ";
-                byte[] temp=null;
-                try {
-                   temp=str.getBytes("gbk");//这里写原编码方式
-                }catch (Exception E){
-                    E.printStackTrace();
-                }
-               serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
-                try {
-                    temp=str1.getBytes("gbk");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
+
+                startActivity(new Intent(MainActivity.this, PrintActivity.class));
+//                Log.d(TAG, "onClick ");
+//                String str ="1234567890ABCDEFGHIJ中华人民共和";
+//                String str1="中华人民共和1234567890ABCDEFGHIJ";
+//                byte[] temp=null;
+//                try {
+//                   temp=str.getBytes("gbk");//这里写原编码方式
+//                }catch (Exception E){
+//                    E.printStackTrace();
+//                }
+//               serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
+//                try {
+//                    temp=str1.getBytes("gbk");
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
+//                serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
 
             }
         });

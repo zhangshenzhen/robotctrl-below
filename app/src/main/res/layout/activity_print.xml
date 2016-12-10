@@ -20,7 +20,7 @@
           android:layout_weight="1"
           android:layout_height="wrap_content"
           android:background="@drawable/common_red_bg_5dp"
-          android:text="确定"
+          android:text="对公业务"
           android:textColor="@color/white"
           android:textSize="20sp"/>
 
@@ -32,7 +32,7 @@
           android:layout_height="wrap_content"
 
           android:background="@drawable/common_red_bg_5dp"
-          android:text="确定"
+          android:text="对私业务"
           android:textColor="@color/white"
           android:textSize="20sp"/>
 
@@ -43,7 +43,7 @@
           android:layout_weight="1"
           android:layout_height="wrap_content"
           android:background="@drawable/common_red_bg_5dp"
-          android:text="确定"
+          android:text="理财业务"
           android:textColor="@color/white"
           android:textSize="20sp"/>
 

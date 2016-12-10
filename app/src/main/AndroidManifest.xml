@@ -202,6 +202,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
+        <activity
+            android:name="com.rg2.activity.PrintActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
+
 
         <service android:name="zime.ui.ZIMEAVDemoService">
         </service>
