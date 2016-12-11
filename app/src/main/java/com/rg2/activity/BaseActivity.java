@@ -51,8 +51,8 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
 
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    //@Override
+    /*public boolean dispatchTouchEvent(MotionEvent event) /*{
         float x,y;
         x = event.getX();
         //250
@@ -61,5 +61,5 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
         event.setLocation(x*1280/1024,y*750/768);
 
         return super.dispatchTouchEvent(event);
-    }
+    }*/
 }

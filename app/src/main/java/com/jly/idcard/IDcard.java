@@ -336,7 +336,7 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
             finish();
         }
     }
-    @Override
+/*    @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         float x,y;
         x = event.getX();
@@ -346,7 +346,7 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
         event.setLocation(x*1280/1024,y*750/768);
 
         return super.dispatchTouchEvent(event);
-    }
+    }*/
 }
 
 
