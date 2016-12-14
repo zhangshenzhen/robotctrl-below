@@ -90,7 +90,6 @@ public class MainActivity extends BaseActivity {
 
         ADActivity.setHandler(handler);
         AboutActivity.setHandler(handler);
-        initSystem();
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler,"ttymxc0",9600,"robotctrl");
         serialCtrlPrinter=new SerialCtrl(MainActivity.this, handler,"ttyUSB1",9600,"printer");
@@ -233,34 +232,6 @@ public class MainActivity extends BaseActivity {
         startService(startIntent); // 启动服务
         Log.d(TAG, "ZIMEService");
         //ExpressionActivity.startAction(MainActivity.this, 12);
-    }
-
-    private void initSystem(){
-        try {
-            Runtime.getRuntime().exec("su -c \"/system/bin/chmod 777 /dev/ttyUSB0\"");
-            Runtime.getRuntime().exec("su -c \"/system/bin/chmod 777 /dev/ttyUSB1\"");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
-        }
-        // create gpio
-        try {
-            // touch add
-            Runtime.getRuntime().exec("su -c \"/system/bin/echo \"205\" /sys/class/export\"");
-            Runtime.getRuntime().exec("su -c \"/system/bin/echo \"high\" /sys/class/gpio/gpio205/direction\"");
-            // touch end/reset
-            Runtime.getRuntime().exec("su -c \"/system/bin/echo \"36\" /sys/class/export\"");
-            Runtime.getRuntime().exec("su -c \"/system/bin/echo \"high\" /sys/class/gpio/gpio36/direction\"");
-            // touch delete
-            Runtime.getRuntime().exec("su -c \"/system/bin/echo \"101\" /sys/class/export\"");
-            Runtime.getRuntime().exec("su -c \"/system/bin/echo \"high\" /sys/class/gpio/gpio101/direction\"");
-            // touch out
-            Runtime.getRuntime().exec("su -c \"/system/bin/echo \"34\" /sys/class/export\"");
-            Runtime.getRuntime().exec("su -c \"/system/bin/echo \"in\" /sys/class/gpio/gpio34/direction\"");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
-        }
     }
     private void initMCU(){
 
@@ -738,10 +709,19 @@ public class MainActivity extends BaseActivity {
         switch (item.getItemId()) {
             // menu context
             case R.id.actionSettings:
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivityForResult(intent, 0);
-                // do some thing else
+                new ShowProgressDialog();
+                new Thread() {
+                    @Override
+                    public void run() {
+                        while(FingerprintIdent.fingerIdentSuccess()) {
+                            Log.d(TAG, "onOptionsItemSelected: 1111111111111111");
+                            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                            startActivityForResult(intent, 0);
+                        }
+                    }
+                }.start();
                 break;
+                // do some thing else
             default:
                 break;
         }
