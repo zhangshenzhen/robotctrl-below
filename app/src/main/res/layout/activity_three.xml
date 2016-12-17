@@ -39,6 +39,7 @@
             >
             <EditText
                 android:id="@+id/et_email"
+                android:text="wangxianyun1@163.com"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:background="@drawable/input_frame"
@@ -83,6 +84,7 @@
             android:orientation="horizontal"
             >
             <EditText
+                android:text="江苏"
                 android:id="@+id/et_province"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
@@ -102,6 +104,7 @@
                 android:textSize="20sp"/>
             <EditText
                 android:id="@+id/et_city"
+                android:text="南京"
                 android:layout_width="120dp"
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
@@ -154,6 +157,7 @@
             android:orientation="horizontal"
             >
             <EditText
+                android:text="中山南路221号"
                 android:id="@+id/et_carded_address"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -424,6 +428,7 @@
             android:orientation="horizontal"
             >
             <EditText
+                android:text="小营街道110号"
                 android:id="@+id/et_desc_address"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"

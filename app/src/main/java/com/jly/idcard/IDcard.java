@@ -68,6 +68,7 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
 //        Thread tt = new Thread(new IDcard());
 //        tt.start();
 
+        mBackTv=(TextView)findViewById(R.id.tv_back);
         mUserNameTv = (TextView) findViewById(R.id.tv_userName);
         mIdNumberTv = (TextView) findViewById(R.id.tv_idNumber);
         mAddressTv = (TextView) findViewById(R.id.tv_address);

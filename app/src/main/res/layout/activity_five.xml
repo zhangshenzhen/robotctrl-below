@@ -49,6 +49,7 @@
             android:orientation="horizontal"
             >
             <EditText
+                android:text="红石网络科技有限公司"
                 android:id="@+id/et_company_name"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -213,6 +214,7 @@
             android:orientation="horizontal"
             >
             <EditText
+                android:text="扬子大道2350号"
                 android:id="@+id/et_company_address"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -361,6 +363,7 @@
             android:orientation="horizontal"
             >
             <EditText
+                android:text="研发部"
                 android:id="@+id/et_department"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -404,6 +407,7 @@
             android:orientation="horizontal"
             >
             <EditText
+                android:text="项目经理"
                 android:id="@+id/et_post"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

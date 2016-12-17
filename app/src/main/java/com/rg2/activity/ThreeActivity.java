@@ -97,55 +97,55 @@ private TextView mBackTv;
             String mResidentialType = mResidentialTypeTv.getText().toString();
             String mResidenceTime = mResidenceTimeTv.getText().toString();
 
-                        if (!StringUtils.checkEmail(mEmail))
-                        {
-                            ToastUtil.show(ThreeActivity.this, "请输入正确的邮箱");
-                            return;
-                        }
-
-                        if (StringUtils.stringIsEmpty(mProvince))
-                        {
-                            ToastUtil.show(ThreeActivity.this, "请输入身份证所在省份");
-                            return;
-                        }
-
-                        if (StringUtils.stringIsEmpty(mCity))
-                        {
-                            ToastUtil.show(ThreeActivity.this, "请输入身份证所在城市");
-                            return;
-                        }
-
-                        if (StringUtils.stringIsEmpty(mCardedAddress))
-                        {
-                            ToastUtil.show(ThreeActivity.this, "请与身份证上地址保持一致");
-                            return;
-                        }
-                        if (StringUtils.stringIsEmpty(mEducation))
-                        {
-                            ToastUtil.show(ThreeActivity.this, "请选择学历");
-                            return;
-                        }
-                        if (StringUtils.stringIsEmpty(mResidentialAddress))
-                        {
-                            ToastUtil.show(ThreeActivity.this, "请选择学历");
-                            return;
-                        }
-                        if (StringUtils.stringIsEmpty(mDescAddress))
-                        {
-                            ToastUtil.show(ThreeActivity.this, "请输入详细街道门牌号");
-                            return;
-                        }
-                        if (StringUtils.stringIsEmpty(mResidentialType))
-                        {
-                            ToastUtil.show(ThreeActivity.this, "请选择住宅类型");
-                            return;
-                        }
-
-                        if (StringUtils.stringIsEmpty(mResidenceTime))
-                        {
-                            ToastUtil.show(ThreeActivity.this, "请选择住宅年薪");
-                            return;
-                        }
+//                        if (!StringUtils.checkEmail(mEmail))
+//                        {
+//                            ToastUtil.show(ThreeActivity.this, "请输入正确的邮箱");
+//                            return;
+//                        }
+//
+//                        if (StringUtils.stringIsEmpty(mProvince))
+//                        {
+//                            ToastUtil.show(ThreeActivity.this, "请输入身份证所在省份");
+//                            return;
+//                        }
+//
+//                        if (StringUtils.stringIsEmpty(mCity))
+//                        {
+//                            ToastUtil.show(ThreeActivity.this, "请输入身份证所在城市");
+//                            return;
+//                        }
+//
+//                        if (StringUtils.stringIsEmpty(mCardedAddress))
+//                        {
+//                            ToastUtil.show(ThreeActivity.this, "请与身份证上地址保持一致");
+//                            return;
+//                        }
+//                        if (StringUtils.stringIsEmpty(mEducation))
+//                        {
+//                            ToastUtil.show(ThreeActivity.this, "请选择学历");
+//                            return;
+//                        }
+//                        if (StringUtils.stringIsEmpty(mResidentialAddress))
+//                        {
+//                            ToastUtil.show(ThreeActivity.this, "请选择学历");
+//                            return;
+//                        }
+//                        if (StringUtils.stringIsEmpty(mDescAddress))
+//                        {
+//                            ToastUtil.show(ThreeActivity.this, "请输入详细街道门牌号");
+//                            return;
+//                        }
+//                        if (StringUtils.stringIsEmpty(mResidentialType))
+//                        {
+//                            ToastUtil.show(ThreeActivity.this, "请选择住宅类型");
+//                            return;
+//                        }
+//
+//                        if (StringUtils.stringIsEmpty(mResidenceTime))
+//                        {
+//                            ToastUtil.show(ThreeActivity.this, "请选择住宅年薪");
+//                            return;
+//                        }
 
             startActivityForResult(new Intent(this,FourActivity.class),1);
         }

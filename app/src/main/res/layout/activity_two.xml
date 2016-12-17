@@ -41,6 +41,7 @@
                 android:background="@drawable/input_frame"
                 android:gravity="center_vertical"
                 android:hint="区号"
+                android:text="025"
                 android:digits="1234567890"
                 android:inputType="phone"
                 android:maxLength="4"
@@ -61,6 +62,7 @@
                 android:background="@drawable/input_frame"
                 android:gravity="center_vertical"
                 android:hint="电话号码"
+                android:text="83265678"
                 android:inputType="phone"
                 android:digits="1234567890"
                 android:maxLines="1"
@@ -115,6 +117,7 @@
                 android:background="@drawable/input_frame"
                 android:gravity="center_vertical"
                 android:hint="区号"
+                android:text="025"
                 android:digits="1234567890"
                 android:inputType="phone"
                 android:maxLength="4"
@@ -129,6 +132,7 @@
                 android:text="-"/>
 
             <EditText
+                android:text="83265677"
                 android:id="@+id/et_company_tel"
                 android:layout_width="160dp"
                 android:layout_height="50dp"
@@ -198,6 +202,7 @@
                 android:background="@drawable/input_frame"
                 android:gravity="center_vertical"
                 android:hint="手机号码"
+                android:text="138012345678"
                 android:digits="1234567890"
                 android:inputType="phone"
                 android:maxLength="11"

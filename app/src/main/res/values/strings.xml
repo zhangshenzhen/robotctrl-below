@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">RobotCtrl</string>
     <string name="settings">设置</string>
+    <string name="fingerprint">指纹录入</string>
     <string name="robotName">robotName</string>
     <string name="robotLocation">robotLocation</string>
     <string name="robotLocationTitle">robot Location</string>

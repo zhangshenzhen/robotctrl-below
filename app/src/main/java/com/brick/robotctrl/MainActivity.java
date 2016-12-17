@@ -1,6 +1,7 @@
 package com.brick.robotctrl;
 
 import android.app.ActivityManager;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,6 +21,7 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,11 +33,19 @@ import android.widget.Toast;
 import com.jly.batteryView.BatteryView;
 import com.jly.idcard.IDcard;
 import com.kjn.videoview.ADVideo;
+import com.rg2.activity.FingerInputActivity;
+import com.rg2.activity.FingerprintActivity;
 import com.rg2.activity.PrintActivity;
+import com.rg2.activity.ShellUtils;
+import com.rg2.utils.DialogUtils;
+import com.rg2.utils.LogUtil;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
@@ -45,23 +55,24 @@ import it.sauronsoftware.base64.Base64;
 import zime.ui.ZIMEAVDemoActivity;
 import zime.ui.ZIMEAVDemoService;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity
+{
     private static final String TAG = "MainActivity";
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
 
-    ImageView leftEyeButton = null;
-    ImageView rightEyeButton = null;
-    SSDBTask ssdbTask = null;
-    SerialCtrl serialCtrl = null;
-    SerialCtrl serialCtrlPrinter=null;
+    ImageView  leftEyeButton     = null;
+    ImageView  rightEyeButton    = null;
+    SSDBTask   ssdbTask          = null;
+    SerialCtrl serialCtrl        = null;
+    SerialCtrl serialCtrlPrinter = null;
     Button ZIMEButton;
     Button IDButton;
 
-    DispQueueThread DispQueue=null;//刷新电压显示线程
+    DispQueueThread DispQueue = null;//刷新电压显示线程
     public BatteryView mBatteryView = null;
 
-    private boolean serverChanged = false;
-    private boolean serialChanged = false;
+    private boolean serverChanged        = false;
+    private boolean serialChanged        = false;
     private boolean robotLocationChanged = false;
 
     private String mp3Url = Environment.getExternalStorageDirectory().getPath() + "/Movies/qianqian.mp3";
@@ -70,13 +81,33 @@ public class MainActivity extends BaseActivity {
 
     ADVideo adVideo1 = null;
     private final int videoInfo = 9999;
-    private final int ssdbConn = 888;
+    private final int ssdbConn  = 888;
 
-    private IntentFilter intentFilter;
+    private IntentFilter          intentFilter;
     private netWorkChangeReceiver netWorkChangeReceiver;
-    private Button printButton;
+    private Button                printButton, mSettingBtn;
+
+    private Dialog mNoticeDialog;
+    private Timer timer = new Timer(true);
+    TimerTask mSettingTask = new TimerTask()
+    {
+        @Override
+        public void run()
+        {
+            String fingerprint = "cat /sys/class/gpio/gpio34/value";
+
+            List<String> commands = new ArrayList<String>();
+            commands.add(fingerprint);
+
+            ShellUtils.CommandResult result = ShellUtils.execCommand(commands, false, true);
+            LogUtil.e("TAG", "result-->" + result.result);
+        }
+    };
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -91,9 +122,9 @@ public class MainActivity extends BaseActivity {
         ADActivity.setHandler(handler);
         AboutActivity.setHandler(handler);
         ssdbTask = new SSDBTask(MainActivity.this, handler);
-        serialCtrl = new SerialCtrl(MainActivity.this, handler,"ttymxc0",9600,"robotctrl");
-        serialCtrlPrinter=new SerialCtrl(MainActivity.this, handler,"ttyUSB1",9600,"printer");
-       // serialCtrlPrinter.setSerialCOM("/dev/ttyUSB0");
+        serialCtrl = new SerialCtrl(MainActivity.this, handler, "ttymxc0", 9600, "robotctrl");
+        serialCtrlPrinter = new SerialCtrl(MainActivity.this, handler, "ttyUSB1", 9600, "printer");
+        // serialCtrlPrinter.setSerialCOM("/dev/ttyUSB0");
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         //创建NetWorkChangeReceiver的实例，并调用registerReceiver()方法进行注册
@@ -106,67 +137,88 @@ public class MainActivity extends BaseActivity {
         mBatteryView = (BatteryView) findViewById(R.id.battery_view);
         mBatteryView.setPower(SerialCtrl.batteryNum);
 
-//        leftEyeButton = (ImageView) findViewById(R.id.leftEyeButton);
-//        leftEyeButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                clearTimerCount();
-//                startActivity(new Intent().setClass(MainActivity.this, QuestTestActivity.class));
-//            }
-//        });
-        printButton=(Button)findViewById(R.id.Printer);
-        printButton.setOnClickListener(new View.OnClickListener() {
+        //        leftEyeButton = (ImageView) findViewById(R.id.leftEyeButton);
+        //        leftEyeButton.setOnClickListener(new View.OnClickListener() {
+        //            @Override
+        //            public void onClick(View v) {
+        //                clearTimerCount();
+        //                startActivity(new Intent().setClass(MainActivity.this, QuestTestActivity.class));
+        //            }
+        //        });
+
+        mSettingBtn = (Button) findViewById(R.id.btn_setting);
+        mSettingBtn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v)
+            {
+                startActivity(new Intent(MainActivity.this, FingerInputActivity.class));
+            }
+        });
+
+
+        printButton = (Button) findViewById(R.id.Printer);
+        printButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
 
                 startActivity(new Intent(MainActivity.this, PrintActivity.class));
-//                Log.d(TAG, "onClick ");
-//                String str ="1234567890ABCDEFGHIJ中华人民共和";
-//                String str1="中华人民共和1234567890ABCDEFGHIJ";
-//                byte[] temp=null;
-//                try {
-//                   temp=str.getBytes("gbk");//这里写原编码方式
-//                }catch (Exception E){
-//                    E.printStackTrace();
-//                }
-//               serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
-//                try {
-//                    temp=str1.getBytes("gbk");
-//                } catch (UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-//                }
-//                serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
+                //                Log.d(TAG, "onClick ");
+                //                String str ="1234567890ABCDEFGHIJ中华人民共和";
+                //                String str1="中华人民共和1234567890ABCDEFGHIJ";
+                //                byte[] temp=null;
+                //                try {
+                //                   temp=str.getBytes("gbk");//这里写原编码方式
+                //                }catch (Exception E){
+                //                    E.printStackTrace();
+                //                }
+                //               serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
+                //                try {
+                //                    temp=str1.getBytes("gbk");
+                //                } catch (UnsupportedEncodingException e) {
+                //                    e.printStackTrace();
+                //                }
+                //                serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
 
             }
         });
         rightEyeButton = (ImageView) findViewById(R.id.rightEyeButton);
-        rightEyeButton.setOnClickListener(new View.OnClickListener() {
+        rightEyeButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 clearTimerCount();
                 AboutActivity.startAction(MainActivity.this, ssdbTask.robotName);
             }
         });
 
-        ZIMEButton = (Button)findViewById(R.id.ZIMEButton);
-        ZIMEButton.setOnClickListener(new View.OnClickListener() {
+        ZIMEButton = (Button) findViewById(R.id.ZIMEButton);
+        ZIMEButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,ZIMEAVDemoActivity.class);
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this, ZIMEAVDemoActivity.class);
                 startActivity(intent);
             }
         });
-        IDButton = (Button)findViewById(R.id.IDButtonTest);
-        IDButton.setOnClickListener(new View.OnClickListener() {
+        IDButton = (Button) findViewById(R.id.IDButtonTest);
+        IDButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(MainActivity.this, IDcard.class);
                 startActivity(intent);
             }
         });
 
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
-        presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener()
+        {
             private final String robotName = getString(R.string.robotName);
             private final String robotLocation = getString(R.string.robotLocation);
             private final String serverIp = getString(R.string.serverIp);
@@ -177,46 +229,63 @@ public class MainActivity extends BaseActivity {
             private final String serialCom = getString(R.string.serialCOM);
 
             @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (key.equals(controlType)) {
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+            {
+                if (key.equals(controlType))
+                {
                     boolean val = sharedPreferences.getBoolean(key, false);
-//                    changeCtrlType(val);
+                    //                    changeCtrlType(val);
                     Log.i(TAG, "onSharedPreferenceChanged: " + key + " " + val);
-                } else {
+                }
+                else
+                {
                     String val = null;
-                    try {
+                    try
+                    {
                         val = sharedPreferences.getString(key, "");
-                    } catch (Exception e) {
+                    } catch (Exception e)
+                    {
                         e.printStackTrace();
                     }
-                    if (key.equals(robotName) && val != null) {
+                    if (key.equals(robotName) && val != null)
+                    {
                         ssdbTask.setRobotName(val);     // deal it if val = null设置表名
-                    } else if(key.equals(robotLocation) && val != null) {
+                    }
+                    else if (key.equals(robotLocation) && val != null)
+                    {
                         robotLocationChanged = true;
                         ssdbTask.setRobotLocation(val);
-                    } else if (key.equals(serverIp) && val != null) {
+                    }
+                    else if (key.equals(serverIp) && val != null)
+                    {
                         ssdbTask.setServerIP(val);
                         serverChanged = true;
-                    } else if (key.equals(serverPort)) {
+                    }
+                    else if (key.equals(serverPort))
+                    {
                         int serverPort = Integer.parseInt(val);
                         ssdbTask.setServerPort(serverPort);
                         serverChanged = true;
-                    } else if(key.equals(serialCom) && val != null) {
+                    }
+                    else if (key.equals(serialCom) && val != null)
+                    {
                         // do some thing
                         serialCtrl.setSerialCOM(val);
                         serialChanged = true;
-                    } else if(key.equals(serialBaud) && val != null) {
+                    }
+                    else if (key.equals(serialBaud) && val != null)
+                    {
                         serialCtrl.setSerialBaud(val);
                         // do some thing
                         serialChanged = true;
                     }
-//                    Log.i(TAG, "onSharedPreferenceChanged: " + key + " " + val);
+                    //                    Log.i(TAG, "onSharedPreferenceChanged: " + key + " " + val);
                 }
             }
         };
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(presChangeListener);
 
-//        PlayerService.startAction(this, mp3Url);
+        //        PlayerService.startAction(this, mp3Url);
 
         // relative timer
         Timer timer = new Timer(true);
@@ -233,35 +302,47 @@ public class MainActivity extends BaseActivity {
         Log.d(TAG, "ZIMEService");
         //ExpressionActivity.startAction(MainActivity.this, 12);
     }
-    private void initMCU(){
+
+    private void initMCU()
+    {
 
     }
 
-    private void threadToUiToast(final String message, final int toastLength) {
-        runOnUiThread(new Runnable() {
-            public void run() {
+    private void threadToUiToast(final String message, final int toastLength)
+    {
+        runOnUiThread(new Runnable()
+        {
+            public void run()
+            {
                 Toast.makeText(getApplicationContext(), message, toastLength).show();
             }
         });
     }
 
-    private int countForPlayer = 0;//播放计数�?
-    private int countForReconnectSSDB = 0;
-    private int countForAlive = 0;//复活计数�?
-    private String strTimeFormat = null;
-    private String disableAudio = "No";
-    TimerTask queryTask = new TimerTask() {
+    private int    countForPlayer        = 0;//播放计数�?
+    private int    countForReconnectSSDB = 0;
+    private int    countForAlive         = 0;//复活计数�?
+    private String strTimeFormat         = null;
+    private String disableAudio          = "No";
+    TimerTask queryTask = new TimerTask()
+    {
         @Override
-        public void run() {
-//            Log.d(TAG, "run: stop: " + ssdbTask.stop);
-            if ( !ssdbTask.stop ) {                  // 发起读请�?
+        public void run()
+        {
+            //            Log.d(TAG, "run: stop: " + ssdbTask.stop);
+            if (!ssdbTask.stop)
+            {                  // 发起读请�?
                 ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!
-            } else {
+            }
+            else
+            {
                 countForReconnectSSDB++;
-                if (countForReconnectSSDB % (1000/200) == 0) {
-                    Log.d(TAG, "run: "+ countForReconnectSSDB);
-                    threadToUiToast("ssdb reconnect after " + (5-countForReconnectSSDB/(1000/200)) + "s", Toast.LENGTH_SHORT);
-                    if (countForReconnectSSDB == 5*1000/200) {
+                if (countForReconnectSSDB % (1000 / 200) == 0)
+                {
+                    Log.d(TAG, "run: " + countForReconnectSSDB);
+                    threadToUiToast("ssdb reconnect after " + (5 - countForReconnectSSDB / (1000 / 200)) + "s", Toast.LENGTH_SHORT);
+                    if (countForReconnectSSDB == 5 * 1000 / 200)
+                    {
                         threadToUiToast("ssdb reconnecting...", Toast.LENGTH_SHORT);
                         ssdbTask.connect();
                         countForReconnectSSDB = 0;
@@ -269,18 +350,25 @@ public class MainActivity extends BaseActivity {
                 }
             }
 
-            if ( countForAlive++ > 5*1000/200 ) {//显示时间
+            if (countForAlive++ > 5 * 1000 / 200)
+            {//显示时间
                 currentTime = Calendar.getInstance();
                 strTimeFormat = android.provider.Settings.System.getString(getContentResolver(), android.provider.Settings.System.TIME_12_24);
-                if ( (strTimeFormat == null) || (strTimeFormat.equals("")) || strTimeFormat.equals("12") ) {     // 12HOUR
-                    if (Calendar.getInstance().get(Calendar.AM_PM) == Calendar.AM) {      // AM
+                if ((strTimeFormat == null) || (strTimeFormat.equals("")) || strTimeFormat.equals("12"))
+                {     // 12HOUR
+                    if (Calendar.getInstance().get(Calendar.AM_PM) == Calendar.AM)
+                    {      // AM
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR)) +
                                 ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
-                    } else {    // PM
+                    }
+                    else
+                    {    // PM
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR) + 12) +
                                 ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
                     }
-                }else {        // 24HOUR
+                }
+                else
+                {        // 24HOUR
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR)) +
                             ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
                 }
@@ -289,42 +377,48 @@ public class MainActivity extends BaseActivity {
 
             ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
-//            Log.d(TAG, "pkg:"+cn.getPackageName());
-//            Log.d(TAG, "cls:"+cn.getClassName());
+            //            Log.d(TAG, "pkg:"+cn.getPackageName());
+            //            Log.d(TAG, "cls:"+cn.getClassName());
 
-//            if ( cn.getClassName().equals("com.brick.robotctrl.MainActivity") ) {
-//                countForPlayer++;
-////                Log.d(TAG, "run: countForPlayer:" + countForPlayer);
-//                if ( countForPlayer == 30*1000/200 ) {
-//                    PlayerService.startAction(MainActivity.this, mp3Url);
-//                    countForPlayer = 0;
-//                }
-//            }
-            if( cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {//�?么意�?
-                if ( disableAudio.equals("No") ) {
+            //            if ( cn.getClassName().equals("com.brick.robotctrl.MainActivity") ) {
+            //                countForPlayer++;
+            ////                Log.d(TAG, "run: countForPlayer:" + countForPlayer);
+            //                if ( countForPlayer == 30*1000/200 ) {
+            //                    PlayerService.startAction(MainActivity.this, mp3Url);
+            //                    countForPlayer = 0;
+            //                }
+            //            }
+            if (cn.getClassName().equals("com.brick.robotctrl.ADActivity"))
+            {//�?么意�?
+                if (disableAudio.equals("No"))
+                {
                     disableAudio = "Yes";
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_DisableAudio], disableAudio);
                 }
-            } else {
-                if ( disableAudio.equals("Yes") ) {
+            }
+            else
+            {
+                if (disableAudio.equals("Yes"))
+                {
                     disableAudio = "No";
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_DisableAudio], disableAudio);
                 }
             }
 
             addTimerCount();
-//            Log.d(TAG, "run: " + getTimerCount());
+            //            Log.d(TAG, "run: " + getTimerCount());
 
-//            if(getTimerCount() > (10*60*1000/200)) {
-//                Log.d(TAG, "Timeout to play video");
-//                startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
-//                clearTimerCount();
-////                serialCtrl.reOpenSerialCOM();
-//            }
+            //            if(getTimerCount() > (10*60*1000/200)) {
+            //                Log.d(TAG, "Timeout to play video");
+            //                startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
+            //                clearTimerCount();
+            ////                serialCtrl.reOpenSerialCOM();
+            //            }
         }
     };
 
-    public static String Base64Decode(String base64EncodedData) {
+    public static String Base64Decode(String base64EncodedData)
+    {
 
         String base64EncodedBytes = Base64.decode(base64EncodedData);
         Log.d(TAG, "Base64Decode: base64EncodedBytes " + base64EncodedBytes);
@@ -332,13 +426,16 @@ public class MainActivity extends BaseActivity {
     }
 
     // receive ssdb server info
-    Handler handler = new Handler() {
+    Handler handler = new Handler()
+    {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message msg)
+        {
             super.handleMessage(msg);
-            switch (msg.what) {
+            switch (msg.what)
+            {
                 case videoInfo:
-                    ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_VideoInfo], (String)msg.obj);
+                    ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_VideoInfo], (String) msg.obj);
                     Log.d(TAG, "handleMessage: videoInfo");
                     break;
                 case ssdbConn:
@@ -350,26 +447,30 @@ public class MainActivity extends BaseActivity {
                      * 1. 设置event事件使能，以获取事件内容�?
                      * 2. 清除服务器中该event事件�?
                      */
-                    String rlt  = (String) msg.obj;
-//                    Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
-                    if (rlt.equals("DirCtl")) {
+                    String rlt = (String) msg.obj;
+                    //                    Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                    if (rlt.equals("DirCtl"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableDirCtl = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                         ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                        if ( !an.getClassName().equals("com.brick.robotctrl.ExpressionActivity") ) {
+                        if (!an.getClassName().equals("com.brick.robotctrl.ExpressionActivity"))
+                        {
                             ExpressionActivity.startAction(MainActivity.this, 0);
                         }
                     }
-                    if (rlt.equals("EndDirCtl")) {
+                    if (rlt.equals("EndDirCtl"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableDirCtl = false;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if (rlt.equals("Charge")) {
+                    if (rlt.equals("Charge"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         //SSDBTask.enableCharge = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
@@ -377,91 +478,106 @@ public class MainActivity extends BaseActivity {
                         serialCtrl.robotCharge();
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if (rlt.equals("setparam")) {
+                    if (rlt.equals("setparam"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableSetParameter = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if(rlt.equals("Brow")) {
+                    if (rlt.equals("Brow"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableChangeBrow = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if(rlt.equals("SetVolume")) {
+                    if (rlt.equals("SetVolume"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableSetVolume = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                     }
-					if (rlt.equals("EndVideo")){
+                    if (rlt.equals("EndVideo"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
-                        SSDBTask.enableVideoPlay=false;
+                        SSDBTask.enableVideoPlay = false;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     // by gaowei start
-                    if(rlt.equals("VideoPlay")) {
+                    if (rlt.equals("VideoPlay"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableVideoPlay = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if(rlt.equals("VideoPlayList")) {
+                    if (rlt.equals("VideoPlayList"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableVideoPlayList = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if(rlt.equals("RobotMsg")) {
+                    if (rlt.equals("RobotMsg"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
-                        SSDBTask.enableRobotMsg= true;
+                        SSDBTask.enableRobotMsg = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if(rlt.equals("BatteryVolt")) {
+                    if (rlt.equals("BatteryVolt"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
-                        SSDBTask.enableBatteryVolt= true;
+                        SSDBTask.enableBatteryVolt = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if(rlt.equals("NetworkDelay")) {
+                    if (rlt.equals("NetworkDelay"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
-                        SSDBTask.enableNetworkDelay= true;
+                        SSDBTask.enableNetworkDelay = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if(rlt.equals("Location")) {
+                    if (rlt.equals("Location"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
-                        SSDBTask.enableLocation= true;
+                        SSDBTask.enableLocation = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if(rlt.equals("CurrentTime")) {
+                    if (rlt.equals("CurrentTime"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
-                        SSDBTask.enableCurrentTime= true;
+                        SSDBTask.enableCurrentTime = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if(rlt.equals("DisableAudio")) {
+                    if (rlt.equals("DisableAudio"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
-                        SSDBTask.enableForbidAudio= true;//使能静音
+                        SSDBTask.enableForbidAudio = true;//使能静音
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if(rlt.equals("reboot")){
+                    if (rlt.equals("reboot"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                         MainActivity.super.onReboot();
                     }
-                    if(rlt.equals("shutdown")){
+                    if (rlt.equals("shutdown"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                         MainActivity.super.onShutdown();
                     }
-                    if(rlt.equals("message")){
+                    if (rlt.equals("message"))
+                    {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         ssdbTask.enableGetMessage = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
@@ -475,20 +591,23 @@ public class MainActivity extends BaseActivity {
                  * 3. 根据事件类型及事件内容改变robot行为�?
                  */
                 case SSDBTask.Key_Location:
-                    rlt=(String)msg.obj;
-                    Log.d(TAG,"handleMessage: ------------------Key:Location \tvalue:" + rlt);
-                    if(!rlt.equals(""))   {
+                    rlt = (String) msg.obj;
+                    Log.d(TAG, "handleMessage: ------------------Key:Location \tvalue:" + rlt);
+                    if (!rlt.equals(""))
+                    {
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);
-                        SSDBTask.enableLocation=false;
+                        SSDBTask.enableLocation = false;
                     }
                     break;
                 case SSDBTask.Key_VideoPlay:
-                    rlt=(String)msg.obj;
-                    if(!rlt.equals("")){
-                        Log.d(TAG,"handleMessage: ------------------Key:VideoPlay \tvalue:" + rlt);
+                    rlt = (String) msg.obj;
+                    if (!rlt.equals(""))
+                    {
+                        Log.d(TAG, "handleMessage: ------------------Key:VideoPlay \tvalue:" + rlt);
                         String[] strArray = rlt.split(" ");
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_VideoPlay], "");
-                        switch (strArray[0]) {
+                        switch (strArray[0])
+                        {
                             case "Play":
                                 startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
                                 //singleTask 此Activity实例之上的其他Activity实例统统出栈，使此Activity实例成为栈顶对象，显示到幕前�?   break;
@@ -496,17 +615,19 @@ public class MainActivity extends BaseActivity {
                             case "ContinuePlay":
                                 ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                                 ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                                if ( !an.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
+                                if (!an.getClassName().equals("com.brick.robotctrl.ADActivity"))
+                                {
                                     ADActivity.startAction(MainActivity.this, strArray[0], null);
                                 }
-//                                else{
-//                                    ADVideo.start();
-//                                }
+                                //                                else{
+                                //                                    ADVideo.start();
+                                //                                }
                                 break;
                             case "Pause":
                                 ActivityManager em = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                                 ComponentName en = em.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                                if ( en.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
+                                if (en.getClassName().equals("com.brick.robotctrl.ADActivity"))
+                                {
                                     ADVideo.pause();
                                 }
 
@@ -514,32 +635,43 @@ public class MainActivity extends BaseActivity {
                             case "Stop":
                                 ActivityManager bm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                                 ComponentName bn = bm.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                                if ( bn.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
+                                if (bn.getClassName().equals("com.brick.robotctrl.ADActivity"))
+                                {
                                     ADVideo.stopPlayBack();
                                     ExpressionActivity.startAction(MainActivity.this, 0);
-                                }else if(bn.getClassName().equals("com.brick.robotctrl.ImageActivity")){
+                                }
+                                else if (bn.getClassName().equals("com.brick.robotctrl.ImageActivity"))
+                                {
                                     ExpressionActivity.startAction(MainActivity.this, 0);
                                 }
                                 break;
                             case "Single":
                                 ActivityManager dm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                                 ComponentName dn = dm.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                                if ( !dn.getClassName().equals("com.brick.robotctrl.ADActivity") ||
-                                        !dn.getClassName().equals("com.brick.robotctrl.ImageActivity")) {
-                                    if (strArray[1].endsWith(".jpg")) {
-                                        ImageActivity.startAction(MainActivity.this,strArray[0], strArray[1]);
-                                    }else {
+                                if (!dn.getClassName().equals("com.brick.robotctrl.ADActivity") ||
+                                        !dn.getClassName().equals("com.brick.robotctrl.ImageActivity"))
+                                {
+                                    if (strArray[1].endsWith(".jpg"))
+                                    {
+                                        ImageActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
+                                    }
+                                    else
+                                    {
                                         ADActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
                                     }
                                 }
                             case "Cycle":
                                 ActivityManager cm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                                 ComponentName cn = cm.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                                if ( !cn.getClassName().equals("com.brick.robotctrl.ADActivity") ||
-                                        !cn.getClassName().equals("com.brick.robotctrl.ImageActivity")) {
-                                    if (strArray[1].endsWith(".jpg")) {
-                                        ImageActivity.startAction(MainActivity.this,strArray[0], strArray[1]);
-                                    }else {
+                                if (!cn.getClassName().equals("com.brick.robotctrl.ADActivity") ||
+                                        !cn.getClassName().equals("com.brick.robotctrl.ImageActivity"))
+                                {
+                                    if (strArray[1].endsWith(".jpg"))
+                                    {
+                                        ImageActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
+                                    }
+                                    else
+                                    {
                                         ADActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
                                     }
                                 }
@@ -547,7 +679,8 @@ public class MainActivity extends BaseActivity {
                             case "SingleCycle":
                                 ActivityManager fm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                                 ComponentName fn = fm.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                                if ( !fn.getClassName().equals("com.brick.robotctrl.ADActivity") ) {
+                                if (!fn.getClassName().equals("com.brick.robotctrl.ADActivity"))
+                                {
                                     ADActivity.startAction(MainActivity.this, strArray[0], strArray[1]);
                                 }
                                 break;
@@ -557,68 +690,77 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case SSDBTask.Key_VideoPlayList:
-                    rlt=(String)msg.obj;
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    rlt = (String) msg.obj;
+                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
                     ssdbTask.pushFileList();
-//                    if(!rlt.equals(""))   {
-//                        Log.d(TAG, "videoplaylist: hehe");
-//                        SSDBTask.enableVideoPlayList=false;
-//                    }
+                    //                    if(!rlt.equals(""))   {
+                    //                        Log.d(TAG, "videoplaylist: hehe");
+                    //                        SSDBTask.enableVideoPlayList=false;
+                    //                    }
                     break;
                 case SSDBTask.Key_RobotMsg:
-                    rlt=(String)msg.obj;
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if(!rlt.equals(""))   {
+                    rlt = (String) msg.obj;
+                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    if (!rlt.equals(""))
+                    {
                         //!!!!!!!!!!!执行videorobotmsg操作
-                        SSDBTask.enableRobotMsg=false;
+                        SSDBTask.enableRobotMsg = false;
                     }
                     break;
                 case SSDBTask.Key_BatteryVolt:
-                    rlt=(String)msg.obj;
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if(!rlt.equals(""))   {
+                    rlt = (String) msg.obj;
+                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    if (!rlt.equals(""))
+                    {
                         //!!!!!!!!!!!执行BatteryVolt操作
-                        SSDBTask.enableBatteryVolt=false;
+                        SSDBTask.enableBatteryVolt = false;
                     }
                     break;
                 case SSDBTask.Key_NetworkDelay:
-                    rlt=(String)msg.obj;
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if(!rlt.equals(""))   {
+                    rlt = (String) msg.obj;
+                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    if (!rlt.equals(""))
+                    {
                         //!!!!!!!!!!!执行NetworkDelay操作
-                        SSDBTask.enableNetworkDelay=false;
+                        SSDBTask.enableNetworkDelay = false;
                     }
                     break;
                 case SSDBTask.Key_CurrentTime:
-                    rlt=(String)msg.obj;
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if(!rlt.equals(""))   {
+                    rlt = (String) msg.obj;
+                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    if (!rlt.equals(""))
+                    {
                         //!!!!!!!!!!!执行CurrentTime操作
-                        SSDBTask.enableCurrentTime=false;
+                        SSDBTask.enableCurrentTime = false;
                     }
                     break;
                 case SSDBTask.Key_DisableAudio:
-                    rlt=(String)msg.obj;
-                    Log.d(TAG,"handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if(!rlt.equals(""))   {
+                    rlt = (String) msg.obj;
+                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    if (!rlt.equals(""))
+                    {
                         //!!!!!!!!!!!执行ForbidAudio操作
-                        SSDBTask.enableForbidAudio=false;
+                        SSDBTask.enableForbidAudio = false;
                     }
                     break;
                 // by gaowie end
                 case SSDBTask.Key_DirCtrl:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:DirCtrl \tvalue:" + rlt);
-                    if (rlt.equals("EndDirCtl")) {
+                    if (rlt.equals("EndDirCtl"))
+                    {
                         SSDBTask.enableDirCtl = false;
-                    } else if ( !rlt.equals("")) {
+                    }
+                    else if (!rlt.equals(""))
+                    {
                         serialCtrl.robotMove(rlt);
                     }
                     break;
                 case SSDBTask.Key_SetParam:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if ( !rlt.equals("") ) {
+                    if (!rlt.equals(""))
+                    {
                         serialCtrl.setRobotRate(rlt);
                         SSDBTask.enableSetParameter = false;
                     }
@@ -626,14 +768,18 @@ public class MainActivity extends BaseActivity {
                 case SSDBTask.Key_ChangeBrow:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:ChangeBrow \tvalue:" + rlt);
-                    if ( !rlt.equals("") ) {
+                    if (!rlt.equals(""))
+                    {
                         SSDBTask.enableChangeBrow = false;
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-                        if (cn.getClassName().equals("com.brick.robotctrl.ExpressionActivity")) {
+                        if (cn.getClassName().equals("com.brick.robotctrl.ExpressionActivity"))
+                        {
                             ExpressionActivity.changeExpression(Integer.parseInt(rlt));
                             Log.d(TAG, "handleMessage: changebrowed");
-                        } else {
+                        }
+                        else
+                        {
                             Log.d(TAG, "handleMessage: change brow failure because of current activity is not ExpressionActivity");
                         }
                     }
@@ -641,50 +787,58 @@ public class MainActivity extends BaseActivity {
                 case SSDBTask.Key_SetVolume:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:SetVolume \tvalue:" + rlt);
-                    if ( !rlt.equals("") ) {
+                    if (!rlt.equals(""))
+                    {
                         int volume = Integer.parseInt(rlt);
-                        if(volume > 100) {
+                        if (volume > 100)
+                        {
                             volume = 100;
-                        } else if( volume < 0 ) {
+                        }
+                        else if (volume < 0)
+                        {
                             volume = 0;
                         }
-                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume/5, 0);
+                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume / 5, 0);
                         SSDBTask.enableSetVolume = false;
                     }
                     break;
                 case SSDBTask.Key_Message:
-                    rlt=(String)msg.obj;
+                    rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:Message \tvalue:" + rlt);
-                    if ( !rlt.equals("") ) {
+                    if (!rlt.equals(""))
+                    {
                         SpeechService.startAction(MainActivity.this, Base64Decode(rlt));
                         SSDBTask.enableGetMessage = false;
                     }
                     break;
-                case SSDBTask.key_ApkUpdate :
-//                    final String archiveFilePath = getInstallApkFullPath();
-//                    if ( !(archiveFilePath == null) ) {                 // 判断字符串是否为空要�?==�? 不要用equals方法
-//                        Log.d(TAG, "run: start to install apk: " + archiveFilePath);
-//                        Intent intentA = new Intent(Intent.ACTION_VIEW);
-//                        intentA.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        intentA.setDataAndType(Uri.fromFile(new File(archiveFilePath)), "application/vnd.android.package-archive");
-//                        startActivity(intentA);
-////                        android.os.Process.killProcess(android.os.Process.myPid());
-//                    } else {
-//                        Log.d(TAG, "no apk need to install");
-//                    }
+                case SSDBTask.key_ApkUpdate:
+                    //                    final String archiveFilePath = getInstallApkFullPath();
+                    //                    if ( !(archiveFilePath == null) ) {                 // 判断字符串是否为空要�?==�? 不要用equals方法
+                    //                        Log.d(TAG, "run: start to install apk: " + archiveFilePath);
+                    //                        Intent intentA = new Intent(Intent.ACTION_VIEW);
+                    //                        intentA.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    //                        intentA.setDataAndType(Uri.fromFile(new File(archiveFilePath)), "application/vnd.android.package-archive");
+                    //                        startActivity(intentA);
+                    ////                        android.os.Process.killProcess(android.os.Process.myPid());
+                    //                    } else {
+                    //                        Log.d(TAG, "no apk need to install");
+                    //                    }
                 default:
                     break;
             }
         }
     };
 
-    private String getInstallApkFullPath() {
-        String apkDirPath = Environment.getExternalStorageDirectory().getPath()+"/Download";
+    private String getInstallApkFullPath()
+    {
+        String apkDirPath = Environment.getExternalStorageDirectory().getPath() + "/Download";
         File apkFile = new File(apkDirPath);
         File[] apkFiles = apkFile.listFiles();
 
-        for (int i = 0; i < apkFiles.length; i++) {
-            if (needUpdate(apkFiles[i].getAbsolutePath())) {
+        for (int i = 0; i < apkFiles.length; i++)
+        {
+            if (needUpdate(apkFiles[i].getAbsolutePath()))
+            {
                 Log.d(TAG, "run: start to install apk: " + apkFiles[i].getAbsolutePath());
                 return apkFiles[i].getAbsolutePath();
             }
@@ -693,126 +847,144 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    // relative menu
-    Menu menu = null;
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.i(TAG, "onCreateOptionsMenu: set menu UI");
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        this.menu = menu;
-        return true;
-    }
+    //    // relative menu
+    //    Menu menu = null;
+    //    @Override
+    //    public boolean onCreateOptionsMenu(Menu menu) {
+    //        Log.i(TAG, "onCreateOptionsMenu: set menu UI");
+    //        getMenuInflater().inflate(R.menu.menu_main, menu);
+    //        this.menu = menu;
+    //        return true;
+    //    }
+    //
+    //    @Override
+    //    public boolean onOptionsItemSelected(MenuItem item) {
+    //        Log.i(TAG, "onCreateOptionsMenu: "+item);
+    //        switch (item.getItemId()) {
+    //            // menu context
+    //            case R.id.actionSettings:
+    //                new ShowProgressDialog();
+    //                new Thread() {
+    //                    @Override
+    //                    public void run() {
+    //                        while(FingerprintIdent.fingerIdentSuccess()) {
+    //                            Log.d(TAG, "onOptionsItemSelected: 1111111111111111");
+    //                            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+    //                            startActivityForResult(intent, 0);
+    //                        }
+    //                    }
+    //                }.start();
+    //                break;
+    //                // do some thing else
+    //            default:
+    //                break;
+    //        }
+    //        return true;
+    //    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, "onCreateOptionsMenu: "+item);
-        switch (item.getItemId()) {
-            // menu context
-            case R.id.actionSettings:
-                new ShowProgressDialog();
-                new Thread() {
-                    @Override
-                    public void run() {
-                        while(FingerprintIdent.fingerIdentSuccess()) {
-                            Log.d(TAG, "onOptionsItemSelected: 1111111111111111");
-                            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                            startActivityForResult(intent, 0);
-                        }
-                    }
-                }.start();
-                break;
-                // do some thing else
-            default:
-                break;
-        }
-        return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         Log.d(TAG, "onActivityResult: resultCode:" + resultCode);
-        if (requestCode == 0) {
-//            if (resultCode == RESULT_OK) {        // left top back resultCode = 0
-                if (serverChanged) {
-                    serverChanged = false;
-                    ssdbTask.connect();
-                }
-                if ( serialChanged ) {
-                    serialChanged = false;
-                    serialCtrl.openSerialCOM();
-                }
-            if ( robotLocationChanged ) {
+        if (requestCode == 0)
+        {
+            //            if (resultCode == RESULT_OK) {        // left top back resultCode = 0
+            if (serverChanged)
+            {
+                serverChanged = false;
+                ssdbTask.connect();
+            }
+            if (serialChanged)
+            {
+                serialChanged = false;
+                serialCtrl.openSerialCOM();
+            }
+            if (robotLocationChanged)
+            {
                 robotLocationChanged = false;
                 ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);
             }
-//            }
+            //            }
         }
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause()
+    {
         Log.i(TAG, "onStop");
-//        Intent stopIntent = new Intent();
-//        stopIntent.putExtra("url", mp3Url);
-//        Log.d(TAG, "onCreate: stop PlayService");
-//        stopIntent.setClass(MainActivity.this, PlayerService.class);
-//        stopService(stopIntent);
+        //        Intent stopIntent = new Intent();
+        //        stopIntent.putExtra("url", mp3Url);
+        //        Log.d(TAG, "onCreate: stop PlayService");
+        //        stopIntent.setClass(MainActivity.this, PlayerService.class);
+        //        stopService(stopIntent);
         super.onPause();
     }
 
-//    @Override
-//    protected void onStop() {
-//        Log.i(TAG, "onStop");
-//        Intent stopIntent = new Intent();
-//        stopIntent.putExtra("url", mp3Url);
-////        intent.putExtra("MSG", 0);
-////        Log.d(TAG, "onCreate: starting PlayService");
-////        stopIntent.setClass(MainActivity.this, PlayerService.class);
-////        stopService(stopIntent);
-//        super.onStop();
-//    }
+    //    @Override
+    //    protected void onStop() {
+    //        Log.i(TAG, "onStop");
+    //        Intent stopIntent = new Intent();
+    //        stopIntent.putExtra("url", mp3Url);
+    ////        intent.putExtra("MSG", 0);
+    ////        Log.d(TAG, "onCreate: starting PlayService");
+    ////        stopIntent.setClass(MainActivity.this, PlayerService.class);
+    ////        stopService(stopIntent);
+    //        super.onStop();
+    //    }
 
     @Override
-    protected void onRestart() {
+    protected void onRestart()
+    {
         Log.i(TAG, "onRestart");
         countForPlayer = 0;
-//        PlayerService.startAction(MainActivity.this, mp3Url);
+        //        PlayerService.startAction(MainActivity.this, mp3Url);
         super.onRestart();
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy()
+    {
         Log.i(TAG, "onDestroy");
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(presChangeListener);
         ssdbTask.disConnect();
         serialCtrl.closeSerialCOM();
         unregisterReceiver(netWorkChangeReceiver);
-        Intent stopSpeechServiceIntent=new Intent(this,SpeechService.class);
+        Intent stopSpeechServiceIntent = new Intent(this, SpeechService.class);
         stopService(stopSpeechServiceIntent);
         super.onDestroy();
     }
 
     //----------------------------------------------------电池电压刷新显示线程
     private int batteryVoltVal = 0;
-    public class DispQueueThread extends Thread{
-            @Override
-            public void run() {
+
+    public class DispQueueThread extends Thread
+    {
+        @Override
+        public void run()
+        {
             super.run();
-            while(!isInterrupted()) {
-                try {
-                    while( true ) {
+            while (!isInterrupted())
+            {
+                try
+                {
+                    while (true)
+                    {
                         batteryVoltVal = serialCtrl.getBattery();
-//                        Log.d("abc", "run: batteryVoltVal = " + batteryVoltVal);
-                        if ( batteryVoltVal != 0) {
-                            runOnUiThread(new Runnable() {
-                                public void run() {
+                        //                        Log.d("abc", "run: batteryVoltVal = " + batteryVoltVal);
+                        if (batteryVoltVal != 0)
+                        {
+                            runOnUiThread(new Runnable()
+                            {
+                                public void run()
+                                {
                                     mBatteryView.setPower(batteryVoltVal);
                                 }
                             });
                         }
                         Thread.sleep(1000);//显示性能高的话，可以把此数�?�调小�??
                     }
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     e.printStackTrace();
                 }
                 break;
@@ -821,50 +993,64 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    class netWorkChangeReceiver extends BroadcastReceiver {
+    class netWorkChangeReceiver extends BroadcastReceiver
+    {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent)
+        {
             //通过getSystemService()方法得到connectionManager这个系统服务类，专门用于管理网络连接
-            ConnectivityManager connectionManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager connectionManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectionManager.getActiveNetworkInfo();
-            if((networkInfo != null && networkInfo.isAvailable()) && ssdbTask.stop) {
-                Toast.makeText(context, "network is available, ssdb server haven't started, starting connect ssdb server",Toast.LENGTH_SHORT).show();
+            if ((networkInfo != null && networkInfo.isAvailable()) && ssdbTask.stop)
+            {
+                Toast.makeText(context, "network is available, ssdb server haven't started, starting connect ssdb server", Toast.LENGTH_SHORT).show();
                 handler.sendEmptyMessage(ssdbConn);
-            }else{
+            }
+            else
+            {
                 Toast.makeText(context, "network is unavailable", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private boolean needUpdate(String archiveFilePath) {
+    private boolean needUpdate(String archiveFilePath)
+    {
         PackageManager pm = getPackageManager();
-        PackageInfo info = pm.getPackageArchiveInfo( archiveFilePath, PackageManager.GET_ACTIVITIES);
-        if (info != null) {
-            try {
+        PackageInfo info = pm.getPackageArchiveInfo(archiveFilePath, PackageManager.GET_ACTIVITIES);
+        if (info != null)
+        {
+            try
+            {
                 ApplicationInfo apkInfo = info.applicationInfo;
-//                String appName = pm.getApplicationLabel(apkInfo).toString();
+                //                String appName = pm.getApplicationLabel(apkInfo).toString();
                 String packageName = apkInfo.packageName;   //得到安装包名�?
                 String versionName = info.versionName;            //得到版本信息
                 int versionCode = info.versionCode;            //得到版本信息
 
-//              Drawable icon = pm.getApplicationIcon(appInfo);//得到图标信息
-//              appName:RobotCtrl packagename: com.brick.robotctrl version: v1.27.31
+                //              Drawable icon = pm.getApplicationIcon(appInfo);//得到图标信息
+                //              appName:RobotCtrl packagename: com.brick.robotctrl version: v1.27.31
                 Log.d(TAG, "apkInfo:packagename: " + packageName + " versionName: " + versionName + " versionCode: " + versionCode);
 
                 String appVersionName = getVersion(packageName);
                 Log.d(TAG, "apkInstalled: appVersionName: " + appVersionName);
 
 
-                if ( versionName.equals(null) ) {
+                if (versionName.equals(null))
+                {
                     threadToUiToast("尚未安装播放器，接下来安�?", Toast.LENGTH_SHORT);
                     return true;
-                } else if (!versionName.equals(appVersionName)) {
+                }
+                else if (!versionName.equals(appVersionName))
+                {
                     threadToUiToast("播放器需要更新，接下来更�?", Toast.LENGTH_SHORT);
                     return true;
-                } else {
+                }
+                else
+                {
                     return false;
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -873,27 +1059,33 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 获取版本�?
+     *
      * @return 当前应用的版本号
      */
-    private String getVersion(String packageName) {
-//        try {
-//            PackageInfo info = packagemanager.getPackageInfo(this.getPackageName(), 0);
-//            String version = info.versionName;
-//            return version;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
+    private String getVersion(String packageName)
+    {
+        //        try {
+        //            PackageInfo info = packagemanager.getPackageInfo(this.getPackageName(), 0);
+        //            String version = info.versionName;
+        //            return version;
+        //        } catch (Exception e) {
+        //            e.printStackTrace();
+        //            return null;
+        //        }
         PackageManager pManager = MainActivity.this.getPackageManager();
         //获取手机内所有应�?
         List<PackageInfo> paklist = pManager.getInstalledPackages(0);
-        for (int i = 0; i < paklist.size(); i++) {
+        for (int i = 0; i < paklist.size(); i++)
+        {
             PackageInfo appInfo = paklist.get(i);
-            if ( appInfo.packageName.equals(packageName) ) {
+            if (appInfo.packageName.equals(packageName))
+            {
                 Log.d(TAG, "getVersion: " + packageName + " version: " + appInfo.versionName);
                 return appInfo.versionName;
             }
         }
         return null;
     }
+
+
 }

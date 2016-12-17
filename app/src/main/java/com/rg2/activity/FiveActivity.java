@@ -103,67 +103,67 @@ public class FiveActivity extends BaseActivity
             String mWorkYears = mWorkYearsTv.getText().toString();
 
 
-            if (StringUtils.stringIsEmpty(mCompanyName))
-            {
-                ToastUtil.show(FiveActivity.this, "请输入公司的名称");
-                return;
-            }
-
-            if (StringUtils.stringIsEmpty(mCompanyPersonnel))
-            {
-                ToastUtil.show(FiveActivity.this, "请选择员工人数");
-                return;
-            }
-            if (StringUtils.stringIsEmpty(mCompanyProvince))
-            {
-                ToastUtil.show(FiveActivity.this, "请选择公司所在省份");
-                return;
-            }
-            if (StringUtils.stringIsEmpty(mCompanyCity))
-            {
-                ToastUtil.show(FiveActivity.this, "请选择公司所在城市");
-                return;
-            }
-            if (StringUtils.stringIsEmpty(mCompanyAddress))
-            {
-                ToastUtil.show(FiveActivity.this, "请输入公司的详细地址");
-                return;
-            }
-            if (StringUtils.stringIsEmpty(mCompanyType))
-            {
-                ToastUtil.show(FiveActivity.this, "请选择单位性质");
-                return;
-            }
-            if (StringUtils.stringIsEmpty(mCompanyIndustry))
-            {
-                ToastUtil.show(FiveActivity.this, "请选择行业性质");
-                return;
-            }
-            if (StringUtils.stringIsEmpty(mDepartment))
-            {
-                ToastUtil.show(FiveActivity.this, "请输入任职部门");
-                return;
-            }
-            if (StringUtils.stringIsEmpty(mPost))
-            {
-                ToastUtil.show(FiveActivity.this, "请输入职位");
-                return;
-            }
-            if (StringUtils.stringIsEmpty(mPostLevel))
-            {
-                ToastUtil.show(FiveActivity.this, "请选择职位级别");
-                return;
-            }
-            if (StringUtils.stringIsEmpty(mSalary))
-            {
-                ToastUtil.show(FiveActivity.this, "请选择年薪");
-                return;
-            }
-            if (StringUtils.stringIsEmpty(mWorkYears))
-            {
-                ToastUtil.show(FiveActivity.this, "请选择工作年数");
-                return;
-            }
+//            if (StringUtils.stringIsEmpty(mCompanyName))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请输入公司的名称");
+//                return;
+//            }
+//
+//            if (StringUtils.stringIsEmpty(mCompanyPersonnel))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请选择员工人数");
+//                return;
+//            }
+//            if (StringUtils.stringIsEmpty(mCompanyProvince))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请选择公司所在省份");
+//                return;
+//            }
+//            if (StringUtils.stringIsEmpty(mCompanyCity))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请选择公司所在城市");
+//                return;
+//            }
+//            if (StringUtils.stringIsEmpty(mCompanyAddress))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请输入公司的详细地址");
+//                return;
+//            }
+//            if (StringUtils.stringIsEmpty(mCompanyType))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请选择单位性质");
+//                return;
+//            }
+//            if (StringUtils.stringIsEmpty(mCompanyIndustry))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请选择行业性质");
+//                return;
+//            }
+//            if (StringUtils.stringIsEmpty(mDepartment))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请输入任职部门");
+//                return;
+//            }
+//            if (StringUtils.stringIsEmpty(mPost))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请输入职位");
+//                return;
+//            }
+//            if (StringUtils.stringIsEmpty(mPostLevel))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请选择职位级别");
+//                return;
+//            }
+//            if (StringUtils.stringIsEmpty(mSalary))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请选择年薪");
+//                return;
+//            }
+//            if (StringUtils.stringIsEmpty(mWorkYears))
+//            {
+//                ToastUtil.show(FiveActivity.this, "请选择工作年数");
+//                return;
+//            }
             setResult(Activity.RESULT_OK);
             finish();
 

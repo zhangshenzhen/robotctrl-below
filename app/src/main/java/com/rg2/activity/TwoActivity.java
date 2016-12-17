@@ -78,22 +78,22 @@ public class TwoActivity extends BaseActivity
             String mPhone = mPhoneEt.getText().toString();
 
 
-            if (StringUtils.stringIsEmpty(mCompanyAreaNo))
-            {
-                ToastUtil.show(TwoActivity.this, "请输入公司电话区号");
-                return;
-            }
-
-            if (StringUtils.stringIsEmpty(mCompanyTel))
-            {
-                ToastUtil.show(TwoActivity.this, "请输入公司电话");
-                return;
-            }
-            if (StringUtils.isMobileNO(mPhone))
-            {
-                ToastUtil.show(TwoActivity.this, "请输入正确手机号码");
-                return;
-            }
+//            if (StringUtils.stringIsEmpty(mCompanyAreaNo))
+//            {
+//                ToastUtil.show(TwoActivity.this, "请输入公司电话区号");
+//                return;
+//            }
+//
+//            if (StringUtils.stringIsEmpty(mCompanyTel))
+//            {
+//                ToastUtil.show(TwoActivity.this, "请输入公司电话");
+//                return;
+//            }
+//            if (StringUtils.isMobileNO(mPhone))
+//            {
+//                ToastUtil.show(TwoActivity.this, "请输入正确手机号码");
+//                return;
+//            }
 
             startActivityForResult(new Intent(this,ThreeActivity.class),1);
         }

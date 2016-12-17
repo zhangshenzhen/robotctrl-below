@@ -72,27 +72,27 @@ public class FourActivity extends BaseActivity
             String mContactPhone = mContactPhoneEt.getText().toString();
 
 
-            if (StringUtils.stringIsEmpty(mRelativesName))
-            {
-                ToastUtil.show(FourActivity.this, "请输入亲属姓名");
-                return;
-            }
-
-            if (StringUtils.isMobileNO(mRelativesPhone))
-            {
-                ToastUtil.show(FourActivity.this, "请输入正确的亲属移动电话");
-                return;
-            }
-            if (StringUtils.stringIsEmpty(mContactName))
-            {
-                ToastUtil.show(FourActivity.this, "请输入紧急联系人");
-                return;
-            }
-            if (StringUtils.isMobileNO(mContactPhone))
-            {
-                ToastUtil.show(FourActivity.this, "请输入正确的紧急联系人移动电话");
-                return;
-            }
+//            if (StringUtils.stringIsEmpty(mRelativesName))
+//            {
+//                ToastUtil.show(FourActivity.this, "请输入亲属姓名");
+//                return;
+//            }
+//
+//            if (StringUtils.isMobileNO(mRelativesPhone))
+//            {
+//                ToastUtil.show(FourActivity.this, "请输入正确的亲属移动电话");
+//                return;
+//            }
+//            if (StringUtils.stringIsEmpty(mContactName))
+//            {
+//                ToastUtil.show(FourActivity.this, "请输入紧急联系人");
+//                return;
+//            }
+//            if (StringUtils.isMobileNO(mContactPhone))
+//            {
+//                ToastUtil.show(FourActivity.this, "请输入正确的紧急联系人移动电话");
+//                return;
+//            }
             startActivityForResult(new Intent(this,FiveActivity.class),1);
         }
         else if(v == mBackTv)
