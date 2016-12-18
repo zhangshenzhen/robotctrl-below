@@ -2,12 +2,14 @@ package com.rg2.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.brick.robotctrl.PlayerService;
 import com.brick.robotctrl.R;
 import com.rg2.utils.LogUtil;
 import com.rg2.utils.ToastUtil;
@@ -19,7 +21,7 @@ import com.rg2.utils.ToastUtil;
  */
 public class FingerInputActivity extends BaseActivity
 {
-
+    private String mp3File =  Environment.getExternalStorageDirectory().getPath() + "/RedStone/authfailed.mp3";
     private TextView mBackTv;
     Handler mHander = new Handler()
     {
@@ -31,6 +33,7 @@ public class FingerInputActivity extends BaseActivity
             {
                 case 1:
                     ToastUtil.show(FingerInputActivity.this, "请输入正确的指纹");
+                    PlayerService.startAction(FingerInputActivity.this, mp3File);
                     break;
             }
         }
