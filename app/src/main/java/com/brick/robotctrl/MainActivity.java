@@ -329,13 +329,11 @@ public class MainActivity extends BaseActivity
         @Override
         public void run()
         {
-            //            Log.d(TAG, "run: stop: " + ssdbTask.stop);
+//            Log.d(TAG, "run: stop: " + ssdbTask.stop);
             if (!ssdbTask.stop)
             {                  // 发起读请�?
                 ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!
-            }
-            else
-            {
+            } else {
                 countForReconnectSSDB++;
                 if (countForReconnectSSDB % (1000 / 200) == 0)
                 {
@@ -360,15 +358,11 @@ public class MainActivity extends BaseActivity
                     {      // AM
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR)) +
                                 ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
-                    }
-                    else
-                    {    // PM
+                    } else {    // PM
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR) + 12) +
                                 ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
                     }
-                }
-                else
-                {        // 24HOUR
+                } else {        // 24HOUR
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR)) +
                             ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
                 }
@@ -395,9 +389,7 @@ public class MainActivity extends BaseActivity
                     disableAudio = "Yes";
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_DisableAudio], disableAudio);
                 }
-            }
-            else
-            {
+            } else {
                 if (disableAudio.equals("Yes"))
                 {
                     disableAudio = "No";
@@ -455,12 +447,12 @@ public class MainActivity extends BaseActivity
                         SSDBTask.enableDirCtl = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
-                        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
-                        ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
-                        if (!an.getClassName().equals("com.brick.robotctrl.ExpressionActivity"))
-                        {
-                            ExpressionActivity.startAction(MainActivity.this, 0);
-                        }
+//                        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+//                        ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
+//                        if (!an.getClassName().equals("com.brick.robotctrl.ExpressionActivity"))
+//                        {
+//                            ExpressionActivity.startAction(MainActivity.this, 0);
+//                        }
                     }
                     if (rlt.equals("EndDirCtl"))
                     {
