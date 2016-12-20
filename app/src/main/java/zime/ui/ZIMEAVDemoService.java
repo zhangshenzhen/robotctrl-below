@@ -65,11 +65,13 @@ public class ZIMEAVDemoService extends Service {
 
     @Override
     public void onCreate() {
+        Log.d(ZIMETAG,"onCreate");
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(ZIMETAG,"onStartCommand");
         mContext = this;
         am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
@@ -79,6 +81,7 @@ public class ZIMEAVDemoService extends Service {
 
         ZIMEVideoClientJNI.ZIMELoadLibrary();
         Log.e(ZIMETAG,"1");
+        mVideoClientJNI = new ZIMEVideoClientJNI();
         mVideoClientJNI = new ZIMEVideoClientJNI();
         mAudioClientJNI = new ZIMEClientJni();
         Log.e(ZIMETAG,"2");
@@ -122,12 +125,14 @@ public class ZIMEAVDemoService extends Service {
             Log.e(ZIMETAG,"y");
             mZIMEJniThread.start();
             mbHaveStart = true;
+            Log.e(ZIMETAG,"y1");
         }
 
         for(int x = 0;x<10000;x++) {
             for(int y = 0;y<1100;y++)
             {}
         }
+        Log.e(ZIMETAG,"y2");
 
         Log.i(ZIMETAG, "-------------Start AV Button--------------");
         mZIMEJniThread.Input(ZIMEConfig.SET_PARAM, mZIMEConfig);
@@ -178,7 +183,20 @@ public class ZIMEAVDemoService extends Service {
 
     @Override
     public void onDestroy() {
+
+        Log.i(ZIMETAG, "-------------Exit Button--------------1");
+
+        mZIMEJniThread.Input(ZIMEConfig.EXIT, null);
+
+        ToastUtil.cancelToast();
+
+        mStarted = false;
+        mDialogSetting.setStatus(mStarted, mStopped);
+
+        Log.i(ZIMETAG, "-------------Exit Button--------------3");
+        Log.d(ZIMETAG,"service destroy");
         super.onDestroy();
+        //System.exit(0);
     }
 
 }

@@ -17,7 +17,7 @@ import zime.media.ZIMEVideoClientJNI.T_ZIMEVideoUplinkStat;
 public class ZIMEJniThread extends Thread
 {
 	private static final String ZIMETAG = ZIMEJniThread.class.getCanonicalName();
-	private ZIMEMedia mZIMEMedia = null;
+	public static ZIMEMedia mZIMEMedia = null;
 	private Handler mMsgHandler  = null;
 	private ZIMEAudio mZIMEAudio = null;
 	private ZIMEConfig mConf = null;
@@ -43,8 +43,8 @@ public class ZIMEJniThread extends Thread
 				String DownLinkQos = "";
 				if(!ZIMEConfig.mIsOnlyAudio)
 				{
-					mZIMEMedia.GetAudioQosStat(uplinkAudioQosStat,downlinkAudioQosStat);
-					mZIMEMedia.GetVideoQosStat(uplinkVideoQosStat,downlinkVideoQosStat);
+//					mZIMEMedia.GetAudioQosStat(uplinkAudioQosStat,downlinkAudioQosStat);
+//					mZIMEMedia.GetVideoQosStat(uplinkVideoQosStat,downlinkVideoQosStat);
 
 					DownLinkQos = "DownQoS" + "\n" +
 							"Jitter A/V:" +  downlinkAudioQosStat.iCurJitter + "/" + downlinkVideoQosStat.iCurJitter + "\n" +
@@ -128,7 +128,12 @@ public class ZIMEJniThread extends Thread
 		mVJNI = i_VClientJni;
 		mAJNI = i_AClientJni;
 
+
 		mZIMEMedia = new ZIMEMedia(mVJNI);
+		/*mZIMEMedia.Exit();
+		mZIMEMedia = new ZIMEMedia(mVJNI);
+
+		Log.d("1111111111111111111111","111111111111111111111111111111111111111111111111111111111111111111");*/
 		mZIMEMedia.SetLogCallBack();
 
 		// 创建引擎	
@@ -150,6 +155,9 @@ public class ZIMEJniThread extends Thread
 			return;
 		}
 		mZIMEAudio = new ZIMEAudio(mAJNI);
+		/*mZIMEAudio.Exit();
+		mZIMEAudio = new ZIMEAudio(mAJNI);
+		Log.d("1111111111111111111111","222222222222222222222222222222222222222222222222");*/
 		//mZIMEAudio.setAudioMan(am);
 
 		Log.e(ZIMETAG, "ZIMEJniThread Constructor--------- ");

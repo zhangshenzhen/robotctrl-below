@@ -109,6 +109,7 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"onCreate");
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -903,7 +904,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onPause()
     {
-        Log.i(TAG, "onStop");
+        Log.i(TAG, "onPuase");
         //        Intent stopIntent = new Intent();
         //        stopIntent.putExtra("url", mp3Url);
         //        Log.d(TAG, "onCreate: stop PlayService");
@@ -912,6 +913,11 @@ public class MainActivity extends BaseActivity
         super.onPause();
     }
 
+    @Override
+    protected  void onStart() {
+        Log.i(TAG, "onStart");
+        super.onStart();
+    }
     //    @Override
     //    protected void onStop() {
     //        Log.i(TAG, "onStop");
@@ -923,6 +929,18 @@ public class MainActivity extends BaseActivity
     ////        stopService(stopIntent);
     //        super.onStop();
     //    }
+
+        @Override
+        protected void onStop() {
+            Log.i(TAG, "onStop");
+    //        Intent stopIntent = new Intent();
+    //        stopIntent.putExtra("url", mp3Url);
+    ////        intent.putExtra("MSG", 0);
+    ////        Log.d(TAG, "onCreate: starting PlayService");
+    ////        stopIntent.setClass(MainActivity.this, PlayerService.class);
+    ////        stopService(stopIntent);
+           super.onStop();
+       }
 
     @Override
     protected void onRestart()
@@ -936,14 +954,16 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onDestroy()
     {
+        super.onDestroy();
         Log.i(TAG, "onDestroy");
+        Intent stopZIMEServiceIntent = new Intent(this,ZIMEAVDemoService.class);
+        stopService(stopZIMEServiceIntent);
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(presChangeListener);
         ssdbTask.disConnect();
         serialCtrl.closeSerialCOM();
         unregisterReceiver(netWorkChangeReceiver);
         Intent stopSpeechServiceIntent = new Intent(this, SpeechService.class);
         stopService(stopSpeechServiceIntent);
-        super.onDestroy();
     }
 
     //----------------------------------------------------电池电压刷新显示线程
