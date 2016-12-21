@@ -38,8 +38,8 @@ public class ZIMEDialogSetting extends Dialog {
 	private static ZIMEClientJni mAClient  = null;
 	private static ZIMEVideoClientJNI mAVClient = null;
 	private static ZIMEConfig mConfig;
-	private final static String QVGAStr = "";
-	//private final static String QVGAStr = "qvga:10/150-15/200-15/280";
+	//private final static String QVGAStr = "";
+	private final static String QVGAStr = "qvga:10/150-15/200-15/280";
 	private final static String VGAStr = "vga:15/350-15/500-20/600";
 	private final static String _720pStr = "720p:10/900-15/1200-20/1500";
 
