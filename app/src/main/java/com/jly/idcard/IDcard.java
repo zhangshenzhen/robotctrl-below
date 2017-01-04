@@ -119,8 +119,6 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
                             getCard();
                         }
                     }).start();
-
-
                         break;
             }
         }
@@ -171,55 +169,6 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
 
 
 
-
-//    public void run()
-//    {
-
-
-//        while(true) {
-//            int retval;
-//          //  llGroup.removeAllViews();// 清空
-//            String pkName;
-//            pkName = getPackageName();
-//            pkName = "/data/data/" + pkName + "/lib/libwlt2bmp.so";
-//            try {
-//                retval = iDCardDevice.readBaseMsg(port, pkName, BmpFile, name, sex, nation, birth, address, IDNo, Department,
-//                        EffectDate, ExpireDate, pErrMsg);
-//
-//                if (retval < 0) {
-//                    showString("读卡错误，原因：" + new String(pErrMsg, "Unicode"));
-//                } else {
-//                    Message mg = new Message();
-//                    mg.what =SSDBTask.key_ApkUpdate;    ////////////////////////////////////////////////////////////这里17
-//                    hdler.sendMessage(mg);
-//
-//                    if(IDflag) {
-//                        IDflag = false;
-//                        int[] colors = iDCardDevice.convertByteToColor(BmpFile);
-//                        Bitmap bm = Bitmap.createBitmap(colors, 102, 126, Bitmap.Config.ARGB_8888);
-//                        Bitmap bm1 = Bitmap.createScaledBitmap(bm, (int) (102 * 1), (int) (126 * 1), false);
-//                        ImageView imageView = new ImageView(this);
-//                        imageView.setScaleType(ImageView.ScaleType.MATRIX);
-//                        imageView.setImageBitmap(bm);
-//                        llGroup.addView(imageView);
-//
-//                        showString("");
-//                        showString("名字=" + new String(name, "Unicode"));
-//                        showString("性别=" + new String(sex, "Unicode"));
-//                        showString("民族=" + new String(nation, "Unicode"));
-//                        showString("生日=" + new String(birth, "Unicode"));
-//                        showString("地址=" + new String(address, "Unicode"));
-//                        showString("身份证号=" + new String(IDNo, "Unicode"));
-//                        showString("发卡机构=" + new String(Department, "Unicode"));
-//                        showString("有效日期=" + new String(EffectDate, "Unicode") + "至" + new String(ExpireDate, "Unicode"));
-//                    }
-//                }
-//            } catch (UnsupportedEncodingException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
     /*读身份证信息*/
     public void click5(View view) {
