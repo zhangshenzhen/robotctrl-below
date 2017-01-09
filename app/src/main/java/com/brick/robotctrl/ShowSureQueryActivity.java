@@ -108,6 +108,7 @@ public class ShowSureQueryActivity extends BaseActivity {
             public void onClick(View view) {
                 clearTimerCount();
                 ExpressionActivity.startAction(ShowSureQueryActivity.this, 0);
+
             }
         });
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.brick.robotctrl"
-    android:sharedUserId="android.uid.system">
+    package="com.brick.robotctrl">
+   <!-- android:sharedUserId="android.uid.system"-->
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -61,18 +61,48 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true">
 
+      <!--  <activity
+            android:name=".RobotInfoActivity"
+            android:label="@string/title_activity_test"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
+-->
+
+
+
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <!--<category android:name="android.intent.category.HOME" />-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
+               <!-- <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />-->
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".RobotInfoActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle">
+
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
         <service android:name=".PlayerService"/>
 
@@ -87,11 +117,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.Settings">
-            <intent-filter>
+          <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <!--<category android:name="android.intent.category.HOME" />-->
+                &lt;!&ndash;<category android:name="android.intent.category.HOME" />&ndash;&gt;
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity
             android:name=".ExpressionActivity"
@@ -99,8 +129,9 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
+
         <activity
-            android:name="com.jly.idcard.IDcard"
+            android:name="com.jly.idcard.IDcardActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
@@ -155,12 +186,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
 
-        <activity
-            android:name=".TestActivity"
-            android:label="@string/title_activity_test"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.FullScreen.NoTitle" />
+
 
         <activity
             android:name=".AboutActivity"
@@ -219,6 +245,8 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
+
+
 
 
         <service android:name="zime.ui.ZIMEAVDemoService">

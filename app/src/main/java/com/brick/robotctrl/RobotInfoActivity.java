@@ -12,8 +12,8 @@ import android.widget.RelativeLayout;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TestActivity extends BaseActivity  {
-    private final String TAG = "TestActivity";
+public class RobotInfoActivity extends BaseActivity  {
+    private final String TAG = "RobotInfoActivity";
 
 //    UserTimer userTimer = null;
     RelativeLayout testActivity = null;
@@ -24,7 +24,11 @@ public class TestActivity extends BaseActivity  {
         setContentView(R.layout.activity_test);
 //        userTimer = new UserTimer();
     }
+    public void clickEntery(View view){
+      Intent intent = new Intent(RobotInfoActivity.this, MainActivity.class );
+       startActivity(intent);
 
+    }
     @Override
     protected void onStop() {
         Log.i(TAG, "onStop");

@@ -48,7 +48,7 @@ public class ADActivity extends Activity {
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad);
-        Intent intent = getIntent();
+         Intent intent = getIntent();
         fileName = intent.getStringExtra("fileName");
         Log.d(TAG, "onCreate: filename" + fileName);
         mode = intent.getStringExtra("mode");

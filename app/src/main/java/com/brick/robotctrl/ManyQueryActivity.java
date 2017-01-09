@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kjn.askquestion.Jason;
 import com.kjn.askquestion.JsonBean;
+import com.rg2.utils.LogUtil;
 
 import org.apache.commons.httpclient.HttpException;
 
@@ -37,8 +38,8 @@ public class ManyQueryActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
+        LogUtil.e("ManyQueryActivity",".....................42");
         Intent intent = getIntent();
-
         humanButton = (Button) findViewById(R.id.humanButton);
         humanButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +60,7 @@ public class ManyQueryActivity extends BaseActivity {
             }
         });
 
-
+        LogUtil.e("ManyQueryActivity",".....................43");
         showGf =(GifView)findViewById(R.id.gif3);
         showGf.setGifImage(R.drawable.think);
         showGf.setGifImageType(GifView.GifImageType.COVER);
@@ -69,8 +70,9 @@ public class ManyQueryActivity extends BaseActivity {
         showNum = intent.getIntegerArrayListExtra("extra_showNum");
         queryListView = (ListView) findViewById(R.id.listView);
         ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, showItem);
+        LogUtil.e("ManyQueryActivity",".....................44");
         queryListView.setAdapter(myArrayAdapter);
-
+        LogUtil.e("ManyQueryActivity",".....................45");
         queryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {

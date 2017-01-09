@@ -6,19 +6,16 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.brick.robotctrl.BaseActivity;
 import com.brick.robotctrl.R;
-import com.brick.robotctrl.SSDBTask;
 import com.hdos.idCardUartDevice.JniReturnData;
-import com.kjn.msgabout.Msg;
 import com.hdos.idCardUartDevice.publicSecurityIDCardLib;
 import com.rg2.activity.TwoActivity;
 import com.rg2.listener.MyOnClickListener;
@@ -33,7 +30,7 @@ import java.io.UnsupportedEncodingException;
  * Created by jiangly on 2016/6/22.
  */
 
-public class IDcard extends BaseActivity implements View.OnClickListener {
+public class IDcardActivity extends BaseActivity implements View.OnClickListener {
 
     private byte[] name = new byte[32];
     private byte[] sex = new byte[6];
@@ -51,8 +48,8 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
     public LinearLayout llGroup;
     private publicSecurityIDCardLib iDCardDevice;
     public static boolean IDflag = false;
-    private TextView mUserNameTv;
-    private TextView mIdNumberTv;
+    private EditText mUserNameTv;
+    private EditText mIdNumberTv;
     private TextView mAddressTv;
     private Button mSubmitBtn;
     private TextView mBackTv;
@@ -62,21 +59,22 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_rg2);
-
+        LogUtil.e("IDcardActivity", ".........................52");
         iDCardDevice = new publicSecurityIDCardLib();
         //llGroup=(LinearLayout) findViewById(R.id.scrollView1);
-//        Thread tt = new Thread(new IDcard());
+//        Thread tt = new Thread(new IDcardActivity());
 //        tt.start();
 
         mBackTv=(TextView)findViewById(R.id.tv_back);
-        mUserNameTv = (TextView) findViewById(R.id.tv_userName);
-        mIdNumberTv = (TextView) findViewById(R.id.tv_idNumber);
+        mUserNameTv = (EditText) findViewById(R.id.tv_userName);
+        mIdNumberTv = (EditText) findViewById(R.id.tv_idNumber);
         mAddressTv = (TextView) findViewById(R.id.tv_address);
         mSubmitBtn = (Button) findViewById(R.id.btn_submit);
         mAddressTv.setOnClickListener(this);
         mSubmitBtn.setOnClickListener(this);
         mBackTv.setOnClickListener(this);
         hdler.sendEmptyMessage(1);
+        LogUtil.e("IDcardActivity", ".........................53");
     }
 
     /*身份证选卡*/
@@ -123,10 +121,6 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
             }
         }
     };
-
-
-
-
 
 
     private void getCard()
@@ -242,7 +236,7 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         if (v == mAddressTv) {
             CityDialog mCityDialog = new CityDialog();
-            mCityDialog.showCityDialog(IDcard.this, new MyOnClickListener() {
+            mCityDialog.showCityDialog(IDcardActivity.this, new MyOnClickListener() {
                 @Override
                 public void onClicked(String content) {
                     mAddressTv.setText(content);
@@ -262,18 +256,16 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
 
             if(StringUtils.stringIsEmpty(mUserName) || StringUtils.stringIsEmpty(mIdNumber))
             {
-                ToastUtil.show(IDcard.this,"请刷身份证");
+                ToastUtil.show(IDcardActivity.this,"请刷身份证");
                 return;
             }
-
-
             if(StringUtils.stringIsEmpty(mAddress))
             {
-                ToastUtil.show(IDcard.this,"请选择公司所在区域");
+                ToastUtil.show(IDcardActivity.this,"请选择公司所在区域");
                 return;
             }
 
-            startActivityForResult(new Intent(IDcard.this,TwoActivity.class),1);
+            startActivityForResult(new Intent(IDcardActivity.this,TwoActivity.class),1);
         }
     }
 
@@ -292,7 +284,7 @@ public class IDcard extends BaseActivity implements View.OnClickListener {
         x = event.getX();
         //250
         y=event.getY();
-        Log.d("IDcard", "dispatchTouchEvent: "+x+":"+" "+y);
+        Log.d("IDcardActivity", "dispatchTouchEvent: "+x+":"+" "+y);
         event.setLocation(x*1280/1024,y*750/768);
 
         return super.dispatchTouchEvent(event);

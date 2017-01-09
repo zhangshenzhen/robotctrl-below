@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -52,11 +51,22 @@
         android:layout_width="200dp"
         android:layout_height="202dp"
         android:id="@+id/ZIMEButton"
-        android:background="#101211"
+        android:background="#ff0000"
         android:text="ZIME"
         android:visibility="gone"
         android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/toolbar" />
+        android:layout_alignBottom="@id/toolbar" />
+
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:id="@+id/btn_menue"
+        android:textSize="30dp"
+        android:background="@drawable/common_red_bg_5dp"
+        android:text="菜单"
+        android:layout_marginTop="100dp"/>
+
     <Button
         android:layout_width="300dp"
         android:layout_height="100dp"
@@ -64,8 +74,8 @@
         android:textSize="30dp"
         android:background="@drawable/common_red_bg_5dp"
         android:text="取号"
-        android:layout_marginTop="200dp"
-
+        android:layout_below="@id/btn_menue"
+        android:layout_marginTop="60dp"
         />
     <!--<com.jly.batteryView.BatteryView-->
         <!--android:id="@+id/battery_view"-->
@@ -75,13 +85,7 @@
         <!--android:layout_alignParentEnd="true"-->
         <!--android:layout_alignBottom="@+id/toolbar"-->
         <!--android:layout_alignStart="@+id/rightEyeButton" />-->
-        <com.jly.batteryView.BatteryView
-        android:id="@+id/battery_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/leftEyeButton"
-            android:layout_marginStart="360dp" />
+
 
     <Button
         android:layout_width="300dp"
@@ -91,7 +95,7 @@
         android:textSize="30dp"
         android:background="@drawable/common_red_bg_5dp"
         android:id="@+id/IDButtonTest"
-        android:layout_below="@+id/Printer"
+        android:layout_below="@id/Printer"
         />
 
 
@@ -103,6 +107,38 @@
         android:textSize="30dp"
         android:background="@drawable/common_red_bg_5dp"
         android:id="@+id/btn_setting"
-        android:layout_below="@+id/IDButtonTest"
+        android:layout_below="@id/IDButtonTest"
+
         />
+
+    <com.jly.batteryView.BatteryView
+       android:id="@+id/battery_view"
+       android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/leftEyeButton"
+        android:layout_toEndOf="@+id/leftEyeButton"
+        android:layout_marginTop="26dp" />
+
+
+    <ImageView
+        android:id="@+id/iv_global"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/govaffairs_press"
+        />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:text="提问"
+        android:layout_marginTop="100dp"
+        android:textSize="30dp"
+        android:background="@drawable/common_red_bg_5dp"
+        android:id="@+id/btn_question"
+      android:layout_alignParentRight="true"
+        />
+
+        />
+
 </RelativeLayout>

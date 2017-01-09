@@ -6,75 +6,88 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
+import android.widget.TextView;
 
-import com.jly.idcard.IDcard;
+import com.jly.idcard.IDcardActivity;
 
 
-public class MenuActivity extends BaseActivity {
+public class MenuActivity extends BaseActivity implements View.OnClickListener {
     private final String TAG = "MenuActivity";
 
-    ImageButton IDButton = null;
-    ImageButton ADButton = null;
-    ImageButton testButton = null;
-    ImageButton busButton = null;
-    ImageButton aboutButton = null;
+    TextView IDButton = null;
+    TextView ADButton = null;
+    TextView prodButton = null;
+    TextView busButton = null;
+    TextView aboutButton = null;
 
     private RelativeLayout menuActivity = null;
+    private RelativeLayout reback1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        initData();
 
-        IDButton = (ImageButton) findViewById(R.id.IDButton);
-        IDButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    }
+    //初始化控件
+    private void initData() {
+        IDButton = (TextView) findViewById(R.id.textView2);
+        ADButton = (TextView) findViewById(R.id.textView3);
+        prodButton = (TextView) findViewById(R.id.textView4);
+        busButton = (TextView) findViewById(R.id.textView5);
+        aboutButton = (TextView) findViewById(R.id.textView6);
+        reback1 = (RelativeLayout) findViewById(R.id.reback);
+
+        IDButton.setOnClickListener(this);
+        ADButton.setOnClickListener(this);
+        prodButton.setOnClickListener(this);
+        busButton.setOnClickListener(this);
+        aboutButton.setOnClickListener(this);
+        reback1.setOnClickListener(this);
+
+    }
+    //点击事件;
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+            case R.id.textView2:
                 clearTimerCount();
-                startActivity(new Intent().setClass(MenuActivity.this, IDcard.class));
-            }
-        });
+                Log.e("MenuActivity","..............31");
+                startActivity(new Intent(MenuActivity.this, IDcardActivity.class));
 
-        ADButton = (ImageButton) findViewById(R.id.ADButton);
-        ADButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                break;
+            case R.id.textView3:
                 clearTimerCount();
                 Log.d(TAG, "onClick: starting ADActivity");
-                startActivity(new Intent().setClass(MenuActivity.this, ADActivity.class));
-            }
-        });
-
-        testButton = (ImageButton) findViewById(R.id.testButton);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                Log.e("MenuActivity","..............32");
+                startActivity(new Intent(MenuActivity.this, ADActivity.class));
+                break;
+            case R.id.textView4:
                 clearTimerCount();
-                startActivity(new Intent().setClass(MenuActivity.this, TestActivity.class));
-            }
-        });
+                Log.e("MenuActivity","..............33");
+                startActivity(new Intent(MenuActivity.this, ManyQueryActivity.class));
 
-        busButton = (ImageButton) findViewById(R.id.busButton);
-        busButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                break;
+            case R.id.textView5:
                 clearTimerCount();
-                startActivity(new Intent().setClass(MenuActivity.this, QuestTestActivity.class));
-            }
-        });
+                Log.e("MenuActivity","..............34");
+                startActivity(new Intent(MenuActivity.this, QuestTestActivity.class));
 
-
-        aboutButton = (ImageButton) findViewById(R.id.aboutButton);
-        aboutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                break;
+            case R.id.textView6:
                 clearTimerCount();
-                startActivity(new Intent().setClass(MenuActivity.this, AboutActivity.class));
-            }
-        });
+                Log.e("MenuActivity","..............35");
+                startActivity(new Intent(MenuActivity.this, AboutActivity.class));
+                break;
+            case R.id.reback:
+                finish();//退出当前的Activity;
+                break;
+        }
     }
-
 
 
     @Override
@@ -95,4 +108,6 @@ public class MenuActivity extends BaseActivity {
         Log.i(TAG, "onDestroy");
         super.onDestroy();
     }
+
+
 }

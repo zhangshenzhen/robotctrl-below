@@ -1,5 +1,6 @@
 package com.brick.robotctrl;
 
+import android.animation.ObjectAnimator;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -21,9 +22,6 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -31,20 +29,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jly.batteryView.BatteryView;
-import com.jly.idcard.IDcard;
+import com.jly.idcard.IDcardActivity;
 import com.kjn.videoview.ADVideo;
 import com.rg2.activity.FingerInputActivity;
-import com.rg2.activity.FingerprintActivity;
 import com.rg2.activity.PrintActivity;
 import com.rg2.activity.ShellUtils;
-import com.rg2.utils.DialogUtils;
 import com.rg2.utils.LogUtil;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -55,8 +47,7 @@ import it.sauronsoftware.base64.Base64;
 import zime.ui.ZIMEAVDemoActivity;
 import zime.ui.ZIMEAVDemoService;
 
-public class MainActivity extends BaseActivity
-{
+public class MainActivity extends BaseActivity  implements View.OnClickListener{
     private static final String TAG = "MainActivity";
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
 
@@ -103,6 +94,9 @@ public class MainActivity extends BaseActivity
             LogUtil.e("TAG", "result-->" + result.result);
         }
     };
+    private Button mbtnmenue;
+    private ImageView mivglobal;
+    private Button mquestion;
 
 
     @Override
@@ -135,87 +129,9 @@ public class MainActivity extends BaseActivity
 
         DispQueue = new DispQueueThread();      //获取电压显示线程
         DispQueue.start();
-        mBatteryView = (BatteryView) findViewById(R.id.battery_view);
-        mBatteryView.setPower(SerialCtrl.batteryNum);
 
-        //        leftEyeButton = (ImageView) findViewById(R.id.leftEyeButton);
-        //        leftEyeButton.setOnClickListener(new View.OnClickListener() {
-        //            @Override
-        //            public void onClick(View v) {
-        //                clearTimerCount();
-        //                startActivity(new Intent().setClass(MainActivity.this, QuestTestActivity.class));
-        //            }
-        //        });
-
-        mSettingBtn = (Button) findViewById(R.id.btn_setting);
-        mSettingBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                startActivity(new Intent(MainActivity.this, FingerInputActivity.class));
-            }
-        });
-
-
-        printButton = (Button) findViewById(R.id.Printer);
-        printButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-
-                startActivity(new Intent(MainActivity.this, PrintActivity.class));
-                //                Log.d(TAG, "onClick ");
-                //                String str ="1234567890ABCDEFGHIJ中华人民共和";
-                //                String str1="中华人民共和1234567890ABCDEFGHIJ";
-                //                byte[] temp=null;
-                //                try {
-                //                   temp=str.getBytes("gbk");//这里写原编码方式
-                //                }catch (Exception E){
-                //                    E.printStackTrace();
-                //                }
-                //               serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
-                //                try {
-                //                    temp=str1.getBytes("gbk");
-                //                } catch (UnsupportedEncodingException e) {
-                //                    e.printStackTrace();
-                //                }
-                //                serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA,temp);
-
-            }
-        });
-        rightEyeButton = (ImageView) findViewById(R.id.rightEyeButton);
-        rightEyeButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                clearTimerCount();
-                AboutActivity.startAction(MainActivity.this, ssdbTask.robotName);
-            }
-        });
-
-        ZIMEButton = (Button) findViewById(R.id.ZIMEButton);
-        ZIMEButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this, ZIMEAVDemoActivity.class);
-                startActivity(intent);
-            }
-        });
-        IDButton = (Button) findViewById(R.id.IDButtonTest);
-        IDButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this, IDcard.class);
-                startActivity(intent);
-            }
-        });
+        initData();
+        rotation();
 
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
         presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener()
@@ -223,7 +139,7 @@ public class MainActivity extends BaseActivity
             private final String robotName = getString(R.string.robotName);
             private final String robotLocation = getString(R.string.robotLocation);
             private final String serverIp = getString(R.string.serverIp);
-            private final String serverPort = getString(R.string.serverPort);
+           private final String serverPort = getString(R.string.serverPort);
             private final String controlType = getString(R.string.controlType);
 
             private final String serialBaud = getString(R.string.serialBaud);
@@ -235,7 +151,7 @@ public class MainActivity extends BaseActivity
                 if (key.equals(controlType))
                 {
                     boolean val = sharedPreferences.getBoolean(key, false);
-                    //                    changeCtrlType(val);
+                    //               changeCtrlType(val);
                     Log.i(TAG, "onSharedPreferenceChanged: " + key + " " + val);
                 }
                 else
@@ -295,13 +211,90 @@ public class MainActivity extends BaseActivity
 
         AboutActivity about = new AboutActivity();
         AboutActivity.MyThread tt = about.new MyThread(ssdbTask.robotName);
-
         tt.start();
-
         Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
         startService(startIntent); // 启动服务
         Log.d(TAG, "ZIMEService");
         //ExpressionActivity.startAction(MainActivity.this, 12);
+
+
+    }
+
+        //动画;
+    private void rotation() {
+        mivglobal = (ImageView) findViewById(R.id.iv_global);
+        // 旋转的功能代码;
+        ObjectAnimator oa = ObjectAnimator.ofFloat(mivglobal, "RotationY",
+                0, 45, 90, 135, 180, 225, 270, 315, 360);
+        oa.setDuration(2000);
+        oa.setRepeatCount(ObjectAnimator.INFINITE);
+        oa.setRepeatMode(ObjectAnimator.RESTART);
+        oa.start();
+
+    }
+
+
+    //初始化控件;
+    private void initData() {
+
+        mBatteryView = (BatteryView) findViewById(R.id.battery_view);
+        leftEyeButton = (ImageView) findViewById(R.id.leftEyeButton);
+        mBatteryView.setPower(SerialCtrl.batteryNum);
+        mSettingBtn = (Button) findViewById(R.id.btn_setting);
+        mbtnmenue = (Button) findViewById(R.id.btn_menue);
+        mquestion = (Button) findViewById(R.id.btn_question);
+        printButton = (Button) findViewById(R.id.Printer);
+        ZIMEButton = (Button) findViewById(R.id.ZIMEButton);
+        rightEyeButton = (ImageView) findViewById(R.id.rightEyeButton);
+        IDButton = (Button) findViewById(R.id.IDButtonTest);
+
+        mBatteryView.setOnClickListener(this);
+        mSettingBtn.setOnClickListener(this);
+        mbtnmenue.setOnClickListener(this);
+        mquestion.setOnClickListener(this);
+        printButton.setOnClickListener(this);
+        ZIMEButton.setOnClickListener(this);
+        rightEyeButton.setOnClickListener(this);
+        leftEyeButton.setOnClickListener(this);
+        IDButton.setOnClickListener(this);
+    }
+    //点击事件的
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.battery_view:
+                break;
+            case R.id.btn_setting:
+                startActivity(new Intent(MainActivity.this, FingerInputActivity.class));
+                break;
+            case R.id.btn_menue:
+                startActivity(new Intent(MainActivity.this, MenuActivity.class));
+                break;
+            case R.id.btn_question:
+                LogUtil.e("MainActivity", ".........................22");
+                startActivity(new Intent(MainActivity.this, ManyQueryActivity.class));
+                LogUtil.e("MainActivity", ".........................22_1");
+                break;
+            case R.id.ZIMEButton:
+                Intent intent = new Intent(MainActivity.this, ZIMEAVDemoActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rightEyeButton:
+                break;
+            case R.id.leftEyeButton:
+                clearTimerCount();
+                AboutActivity.startAction(MainActivity.this, ssdbTask.robotName);
+                break;
+            case R.id.IDButtonTest:
+                startActivity(new Intent(MainActivity.this, IDcardActivity.class));
+                LogUtil.e("MainActivity", ".........................23");
+                break;
+
+            case R.id.Printer:
+                startActivity(new Intent(MainActivity.this, PrintActivity.class));
+                break;
+
+        }
     }
 
     private void initMCU()
@@ -399,14 +392,7 @@ public class MainActivity extends BaseActivity
             }
 
             addTimerCount();
-            //            Log.d(TAG, "run: " + getTimerCount());
 
-            //            if(getTimerCount() > (10*60*1000/200)) {
-            //                Log.d(TAG, "Timeout to play video");
-            //                startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
-            //                clearTimerCount();
-            ////                serialCtrl.reOpenSerialCOM();
-            //            }
         }
     };
 
@@ -840,40 +826,6 @@ public class MainActivity extends BaseActivity
     }
 
 
-    //    // relative menu
-    //    Menu menu = null;
-    //    @Override
-    //    public boolean onCreateOptionsMenu(Menu menu) {
-    //        Log.i(TAG, "onCreateOptionsMenu: set menu UI");
-    //        getMenuInflater().inflate(R.menu.menu_main, menu);
-    //        this.menu = menu;
-    //        return true;
-    //    }
-    //
-    //    @Override
-    //    public boolean onOptionsItemSelected(MenuItem item) {
-    //        Log.i(TAG, "onCreateOptionsMenu: "+item);
-    //        switch (item.getItemId()) {
-    //            // menu context
-    //            case R.id.actionSettings:
-    //                new ShowProgressDialog();
-    //                new Thread() {
-    //                    @Override
-    //                    public void run() {
-    //                        while(FingerprintIdent.fingerIdentSuccess()) {
-    //                            Log.d(TAG, "onOptionsItemSelected: 1111111111111111");
-    //                            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-    //                            startActivityForResult(intent, 0);
-    //                        }
-    //                    }
-    //                }.start();
-    //                break;
-    //                // do some thing else
-    //            default:
-    //                break;
-    //        }
-    //        return true;
-    //    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -897,7 +849,6 @@ public class MainActivity extends BaseActivity
                 robotLocationChanged = false;
                 ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);
             }
-            //            }
         }
     }
 
@@ -905,11 +856,7 @@ public class MainActivity extends BaseActivity
     protected void onPause()
     {
         Log.i(TAG, "onPuase");
-        //        Intent stopIntent = new Intent();
-        //        stopIntent.putExtra("url", mp3Url);
-        //        Log.d(TAG, "onCreate: stop PlayService");
-        //        stopIntent.setClass(MainActivity.this, PlayerService.class);
-        //        stopService(stopIntent);
+
         super.onPause();
     }
 
@@ -918,27 +865,12 @@ public class MainActivity extends BaseActivity
         Log.i(TAG, "onStart");
         super.onStart();
     }
-    //    @Override
-    //    protected void onStop() {
-    //        Log.i(TAG, "onStop");
-    //        Intent stopIntent = new Intent();
-    //        stopIntent.putExtra("url", mp3Url);
-    ////        intent.putExtra("MSG", 0);
-    ////        Log.d(TAG, "onCreate: starting PlayService");
-    ////        stopIntent.setClass(MainActivity.this, PlayerService.class);
-    ////        stopService(stopIntent);
-    //        super.onStop();
-    //    }
+
 
         @Override
         protected void onStop() {
             Log.i(TAG, "onStop");
-    //        Intent stopIntent = new Intent();
-    //        stopIntent.putExtra("url", mp3Url);
-    ////        intent.putExtra("MSG", 0);
-    ////        Log.d(TAG, "onCreate: starting PlayService");
-    ////        stopIntent.setClass(MainActivity.this, PlayerService.class);
-    ////        stopService(stopIntent);
+
            super.onStop();
        }
 
@@ -968,6 +900,8 @@ public class MainActivity extends BaseActivity
 
     //----------------------------------------------------电池电压刷新显示线程
     private int batteryVoltVal = 0;
+
+
 
     public class DispQueueThread extends Thread
     {

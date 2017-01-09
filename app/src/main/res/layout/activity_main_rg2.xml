@@ -7,6 +7,7 @@
              >
 
 <include layout="@layout/layout_head"/>
+
     <LinearLayout
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
@@ -31,7 +32,7 @@
                 android:textSize="20sp"/>
         </LinearLayout>
 
-        <TextView
+        <EditText
             android:id="@+id/tv_userName"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -68,9 +69,10 @@
                 android:textSize="20sp"/>
         </LinearLayout>
 
-        <TextView
+        <EditText
             android:id="@+id/tv_idNumber"
             android:layout_width="match_parent"
+            android:inputType="number"
             android:layout_height="50dp"
             android:layout_weight="1"
             android:layout_marginRight="20dp"
