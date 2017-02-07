@@ -128,7 +128,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 		    Intent intent = getIntent();
 		//   	index = intent.getStringExtra("index");
 				//    Log.e("express","................"+express);
-		index = intent.getIntExtra("index", 6);
+		index = intent.getIntExtra("index",1);
 		//	  userTimer = new UserTimer();
 		gifView = (GifView) findViewById(R.id.gif2);
 		// 	gifView.setOnClickListener(this);
