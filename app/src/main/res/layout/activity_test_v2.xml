@@ -6,12 +6,17 @@
               android:weightSum="1"
     >
 
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.7"
         android:layout_gravity="center_vertical"
+        android:orientation="vertical"
         android:background="#ffffff">
+
+
+
         <com.ant.liao.GifView
             android:id="@+id/gif1"
             android:layout_width="wrap_content"
@@ -51,6 +56,7 @@
             android:layout_below="@+id/stateview"
             android:divider="#00000000">
         </ListView>
+
         <com.ant.liao.GifView
             android:id="@+id/gif2"
             android:layout_width="wrap_content"
