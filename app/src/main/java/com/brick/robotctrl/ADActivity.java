@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.VideoView;
 
 import com.kjn.videoview.ADVideo;
-
+/*此Activity法暂不考虑*/
 public class ADActivity extends Activity {
     private final String TAG = "ADActivity";
 
@@ -138,12 +138,6 @@ public class ADActivity extends Activity {
         builder.create().show();
     }
 
-//    @Override
-//    public boolean onTouch(View v, MotionEvent event){
-//        Log.d(TAG, "onTouch: to MainActivity");
-//        startActivity(new Intent().setClass(ADActivity.this, MainActivity.class));
-//        return true;
-//    }
 
     public void videoPlay(){
         videoPath = Environment.getExternalStorageDirectory()
