@@ -2,16 +2,24 @@ package com.brick.robotctrl;
 
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.display.DisplayManager;
+import android.media.MediaRouter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Display;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.kjn.ftpabout.FTPAsk;
 import com.kjn.ftpabout.Result;
+import com.presentation.ActivityViewWrapper;
+import com.presentation.Okienko;
+import com.presentation.SamplePresentation;
 
 import org.apache.commons.net.ftp.FTPFile;
 
@@ -31,10 +39,31 @@ public class AboutActivity extends BaseActivity {
     private Button uploadButton;
 //    public Intent intentM = new Intent(Intent.ACTION_VIEW);
 //    public Intent intentA = new Intent(Intent.ACTION_VIEW);
+
+    //拷贝的代码;
+   // private final String TAG = "OkienkaTest";
+    private ActivityViewWrapper mActivityViewWrapper;
+    private ViewGroup mDesktop;
+    private MediaRouter mMediaRouter;
+    private DisplayManager mDisplayManager;
+    private SamplePresentation mPresentation;
+    private Okienko mPrimaryApp;
+    private Okienko mSecondaryApp;
+    private int mCount = 0;
+    private int mTotalDisplays = 0;
+    private float mScaleX, mScaleY;
+    private String mSecondaryTouch;
+    ActionBar actionBar;
+
+    Button button = null;
+    Button button1 = null;
+    private Display presentationDisplay;
+    private Button btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+
 
         Intent intent = getIntent();
         robotName = intent.getStringExtra("robotName");
@@ -65,8 +94,13 @@ public class AboutActivity extends BaseActivity {
         t.start();
     }
 
+    @Override
+    protected void updatePresentation() {
+
+    }
+
     public class  MyThread extends Thread{
-        public FTPAsk ftp = null ;
+        public FTPAsk ftp  ;
         public String hostName = "218.2.191.50";
         public String userName = "test1";
         public String password = "test1";
@@ -101,6 +135,7 @@ public class AboutActivity extends BaseActivity {
 //            }
                 // 打开FTP服务
                 Log.d(TAG, "onCreate: 开始打开");
+               // openConnect()方法登陆FTP服务器，并获得FTP指定目录下的文件列表remoteFile;
                 ftp.openConnect();
                 Log.d(TAG, "onCreate: 123");
                 File mfile = new File(MLOCAL_PATH);//local movies path
@@ -124,6 +159,7 @@ public class AboutActivity extends BaseActivity {
                 if (remoteFile.size() > 0) {
                     for (int i = 0; i < remoteFile.size(); i++) {
                         Log.d(TAG, "remoteFile: " + remoteFile.get(i).getName());
+                        //找到音频文件
                         if (remoteFile.get(i).getName().endsWith(".mp4") || remoteFile.get(i).getName().endsWith(".3gp")
                                 || remoteFile.get(i).getName().endsWith(".mp3") || remoteFile.get(i).getName().endsWith(".jpg") ) {
                             isAPK = false;
@@ -161,14 +197,14 @@ public class AboutActivity extends BaseActivity {
                     checkFile(afiles, remoteFile);                                      //删除本地APK多余文件
                 }else{
                     Log.d(TAG, "暂无更新");
-                }
-                ftp.closeConnect();
-                contextHandler.sendEmptyMessage(SSDBTask.key_ApkUpdate);
-
-                // replace finish()?
+                   //	如果没有更新应用，则跳回MainActivity,否则发送handler事件进行安装
+                ftp.closeConnect();   // 使用closeConnect()方法关闭FTP访问
+               // contextHandler.sendEmptyMessage(SSDBTask.key_ApkUpdate);
+                //replace finish()?
                 Intent intent = new Intent();
                 intent.setClass(AboutActivity.this, MainActivity.class);
                 startActivity(intent);
+                }
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -198,11 +234,7 @@ public class AboutActivity extends BaseActivity {
         AboutActivity.contextHandler = handler;
     }
 
-    @Override
-    protected void onStop() {
-        Log.i(TAG, "onStop");
-        super.onStop();
-    }
+
 
     @Override
     protected void onRestart() {
