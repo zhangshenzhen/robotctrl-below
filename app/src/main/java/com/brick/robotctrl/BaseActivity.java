@@ -1,8 +1,12 @@
 package com.brick.robotctrl;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.hardware.display.DisplayManager;
 import android.media.AudioManager;
+import android.media.MediaRouter;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
@@ -15,7 +19,7 @@ import android.view.View;
 
 import java.io.IOException;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "BaseActivity";
     //    UserTimer userTimer = null;
     private static int timerOutCount = 0;
@@ -44,9 +48,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         return timerOutCount;
     }
 
+    //gr2中的
+    public Context mContext;
+    // 媒体路由器
+    public MediaRouter mMediaRouter;
+    //屏幕管理器
+    public DisplayManager mDisplayManager;
+    public int mTotalDisplays = 0;//屏幕个数
+    public String mSecondaryTouch;
+    //传入的对象
+    public Object mPresentation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mContext = this;
         super.onCreate(savedInstanceState);
+        //设置为横屏幕;
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//横屏
         screenWidth = getWindowManager().getDefaultDisplay().getWidth();       // 屏幕宽（像素，如：480px）
         screenHeight = getWindowManager().getDefaultDisplay().getHeight();      // 屏幕高（像素，如：800p）
 
@@ -62,12 +80,68 @@ public abstract class BaseActivity extends AppCompatActivity {
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         mGestureDetector = new GestureDetector(this, new MyGestureListener());
+
+
+      //添加了gr2包下的BaseActivity,
+        //设置为横屏幕;
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//横屏
+        //获取媒体路由器
+        mMediaRouter = (MediaRouter) getSystemService(Context.MEDIA_ROUTER_SERVICE);         // 控制和管理路由的媒体服务
+        //获取双屏异显的设备
+        mDisplayManager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);        // 与显示设备交互服务
+        //     列出可用的屏幕
+        while (true) {
+            Display display = mDisplayManager.getDisplay(mTotalDisplays);   // Gets information about a logical display.
+            if (display == null)
+                break;
+            mTotalDisplays++;//  mTotalDisplays = 1;
+
+        }
+        mSecondaryTouch = System.getProperty("persist.secondary.touch", "ft5x06");
+
     }
+    //回调函数;
+    public final MediaRouter.SimpleCallback mMediaRouterCallback =
+            new MediaRouter.SimpleCallback() {
+                @Override
+                public void onRouteSelected(MediaRouter router, int type, MediaRouter.RouteInfo info) {
+                      Log.d(TAG, "onRouteSelected: type=" + type + ", info ...1=" + info);
+                    updatePresentation();
+                }
+                @Override
+                public void onRouteUnselected(MediaRouter router, int type, MediaRouter.RouteInfo info) {
+                    Log.d(TAG, "onRouteUnselected: type=" + type + ", info,,2=" + info);
+                    updatePresentation();
+                }
+                @Override
+                public void onRoutePresentationDisplayChanged(MediaRouter router, MediaRouter.RouteInfo info) {
+                    Log.d(TAG, "onRoutePresentationDisplayChanged  ..3: info =" + info);
+                    updatePresentation();
+                }
+            };
+
+       protected abstract void updatePresentation() ;
+
+
+    public final DialogInterface.OnDismissListener mOnDismissListener =
+            new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    // Log.d(TAG, "onDismiss: ");
+                    if (dialog == mPresentation) {
+                        mPresentation = null;
+                    }
+                }
+            };
+
+
+
 
     @Override
     protected void onStop() {
         Log.d(TAG, "onStop: ");
         super.onStop();
+
     }
 
     @Override
@@ -117,6 +191,11 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     private void endGesture() {
         mVolume = -1;
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
