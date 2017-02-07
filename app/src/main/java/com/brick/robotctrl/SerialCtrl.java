@@ -44,7 +44,7 @@ public class SerialCtrl {
 
         ComA = new SerialControl();
         openSerialCOM();
-//        sendPortData(ComA, "FF10FF10");
+  //    sendPortData(ComA, "FF10FF10");
     }
 
     public void setSerialCOM(@NonNull String serialCOM) {
