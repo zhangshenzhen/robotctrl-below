@@ -63,9 +63,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/listView"
             android:layout_below="@+id/askButton"
-            android:layout_centerHorizontal="true"
+            android:layout_centerHorizontal="true">
 
-            />
+        </ListView>
+
+
     </RelativeLayout>
 
 </LinearLayout>

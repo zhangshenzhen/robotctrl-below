@@ -13,13 +13,15 @@
         android:layout_centerInParent="true"
         android:orientation="horizontal"
         android:padding="20dp">
+
+      <!--  android:background="@drawable/common_red_bg_5dp"-->
         <Button
             android:id="@+id/btn_submit1"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/common_red_bg_5dp"
+            android:background="@drawable/button"
             android:text="对公业务"
             android:textColor="@color/white"
             android:textSize="30sp"/>
@@ -30,8 +32,7 @@
             android:layout_height="100dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
-
-            android:background="@drawable/common_red_bg_5dp"
+            android:background="@drawable/button"
             android:text="对私业务"
             android:textColor="@color/white"
             android:textSize="30sp"/>
@@ -42,7 +43,7 @@
             android:layout_height="100dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/common_red_bg_5dp"
+            android:background="@drawable/button"
             android:text="理财业务"
             android:textColor="@color/white"
             android:textSize="30sp"/>
