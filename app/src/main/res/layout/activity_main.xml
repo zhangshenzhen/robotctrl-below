@@ -5,13 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/background"
     tools:context="com.brick.robotctrl.MainActivity"
     android:id="@+id/mainActivity"
     tools:ignore="ContentDescription"
     android:keepScreenOn="true">
 
+
     <android.support.v7.widget.Toolbar
+
         android:id="@+id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
@@ -21,124 +23,74 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/AppTheme.Settings" />
 
-    <ImageButton
-        android:layout_width="200dp"
-        android:layout_height="202dp"
-        android:id="@+id/leftEyeButton"
-        android:longClickable="true"
-        android:src="@drawable/siri"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        android:background="#51cdb5"
-        android:layout_marginTop="99dp"
-        android:layout_below="@+id/ZIMEButton"
-        android:layout_toEndOf="@+id/toolbar" />
-
-    <ImageButton
-        android:layout_width="200dp"
-        android:layout_height="202dp"
-        android:id="@+id/rightEyeButton"
-        android:longClickable="true"
-        android:src="@drawable/function"
-        android:scaleType="centerCrop"
-        android:background="#51cdb5"
-        android:visibility="gone"
-        android:layout_marginEnd="68dp"
-        android:layout_alignTop="@+id/leftEyeButton"
-        android:layout_alignEnd="@+id/battery_view" />
-
     <Button
         android:layout_width="200dp"
-        android:layout_height="202dp"
-        android:id="@+id/ZIMEButton"
-        android:background="#ff0000"
-        android:text="ZIME"
-        android:visibility="gone"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@id/toolbar" />
-
-
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:id="@+id/btn_menue"
-        android:textSize="30dp"
-        android:background="@drawable/common_red_bg_5dp"
-        android:text="菜单"
-        android:layout_marginTop="100dp"/>
-
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
+       android:layout_toLeftOf="@+id/IDButtonTest"
         android:id="@+id/Printer"
         android:textSize="30dp"
-        android:background="@drawable/common_red_bg_5dp"
+        android:layout_marginRight="60dp"
+       android:layout_marginTop="100dp"
+        android:background="@drawable/button"
         android:text="取号"
-        android:layout_below="@id/btn_menue"
-        android:layout_marginTop="60dp"
-        />
-    <!--<com.jly.batteryView.BatteryView-->
-        <!--android:id="@+id/battery_view"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignBottom="@+id/toolbar"-->
-        <!--android:layout_alignStart="@+id/rightEyeButton" />-->
-
-
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:text="办理信用卡"
-        android:layout_marginTop="60dp"
-        android:textSize="30dp"
-        android:background="@drawable/common_red_bg_5dp"
-        android:id="@+id/IDButtonTest"
-        android:layout_below="@id/Printer"
-        />
-
-
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:text="设置"
-        android:layout_marginTop="60dp"
-        android:textSize="30dp"
-        android:background="@drawable/common_red_bg_5dp"
-        android:id="@+id/btn_setting"
-        android:layout_below="@id/IDButtonTest"
 
         />
 
-    <com.jly.batteryView.BatteryView
-       android:id="@+id/battery_view"
-       android:layout_width="wrap_content"
+
+     <TextView
+        android:drawableRight="@drawable/back"
+        android:id="@+id/tv_back"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/leftEyeButton"
-        android:layout_toEndOf="@+id/leftEyeButton"
-        android:layout_marginTop="26dp" />
-
-
-    <ImageView
-        android:id="@+id/iv_global"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/govaffairs_press"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+         android:textSize="26sp"
+        android:textColor="@color/txt_color_selector"
+        android:text="返回"
         />
 
     <Button
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:text="提问"
-        android:layout_marginTop="100dp"
-        android:textSize="30dp"
-        android:background="@drawable/common_red_bg_5dp"
-        android:id="@+id/btn_question"
-      android:layout_alignParentRight="true"
-        />
+    android:layout_width="200dp"
+    android:layout_height="80dp"
+    android:text="指纹"
+    android:layout_marginTop="61dp"
+     android:layout_marginRight="60dp"
+    android:textSize="30dp"
+    android:background="@drawable/button"
+    android:id="@+id/btn_setting"
+     android:layout_below="@+id/Printer"
+    android:layout_alignStart="@+id/Printer" />
 
-        />
+  <Button
+      android:id="@+id/btn_test"
+      android:layout_width="200dp"
+      android:layout_height="80dp"
+      android:text="测试按钮"
+      android:textSize="30dp"
+         android:layout_toRightOf="@+id/btn_setting"
+      android:layout_below="@+id/IDButtonTest"
+      android:layout_marginTop="60dp"
+      android:background="@drawable/button"/>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:text="办理信用卡"
+        android:textSize="30dp"
+        android:background="@drawable/button"
+        android:id="@+id/IDButtonTest"
+        android:layout_marginTop="100dp"
+      android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="100dp"
+        android:text="理财"
+        android:textSize="30dp"
+        android:background="@drawable/button"
+        android:id="@+id/btn_money"
+         android:layout_toRightOf="@id/IDButtonTest" />
 
 </RelativeLayout>
