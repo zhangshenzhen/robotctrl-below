@@ -1,14 +1,13 @@
 package com.brick.robotctrl;
 
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,7 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kjn.askquestion.AccountInfo;
 import com.kjn.askquestion.AccountInfoTts;
-import com.kjn.askquestion.Jason;
+import com.kjn.askquestion.Json;
 import com.kjn.askquestion.JsonBean;
 import com.kjn.msgabout.Msg;
 import com.kjn.msgabout.MsgAdapter;
@@ -90,6 +89,11 @@ public class QuestTestActivity extends BaseActivity {
     private TTSPlayer mTtsPlayer = null;
     public long lastClickTime;
 
+    @Override
+    public void onClick(View view) {
+
+    }
+
     private static class WeakRefHandler extends Handler {          //可以避免内存泄漏的Handler库
         private WeakReference<QuestTestActivity> ref = null;
 
@@ -123,6 +127,11 @@ public class QuestTestActivity extends BaseActivity {
     private static Handler mUIHandle = null;               //主要接受子线程发送的数据， 并用此数据配合主线程更新UI。
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_v2);
@@ -140,7 +149,7 @@ public class QuestTestActivity extends BaseActivity {
         mUIHandle = new WeakRefHandler(this);
 
 
-        adapter=new MsgAdapter(QuestTestActivity.this,R.layout.msg_item,msgList);
+        adapter= new MsgAdapter(QuestTestActivity.this, R.layout.msg_item,msgList);
         msgListView=(ListView)findViewById(R.id.msg_list_view);
         msgListView.setAdapter(adapter);
 
@@ -241,7 +250,7 @@ public class QuestTestActivity extends BaseActivity {
         asrConfig.addParam(AsrConfig.VadConfig.PARAM_KEY_VAD_HEAD, "0");
 //        asrConfig.addParam(AsrConfig.VadConfig.PARAM_KEY_VAD_HEAD, AsrConfig.VadConfig.PARAM_KEY_VAD_SEG );
 
-
+               //点击进入声音监听状态;有语音问题就会被ASR识别
         gf2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,6 +271,12 @@ public class QuestTestActivity extends BaseActivity {
                 }
             }
         });
+
+    }
+
+    @Override
+    protected void updatePresentation() {
+
     }
 
     private boolean initPlayer() {
@@ -281,7 +296,7 @@ public class QuestTestActivity extends BaseActivity {
         mTtsPlayer = new TTSPlayer();
 
         // 配置TTS初始化参数
-        ttsConfig = new TtsConfig();
+         ttsConfig = new TtsConfig();
         mTtsPlayer.init(ttsInitParam.getStringConfig(), new TTSEventProcess());
 
         if (mTtsPlayer.getPlayerState() == TTSPlayer.PLAYER_STATE_IDLE) {
@@ -351,11 +366,6 @@ public class QuestTestActivity extends BaseActivity {
         }
 
     }
-    
-    
-    
-    
-
 
     private class ASRResultProcess implements ASRRecorderListener {
         @Override
@@ -389,7 +399,7 @@ public class QuestTestActivity extends BaseActivity {
                         new Thread() {
                             @Override
                             public void run() {
-                                Jason jts = new Jason();
+                                Json jts = new Json();
                                 Log.i(TAG, "进入新线程");
                                 try {
                                     result = jts.ask(query);                               //把网络访问的代码放在这里
@@ -477,9 +487,9 @@ public class QuestTestActivity extends BaseActivity {
             mAsrRecorder.cancel();
             Log.d(TAG, "onStop: okkk");
         }
-        if(mTtsPlayer.canStop()){
+      /*  if(mTtsPlayer.canStop()){
             mTtsPlayer.stop();
-        }
+        }*/
         Log.d(TAG, "onStop: ok");
         super.onStop();
 	}
