@@ -190,32 +190,6 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 //		if (mGestureDetector.onTouchEvent(event))
 //			return true;
 
-		// 处理手势结束
-		switch (event.getAction() & MotionEvent.ACTION_MASK) {
-			case MotionEvent.ACTION_UP:
-				endGesture();
-				Intent intent = getIntent();
-				Random  random = new Random();
-				int  express =  random.nextInt(21);
-				Log.e("express","................"+express);
-				index = intent.getIntExtra("index", express);
-				changeExpression(index);
-
-				doX =  (int) event.getX();
-				doY = (int) event.getY();
-				break;
-			case MotionEvent.ACTION_MOVE: //手指滑动界面 随机切换表情;
-			     movX = (int) event.getX();
-				 movY = (int) event.getY();
-				int disX = movX- doX;
-				int disY =  movY- doY;
-			    int dis = (int) Math.sqrt(disX*disX+disY*disY);
-				 if (dis >200) {//滑动距离大于200才执行跳转;
-				Log.d(TAG, "onPreferenceClick:进入" + dis);
-				startActivity(new Intent(ExpressionActivity.this, RobotInfoActivity.class));
-				}
-					break;
-		}
 		return super.onTouchEvent(event);
 	}
 
