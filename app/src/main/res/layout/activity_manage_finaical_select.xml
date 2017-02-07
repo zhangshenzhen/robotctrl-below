@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_manage_finaical_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@drawable/graybar"
+           >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        >
+          <TextView
+              android:id="@+id/tv_Back"
+              android:layout_marginLeft="8sp"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:padding="5dp"
+              android:textColor="#cc000000"
+              android:textSize="18sp"
+              android:layout_centerVertical="true"
+              android:text="返回上一层"
+              android:background="@drawable/toubar"
+              />
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="60dp"
+          android:text="在售理财产品"
+          android:textColor="#cc000000"
+          android:gravity="center"
+          android:textSize="26sp"
+          android:background="@drawable/toubar"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/toubar"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_marginLeft="15dp"
+            android:textColor="#cc000000"
+            android:textSize="20sp"
+            android:text="查询条件"
+             />
+       <RadioGroup
+          android:id="@+id/rg_finacial"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_marginLeft="15dp"
+           >
+          <RadioButton
+              android:id="@+id/rb_benefith"
+             style="@style/radiobutton"
+              android:text="收益型理财产品"
+              android:checked="true"
+              />
+           <RadioButton
+               android:id="@+id/rb_worth"
+               style="@style/radiobutton"
+               android:text="净值型理财产品"
+               />
+           <RadioButton
+               android:id="@+id/rb_commerce"
+               style="@style/radiobutton"
+               android:text="商业型理财产品"
+               />
+       </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dp"
+            >
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textColor="#cc000000"
+               android:layout_marginLeft="15dp"
+               android:textSize="18sp"
+               android:padding="5dp"
+               android:text="理财期限"
+               />
+            <RadioGroup
+                android:id="@+id/rg_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="7dp"
+                android:layout_marginLeft="10dp"
+                >
+               <RadioButton
+                   android:id="@+id/rb_no_time_limit"
+                  style="@style/radiobutton"
+                   android:checked="true"
+                   android:button="@null"
+                  android:text="不限"
+                   ></RadioButton>
+
+                <RadioButton
+                    android:id="@+id/rb_Limt_30"
+                    style="@style/radiobutton"
+                    android:button="@null"
+                    android:text="30天一下"
+                    ></RadioButton>
+
+                <RadioButton
+                   android:id="@+id/rb_limt_90"
+                    style="@style/radiobutton"
+                    android:button="@null"
+                    android:text="31-90天"
+                    ></RadioButton>
+                <RadioButton
+                    style="@style/radiobutton"
+                    android:button="@null"
+                    android:text="181-365天"
+                    android:id="@+id/rb_limt_181"
+                    ></RadioButton>
+
+                <RadioButton
+                    style="@style/radiobutton"
+                    android:button="@null"
+                    android:text="365天以上"
+                    android:id="@+id/rb_limt_365"
+                    ></RadioButton>
+              </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#cc000000"
+                 android:layout_marginLeft="50dp"
+                android:textSize="18sp"
+                android:padding="5dp"
+                android:text="币种"
+                />
+            <RadioGroup
+                android:id="@+id/rg_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="7dp"
+                android:layout_marginLeft="10dp"
+                >
+            <RadioButton
+                android:id="@+id/rb_no_moneykind_limt"
+                style="@style/radiobutton"
+                android:checked="true"
+                android:button="@null"
+                android:text="不限"
+                ></RadioButton>
+
+            <RadioButton
+                android:id="@+id/rb_rmb"
+                style="@style/radiobutton"
+                android:button="@null"
+                android:text="人民币"
+                ></RadioButton>
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#cc000000"
+                android:layout_marginLeft="15dp"
+                android:textSize="18sp"
+                android:padding="5dp"
+                android:text="理财金额"
+                />
+            <RadioGroup
+                android:id="@+id/rg_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="7dp"
+                android:layout_marginLeft="10dp"
+                >
+                <RadioButton
+                    android:id="@+id/rb_no_startpoint_limit"
+                    style="@style/radiobutton"
+                    android:checked="true"
+                    android:button="@null"
+                    android:text="不限"
+                    ></RadioButton>
+                <RadioButton
+                    android:id="@+id/rb_equal"
+                    style="@style/radiobutton"
+                    android:button="@null"
+                    android:text="等于"
+                    ></RadioButton>
+
+                <RadioButton
+                    android:id="@+id/rb_more_equal"
+                    style="@style/radiobutton"
+                    android:button="@null"
+                    android:text="大于"
+                    ></RadioButton>
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/et_money"
+                android:layout_marginLeft="30dp"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:inputType="number"
+                android:gravity="center"
+                android:background="@color/gray"
+                />
+            <TextView
+                android:layout_marginLeft="3dp"
+                style="@style/radiobutton"
+                android:text="元"
+                />
+        </LinearLayout>
+
+        <!--收益-->
+        <include layout="@layout/income_radioubutton"></include>
+        <!--风险-->
+        <include layout="@layout/danger_radioubutton"></include>
+         <!--是否保本-->
+        <include layout="@layout/basemoney_radioubutton"></include>
+        <!--销售现状-->
+        <include layout="@layout/salesstate_radioubutton"></include>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+               <Button
+                   android:onClick="reset"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginRight="30dp"
+                   android:textSize="16sp"
+                   android:textColor="@color/card_color_selector"
+                   android:background="@drawable/btn_entry_selector"
+                   android:text="重置"/>
+                <Button
+                    android:onClick="query"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/card_color_selector"
+                    android:background="@drawable/btn_entry_selector"
+                    android:text="查询"/>
+
+            </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

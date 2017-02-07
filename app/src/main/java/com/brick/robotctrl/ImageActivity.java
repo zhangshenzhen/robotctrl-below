@@ -37,9 +37,10 @@ public class ImageActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_image);
         Intent intent = getIntent();
-        fileName = intent.getStringExtra("fileName");
+       fileName = intent.getStringExtra("fileName");
         Log.d(TAG, "onCreate: filename" + fileName);
         mode = intent.getStringExtra("mode");
         imageView = (ImageView)findViewById(R.id.imageView);

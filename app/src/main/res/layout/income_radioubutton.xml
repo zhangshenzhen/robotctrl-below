@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginLeft="12dp"
+       >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#cc000000"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:layout_marginLeft="1dp"
+            android:text="年化收益率"
+            />
+        <RadioGroup
+            android:id="@+id/rg_year_benifit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="7dp"
+            android:layout_marginLeft="10dp"
+            >
+            <RadioButton
+                android:id="@+id/rb_no_yearbenifit_limit"
+                style="@style/radiobutton"
+                android:checked="true"
+                android:button="@null"
+                android:text="不限"
+                ></RadioButton>
+
+            <RadioButton
+                android:id="@+id/rb_before50"
+                style="@style/radiobutton"
+                android:button="@null"
+                android:text="前50名"
+                ></RadioButton>
+
+            <RadioButton
+                android:id="@+id/rb_before30"
+                style="@style/radiobutton"
+                android:button="@null"
+                android:text="前30名"
+                ></RadioButton>
+            <RadioButton
+                android:id="@+id/rb_before10"
+                style="@style/radiobutton"
+                android:button="@null"
+                android:text="前10名"
+                ></RadioButton>
+            <RadioButton
+                android:id="@+id/rb_year_rate"
+                style="@style/radiobutton"
+                android:button="@null"
+                android:text="年化收益率>="
+                ></RadioButton>
+
+        </RadioGroup>
+                   <!--decimal 可以输入浮点型的数据-->
+             <EditText
+                 android:id="@+id/et_rate"
+                 android:layout_width="60dp"
+                 android:layout_height="30dp"
+                 android:gravity="center"
+                 android:numeric="decimal"
+                 android:background="@color/white"
+                 />
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="18sp"
+              android:text="%"
+              />
+
+
+
+</LinearLayout>

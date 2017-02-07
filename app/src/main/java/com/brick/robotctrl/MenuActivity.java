@@ -14,7 +14,6 @@ import com.jly.idcard.IDcardActivity;
 
 public class MenuActivity extends BaseActivity implements View.OnClickListener {
     private final String TAG = "MenuActivity";
-
     TextView IDButton = null;
     TextView ADButton = null;
     TextView prodButton = null;
@@ -28,10 +27,15 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
         initData();
 
     }
+
+    @Override
+    protected void updatePresentation() {
+
+    }
+
     //初始化控件
     private void initData() {
         IDButton = (TextView) findViewById(R.id.textView2);
@@ -56,31 +60,26 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         switch (view.getId()){
             case R.id.textView2:
                 clearTimerCount();
-                Log.e("MenuActivity","..............31");
                 startActivity(new Intent(MenuActivity.this, IDcardActivity.class));
 
                 break;
             case R.id.textView3:
                 clearTimerCount();
                 Log.d(TAG, "onClick: starting ADActivity");
-                Log.e("MenuActivity","..............32");
-                startActivity(new Intent(MenuActivity.this, ADActivity.class));
+                startActivity(new Intent(MenuActivity.this, SettingsActivity.class));
                 break;
             case R.id.textView4:
                 clearTimerCount();
-                Log.e("MenuActivity","..............33");
                 startActivity(new Intent(MenuActivity.this, ManyQueryActivity.class));
 
                 break;
             case R.id.textView5:
                 clearTimerCount();
-                Log.e("MenuActivity","..............34");
                 startActivity(new Intent(MenuActivity.this, QuestTestActivity.class));
 
                 break;
             case R.id.textView6:
                 clearTimerCount();
-                Log.e("MenuActivity","..............35");
                 startActivity(new Intent(MenuActivity.this, AboutActivity.class));
                 break;
             case R.id.reback:
@@ -106,7 +105,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         Log.i(TAG, "onDestroy");
-        super.onDestroy();
+         super.onDestroy();
     }
 
 

@@ -76,4 +76,25 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+
+    <!--radiobutton的样式-->
+     <style name="radiobutton">
+         <item name="android:layout_width">wrap_content</item>
+         <item name="android:layout_height">wrap_content</item>
+         <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/btn_checked</item>
+     </style>
+
+    <!--投资理财样式-->
+    <style name="finance">
+        <item name="android:layout_width">230dp</item>
+        <item name="android:layout_height">160dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/card_color_selector</item>
+        <item name="android:background">@drawable/toubar</item>
+        <item name="android:textSize">23sp</item>
+    </style>
+
 </resources>

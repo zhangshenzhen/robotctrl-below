@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginLeft="15dp"
+       >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#cc000000"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:layout_marginLeft="15dp"
+            android:text="销售状态"
+            />
+        <RadioGroup
+            android:id="@+id/rg_saless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="7dp"
+            android:layout_marginLeft="10dp"
+            >
+            <RadioButton
+                android:id="@+id/rb_no_saless_limit"
+                style="@style/radiobutton"
+                android:checked="true"
+                android:button="@null"
+                android:text="不限"
+                ></RadioButton>
+
+            <RadioButton
+                android:id="@+id/rb_will_saless"
+                style="@style/radiobutton"
+                android:button="@null"
+                android:text="即将发售"
+                ></RadioButton>
+            <RadioButton
+                android:id="@+id/rb_doing_saless"
+                style="@style/radiobutton"
+                android:button="@null"
+                android:text="正在发售"
+                ></RadioButton>
+
+        </RadioGroup>
+  </LinearLayout>

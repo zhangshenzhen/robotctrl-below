@@ -27,7 +27,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         super.onCreate(savedInstanceState);
 
         View decorView = getWindow().getDecorView();
-
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
         decorView.setSystemUiVisibility(uiOptions);
@@ -122,8 +121,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             }
         };
 
-
-
         private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object value) {
@@ -150,10 +147,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         };
 
         };
-
-
-
-
 
     // relative ssdb
     @Override

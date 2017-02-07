@@ -13,27 +13,32 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.media.MediaRouter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.card.CardActivity;
+import com.financial.FinancialMangerActivity;
 import com.jly.batteryView.BatteryView;
 import com.jly.idcard.IDcardActivity;
 import com.kjn.videoview.ADVideo;
-import com.rg2.activity.FingerInputActivity;
-import com.rg2.activity.PrintActivity;
-import com.rg2.activity.ShellUtils;
+import com.presentation.MainPresentation;
+import com.rg2.activity.*;
 import com.rg2.utils.LogUtil;
 
 import java.io.File;
@@ -44,19 +49,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import it.sauronsoftware.base64.Base64;
-import zime.ui.ZIMEAVDemoActivity;
 import zime.ui.ZIMEAVDemoService;
 
-public class MainActivity extends BaseActivity  implements View.OnClickListener{
+public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
 
-    ImageView  leftEyeButton     = null;
-    ImageView  rightEyeButton    = null;
     SSDBTask   ssdbTask          = null;
     SerialCtrl serialCtrl        = null;
     SerialCtrl serialCtrlPrinter = null;
-    Button ZIMEButton;
     Button IDButton;
 
     DispQueueThread DispQueue = null;//刷新电压显示线程
@@ -80,42 +81,40 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
 
     private Dialog mNoticeDialog;
     private Timer timer = new Timer(true);
-    TimerTask mSettingTask = new TimerTask()
-    {
+    TimerTask mSettingTask = new TimerTask(){
         @Override
         public void run()
         {
             String fingerprint = "cat /sys/class/gpio/gpio34/value";
-
             List<String> commands = new ArrayList<String>();
             commands.add(fingerprint);
-
             ShellUtils.CommandResult result = ShellUtils.execCommand(commands, false, true);
             LogUtil.e("TAG", "result-->" + result.result);
         }
     };
-    private Button mbtnmenue;
+
     private ImageView mivglobal;
-    private Button mquestion;
+
+private MainPresentation  mMainPresentation;
+    private TextView mtvBback;
+    private Button btnMoney;
+    private Button btntest;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"onCreate");
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-
+        // updatePresentation();//在BaseActivity中调用
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // remove text in toolbar
         toolbar.setTitle("");
-        setSupportActionBar(toolbar);
+       // setSupportActionBar(toolbar);
 
-        ADActivity.setHandler(handler);
-        AboutActivity.setHandler(handler);
         ssdbTask = new SSDBTask(MainActivity.this, handler);
         serialCtrl = new SerialCtrl(MainActivity.this, handler, "ttymxc0", 9600, "robotctrl");
         serialCtrlPrinter = new SerialCtrl(MainActivity.this, handler, "ttyUSB1", 9600, "printer");
@@ -125,21 +124,36 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
         //创建NetWorkChangeReceiver的实例，并调用registerReceiver()方法进行注册
         netWorkChangeReceiver = new netWorkChangeReceiver();
         registerReceiver(netWorkChangeReceiver, intentFilter);
-
-
         DispQueue = new DispQueueThread();      //获取电压显示线程
         DispQueue.start();
 
         initData();
-        rotation();
 
+        initChangeListener();
+//        PlayerService.startAction(this, mp3Url);
+//        relative timer
+
+        Timer timer = new Timer(true);
+        timer.schedule(queryTask, 200, 200); //改指令执行后延时1000ms后执行run，之后每1000ms执行�?次run
+        //   timer.cancel(); //结束Timer所有的计时器;
+        initHandler();
+        AboutActivity about = new AboutActivity();
+        AboutActivity.MyThread tt = about.new MyThread(ssdbTask.robotName);
+        tt.start();
+          Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
+           startService(startIntent); // 启动服务
+        Log.d(TAG, "ZIMEService");
+//        //ExpressionActivity.startAction(MainActivity.this, 12);
+    }
+    /*监听
+    * */
+     private void initChangeListener() {
         //NOTE OnSharedPreferenceChangeListener: listen settings changed
-        presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener()
-        {
+        presChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             private final String robotName = getString(R.string.robotName);
             private final String robotLocation = getString(R.string.robotLocation);
             private final String serverIp = getString(R.string.serverIp);
-           private final String serverPort = getString(R.string.serverPort);
+            private final String serverPort = getString(R.string.serverPort);
             private final String controlType = getString(R.string.controlType);
 
             private final String serialBaud = getString(R.string.serialBaud);
@@ -148,50 +162,34 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
             {
-                if (key.equals(controlType))
-                {
+                if (key.equals(controlType)){
                     boolean val = sharedPreferences.getBoolean(key, false);
-                    //               changeCtrlType(val);
                     Log.i(TAG, "onSharedPreferenceChanged: " + key + " " + val);
-                }
-                else
-                {
+                } else{
                     String val = null;
-                    try
-                    {
+                    try {
                         val = sharedPreferences.getString(key, "");
-                    } catch (Exception e)
-                    {
+                    } catch (Exception e){
                         e.printStackTrace();
                     }
-                    if (key.equals(robotName) && val != null)
-                    {
+                    if (key.equals(robotName) && val != null) {
                         ssdbTask.setRobotName(val);     // deal it if val = null设置表名
-                    }
-                    else if (key.equals(robotLocation) && val != null)
-                    {
+                    } else if (key.equals(robotLocation) && val != null) {
                         robotLocationChanged = true;
                         ssdbTask.setRobotLocation(val);
-                    }
-                    else if (key.equals(serverIp) && val != null)
-                    {
+                    } else if (key.equals(serverIp) && val != null){
                         ssdbTask.setServerIP(val);
                         serverChanged = true;
-                    }
-                    else if (key.equals(serverPort))
-                    {
+                    } else if (key.equals(serverPort)) {
                         int serverPort = Integer.parseInt(val);
                         ssdbTask.setServerPort(serverPort);
                         serverChanged = true;
                     }
-                    else if (key.equals(serialCom) && val != null)
-                    {
+                    else if (key.equals(serialCom) && val != null) {
                         // do some thing
                         serialCtrl.setSerialCOM(val);
                         serialChanged = true;
-                    }
-                    else if (key.equals(serialBaud) && val != null)
-                    {
+                    }  else if (key.equals(serialBaud) && val != null){
                         serialCtrl.setSerialBaud(val);
                         // do some thing
                         serialChanged = true;
@@ -201,109 +199,103 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
             }
         };
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(presChangeListener);
+     }
 
-        //        PlayerService.startAction(this, mp3Url);
-
-        // relative timer
-        Timer timer = new Timer(true);
-        timer.schedule(queryTask, 200, 200); //改指令执行后延时1000ms后执行run，之后每1000ms执行�?次run
-        // timer.cancel(); //�?出计时器
-
-        AboutActivity about = new AboutActivity();
-        AboutActivity.MyThread tt = about.new MyThread(ssdbTask.robotName);
-        tt.start();
-        Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
-        startService(startIntent); // 启动服务
-        Log.d(TAG, "ZIMEService");
-        //ExpressionActivity.startAction(MainActivity.this, 12);
-
-
+    //在oncreate方法中;
+    private void initHandler() {
+         ADActivity.setHandler(handler);
+        AboutActivity.setHandler(handler);
     }
 
-        //动画;
-    private void rotation() {
-        mivglobal = (ImageView) findViewById(R.id.iv_global);
-        // 旋转的功能代码;
-        ObjectAnimator oa = ObjectAnimator.ofFloat(mivglobal, "RotationY",
-                0, 45, 90, 135, 180, 225, 270, 315, 360);
-        oa.setDuration(2000);
-        oa.setRepeatCount(ObjectAnimator.INFINITE);
-        oa.setRepeatMode(ObjectAnimator.RESTART);
-        oa.start();
+    @Override
+    protected void updatePresentation() {
+            //得到当前route and its presentation display
+            MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
+                    MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+            Display presentationDisplay =  route  !=  null ? route.getPresentationDisplay() : null;
+            if (mMainPresentation != null && mMainPresentation.getDisplay() !=  presentationDisplay) {
+                mMainPresentation.dismiss();
+                mMainPresentation = null;
+            }
+            if (mMainPresentation == null &&  presentationDisplay != null) {
+                // Initialise a new Presentation for the Display
+                Log.d(TAG, "MainPresentation............main ..2");
+                mMainPresentation = new MainPresentation(this,  presentationDisplay);
+                //把当前的对象引用赋值给BaseActivity中的引用;
+                mPresentation  =  mMainPresentation  ;
+                // Log.d(TAG, "updatePresentation: this: "+ this.toString());
+                mMainPresentation.setOnDismissListener(mOnDismissListener);
 
+                // Try to show the presentation, this might fail if the display has
+                // gone away in the mean time
+                try {
+                    mMainPresentation.show();
+                } catch (WindowManager.InvalidDisplayException ex) {
+                    // Couldn't show presentation - display was already removed
+                    // Log.d(TAG, "updatePresentation: failed");
+                    mMainPresentation = null;
+                }
+            }
     }
+
+
+
 
 
     //初始化控件;
     private void initData() {
 
-        mBatteryView = (BatteryView) findViewById(R.id.battery_view);
-        leftEyeButton = (ImageView) findViewById(R.id.leftEyeButton);
-        mBatteryView.setPower(SerialCtrl.batteryNum);
         mSettingBtn = (Button) findViewById(R.id.btn_setting);
-        mbtnmenue = (Button) findViewById(R.id.btn_menue);
-        mquestion = (Button) findViewById(R.id.btn_question);
         printButton = (Button) findViewById(R.id.Printer);
-        ZIMEButton = (Button) findViewById(R.id.ZIMEButton);
-        rightEyeButton = (ImageView) findViewById(R.id.rightEyeButton);
         IDButton = (Button) findViewById(R.id.IDButtonTest);
+        btnMoney = (Button) findViewById(R.id.btn_money);
+         btntest  =    (Button) findViewById(R.id.btn_test);
 
-        mBatteryView.setOnClickListener(this);
-        mSettingBtn.setOnClickListener(this);
-        mbtnmenue.setOnClickListener(this);
-        mquestion.setOnClickListener(this);
+
+        mtvBback = (TextView) findViewById(R.id.tv_back);
+
+
+          mSettingBtn.setOnClickListener(this);
+//        mbtnmenue.setOnClickListener(this);
+//        mquestion.setOnClickListener(this);
         printButton.setOnClickListener(this);
-        ZIMEButton.setOnClickListener(this);
-        rightEyeButton.setOnClickListener(this);
-        leftEyeButton.setOnClickListener(this);
+        btnMoney.setOnClickListener(this);
+        btntest.setOnClickListener(this);
         IDButton.setOnClickListener(this);
+        mtvBback.setOnClickListener(this);
     }
-    //点击事件的
+    //点击事件
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.battery_view:
-                break;
+
             case R.id.btn_setting:
                 startActivity(new Intent(MainActivity.this, FingerInputActivity.class));
                 break;
-            case R.id.btn_menue:
-                startActivity(new Intent(MainActivity.this, MenuActivity.class));
-                break;
-            case R.id.btn_question:
-                LogUtil.e("MainActivity", ".........................22");
-                startActivity(new Intent(MainActivity.this, ManyQueryActivity.class));
-                LogUtil.e("MainActivity", ".........................22_1");
-                break;
-            case R.id.ZIMEButton:
-                Intent intent = new Intent(MainActivity.this, ZIMEAVDemoActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.rightEyeButton:
-                break;
-            case R.id.leftEyeButton:
-                clearTimerCount();
-                AboutActivity.startAction(MainActivity.this, ssdbTask.robotName);
-                break;
             case R.id.IDButtonTest:
-                startActivity(new Intent(MainActivity.this, IDcardActivity.class));
+                startActivity(new Intent(MainActivity.this, CardActivity.class));
                 LogUtil.e("MainActivity", ".........................23");
                 break;
-
             case R.id.Printer:
                 startActivity(new Intent(MainActivity.this, PrintActivity.class));
-                break;
 
+                break;
+            case R.id.btn_money:
+                startActivity(new Intent(MainActivity.this, FinancialMangerActivity.class));
+                break;
+            case R.id.tv_back:
+                finish();  //结束掉当前的 Activity, 返回到上一层;
+                break;
+            case R.id.btn_test:
+                startActivity(new Intent(MainActivity.this, MenuActivity.class));
+
+                break;
         }
     }
 
-    private void initMCU()
-    {
-
+    private void initMCU(){
     }
-
-    private void threadToUiToast(final String message, final int toastLength)
-    {
+    private void threadToUiToast(final String message, final int toastLength){
         runOnUiThread(new Runnable()
         {
             public void run()
@@ -312,12 +304,12 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
             }
         });
     }
-
     private int    countForPlayer        = 0;//播放计数�?
     private int    countForReconnectSSDB = 0;
     private int    countForAlive         = 0;//复活计数�?
     private String strTimeFormat         = null;
     private String disableAudio          = "No";
+
     TimerTask queryTask = new TimerTask()
     {
         @Override
@@ -348,8 +340,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
                 strTimeFormat = android.provider.Settings.System.getString(getContentResolver(), android.provider.Settings.System.TIME_12_24);
                 if ((strTimeFormat == null) || (strTimeFormat.equals("")) || strTimeFormat.equals("12"))
                 {     // 12HOUR
-                    if (Calendar.getInstance().get(Calendar.AM_PM) == Calendar.AM)
-                    {      // AM
+                    if (Calendar.getInstance().get(Calendar.AM_PM) == Calendar.AM) {      // AM
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_CurrentTime], String.valueOf(currentTime.get(Calendar.HOUR)) +
                                 ":" + String.valueOf(currentTime.get(Calendar.MINUTE)) + ":" + String.valueOf(currentTime.get(Calendar.SECOND)));
                     } else {    // PM
@@ -376,43 +367,35 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
             //                    countForPlayer = 0;
             //                }
             //            }
-            if (cn.getClassName().equals("com.brick.robotctrl.ADActivity"))
-            {//�?么意�?
-                if (disableAudio.equals("No"))
-                {
+            if (cn.getClassName().equals("com.brick.robotctrl.ADActivity")) {
+                if (disableAudio.equals("No")){
                     disableAudio = "Yes";
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_DisableAudio], disableAudio);
                 }
-            } else {
+             } else {
                 if (disableAudio.equals("Yes"))
                 {
                     disableAudio = "No";
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_DisableAudio], disableAudio);
                 }
             }
-
             addTimerCount();
-
         }
     };
 
-    public static String Base64Decode(String base64EncodedData)
-    {
-
+    public static String Base64Decode(String base64EncodedData) {
         String base64EncodedBytes = Base64.decode(base64EncodedData);
         Log.d(TAG, "Base64Decode: base64EncodedBytes " + base64EncodedBytes);
         return base64EncodedBytes;
     }
 
     // receive ssdb server info
-    Handler handler = new Handler()
-    {
+    Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg)
         {
             super.handleMessage(msg);
-            switch (msg.what)
-            {
+            switch (msg.what){
                 case videoInfo:
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_VideoInfo], (String) msg.obj);
                     Log.d(TAG, "handleMessage: videoInfo");
@@ -434,22 +417,20 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
                         SSDBTask.enableDirCtl = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
-//                        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
-//                        ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
-//                        if (!an.getClassName().equals("com.brick.robotctrl.ExpressionActivity"))
-//                        {
-//                            ExpressionActivity.startAction(MainActivity.this, 0);
-//                        }
+                        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+                        ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                        if (!an.getClassName().equals("com.brick.robotctrl.ExpressionActivity"))
+                        {
+                            ExpressionActivity.startAction(MainActivity.this, 0);
+                        }
                     }
-                    if (rlt.equals("EndDirCtl"))
-                    {
+                    if (rlt.equals("EndDirCtl")) {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         SSDBTask.enableDirCtl = false;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
-                    if (rlt.equals("Charge"))
-                    {
+                    if (rlt.equals("Charge")) {
                         Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
                         //SSDBTask.enableCharge = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
@@ -698,8 +679,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
                 case SSDBTask.Key_NetworkDelay:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if (!rlt.equals(""))
-                    {
+                    if (!rlt.equals("")) {
                         //!!!!!!!!!!!执行NetworkDelay操作
                         SSDBTask.enableNetworkDelay = false;
                     }
@@ -707,8 +687,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
                 case SSDBTask.Key_CurrentTime:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if (!rlt.equals(""))
-                    {
+                    if (!rlt.equals("")){
                         //!!!!!!!!!!!执行CurrentTime操作
                         SSDBTask.enableCurrentTime = false;
                     }
@@ -716,8 +695,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
                 case SSDBTask.Key_DisableAudio:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if (!rlt.equals(""))
-                    {
+                    if (!rlt.equals("")){
                         //!!!!!!!!!!!执行ForbidAudio操作
                         SSDBTask.enableForbidAudio = false;
                     }
@@ -726,20 +704,17 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
                 case SSDBTask.Key_DirCtrl:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:DirCtrl \tvalue:" + rlt);
-                    if (rlt.equals("EndDirCtl"))
-                    {
+                    if (rlt.equals("EndDirCtl")) {
                         SSDBTask.enableDirCtl = false;
                     }
-                    else if (!rlt.equals(""))
-                    {
+                    else if (!rlt.equals("")){
                         serialCtrl.robotMove(rlt);
                     }
                     break;
                 case SSDBTask.Key_SetParam:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
-                    if (!rlt.equals(""))
-                    {
+                    if (!rlt.equals("")) {
                         serialCtrl.setRobotRate(rlt);
                         SSDBTask.enableSetParameter = false;
                     }
@@ -747,18 +722,14 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
                 case SSDBTask.Key_ChangeBrow:
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ------------------Key:ChangeBrow \tvalue:" + rlt);
-                    if (!rlt.equals(""))
-                    {
+                    if (!rlt.equals("")){
                         SSDBTask.enableChangeBrow = false;
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-                        if (cn.getClassName().equals("com.brick.robotctrl.ExpressionActivity"))
-                        {
+                        if (cn.getClassName().equals("com.brick.robotctrl.ExpressionActivity")){
                             ExpressionActivity.changeExpression(Integer.parseInt(rlt));
                             Log.d(TAG, "handleMessage: changebrowed");
-                        }
-                        else
-                        {
+                        } else {
                             Log.d(TAG, "handleMessage: change brow failure because of current activity is not ExpressionActivity");
                         }
                     }
@@ -769,12 +740,10 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
                     if (!rlt.equals(""))
                     {
                         int volume = Integer.parseInt(rlt);
-                        if (volume > 100)
-                        {
+                        if (volume > 100){
                             volume = 100;
                         }
-                        else if (volume < 0)
-                        {
+                        else if (volume < 0){
                             volume = 0;
                         }
                         mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume / 5, 0);
@@ -807,25 +776,20 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
             }
         }
     };
-
     private String getInstallApkFullPath()
     {
         String apkDirPath = Environment.getExternalStorageDirectory().getPath() + "/Download";
         File apkFile = new File(apkDirPath);
         File[] apkFiles = apkFile.listFiles();
 
-        for (int i = 0; i < apkFiles.length; i++)
-        {
-            if (needUpdate(apkFiles[i].getAbsolutePath()))
-            {
+        for (int i = 0; i < apkFiles.length; i++){
+            if (needUpdate(apkFiles[i].getAbsolutePath())){
                 Log.d(TAG, "run: start to install apk: " + apkFiles[i].getAbsolutePath());
                 return apkFiles[i].getAbsolutePath();
             }
         }
         return null;
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -852,12 +816,26 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
         }
     }
 
+   // DDMS
+  /*  public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Debug.stopMethodTracing();
+    }*/
+
+    @Override //当重新获取焦点是 开启副屏的方法;
+    protected void onResume() {
+        super.onResume();
+        updatePresentation();
+        timer.cancel();//取消任务
+    }
+
     @Override
     protected void onPause()
     {
         Log.i(TAG, "onPuase");
-
         super.onPause();
+
+        timer.cancel(); //结束Timer所有的计时器;
     }
 
     @Override
@@ -872,6 +850,10 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
             Log.i(TAG, "onStop");
 
            super.onStop();
+            if ( mMainPresentation!= null) {
+                mMainPresentation.dismiss();
+                mMainPresentation = null;
+            }
        }
 
     @Override
@@ -893,6 +875,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(presChangeListener);
         ssdbTask.disConnect();
         serialCtrl.closeSerialCOM();
+
         unregisterReceiver(netWorkChangeReceiver);
         Intent stopSpeechServiceIntent = new Intent(this, SpeechService.class);
         stopService(stopSpeechServiceIntent);
@@ -923,7 +906,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
                             {
                                 public void run()
                                 {
-                                    mBatteryView.setPower(batteryVoltVal);
+   //                          mBatteryView.setPower(batteryVoltVal);
                                 }
                             });
                         }
@@ -950,7 +933,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
             if ((networkInfo != null && networkInfo.isAvailable()) && ssdbTask.stop)
             {
                 Toast.makeText(context, "network is available, ssdb server haven't started, starting connect ssdb server", Toast.LENGTH_SHORT).show();
-                handler.sendEmptyMessage(ssdbConn);
+        //        handler.sendEmptyMessage(ssdbConn);
             }
             else
             {
@@ -958,17 +941,18 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
             }
         }
     }
-
+                //判断是否需要更新的方法;
     private boolean needUpdate(String archiveFilePath)
-    {
+    {                       //包管理器;
         PackageManager pm = getPackageManager();
         PackageInfo info = pm.getPackageArchiveInfo(archiveFilePath, PackageManager.GET_ACTIVITIES);
         if (info != null)
         {
             try
             {
+
                 ApplicationInfo apkInfo = info.applicationInfo;
-                //                String appName = pm.getApplicationLabel(apkInfo).toString();
+                //   String appName = pm.getApplicationLabel(apkInfo).toString();
                 String packageName = apkInfo.packageName;   //得到安装包名�?
                 String versionName = info.versionName;            //得到版本信息
                 int versionCode = info.versionCode;            //得到版本信息
@@ -977,9 +961,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
                 //              appName:RobotCtrl packagename: com.brick.robotctrl version: v1.27.31
                 Log.d(TAG, "apkInfo:packagename: " + packageName + " versionName: " + versionName + " versionCode: " + versionCode);
 
-                String appVersionName = getVersion(packageName);
-                Log.d(TAG, "apkInstalled: appVersionName: " + appVersionName);
-
+          String appVersionName = getVersion(packageName);
 
                 if (versionName.equals(null))
                 {
@@ -1018,15 +1000,17 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener{
         //            e.printStackTrace();
         //            return null;
         //        }
+
+         //获取包管理器;
         PackageManager pManager = MainActivity.this.getPackageManager();
-        //获取手机内所有应�?
+         //获取手机内所有应;
         List<PackageInfo> paklist = pManager.getInstalledPackages(0);
         for (int i = 0; i < paklist.size(); i++)
         {
-            PackageInfo appInfo = paklist.get(i);
+            PackageInfo appInfo = paklist.get(i); //第i+1个包信息;
             if (appInfo.packageName.equals(packageName))
             {
-                Log.d(TAG, "getVersion: " + packageName + " version: " + appInfo.versionName);
+              Log.d(TAG, "getVersion: ~~~~~~~~~~" + packageName + " version:~~~~~~~~~~~~~~~~ " + appInfo.versionName);
                 return appInfo.versionName;
             }
         }

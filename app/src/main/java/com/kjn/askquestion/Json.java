@@ -18,7 +18,7 @@ import java.io.IOException;
  * Created by ${kang} on 2016/6/20.
  */
 
-public class Jason {
+public class Json {
     public static String ask(String query) throws HttpException {
         JSONObject json = new JSONObject();
         json.put("protocolId", 5);

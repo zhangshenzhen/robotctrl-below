@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_finance_introduce_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@color/gray"
+  >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/tv_back_select"
+            android:layout_marginLeft="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textColor="#cc000000"
+            android:textSize="22sp"
+            android:layout_centerVertical="true"
+            android:text="返回上一层"
+            android:background="@drawable/toubar"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height= "80dp"
+            android:text="投资理财"
+            android:textColor="#cc000000"
+            android:gravity="center"
+            android:textSize="36sp"
+            android:background="@drawable/toubar"/>
+    </RelativeLayout>
+
+
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="0dp"
+         android:layout_weight="1"
+          android:gravity="center"
+         android:layout_marginTop="15dp"
+         android:orientation="horizontal"
+         >
+
+         <TextView
+          style="@style/finance"
+        android:layout_marginRight="30dp"
+             android:text="在售理财产品"
+             />
+         <TextView
+             android:layout_marginLeft="30dp"
+             android:layout_marginRight="30dp"
+             style="@style/finance"
+             android:text="夜市理财产品"
+             />
+         <TextView
+             android:layout_marginLeft="30dp"
+             style="@style/finance"
+             android:text="风险评估"
+             />
+     </LinearLayout>
+
+ <!-- <com.loadview.LoadStatelayout
+    android:id="@+id/loadlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  </com.loadview.LoadStatelayout>
+-->
+
+</LinearLayout>

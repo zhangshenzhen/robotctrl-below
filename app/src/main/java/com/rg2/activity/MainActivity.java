@@ -25,6 +25,11 @@ public class MainActivity extends BaseActivity
     private Button mSubmitBtn;
 
     @Override
+    protected void updatePresentation() {
+
+    }
+
+    @Override
     protected void initData()
     {
 
@@ -33,7 +38,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void initViews(Bundle savedInstanceState)
     {
-        setContentView(R.layout.activity_main_rg2);
+        setContentView(R.layout.activity_id_card);
         mUserNameTv = (TextView) findViewById(R.id.tv_userName);
         mIdNumberTv = (TextView) findViewById(R.id.tv_idNumber);
         mAddressTv = (TextView) findViewById(R.id.tv_address);
@@ -50,9 +55,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    protected void initViewData()
-    {
-
+    protected void initViewData(){
     }
 
     @Override

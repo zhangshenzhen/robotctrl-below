@@ -35,14 +35,18 @@ public class FingerInputActivity extends BaseActivity
                     ToastUtil.show(FingerInputActivity.this, "请输入正确的指纹");
                     PlayerService.startAction(FingerInputActivity.this, mp3File);
                     break;
-            }
+        }
         }
     };
 
     @Override
+    protected void updatePresentation() {
+
+    }
+
+    @Override
     protected void initData()
     {
-
     }
 
     @Override
@@ -76,8 +80,7 @@ public class FingerInputActivity extends BaseActivity
 
 
 
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
             LogUtil.e("TAG","onKeyDown");

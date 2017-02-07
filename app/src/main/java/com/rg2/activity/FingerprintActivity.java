@@ -36,6 +36,11 @@ public class FingerprintActivity extends BaseActivity
     private Timer    timer;
 
     @Override
+    protected void updatePresentation() {
+
+    }
+
+    @Override
     protected void initData()
     {
         timer = new Timer(true);

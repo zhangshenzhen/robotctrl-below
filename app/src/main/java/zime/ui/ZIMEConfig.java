@@ -333,14 +333,12 @@ public class ZIMEConfig
 			FileInputStream fin = new FileInputStream(fileName);
 			BufferedReader dataIO = new BufferedReader(new InputStreamReader(fin));
 			String line = null;
-
 			while((line =  dataIO.readLine()) != null) {
-
 				String aLine[] = line.split(":");
 				if (aLine[0].compareToIgnoreCase("peer IP") == 0)
 				{
 					mRecvIP = aLine[1];
-					mRecvIP = "192.168.11.113";
+					mRecvIP = "192.168.10.9";
 					if(aLine[1].compareToIgnoreCase("127.0.0.1") == 0){
 						mRecvIP = getLocalIpAddress();
 					}

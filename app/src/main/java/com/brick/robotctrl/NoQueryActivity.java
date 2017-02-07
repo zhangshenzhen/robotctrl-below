@@ -58,6 +58,11 @@ public class NoQueryActivity extends BaseActivity {
     }
 
     @Override
+    protected void updatePresentation() {
+
+    }
+
+    @Override
     protected void onStop() {
         Log.i(TAG, "onStop");
         Intent stopIntent = new Intent();
@@ -74,5 +79,9 @@ public class NoQueryActivity extends BaseActivity {
         askButton.setClickable(true);
         humanButton.setClickable(true);
         super.onRestart();
+    }
+
+    @Override
+    public void onClick(View view) {
     }
 }

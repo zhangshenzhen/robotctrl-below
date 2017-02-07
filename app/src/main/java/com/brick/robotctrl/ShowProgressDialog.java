@@ -9,7 +9,6 @@ public class ShowProgressDialog {
     public static void show(Context context,String msg,Thread thread) {
         final Thread th = thread;
         wait = new ProgressDialog(context);
-        //设置风格为圆形
         wait.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         wait.setTitle(null);
         wait.setIcon(null);

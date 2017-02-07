@@ -55,8 +55,6 @@ public class SpeechService extends Service{
     public void onCreate() {
         super.onCreate();
 
-
-
         mAccountInfo = AccountInfoTts.getInstance();
         boolean loadResult = mAccountInfo.loadAccountInfo(this);
         if (loadResult) {
@@ -207,8 +205,6 @@ public class SpeechService extends Service{
             return initResult;
         }
     }
-
-
 
     /**
      * 加载初始化信息

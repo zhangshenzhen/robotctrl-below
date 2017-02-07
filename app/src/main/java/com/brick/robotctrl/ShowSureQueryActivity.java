@@ -173,6 +173,11 @@ public class ShowSureQueryActivity extends BaseActivity {
     }
 
     @Override
+    protected void updatePresentation() {
+
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
     }
@@ -270,6 +275,11 @@ public class ShowSureQueryActivity extends BaseActivity {
             Toast.makeText(ShowSureQueryActivity.this, "播放器内部状态错误",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 
     // 播放器回调

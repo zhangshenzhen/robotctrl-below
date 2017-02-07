@@ -36,6 +36,12 @@ public class FiveActivity extends BaseActivity
     private TextView mSalaryTv;
     private TextView mWorkYearsTv;
     private TextView mBackTv;
+
+    @Override
+    protected void updatePresentation() {
+
+    }
+
     @Override
     protected void initData()
     {
@@ -88,7 +94,6 @@ public class FiveActivity extends BaseActivity
         super.onClick(v);
         if (v == mSubmitBtn)
         {
-
             String mCompanyName = mCompanyNameEt.getText().toString();
             String mCompanyPersonnel = mCompanyPersonnelTv.getText().toString();
             String mCompanyProvince = mCompanyProvinceEt.getText().toString();

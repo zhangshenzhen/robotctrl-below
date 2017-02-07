@@ -60,6 +60,11 @@ public class NoAnswerQueryActivity extends BaseActivity {
     }
 
     @Override
+    protected void updatePresentation() {
+
+    }
+
+    @Override
     protected void onStop() {
         Log.i(TAG, "onStop");
         Intent stopIntent = new Intent();
@@ -76,5 +81,10 @@ public class NoAnswerQueryActivity extends BaseActivity {
         humanButton.setClickable(true);
         askButton.setClickable(true);
         super.onRestart();
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }

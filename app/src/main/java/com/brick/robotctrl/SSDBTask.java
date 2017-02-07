@@ -33,7 +33,7 @@ public class SSDBTask extends TimerTask {
     private Context context = null;
     private SSDB ssdbClient =null;
     //public String serverIp = "60.171.108.192";
-    public String serverIp = "192.168.0.102";
+    public String serverIp = "118.178.122.224";
     public int serverPort = 11028;
     public String robotName = "seu";
     public String robotLocation = "江苏南大电子信息技术股份有限公司";
@@ -316,7 +316,7 @@ public class SSDBTask extends TimerTask {
                     break;
                 case ACTION_HSET:
                     try {
-                      // ssdbClient = new SSDB(serverIp, serverPort);
+//                       ssdbClient = new SSDB(serverIp, serverPort);
                        ssdbClient.hset(robotName, cmd.key, cmd.val);
                     } catch (Exception e) {
                         e.printStackTrace();

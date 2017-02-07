@@ -6,27 +6,19 @@
     tools:context="com.brick.robotctrl.RobotInfoActivity"
     android:id="@+id/testActivity"
     tools:ignore="ContentDescription"
-    android:background="@drawable/product"
+    android:background="@drawable/product1"
     android:keepScreenOn="true">
 
-    <!--<ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/product"/>-->
-
-
       <Button
-          android:onClick="clickEntery"
+         android:onClick="clickEntery"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_alignParentBottom="true"
-         android:layout_marginBottom="5dp"
+          android:layout_marginBottom="10dp"
           android:text="开始体验"
-          android:textColor="@color/txt_color_selector"
+          android:textColor="@color/enter_color_selector"
           android:layout_centerHorizontal="true"
           android:background="@drawable/btn_entry_selector"
           />
-
-
 
 </RelativeLayout>

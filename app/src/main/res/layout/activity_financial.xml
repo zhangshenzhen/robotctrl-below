@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/white"
-              android:orientation="vertical"
-             >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
 
-<include layout="@layout/layout_head"/>
+    <include layout="@layout/layout_head"/>
 
     <LinearLayout
         android:paddingLeft="50dp"
@@ -32,7 +32,7 @@
                 android:textSize="20sp"/>
         </LinearLayout>
 
-        <EditText
+        <TextView
             android:id="@+id/tv_userName"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -69,7 +69,7 @@
                 android:textSize="20sp"/>
         </LinearLayout>
 
-        <EditText
+        <TextView
             android:id="@+id/tv_idNumber"
             android:layout_width="match_parent"
             android:inputType="number"
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_asterisk"
                 android:gravity="right"
-                android:text="公司所在区域："
+                android:text="手机号码："
                 android:textColor="@color/blackA"
                 android:textSize="20sp"/>
         </LinearLayout>
@@ -112,24 +112,25 @@
             android:layout_width="match_parent"
             android:layout_marginRight="20dp"
             android:layout_height="wrap_content">
-            <ImageView
+           <!-- <ImageView
                 android:src="@drawable/ic_arrow_down"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/tv_address"
+                android:layout_height="wrap_content"/>-->
+        <!--    -->
+            <EditText
+                android:id="@+id/et_phone"
+                android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:gravity="center_vertical"
-                android:hint="请选择公司所在区域"
+                android:hint="请输入手机号"
                 android:padding="5dp"
                 android:textColor="@color/blackA"
                 android:textSize="16sp"/>
         </RelativeLayout>
-
     </LinearLayout>
 
 
@@ -165,7 +166,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
 
 
 </LinearLayout>

@@ -30,6 +30,11 @@ public class TwoActivity extends BaseActivity
     private TextView mBackTv;
 
     @Override
+    protected void updatePresentation() {
+
+    }
+
+    @Override
     protected void initData()
     {
 
@@ -69,44 +74,41 @@ public class TwoActivity extends BaseActivity
         super.onClick(v);
         if (v == mSubmitBtn)
         {
+               //得到编辑的内容;
+            String mResidentialAreaNo = mResidentialAreaNoEt.getText().toString().trim();
+            String mResidentialTel = mResidentialTelEt.getText().toString().trim();
+            String mCompanyAreaNo = mCompanyAreaNoEt.getText().toString().trim();
+            String mCompanyTel = mCompanyTelEt.getText().toString().trim();
+            String mExtension = mExtensionEt.getText().toString().trim();
+            String mPhone = mPhoneEt.getText().toString().trim();
 
-            String mResidentialAreaNo = mResidentialAreaNoEt.getText().toString();
-            String mResidentialTel = mResidentialTelEt.getText().toString();
-            String mCompanyAreaNo = mCompanyAreaNoEt.getText().toString();
-            String mCompanyTel = mCompanyTelEt.getText().toString();
-            String mExtension = mExtensionEt.getText().toString();
-            String mPhone = mPhoneEt.getText().toString();
-
-
-//            if (StringUtils.stringIsEmpty(mCompanyAreaNo))
-//            {
-//                ToastUtil.show(TwoActivity.this, "请输入公司电话区号");
-//                return;
-//            }
-//
-//            if (StringUtils.stringIsEmpty(mCompanyTel))
-//            {
-//                ToastUtil.show(TwoActivity.this, "请输入公司电话");
-//                return;
-//            }
-//            if (StringUtils.isMobileNO(mPhone))
-//            {
-//                ToastUtil.show(TwoActivity.this, "请输入正确手机号码");
-//                return;
-//            }
-
+         //检验是否输入对应的
+           /* if (StringUtils.stringIsEmpty(mCompanyAreaNo))
+            {
+                ToastUtil.show(TwoActivity.this, "请输入公司电话区号");
+                return;
+            }
+            if (StringUtils.stringIsEmpty(mCompanyTel))
+            {
+                ToastUtil.show(TwoActivity.this, "请输入公司电话");
+                return;
+            }*/
+           /* if (StringUtils.isMobileNO(mPhone))
+            {
+                ToastUtil.show(TwoActivity.this, "请输入正确手机号码");
+                return;
+            }*/
             startActivityForResult(new Intent(this,ThreeActivity.class),1);
-        }
-        else if(v == mBackTv)
-        {
+           }
+
+            else if(v == mBackTv){
             finish();
-        }
+          }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(requestCode==1 &&resultCode== Activity.RESULT_OK)
         {
             setResult(Activity.RESULT_OK);

@@ -34,8 +34,13 @@ public class ThreeActivity extends BaseActivity
     private EditText mDescAddressEt;//住宅具体门牌号
     private TextView mResidentialTypeTv;//住宅类型
     private TextView mResidenceTimeTv;//住宅年限
-private TextView mBackTv;
+    private TextView mBackTv;
     private Button mSubmitBtn;
+
+    @Override
+    protected void updatePresentation() {
+
+    }
 
     @Override
     protected void initData()
@@ -102,7 +107,7 @@ private TextView mBackTv;
 //                            ToastUtil.show(ThreeActivity.this, "请输入正确的邮箱");
 //                            return;
 //                        }
-//
+
 //                        if (StringUtils.stringIsEmpty(mProvince))
 //                        {
 //                            ToastUtil.show(ThreeActivity.this, "请输入身份证所在省份");
@@ -114,7 +119,6 @@ private TextView mBackTv;
 //                            ToastUtil.show(ThreeActivity.this, "请输入身份证所在城市");
 //                            return;
 //                        }
-//
 //                        if (StringUtils.stringIsEmpty(mCardedAddress))
 //                        {
 //                            ToastUtil.show(ThreeActivity.this, "请与身份证上地址保持一致");
@@ -140,7 +144,7 @@ private TextView mBackTv;
 //                            ToastUtil.show(ThreeActivity.this, "请选择住宅类型");
 //                            return;
 //                        }
-//
+
 //                        if (StringUtils.stringIsEmpty(mResidenceTime))
 //                        {
 //                            ToastUtil.show(ThreeActivity.this, "请选择住宅年薪");
@@ -160,6 +164,7 @@ private TextView mBackTv;
                 }
             });
         }
+        //居住地址;
         else if (v == mResidentialAddressTv)
         {
             CityDialog mCityDialog = new CityDialog();

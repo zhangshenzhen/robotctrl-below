@@ -12,7 +12,7 @@ import android.widget.ListView;
 import com.ant.liao.GifView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kjn.askquestion.Jason;
+import com.kjn.askquestion.Json;
 import com.kjn.askquestion.JsonBean;
 import com.rg2.utils.LogUtil;
 
@@ -68,10 +68,12 @@ public class ManyQueryActivity extends BaseActivity {
 
         showItem = intent.getStringArrayListExtra("extra_showItem");
         showNum = intent.getIntegerArrayListExtra("extra_showNum");
+
         queryListView = (ListView) findViewById(R.id.listView);
-        ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, showItem);
-        LogUtil.e("ManyQueryActivity",".....................44");
+        if (showItem != null) {
+            ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, showItem);
         queryListView.setAdapter(myArrayAdapter);
+          }
         LogUtil.e("ManyQueryActivity",".....................45");
         queryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -114,7 +116,7 @@ public class ManyQueryActivity extends BaseActivity {
                     new Thread() {
                         @Override
                         public void run() {
-                            Jason jts = new Jason();
+                            Json jts = new Json();
                             Log.i(TAG, "进入新线程edit");
                             try {
                                 result = jts.ask(num);                               //把网络访问的代码放在这里
@@ -171,6 +173,12 @@ public class ManyQueryActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    protected void updatePresentation() {
+
+    }
+
     @Override
     protected void onRestart()
     {
@@ -178,5 +186,11 @@ public class ManyQueryActivity extends BaseActivity {
         humanButton.setClickable(true);
         askButton.setClickable(true);
         super.onRestart();
+    }
+
+    //点击事件的方法
+    @Override
+    public void onClick(View view) {
+
     }
 }

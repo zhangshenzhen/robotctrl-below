@@ -70,7 +70,7 @@ public class ZIMEClientJni
 											   int VoiceRTCPPort);
 
 	public static  native int GetLocalReceiver(int ChId,  IntParam VoiceRTPPort,
-											   IntParam VoiceRTCPPort,IntParam VideoRTPPort,IntParam VideoRTCPPort, StrParam LocalAddr, int AddrLen );
+					 IntParam VoiceRTCPPort,IntParam VideoRTPPort,IntParam VideoRTCPPort, StrParam LocalAddr, int AddrLen );
 
 	public static  native int SetSendDestination(int ChId, int VoiceRTPPort,
 												 String DstAddr, int VoiceRTCPPort);
