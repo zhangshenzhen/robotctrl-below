@@ -23,7 +23,7 @@ import android.view.WindowManager;
  */
 public abstract class BaseActivity extends FragmentActivity implements View.OnClickListener {
     public Context mContext;
-    // 媒体路由器
+       // 媒体路由器
     public MediaRouter mMediaRouter;
     //屏幕管理器
     public DisplayManager mDisplayManager;
