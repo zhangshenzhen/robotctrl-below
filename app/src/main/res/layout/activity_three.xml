@@ -594,11 +594,11 @@
     </LinearLayout>
     <Button
         android:id="@+id/btn_submit"
-        android:layout_width="300dp"
+        android:layout_width="260dp"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:background="@drawable/common_red_bg_5dp"
+        android:background="@drawable/affirm"
         android:text="确定"
         android:textColor="@color/white"
         android:textSize="20sp"/>
