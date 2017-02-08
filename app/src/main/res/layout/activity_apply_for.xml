@@ -7,11 +7,21 @@
     android:background="@drawable/graybar"
     android:gravity="center"
           >
-    <TextView
-       android:gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:textColor="#330000"
-        android:text="申请信用卡用户阅读协议"/>
+    <include layout="@layout/layout_head"/>
+      <GridView
+          android:padding="20dp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@drawable/graybar"
+          >
+
+          <TextView
+              android:gravity="center"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:textColor="#330000"
+              android:text="申请信用卡用户阅读协议"/>
+
+      </GridView>
 
 </RelativeLayout>

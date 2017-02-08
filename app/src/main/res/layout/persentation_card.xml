@@ -9,6 +9,7 @@
        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#aaff0000"
         android:textSize="36sp"
         android:text="请选择您所需要办理的卡片业务"
         />

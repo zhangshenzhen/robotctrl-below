@@ -29,7 +29,7 @@ public class PrintPresentation extends  BasePresentation {
          mprint = (TextView) findViewById(R.id.print);
         mpaper = (TextView) findViewById(R.id.paper);
 
-        boolean ispaper = true;//模拟判断机器内部是否有纸质小票;
+        boolean ispaper = false;//模拟判断机器内部是否有纸质小票;
         if(ispaper ){
           mpaper.setVisibility(View.GONE);
         }else {
