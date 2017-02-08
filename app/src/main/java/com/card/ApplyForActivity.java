@@ -15,7 +15,7 @@ import com.rg2.activity.BaseActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/*卡片激活*/
+/*卡片申请*/
 
 public class ApplyForActivity extends BaseActivity {
    private ApplyforPresentation mapplyforPresentation;
@@ -72,7 +72,7 @@ public class ApplyForActivity extends BaseActivity {
             }
         }
     }
-     
+
     @Override
     protected void onPause() {
         super.onPause();

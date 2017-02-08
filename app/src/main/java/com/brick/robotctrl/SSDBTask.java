@@ -219,7 +219,6 @@ public class SSDBTask extends TimerTask {
 
     public boolean stop = true;
 
-
     public static final int Key_Event = 0;
     public static final int Key_DirCtrl = 1;
     public static final int Key_SetParam = 2;

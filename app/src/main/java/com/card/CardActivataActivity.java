@@ -1,5 +1,6 @@
 package com.card;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -49,7 +50,7 @@ public class CardActivataActivity extends BaseActivity {
     private TextView mIdNumberTv;
     private TextView mAddressTv;
     private Button mSubmitBtn;
-    private TextView mtvBack;
+    private TextView mBackTv;
     private int retval;
     private EditText metphone;
 
@@ -57,12 +58,22 @@ public class CardActivataActivity extends BaseActivity {
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_card_activata);
         iDCardDevice = new publicSecurityIDCardLib();
+
     }
 
 
     @Override
-    protected void initData() {
-
+     protected void initData() {
+        mBackTv=(TextView)findViewById(R.id.tv_back);
+        mUserNameTv = (TextView) findViewById(R.id.tv_userName);
+        mIdNumberTv = (TextView) findViewById(R.id.tv_idNumber);
+        mAddressTv = (TextView) findViewById(R.id.tv_address);
+        mSubmitBtn = (Button) findViewById(R.id.btn_submit);
+        mAddressTv.setOnClickListener(this);
+        mSubmitBtn.setOnClickListener(this);
+        mBackTv.setOnClickListener(this);
+        hdler.sendEmptyMessage(1);
+        hdler.sendEmptyMessage(1);
     }
 
 
@@ -119,7 +130,7 @@ public class CardActivataActivity extends BaseActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            //防止挂掉                     getCard();
+                      getCard();
                         }
                     }).start();
                     break;
@@ -213,5 +224,56 @@ public class CardActivataActivity extends BaseActivity {
         TextView tv = new TextView(this);
         tv.setText(logOut);
         llGroup.addView(tv);
+    }
+
+     /*
+     * 点击事件的处理*/
+
+    @Override
+    public void onClick(View v) {
+        if (v == mAddressTv) {
+            CityDialog mCityDialog = new CityDialog();
+            mCityDialog.showCityDialog(CardActivataActivity.this, new MyOnClickListener() {
+                @Override
+                public void onClicked(String content) {
+                    mAddressTv.setText(content);
+                }
+            });
+        }
+        else if(v == mBackTv)
+        {
+          finish();
+        }
+        else if (v == mSubmitBtn) {
+            String mUserName = mUserNameTv.getText().toString();
+            String mIdNumber = mIdNumberTv.getText().toString();
+            String mAddress = mAddressTv.getText().toString();
+
+            if(StringUtils.stringIsEmpty(mUserName) || StringUtils.stringIsEmpty(mIdNumber))
+            {
+                ToastUtil.show(CardActivataActivity.this,"请刷身份证");
+                return;
+            }
+
+
+            if(StringUtils.stringIsEmpty(mAddress))
+            {
+                ToastUtil.show(CardActivataActivity.this,"请选择公司所在区域");
+                return;
+            }
+
+            //
+        //  startActivityForResult(new Intent(CardActivataActivity.this,TwoActivity.class),1);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==1 &&resultCode== Activity.RESULT_OK)
+        {
+              finish();
+        }
     }
 }
