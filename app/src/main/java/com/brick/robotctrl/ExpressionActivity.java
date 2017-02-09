@@ -177,6 +177,14 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 
 	@Override
 	protected void initEvent() {
+		//点击表情机如业务办理的界面；
+		gifView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(ExpressionActivity.this, MainActivity.class));
+			}
+		});
+
 	}
 
 	@Override
@@ -245,13 +253,12 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 
 	public void onClick(View v) {
 		//clearTimerCount();
-
 		int index = currentIndex;
 		index++;
 		if ( index >= EXPRESSION.getExpressionSize())
 			index = 0;
 		changeExpression(index);
-	}
+	  }
 
 	public static void startAction(Context context, int index) {
 		Intent changeMotionIntent = new Intent();

@@ -41,7 +41,7 @@ public class CardActivataActivity extends BaseActivity {
     private byte[] ExpireDate = new byte[18];
     private byte[] pErrMsg = new byte[20];
     private byte[] BmpFile = new byte[38556];
-    String port = "/dev/ttyUSB0";
+    String port="/dev/ttyUSB0";
 
     public LinearLayout llGroup;
     private publicSecurityIDCardLib iDCardDevice;
@@ -51,7 +51,7 @@ public class CardActivataActivity extends BaseActivity {
     private TextView mAddressTv;
     private Button mSubmitBtn;
     private TextView mBackTv;
-    private int retval;
+
     private EditText metphone;
 
     @Override
@@ -72,7 +72,6 @@ public class CardActivataActivity extends BaseActivity {
         mAddressTv.setOnClickListener(this);
         mSubmitBtn.setOnClickListener(this);
         mBackTv.setOnClickListener(this);
-        hdler.sendEmptyMessage(1);
         hdler.sendEmptyMessage(1);
     }
 
@@ -118,7 +117,6 @@ public class CardActivataActivity extends BaseActivity {
         } else {
             showString("寻卡失败");
         }
-        LogUtil.e("IDcardActivity", ".........................55");
     }
 
     Handler hdler = new Handler() {
@@ -139,8 +137,8 @@ public class CardActivataActivity extends BaseActivity {
     };
 
 
-    private void getCard()
-    {
+    private void getCard() {
+       int retval ;
         //  llGroup.removeAllViews();// 清空
         String pkName;
         pkName = getPackageName();
@@ -153,7 +151,7 @@ public class CardActivataActivity extends BaseActivity {
                 LogUtil.e("TAG","读卡错误1111");
                 hdler.sendEmptyMessageDelayed(1,1000);
             } else {
-                LogUtil.e("TAG","读卡正确111");
+
                 LogUtil.e("TAG", new String(name, "Unicode"));
                 LogUtil.e("TAG", new String(IDNo, "Unicode"));
                 runOnUiThread(new Runnable() {
@@ -208,7 +206,6 @@ public class CardActivataActivity extends BaseActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        LogUtil.e("IDcardActivity", ".........................57");
     }
     //Display
     public void showString(String RecvBuffer) {
@@ -254,7 +251,6 @@ public class CardActivataActivity extends BaseActivity {
                 ToastUtil.show(CardActivataActivity.this,"请刷身份证");
                 return;
             }
-
 
             if(StringUtils.stringIsEmpty(mAddress))
             {

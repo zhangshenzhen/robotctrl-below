@@ -14,18 +14,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="点击上部表情界面随机切换显示表情"
+            android:text="点击上部表情界面进入业务办理状态"
             android:textColor="#ff0000"
             android:textSize="26sp"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="滑动上部分表情进入业务办理界面"
-            android:textColor="#0000ff"
-            android:textSize="26sp"
-            />
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -157,7 +157,6 @@ public class FinancialMangerActivity extends BaseActivity {
                 LogUtil.e("TAG", "读卡错误1111");
                 hdler.sendEmptyMessageDelayed(1, 1000);
             } else {
-                LogUtil.e("TAG", "读卡正确111");
                 LogUtil.e("TAG", new String(name, "Unicode"));
                 LogUtil.e("TAG", new String(IDNo, "Unicode"));
                 runOnUiThread(new Runnable() {
