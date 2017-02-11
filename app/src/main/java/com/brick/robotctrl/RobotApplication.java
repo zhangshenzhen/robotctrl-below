@@ -7,8 +7,10 @@ import android.os.Build;
 import android.os.Debug;
 import android.os.Environment;
 import android.util.Log;
+import android.os.Handler;
 
 import com.kjn.crashlog.CrashHandler;
+import com.tencent.bugly.crashreport.CrashReport;
 
 
 import java.io.File;
@@ -49,8 +51,7 @@ public class RobotApplication extends Application {
          stopService(stopIntent);
 
         CrashHandler crashHandler = CrashHandler.getInstance();
-
-         crashHandler.init(this);
+        crashHandler.init(this);
 
           //x.Ext.init(this);//Xutils初始化
         RobotApplication.context = getApplicationContext();
@@ -58,6 +59,7 @@ public class RobotApplication extends Application {
         Log.d(TAG, "..........4");
         Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
 
+        CrashReport.initCrashReport(getApplicationContext(), "124afbac58", true);
     }
 
     private class MyexceptionHandler implements Thread.UncaughtExceptionHandler {
