@@ -2,8 +2,12 @@ package com.card;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
@@ -18,32 +22,16 @@ import butterknife.OnClick;
  */
 
 public class SelectCardActivity extends BaseActivity {
-    @Bind(R.id.tv_card1)
-    TextView tvCard1;
-    @Bind(R.id.tv_card2)
-    TextView tvCard2;
-    @Bind(R.id.tv_card3)
-    TextView tvCard3;
-    @Bind(R.id.tv_card4)
-    TextView tvCard4;
-    @Bind(R.id.tv_card5)
-    TextView tvCard5;
-    @Bind(R.id.tv_card6)
-    TextView tvCard6;
+    private static final String TAG = "SelectCardActivity";
+    @Bind(R.id.gv_card)
+     GridView gridcard;
     @Bind(R.id.btn_back)
     Button btnBack;
     @Bind(R.id.btn_next)
     Button btnNext;
+    private CardAdapter adapter;
+   String []  cards = new String[]{"白金卡","会员卡","Vip金卡","超级卡","普通卡","黑卡"};
 
-    @Override
-    protected void updatePresentation() {
-
-    }
-
-    @Override
-    protected void initData() {
-
-    }
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -54,29 +42,28 @@ public class SelectCardActivity extends BaseActivity {
     @Override
     protected void initEvent() {
 
+
+    }
+    @Override
+    protected void initData() {
+        adapter = new CardAdapter();
+        gridcard.setAdapter(adapter);
+
     }
 
     @Override
     protected void initViewData() {
 
+
+    }
+    @Override
+    protected void updatePresentation() {
+
     }
 
-    @OnClick({R.id.tv_card1, R.id.tv_card2, R.id.tv_card3, R.id.tv_card4,
-            R.id.tv_card5, R.id.tv_card6,R.id.btn_back, R.id.btn_next})
+    @OnClick({R.id.btn_back, R.id.btn_next})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_card1:
-                break;
-            case R.id.tv_card2:
-                break;
-            case R.id.tv_card3:
-                break;
-            case R.id.tv_card4:
-                break;
-            case R.id.tv_card5:
-                break;
-            case R.id.tv_card6:
-                break;
             case R.id.btn_back:
                 break;
             case R.id.btn_next:
@@ -86,4 +73,46 @@ public class SelectCardActivity extends BaseActivity {
         }
     }
 
+
+
+    private class CardAdapter extends BaseAdapter{
+
+
+        @Override
+        public int getCount() {
+            Log.d(TAG ,"...........长度为.."+cards.length);
+            return cards.length !=0 ? cards.length:0;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            Log.d(TAG ,"............."+position);
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View converView, ViewGroup viewGroup) {
+             View view ; ViewHolder holder;
+            if (converView != null){
+                view = converView;
+               holder = (ViewHolder) view.getTag();
+            }else{
+                view = View.inflate(getApplicationContext(),R.layout.card_select_item,null);
+                holder = new ViewHolder();
+                holder.tv_cardNum = (TextView) view.findViewById(R.id.tv_cardNum);
+                view.setTag(holder);
+            }
+            //绑定数据;
+            holder.tv_cardNum.setText(cards[position]);
+            return view;
+        }
+    }
+       static class ViewHolder{
+           TextView tv_cardNum;
+      }
 }

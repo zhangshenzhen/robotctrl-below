@@ -1,5 +1,6 @@
 package com.card;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -73,8 +74,9 @@ public class CardBusinessActivity extends BaseActivity {
             case R.id.btn_next:
                  if(cbAgree.isChecked()){ //同意用户协议;
                   Log.e(TAG,"同意用户协议，进入下一页");
+                 startActivity(new Intent(CardBusinessActivity.this,
+                        SelectCardActivity.class ));
                  }
-
                 break;
         }
     }

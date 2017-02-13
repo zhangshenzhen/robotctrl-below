@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/agree_content_bg"
     >
 
-      <LinearLayout
+   <!-- <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:paddingTop="50dp"
@@ -171,12 +172,36 @@
                 />
         </RelativeLayout>
 
-    </LinearLayout>
+    </LinearLayout>-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:weightSum="5"
+            >
+          <GridView
+              android:id="@+id/gv_card"
+              android:layout_width="match_parent"
+              android:layout_weight="4"
+              android:layout_height="match_parent"
+              android:numColumns="3"
+              >
+            </GridView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
         >
         <Button
@@ -205,13 +230,8 @@
             android:text="下一页"
             />
 
-
-
     </RelativeLayout>
 
-
-
-
-</LinearLayout>
+</RelativeLayout>
 
 

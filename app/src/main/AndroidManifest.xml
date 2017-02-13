@@ -248,6 +248,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
+        <!--卡片选择-->
+        <activity
+            android:name="com.card.SelectCardActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
 
         <service android:name="zime.ui.ZIMEAVDemoService" />
 
