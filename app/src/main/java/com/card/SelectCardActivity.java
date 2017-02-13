@@ -1,5 +1,6 @@
 package com.card;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -79,6 +80,8 @@ public class SelectCardActivity extends BaseActivity {
             case R.id.btn_back:
                 break;
             case R.id.btn_next:
+                Intent intent = new Intent();
+                intent.putExtra("..",  2);//模拟传递数据；
                 break;
         }
     }
