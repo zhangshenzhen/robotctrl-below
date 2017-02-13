@@ -4,4 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout> 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bai_jin_card"
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="23sp"
+            android:textColor="#000"
+            android:text="尊敬的用户："
+            android:id="@+id/tv_user"
+
+            />
+
+        <TextView
+            android:layout_below="@id/tv_user"
+            android:id="@+id/tv_card_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:text="本卡为XX银行白金卡，年费为40元/年"/>
+
+    </RelativeLayout>
+
+
+
+    />
+
+</LinearLayout>
