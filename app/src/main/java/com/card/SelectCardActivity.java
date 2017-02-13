@@ -47,6 +47,7 @@ public class SelectCardActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                //点击条目,打开新的内容
              startActivity(new Intent(SelectCardActivity.this,BusinessCarInfo.class));
+
             }
         });
 
