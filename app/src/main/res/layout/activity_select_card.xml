@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingTop="50dp"
+          android:layout_marginLeft="20dp"
+          android:orientation="horizontal"
+          >
+         <RelativeLayout
+             android:layout_width="200dp"
+             android:layout_height="150dp"
+             android:layout_marginLeft="80dp"
+             android:orientation="vertical" >
+            <Button
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/card_bg"
+              android:text="卡1"
+              android:textColor="#fff"
+              android:textSize="26sp"
+              />
+             <TextView
+                 android:id="@+id/tv_card1"
+                 android:layout_alignParentBottom="true"
+                 android:layout_centerHorizontal="true"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="点击查看详情"
+                 android:textSize="17sp"
+                 android:textColor="#f0f"
+                 />
+         </RelativeLayout>
+          <RelativeLayout
+             android:layout_marginLeft="60dp"
+              android:layout_width="200dp"
+              android:layout_height="150dp"
+              android:orientation="vertical" >
+              <Button
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/card_bg"
+                  android:text="卡2"
+                  android:textColor="#fff"
+                  android:textSize="26sp"
+                  />
+
+              <TextView
+                  android:id="@+id/tv_card2"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="点击查看详情"
+                  android:textSize="17sp"
+                  android:textColor="#f0f"
+                  />
+          </RelativeLayout>
+          <RelativeLayout
+              android:layout_width="200dp"
+              android:layout_height="150dp"
+              android:layout_marginLeft="60dp"
+              android:orientation="vertical" >
+              <Button
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/card_bg"
+                  android:text="卡3"
+                  android:textColor="#fff"
+                  android:textSize="26sp"
+                  />
+
+              <TextView
+                  android:id="@+id/tv_card3"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="点击查看详情"
+                  android:textSize="17sp"
+                  android:textColor="#f0f"
+                  />
+          </RelativeLayout>
+
+      </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal"
+        >
+        <RelativeLayout
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:layout_marginLeft="80dp"
+            android:orientation="vertical" >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_bg"
+                android:text="卡4"
+                android:textColor="#fff"
+                android:textSize="26sp"
+                />
+            <TextView
+                android:id="@+id/tv_card4"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点击查看详情"
+                android:textSize="17sp"
+                android:textColor="#f0f"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginLeft="60dp"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:orientation="vertical" >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_bg"
+                android:text="卡5"
+                android:textColor="#fff"
+                android:textSize="26sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_card5"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点击查看详情"
+                android:textSize="17sp"
+                android:textColor="#f0f"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:layout_marginLeft="60dp"
+            android:orientation="vertical" >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_bg"
+                android:text="卡6"
+                android:textColor="#fff"
+                android:textSize="26sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_card6"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点击查看详情"
+                android:textSize="17sp"
+                android:textColor="#f0f"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        >
+        <Button
+            android:textColor="#f0f"
+            android:textSize="16sp"
+            android:id="@+id/btn_back"
+            android:layout_marginRight="280dp"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:drawableRight="@drawable/back"
+             android:layout_width="130dp"
+             android:layout_height="50dp"
+             android:text="返回上一页"
+            />
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_marginRight="120dp"
+            android:layout_alignParentRight="true"
+            android:textColor="#f0f"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:drawableRight="@drawable/nextpager"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:text="下一页"
+            />
+
+
+
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>
+
+
