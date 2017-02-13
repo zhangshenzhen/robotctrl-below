@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -41,6 +42,13 @@ public class SelectCardActivity extends BaseActivity {
 
     @Override
     protected void initEvent() {
+        gridcard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+               //点击条目,打开新的内容
+             startActivity(new Intent(SelectCardActivity.this,BusinessCarInfo.class));
+            }
+        });
 
 
     }
