@@ -264,7 +264,7 @@
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
             <!--卡片信息-->
         <activity android:name="com.card.CreadCarInfo"></activity>
-
+        <activity android:name="com.card.BusinessCarInfo"></activity>
         <service android:name="zime.ui.ZIMEAVDemoService" />
 
         <activity android:name="com.financial.FinancialMangerActivity" />
