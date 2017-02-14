@@ -128,7 +128,13 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
     @Override
     protected void onPause() {
         super.onPause();
+        updatePresentation();
      mMediaRouter.removeCallback(mMediaRouterCallback);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

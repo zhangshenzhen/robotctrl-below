@@ -1,10 +1,13 @@
 package com.card;
 
 import android.content.Intent;
+import android.media.MediaRouter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -12,6 +15,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
+import com.presentation.presentionui.SelectCardPresentation;
 import com.rg2.activity.BaseActivity;
 
 import butterknife.Bind;
@@ -31,8 +35,10 @@ public class BusinessSelectCardActivity extends BaseActivity {
     @Bind(R.id.btn_next)
     Button btnNext;
     private CardAdapter adapter;
-   String []  cards = new String[]{"白金卡","会员卡","Vip金卡","超级卡","普通卡","黑卡"
-           ,"会员卡","Vip金卡","超级卡","普通卡","黑卡","会员卡"};
+
+    private SelectCardPresentation mSelectCardPresentation;
+
+   String []  cards = new String[]{"足球卡","葵花卡","长城卡","人民卡","长城福农卡","境外卡"};
 
 
     @Override
@@ -46,8 +52,10 @@ public class BusinessSelectCardActivity extends BaseActivity {
         gridcard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-               //点击条目,打开新的内容
-          //   startActivity(new Intent(BusinessSelectCardActivity.this,BusinessCarInfo.class));
+               //点击条目
+                Intent intent = new Intent(BusinessSelectCardActivity.this,BusinessCarInfo.class);
+                 intent.putExtra("cardDetails", cards[position]);
+                 startActivity(intent);
               //  Log.d(TAG ,"............."+position);
             }
         });
@@ -63,13 +71,55 @@ public class BusinessSelectCardActivity extends BaseActivity {
 
     @Override
     protected void initViewData() {
-
-
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updatePresentation();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        updatePresentation();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mSelectCardPresentation != null){
+            mSelectCardPresentation.dismiss();
+            mSelectCardPresentation = null;
+        }
+    }
+
     @Override
     protected void updatePresentation() {
-
+        // Log.d(TAG, "updatePresentation: ");
+        //得到当前route and its presentation display
+        MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
+                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+        Display presentationDisplay = route != null ? route.getPresentationDisplay() : null;
+        // 注释 : Dismiss the current presentation if the display has changed.
+        if (mSelectCardPresentation != null && mSelectCardPresentation.getDisplay() != presentationDisplay) {
+            mSelectCardPresentation.dismiss();
+            mSelectCardPresentation = null;
+        }
+        if (mSelectCardPresentation == null && presentationDisplay != null) {
+            // Initialise a new Presentation for the Display
+            mSelectCardPresentation = new SelectCardPresentation(this, presentationDisplay);
+            //把当前的对象引用赋值给BaseActivity中的引用;
+            mPresentation = mSelectCardPresentation;
+            mSelectCardPresentation.setOnDismissListener(mOnDismissListener);
+            try {
+                mSelectCardPresentation.show();
+            } catch (WindowManager.InvalidDisplayException ex) {
+                mSelectCardPresentation = null;
+            }
+        }
     }
+
 
     @OnClick({R.id.btn_back, R.id.btn_next})
     public void onClick(View view) {

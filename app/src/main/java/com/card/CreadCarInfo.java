@@ -1,14 +1,19 @@
 package com.card;
 
 import android.content.Intent;
+import android.media.MediaRouter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
 import com.jly.idcard.IDcardActivity;
+import com.presentation.presentionui.CardPresentation;
+import com.presentation.presentionui.CardinfoPresentation;
 import com.rg2.activity.BaseActivity;
 
 import butterknife.Bind;
@@ -28,16 +33,7 @@ public class CreadCarInfo extends BaseActivity {
     Button btnBack;
     @Bind(R.id.btn_next)
     Button btnNext;
-
-    @Override
-    protected void updatePresentation() {
-
-    }
-
-    @Override
-    protected void initData() {
-
-    }
+    private CardinfoPresentation mCardinfoPresentation;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -46,13 +42,43 @@ public class CreadCarInfo extends BaseActivity {
     }
 
     @Override
-    protected void initEvent() {
+    protected void updatePresentation() {
+        // Log.d(TAG, "updatePresentation: ");
+        //得到当前route and its presentation display
+        MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
+                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+        Display presentationDisplay = route != null ? route.getPresentationDisplay() : null;
+        // 注释 : Dismiss the current presentation if the display has changed.
+        if (mCardinfoPresentation != null && mCardinfoPresentation.getDisplay() != presentationDisplay) {
+            mCardinfoPresentation.dismiss();
+            mCardinfoPresentation = null;
+        }
+        if (mCardinfoPresentation == null && presentationDisplay != null) {
+            // Initialise a new Presentation for the Display
+            mCardinfoPresentation = new CardinfoPresentation(this, presentationDisplay);
+            //把当前的对象引用赋值给BaseActivity中的引用;
+            mPresentation = mCardinfoPresentation;
+            mCardinfoPresentation.setOnDismissListener(mOnDismissListener);
+            try {
+                mCardinfoPresentation.show();
+            } catch (WindowManager.InvalidDisplayException ex) {
+                mCardinfoPresentation = null;
+            }
+        }
+    }
 
+    @Override
+    protected void initData() {
+
+    }
+
+
+    @Override
+    protected void initEvent() {
     }
 
     @Override
     protected void initViewData() {
-
     }
 
 

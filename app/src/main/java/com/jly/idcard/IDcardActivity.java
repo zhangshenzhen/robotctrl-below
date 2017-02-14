@@ -124,7 +124,7 @@ public class IDcardActivity extends BaseActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                    getCard();
+  //暂停                  getCard();
                         }
                     }).start();
                         break;
@@ -255,7 +255,7 @@ public class IDcardActivity extends BaseActivity {
             String mAddress = mAddressTv.getText().toString();
 
 
-            if(StringUtils.stringIsEmpty(mUserName) || StringUtils.stringIsEmpty(mIdNumber))
+ /*           if(StringUtils.stringIsEmpty(mUserName) || StringUtils.stringIsEmpty(mIdNumber))
             {
                 ToastUtil.show(IDcardActivity.this,"请刷身份证");
                 return;
@@ -264,7 +264,7 @@ public class IDcardActivity extends BaseActivity {
             {
                 ToastUtil.show(IDcardActivity.this,"请选择公司所在区域");
                 return;
-            }
+            }*/
             startActivityForResult(new Intent(IDcardActivity.this,TwoActivity.class),1);
         }
     }
