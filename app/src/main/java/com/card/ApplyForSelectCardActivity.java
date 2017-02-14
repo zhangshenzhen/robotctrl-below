@@ -75,6 +75,7 @@ public class ApplyForSelectCardActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
+                finish();
                 break;
             case R.id.btn_next:
            /*     Intent intent = new Intent();

@@ -1,5 +1,6 @@
 package com.card;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
+import com.jly.idcard.IDcardActivity;
 import com.rg2.activity.BaseActivity;
 
 import butterknife.Bind;
@@ -62,7 +64,9 @@ public class CreadCarInfo extends BaseActivity {
                 break;
             case R.id.btn_next:
                 //激活信息采集软件；
-                Log.d(TAG,"激活信息采集软件");
+                Log.d(TAG,"激活信息采集软件1");
+                startActivity(new Intent(CreadCarInfo.this, IDcardActivity.class));
+                Log.d(TAG,"激活信息采集软件2");
                 break;
         }
     }
