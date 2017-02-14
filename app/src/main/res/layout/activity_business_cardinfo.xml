@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="#6f1f16"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="23dp"
             android:text="本卡为xx银行长城福卡，年费为40元/年"/>
     </RelativeLayout>
 
