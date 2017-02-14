@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@drawable/agree_content_bg"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="30dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@drawable/bai_jin_card"
         android:layout_marginBottom="60dp"
         android:layout_marginTop="50dp"
@@ -31,13 +36,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:textColor="#6f1f16"
             android:layout_marginTop="20dp"
             android:text="本卡为XX银行白金卡，年费为40元/年"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        >
+        <Button
+            android:textColor="#f0f"
+            android:textSize="16sp"
+            android:id="@+id/btn_back"
+            android:layout_marginRight="280dp"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:drawableRight="@drawable/back"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:text="返回上一页"
+            />
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_marginRight="120dp"
+            android:layout_alignParentRight="true"
+            android:textColor="#f0f"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:drawableRight="@drawable/nextpager"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:text="下一页"
+            />
 
     </RelativeLayout>
 
 
-
-    />
 
 </LinearLayout>

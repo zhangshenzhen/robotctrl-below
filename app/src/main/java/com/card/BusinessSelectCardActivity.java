@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * Created by shenzhen on 2017/2/10.
  */
 
-public class SelectCardActivity extends BaseActivity {
+public class BusinessSelectCardActivity extends BaseActivity {
     private static final String TAG = "SelectCardActivity";
     @Bind(R.id.gv_card)
      GridView gridcard;
@@ -31,7 +31,8 @@ public class SelectCardActivity extends BaseActivity {
     @Bind(R.id.btn_next)
     Button btnNext;
     private CardAdapter adapter;
-   String []  cards = new String[]{"白金卡","会员卡","Vip金卡","超级卡","普通卡","黑卡"};
+   String []  cards = new String[]{"白金卡","会员卡","Vip金卡","超级卡","普通卡","黑卡"
+           ,"会员卡","Vip金卡","超级卡","普通卡","黑卡","会员卡"};
 
 
     @Override
@@ -44,10 +45,10 @@ public class SelectCardActivity extends BaseActivity {
     protected void initEvent() {
         gridcard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                //点击条目,打开新的内容
-             startActivity(new Intent(SelectCardActivity.this,BusinessCarInfo.class));
-
+          //   startActivity(new Intent(BusinessSelectCardActivity.this,BusinessCarInfo.class));
+              //  Log.d(TAG ,"............."+position);
             }
         });
 
@@ -89,7 +90,7 @@ public class SelectCardActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            Log.d(TAG ,"...........长度为.."+cards.length);
+            Log.d(TAG,"...........长度为.."+cards.length);
             return cards.length !=0 ? cards.length:0;
         }
 
@@ -100,7 +101,7 @@ public class SelectCardActivity extends BaseActivity {
 
         @Override
         public long getItemId(int position) {
-            Log.d(TAG ,"............."+position);
+
             return 0;
         }
 

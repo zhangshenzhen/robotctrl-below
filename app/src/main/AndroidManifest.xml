@@ -59,7 +59,8 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.FullScreen.NoTitle">
+       <!-- android:theme="@style/AppTheme"-->
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
@@ -248,15 +249,23 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-        <!--卡片选择-->
+              <!--办理卡片的卡片选择-->
         <activity
-            android:name="com.card.SelectCardActivity"
+            android:name="com.card.BusinessSelectCardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
+        <!--申请卡片的卡片选择-->
+
+        <activity
+            android:name="com.card.ApplyForSelectCardActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
+            <!--卡片信息-->
+        <activity android:name="com.card.CreadCarInfo"></activity>
 
         <service android:name="zime.ui.ZIMEAVDemoService" />
-
 
         <activity android:name="com.financial.FinancialMangerActivity" />
         <!--

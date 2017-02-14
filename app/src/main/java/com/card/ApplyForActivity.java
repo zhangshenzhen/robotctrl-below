@@ -1,26 +1,41 @@
 package com.card;
 
+import android.content.Intent;
 import android.media.MediaRouter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
-import com.presentation.SelecttPresentation;
 import com.presentation.presentionui.ApplyforPresentation;
 import com.rg2.activity.BaseActivity;
+import com.rg2.utils.ToastUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 
 /*卡片申请*/
 
 public class ApplyForActivity extends BaseActivity {
-   private ApplyforPresentation mapplyforPresentation;
-    @Bind(R.id.tv_back)
-    TextView tvBack;
+
+    private static final String TAG = "ApplyForActivity";
+    @Bind(R.id.text)
+    TextView text;
+    @Bind(R.id.cb_agree)
+    CheckBox cbAgree;
+    @Bind(R.id.btn_back)
+    Button btnBack;
+    @Bind(R.id.btn_next)
+    Button btnNext;
+    private ApplyforPresentation mapplyforPresentation;
+
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -31,20 +46,29 @@ public class ApplyForActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        tvBack.setOnClickListener(this);
-     }
-    @Override
-    public void onClick(View v) {
-       finish();
     }
 
     @Override
     protected void initEvent() {
     }
-
     @Override
     protected void initViewData() {
-
+    }
+    @OnClick({R.id.btn_back, R.id.btn_next})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_back:
+                finish();
+                break;
+            case R.id.btn_next:
+                if(cbAgree.isChecked()){ //同意用户协议;
+                   startActivity(new Intent(ApplyForActivity.this,
+                            ApplyForSelectCardActivity.class ));
+                }else {
+                    ToastUtil.show(ApplyForActivity.this, "请先阅读用户协议,并同意");
+                }
+                break;
+        }
     }
 
     @Override
@@ -82,9 +106,10 @@ public class ApplyForActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mapplyforPresentation != null){
+        if (mapplyforPresentation != null) {
             mapplyforPresentation.dismiss();
             mapplyforPresentation = null;
         }
     }
+
 }

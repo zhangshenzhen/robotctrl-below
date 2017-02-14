@@ -6,10 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.RadioButton;
 
 import com.brick.robotctrl.R;
 import com.rg2.activity.BaseActivity;
+import com.rg2.utils.ToastUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -75,7 +75,9 @@ public class CardBusinessActivity extends BaseActivity {
                  if(cbAgree.isChecked()){ //同意用户协议;
                   Log.e(TAG,"同意用户协议，进入下一页");
                  startActivity(new Intent(CardBusinessActivity.this,
-                        SelectCardActivity.class ));
+                        BusinessSelectCardActivity.class ));
+                 }else {
+                     ToastUtil.show(CardBusinessActivity.this, "请先阅读用户协议,并同意");
                  }
                 break;
         }
