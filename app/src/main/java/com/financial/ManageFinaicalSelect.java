@@ -1,6 +1,5 @@
 package com.financial;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.MediaRouter;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import com.rg2.activity.BaseActivity;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

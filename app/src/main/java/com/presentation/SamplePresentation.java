@@ -16,13 +16,8 @@
 
 package com.presentation;
 
-import android.app.Activity;
-import android.app.Application;
 import android.app.Presentation;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;

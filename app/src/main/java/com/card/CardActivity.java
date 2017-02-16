@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
-
 import com.presentation.presentionui.CardPresentation;
 import com.rg2.activity.BaseActivity;
 

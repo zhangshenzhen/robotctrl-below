@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 
 import com.brick.robotctrl.R;
 import com.presentation.presentionui.ApplyforPresentation;
-import com.presentation.presentionui.CardinfoPresentation;
 import com.rg2.activity.BaseActivity;
 import com.rg2.utils.ToastUtil;
 

@@ -3,7 +3,6 @@ package com.card;
 import android.content.Intent;
 import android.media.MediaRouter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,9 +11,9 @@ import android.widget.TextView;
 
 import com.brick.robotctrl.R;
 import com.jly.idcard.IDcardActivity;
-import com.presentation.presentionui.CardPresentation;
 import com.presentation.presentionui.CardinfoPresentation;
 import com.rg2.activity.BaseActivity;
+import com.rg2.utils.SPUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -90,9 +89,10 @@ public class CreadCarInfo extends BaseActivity {
                 break;
             case R.id.btn_next:
                 //激活信息采集软件；
-                Log.d(TAG,"激活信息采集软件1");
+              //  Boolean  isCreadcard  = false;
+              //  Log.d(TAG,"激活信息采集软件1.."+isCreadcard);
+                  SPUtils.put(mContext,"isCreadcard",true);
                 startActivity(new Intent(CreadCarInfo.this, IDcardActivity.class));
-                Log.d(TAG,"激活信息采集软件2");
                 break;
         }
     }

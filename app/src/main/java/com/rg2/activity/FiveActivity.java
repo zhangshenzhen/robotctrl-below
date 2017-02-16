@@ -1,18 +1,27 @@
 package com.rg2.activity;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+
 import com.brick.robotctrl.R;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.rg2.listener.MyOnClickListener;
 import com.rg2.utils.DialogUtils;
-import com.rg2.utils.StringUtils;
-import com.rg2.utils.ToastUtil;
+import com.rg2.utils.SPUtils;
 
 
 /**
@@ -20,8 +29,8 @@ import com.rg2.utils.ToastUtil;
  * 邮箱：wangxianyun1@163.com
  * 描述：一句话简单描述
  */
-public class FiveActivity extends BaseActivity
-{
+public class FiveActivity extends BaseActivity {
+    private static final String TAG = "CreadCarInfo";
     private Button mSubmitBtn;
     private EditText mCompanyNameEt;
     private TextView mCompanyPersonnelTv;
@@ -36,6 +45,11 @@ public class FiveActivity extends BaseActivity
     private TextView mSalaryTv;
     private TextView mWorkYearsTv;
     private TextView mBackTv;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void updatePresentation() {
@@ -43,17 +57,14 @@ public class FiveActivity extends BaseActivity
     }
 
     @Override
-    protected void initData()
-    {
-
+    protected void initData() {
     }
 
     @Override
-    protected void initViews(Bundle savedInstanceState)
-    {
+    protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_five);
         mSubmitBtn = (Button) findViewById(R.id.btn_submit);
-        mBackTv=(TextView)findViewById(R.id.tv_back);
+        mBackTv = (TextView) findViewById(R.id.tv_back);
         mCompanyNameEt = (EditText) findViewById(R.id.et_company_name);
         mCompanyPersonnelTv = (TextView) findViewById(R.id.tv_company_personnel);
         mCompanyProvinceEt = (EditText) findViewById(R.id.et_company_province);
@@ -70,8 +81,7 @@ public class FiveActivity extends BaseActivity
     }
 
     @Override
-    protected void initEvent()
-    {
+    protected void initEvent() {
         mSubmitBtn.setOnClickListener(this);
         mCompanyPersonnelTv.setOnClickListener(this);
         mCompanyTypeTv.setOnClickListener(this);
@@ -83,17 +93,14 @@ public class FiveActivity extends BaseActivity
     }
 
     @Override
-    protected void initViewData()
-    {
+    protected void initViewData() {
 
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         super.onClick(v);
-        if (v == mSubmitBtn)
-        {
+        if (v == mSubmitBtn) {
             String mCompanyName = mCompanyNameEt.getText().toString();
             String mCompanyPersonnel = mCompanyPersonnelTv.getText().toString();
             String mCompanyProvince = mCompanyProvinceEt.getText().toString();
@@ -170,81 +177,84 @@ public class FiveActivity extends BaseActivity
 //                return;
 //            }
             setResult(Activity.RESULT_OK);
-            finish();
 
-
-          //  startActivity(new Intent(FiveActivity.this,GifActivity.class));
-        }
-        else if (v == mCompanyPersonnelTv)
-        {
-            DialogUtils.showListDialog("员工人数", getResources().getStringArray(R.array.company_personnel), FiveActivity.this, new MyOnClickListener()
-            {
+            //  startActivity(new Intent(FiveActivity.this,GifActivity.class));
+        } else if (v == mCompanyPersonnelTv) {
+            DialogUtils.showListDialog("员工人数", getResources().getStringArray(R.array.company_personnel), FiveActivity.this, new MyOnClickListener() {
                 @Override
-                public void onClicked(String content)
-                {
+                public void onClicked(String content) {
                     mCompanyPersonnelTv.setText(content);
                 }
             });
-        }
-        else if (v == mCompanyTypeTv)
-        {
-            DialogUtils.showListDialog("单位性质", getResources().getStringArray(R.array.company_type), FiveActivity.this, new MyOnClickListener()
-            {
+        } else if (v == mCompanyTypeTv) {
+            DialogUtils.showListDialog("单位性质", getResources().getStringArray(R.array.company_type), FiveActivity.this, new MyOnClickListener() {
                 @Override
-                public void onClicked(String content)
-                {
+                public void onClicked(String content) {
                     mCompanyTypeTv.setText(content);
                 }
             });
-        }
-        else if (v == mCompanyIndustryTv)
-        {
-            DialogUtils.showListDialog("行业性质", getResources().getStringArray(R.array.industry), FiveActivity.this, new MyOnClickListener()
-            {
+        } else if (v == mCompanyIndustryTv) {
+            DialogUtils.showListDialog("行业性质", getResources().getStringArray(R.array.industry), FiveActivity.this, new MyOnClickListener() {
                 @Override
-                public void onClicked(String content)
-                {
+                public void onClicked(String content) {
                     mCompanyIndustryTv.setText(content);
                 }
             });
-        }
-        else if (v == mPostLevelTv)
-        {
-            DialogUtils.showListDialog("职位级别", getResources().getStringArray(R.array.user_post), FiveActivity.this, new MyOnClickListener()
-            {
+        } else if (v == mPostLevelTv) {
+            DialogUtils.showListDialog("职位级别", getResources().getStringArray(R.array.user_post), FiveActivity.this, new MyOnClickListener() {
                 @Override
-                public void onClicked(String content)
-                {
+                public void onClicked(String content) {
                     mPostLevelTv.setText(content);
                 }
             });
-        }
-        else if (v == mSalaryTv)
-        {
-            DialogUtils.showListDialog("年薪", getResources().getStringArray(R.array.salary), FiveActivity.this, new MyOnClickListener()
-            {
+        } else if (v == mSalaryTv) {
+            DialogUtils.showListDialog("年薪", getResources().getStringArray(R.array.salary), FiveActivity.this, new MyOnClickListener() {
                 @Override
-                public void onClicked(String content)
-                {
+                public void onClicked(String content) {
                     mSalaryTv.setText(content);
                 }
             });
-        }
-        else if (v == mWorkYearsTv)
-        {
-            DialogUtils.showListDialog("工作年数", getResources().getStringArray(R.array.work_years), FiveActivity.this, new MyOnClickListener()
-            {
+        } else if (v == mWorkYearsTv) {
+            DialogUtils.showListDialog("工作年数", getResources().getStringArray(R.array.work_years), FiveActivity.this, new MyOnClickListener() {
                 @Override
-                public void onClicked(String content)
-                {
+                public void onClicked(String content) {
                     mWorkYearsTv.setText(content);
                 }
             });
-        }
-
-       else if(v == mBackTv)
-        {
+        } else if (v == mBackTv) {
             finish();
         }
+
+        boolean b = false;
+        b = (Boolean) SPUtils.get(mContext, "isCreadcard", false);
+        Log.d(TAG, "激活信息采  ... 卡.." + b);
+        if (b) {
+            Log.d(TAG, "激活信息采集软件 信用卡..2" + b);
+            SPUtils.put(mContext, "isCreadcard", false);
+            //开启网络请求,提交数据到服务器;
+            LoadData();
+        } else {
+            Log.d(TAG, "激活信息采集软件 借记卡..3" + b);
+            //部分信息写入发卡机;
+            WriterCard();
+        }
+        //   finish();
     }
+    //写卡操作
+    private void WriterCard() {
+    }
+
+    //  链接网络;
+    private void LoadData() {
+        ProgressDialog pd = new ProgressDialog(mContext);
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+         pd.setInverseBackgroundForced(true);
+         pd.setMessage("正在加载中...");
+         pd.requestWindowFeature(Window.FEATURE_NO_TITLE);
+         pd.show();//显示
+        //上传数据;
+   }
+
+
+
 }

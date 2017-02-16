@@ -9,8 +9,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
-import com.rg2.utils.StringUtils;
-import com.rg2.utils.ToastUtil;
 
 
 /**
@@ -75,7 +73,6 @@ public class FourActivity extends BaseActivity
             String mRelativesPhone = mRelativesPhoneEt.getText().toString();
             String mContactName = mContactNameEt.getText().toString();
             String mContactPhone = mContactPhoneEt.getText().toString();
-
 
             startActivityForResult(new Intent(this,FiveActivity.class),1);
         }

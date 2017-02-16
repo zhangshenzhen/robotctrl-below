@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bean.serialport.UserInfo;
 import com.brick.robotctrl.BaseActivity;
 import com.brick.robotctrl.R;
 import com.hdos.idCardUartDevice.JniReturnData;
@@ -64,6 +65,9 @@ public class IDcardActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UserInfo instance = UserInfo.getInstance();//单例
+
+
         setContentView(R.layout.activity_id_card);
         LogUtil.e("IDcardActivity", ".........................52");
         iDCardDevice = new publicSecurityIDCardLib();

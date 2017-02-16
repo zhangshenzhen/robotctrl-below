@@ -1,11 +1,9 @@
 package com.financial;
 
 import android.app.Activity;
-import android.app.usage.UsageEvents;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaRouter;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 
@@ -18,21 +16,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.brick.robotctrl.R;
 
+import com.brick.robotctrl.R;
 import com.hdos.idCardUartDevice.JniReturnData;
 import com.hdos.idCardUartDevice.publicSecurityIDCardLib;
-import com.jly.idcard.IDcardActivity;
-import com.presentation.ExpressionPresentation;
 import com.presentation.InputFingerPresentation;
 import com.rg2.activity.BaseActivity;
-import com.rg2.activity.TwoActivity;
-import com.rg2.listener.MyOnClickListener;
-import com.rg2.utils.CityDialog;
 import com.rg2.utils.LogUtil;
 import com.rg2.utils.StringUtils;
 import com.rg2.utils.ToastUtil;
-import java.io.IOException;
+
 import java.io.UnsupportedEncodingException;
 
 

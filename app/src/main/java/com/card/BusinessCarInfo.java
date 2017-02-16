@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
+import com.jly.idcard.IDcardActivity;
 import com.presentation.presentionui.CardinfoPresentation;
 import com.rg2.activity.BaseActivity;
 
@@ -61,6 +62,7 @@ public class BusinessCarInfo extends BaseActivity {
                 break;
             case R.id.btn_next:
                 //激活信息采集页面，
+                startActivity(new Intent(BusinessCarInfo.this, IDcardActivity.class));
                 break;
         }
     }
@@ -75,7 +77,7 @@ public class BusinessCarInfo extends BaseActivity {
         if (mCardinfoPresentation != null && mCardinfoPresentation.getDisplay() != presentationDisplay) {
             mCardinfoPresentation.dismiss();
             mCardinfoPresentation = null;
-        }
+         }
         if (mCardinfoPresentation == null && presentationDisplay != null) {
             // Initialise a new Presentation for the Display
             mCardinfoPresentation = new CardinfoPresentation(this, presentationDisplay);
