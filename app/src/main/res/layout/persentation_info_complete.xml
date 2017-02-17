@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         android:background="@drawable/background" >
+
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="60dp"
+            android:id="@+id/iv_gf_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/gf_log"/>
+
+           <LinearLayout
+             android:layout_marginLeft="100dp"
+             android:layout_marginTop="100dp"
+              android:layout_centerInParent="true"
+              android:layout_below="@id/iv_gf_log"
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="总行地址: 广东省广州市东风路713号"
+                 android:textSize="21sp"
+                 android:textColor="#333"
+                 />
+              <TextView
+                  android:paddingTop="15dp"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="客服热线: 400-830-8003"
+                  android:textSize="21sp"
+                  android:textColor="#333"
+                  />
+               <TextView
+                   android:paddingTop="15dp"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="信用卡专线: 95508"
+                   android:textSize="21sp"
+                   android:textColor="#333"
+                   />
+
+          </LinearLayout>
+
+   </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <ImageView
+          android:id="@+id/iv_weixin"
+          android:layout_centerHorizontal="true"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:gravity="center_horizontal"
+          android:layout_marginTop="60dp"
+          android:src="@drawable/weixin_qr_code"/>
+
+     <TextView
+         android:layout_marginTop="10dp"
+         android:layout_below="@id/iv_weixin"
+         android:layout_width="wrap_content"
+         android:layout_centerHorizontal="true"
+         android:layout_height="wrap_content"
+         android:textColor="#333"
+         android:textSize="15sp"
+         android:text="扫一扫关注广发微信银行"/>
+
+        <TextView
+            android:layout_marginTop="35dp"
+            android:layout_below="@id/iv_weixin"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:textColor="#333"
+            android:textSize="15sp"
+            android:text="查找公众号:CGB-China"/>
+
+
+        <ImageView
+            android:id="@+id/iv_phone"
+            android:layout_marginTop="75dp"
+            android:layout_below="@id/iv_weixin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/phone_qr_code"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/iv_phone"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:textColor="#333"
+            android:textSize="15sp"
+            android:text="扫一扫登录广发手机银行"/>
+
+        <TextView
+            android:layout_marginTop="35dp"
+            android:layout_below="@id/iv_phone"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:textColor="#333"
+            android:textSize="15sp"
+            android:text="立享贴心掌上金融管家服务!"/>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>
+
+
+
+

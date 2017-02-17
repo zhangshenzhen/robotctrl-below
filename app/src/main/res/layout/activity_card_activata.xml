@@ -139,7 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/common_red_bg_5dp"
+        android:background="@drawable/affirm"
         android:text="确定"
         android:textColor="@color/white"
         android:textSize="20sp"/>
@@ -154,7 +154,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:src="@drawable/ic_gf_logo"
+            android:src="@drawable/gf_log"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

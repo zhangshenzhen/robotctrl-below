@@ -128,7 +128,7 @@ public class IDcardActivity extends BaseActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-  //暂停                  getCard();
+                      getCard();
                         }
                     }).start();
                         break;
@@ -148,6 +148,7 @@ public class IDcardActivity extends BaseActivity {
                     EffectDate, ExpireDate, pErrMsg);
             if (retval < 0) {
                // showString("读卡错误，原因：" + new String(pErrMsg, "Unicode"));
+                LogUtil.e("TAG",",,"+retval);
                 LogUtil.e("TAG","读卡错误1111");
                 hdler.sendEmptyMessageDelayed(1,1000);
             } else {
@@ -159,6 +160,8 @@ public class IDcardActivity extends BaseActivity {
                         try {
                             mUserNameTv.setText(new String(name, "Unicode"));
                             mIdNumberTv.setText(new String(IDNo, "Unicode"));
+                            LogUtil.e("TAG","读卡正确112");
+
                         } catch(Exception e) {
                             e.printStackTrace();
                         }

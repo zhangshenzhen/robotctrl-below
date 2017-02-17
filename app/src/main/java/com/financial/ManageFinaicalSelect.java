@@ -136,16 +136,7 @@ public class ManageFinaicalSelect extends BaseActivity {
     public void loadView() {
         //初始化加载中可能出现的视图；
         Log.e("ManageFinaicalSelect", "............111");
-      /*  View errorView = View.inflate(this, R.layout.layout_error, null);
-        mErrorBtnRetry = (Button) errorView.findViewById(R.id.error_btn_retry);*/
-         /* ProgressDialog progressDialog = new ProgressDialog(this);
-          progressDialog.setCancelable(true);
-          progressDialog.setMessage("正在加载中");
-          progressDialog.show();*/
 
-       /* loadLayout.setLoadingView(R.layout.layout_loading);
-        loadLayout.setEmptyView(errorView);
-        return loadLayout;*/
     }
 
     @Override

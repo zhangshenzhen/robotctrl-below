@@ -19,6 +19,8 @@ import com.brick.robotctrl.R;
 import com.presentation.presentionui.SelectCardPresentation;
 import com.rg2.activity.BaseActivity;
 
+import org.apache.commons.httpclient.HttpClient;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -58,7 +60,7 @@ public class BusinessSelectCardActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 //点击条目
                 Intent intent = new Intent(BusinessSelectCardActivity.this, BusinessCarInfo.class);
-                intent.putExtra("cardDetails", cards[position]);
+                intent.putExtra("cardDetails", details[position]);
                 startActivity(intent);
                 //  Log.d(TAG ,"............."+position);
             }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:sharedUserId="android.uid.system"
      package="com.brick.robotctrl"
    >
 <!-- android:sharedUserId="android.uid.system"-->
@@ -265,6 +266,8 @@
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
             <!--卡片信息-->
         <activity android:name="com.card.CreadCarInfo"></activity>
+        <!--卡片申请完成-->
+        <activity android:name="com.userinfo.UserInforComplete"></activity>
         <activity android:name="com.card.BusinessCarInfo"></activity>
         <service android:name="zime.ui.ZIMEAVDemoService" />
 

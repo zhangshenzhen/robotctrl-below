@@ -17,7 +17,7 @@
         android:layout_weight="1"
         android:layout_height="0dp"
         android:scrollbars="vertical"
-        android:background="@drawable/agree_content_bg"
+        android:background="@drawable/card_appayfor_bg"
         android:paddingTop="20dp"
         android:paddingLeft="20dp"
         android:layout_marginTop="30dp"
@@ -120,17 +120,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginBottom="50dp"
-        android:background="@color/redB"
+
         >
         <Button
             android:id="@+id/btn_back"
             android:drawableRight="@drawable/back"
+            android:background="@drawable/back_card"
             android:layout_gravity="center_horizontal"
             android:layout_alignParentRight="true"
             android:layout_marginRight="150dp"
-            android:layout_width="130dp"
-            android:layout_height="40dp"
-            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#cf0f"
+            android:textSize="19sp"
             android:text="返回上一页"
             />
 
@@ -139,10 +141,12 @@
             android:drawableRight="@drawable/nextpager"
             android:layout_alignParentRight="true"
             android:layout_gravity="center_horizontal"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="10dp"
-            android:textSize="12sp"
+            android:background="@drawable/next_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:textColor="#cf0f"
+            android:textSize="19sp"
             android:text="下一页"
             />
     </RelativeLayout>
