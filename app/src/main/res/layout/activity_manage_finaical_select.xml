@@ -26,14 +26,17 @@
               android:text="返回上一层"
               android:background="@drawable/toubar"
               />
-      <TextView
-          android:layout_width="match_parent"
-          android:layout_height="60dp"
-          android:text="在售理财产品"
-          android:textColor="#cc000000"
-          android:gravity="center"
-          android:textSize="26sp"
-          android:background="@drawable/toubar"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="在售理财产品"
+            android:textColor="#cc000000"
+            android:gravity="center"
+            android:textSize="26sp"
+            android:background="@drawable/toubar"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 
     <LinearLayout

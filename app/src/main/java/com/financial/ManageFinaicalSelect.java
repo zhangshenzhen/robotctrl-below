@@ -156,7 +156,7 @@ public class ManageFinaicalSelect extends BaseActivity {
     protected void initEvent() {
         map = new HashMap();
         RadioGroup rgFinacial = (RadioGroup) findViewById(R.id.rg_finacial);
-      rgFinacial.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+       rgFinacial.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
           @Override
           public void onCheckedChanged(RadioGroup group, int checkedId) {
                 map.remove("类型");
@@ -180,7 +180,6 @@ public class ManageFinaicalSelect extends BaseActivity {
     //重置按钮；
     public void reset(View v){
         rgFinacial.check(R.id.rb_benefith);
-
         rgBaseMoney.check(R.id.rb_no_basemoney_limit);
         rgMoney.check(R.id.rb_no_moneykind_limt);
         rgDanger.check(R.id.rb_no_danger_limit);

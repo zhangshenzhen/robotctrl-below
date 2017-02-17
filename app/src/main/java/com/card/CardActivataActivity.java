@@ -30,6 +30,7 @@ import java.io.UnsupportedEncodingException;
 * */
 
 public class CardActivataActivity extends BaseActivity {
+    private static final String TAG = "CardActivataActivity";
     private byte[] name = new byte[32];
     private byte[] sex = new byte[6];
     private byte[] birth = new byte[18];
@@ -128,7 +129,7 @@ public class CardActivataActivity extends BaseActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                      getCard();
+       //               getCard();
                         }
                     }).start();
                     break;
@@ -240,6 +241,7 @@ public class CardActivataActivity extends BaseActivity {
         else if(v == mBackTv)
         {
           finish();
+            LogUtil.d(TAG,"退出卡片激活");
         }
         else if (v == mSubmitBtn) {
             String mUserName = mUserNameTv.getText().toString();

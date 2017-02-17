@@ -93,8 +93,9 @@
         <item name="android:gravity">center</item>
         <item name="android:padding">10dp</item>
         <item name="android:textColor">@color/card_color_selector</item>
-        <item name="android:background">@drawable/toubar</item>
+        <item name="android:background">@drawable/button</item>
         <item name="android:textSize">23sp</item>
+
     </style>
 
 </resources>

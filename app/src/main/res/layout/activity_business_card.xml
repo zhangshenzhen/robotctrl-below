@@ -189,7 +189,6 @@
             android:text="返回上一页"
             />
 
-
         <Button
             android:id="@+id/btn_next"
             android:drawableRight="@drawable/nextpager"

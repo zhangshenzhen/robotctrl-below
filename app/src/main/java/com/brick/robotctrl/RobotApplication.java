@@ -62,15 +62,15 @@ public class RobotApplication extends Application {
             sb.append("Time:");
             sb.append(System.currentTimeMillis()+"\n");//当前的系统时间；
             Field[] fields = Build.class.getDeclaredFields();
-            for(Field field : fields){
+           /* for(Field field : fields){
                 try {
-                    String name = field.getName();
+                   String name = field.getName();
                     String value =  (String)field.get(null);
                     sb.append(name+"="+value+"\n"); //追加信息；
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
 
             //错误日志, 吧异常写到文件中；
             StringWriter sw = new StringWriter();

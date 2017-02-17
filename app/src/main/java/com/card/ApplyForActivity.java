@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 import com.brick.robotctrl.R;
 import com.presentation.presentionui.ApplyforPresentation;
@@ -26,14 +25,13 @@ import butterknife.OnClick;
 public class ApplyForActivity extends BaseActivity {
 
     private static final String TAG = "ApplyForActivity";
-    @Bind(R.id.text)
-    TextView text;
     @Bind(R.id.cb_agree)
     CheckBox cbAgree;
     @Bind(R.id.btn_back)
     Button btnBack;
     @Bind(R.id.btn_next)
     Button btnNext;
+
     private ApplyforPresentation mapplyforPresentation;
 
 
@@ -43,33 +41,41 @@ public class ApplyForActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-
+    String text = "     办理借记卡办办理借记卡办理借记办办理借记卡办理借记" +
+            "卡用户阅读协议办办理借记卡办理借记卡用户阅读协议办办理借记卡办理借记卡用户阅" +
+            "读协议办理借记卡用户阅读协议办";
     @Override
     protected void initData() {
+
     }
 
     @Override
     protected void initEvent() {
     }
+
     @Override
     protected void initViewData() {
     }
-    @OnClick({R.id.btn_back, R.id.btn_next})
+    @OnClick({R.id.cb_agree, R.id.btn_back, R.id.btn_next})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.cb_agree:
+                break;
             case R.id.btn_back:
                 finish();
                 break;
             case R.id.btn_next:
-                if(cbAgree.isChecked()){ //同意用户协议;
-                   startActivity(new Intent(ApplyForActivity.this,
-                            ApplyForSelectCardActivity.class ));
-                }else {
+                if (cbAgree.isChecked()) { //同意用户协议;
+                    startActivity(new Intent(ApplyForActivity.this,
+                            ApplyForSelectCardActivity.class));
+                } else {
                     ToastUtil.show(ApplyForActivity.this, "请先阅读用户协议,并同意");
+                    Log.d(TAG,"请先阅读用户协议,并同意");
                 }
                 break;
         }
     }
+
 
     @Override
     protected void updatePresentation() {

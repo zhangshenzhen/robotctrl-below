@@ -237,6 +237,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
+
         <!--办卡-->
         <activity
             android:name="com.card.CardBusinessActivity"

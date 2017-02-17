@@ -28,6 +28,7 @@ public class CardBusinessActivity extends BaseActivity {
     @Bind(R.id.btn_next)
     Button btnNext;
 
+
     private ApplyforPresentation mApplyforPresentation;
 
 
@@ -89,24 +90,23 @@ public class CardBusinessActivity extends BaseActivity {
     }
 
 
-    @OnClick({/*R.id.cb_agree,*/ R.id.btn_back, R.id.btn_next})
+    @OnClick({R.id.btn_back,R.id.btn_next})
     public void onClick(View view) {
         switch (view.getId()) {
-        /*    case R.id.cb_agree:
-                break;*/
             case R.id.btn_back:
                 Log.e(TAG, "退出卡片办理业务");
                 finish();
                 break;
             case R.id.btn_next:
-                 if(cbAgree.isChecked()){ //同意用户协议;
-                  Log.e(TAG,"同意用户协议，进入下一页");
-                 startActivity(new Intent(CardBusinessActivity.this,
-                        BusinessSelectCardActivity.class ));
-                 }else {
-                     ToastUtil.show(CardBusinessActivity.this, "请先阅读用户协议,并同意");
-                 }
+                if (cbAgree.isChecked()) { //同意用户协议;
+                    Log.e(TAG, "同意用户协议，进入下一页");
+                    startActivity(new Intent(CardBusinessActivity.this,
+                            BusinessSelectCardActivity.class));
+                } else {
+                    ToastUtil.show(CardBusinessActivity.this, "请先阅读用户协议,并同意");
+                }
                 break;
         }
     }
+
 }

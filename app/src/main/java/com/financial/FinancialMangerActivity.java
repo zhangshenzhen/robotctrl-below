@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaRouter;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,6 +28,8 @@ import com.rg2.utils.ToastUtil;
 
 import java.io.UnsupportedEncodingException;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class FinancialMangerActivity extends BaseActivity {
@@ -61,6 +63,7 @@ public class FinancialMangerActivity extends BaseActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_financial);
+
         iDCardDevice = new publicSecurityIDCardLib();
     }
 
@@ -70,10 +73,10 @@ public class FinancialMangerActivity extends BaseActivity {
         mIdNumberTv = (TextView) findViewById(R.id.tv_idNumber);
         metphone = (EditText) findViewById(R.id.et_phone);
         mSubmitBtn = (Button) findViewById(R.id.btn_submit);
-        mtvBack = (TextView)findViewById(R.id.tv_back);
+        mtvBack = (TextView) findViewById(R.id.tv_back);
         mSubmitBtn.setOnClickListener(this);
         mtvBack.setOnClickListener(this);
-          hdler.sendEmptyMessage(1);
+        hdler.sendEmptyMessage(1);
     }
 
 
@@ -85,6 +88,7 @@ public class FinancialMangerActivity extends BaseActivity {
 
     @Override
     protected void initEvent() {
+
     }
 
     /*身份证选卡*/
@@ -104,6 +108,7 @@ public class FinancialMangerActivity extends BaseActivity {
 
     /*身份证寻卡*/
     JniReturnData returnData = new JniReturnData();
+
     public void click6(View view) {
         byte[] cmdRequst = new byte[]{(byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x96, 0x69, 0x00, 0x03, 0x20, 0x01, 0x22};
         byte[] response = null;
@@ -127,7 +132,7 @@ public class FinancialMangerActivity extends BaseActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                       getCard();
+           //                 getCard();
                         }
                     }).start();
                     break;
@@ -137,7 +142,7 @@ public class FinancialMangerActivity extends BaseActivity {
 
 
     private void getCard() {
-         int retval;
+        int retval;
         //  llGroup.removeAllViews();// 清空
         String pkName;
         pkName = getPackageName();
@@ -236,11 +241,11 @@ public class FinancialMangerActivity extends BaseActivity {
         tv.setText(logOut);
         llGroup.addView(tv);
     }
-
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.tv_back:
+                Log.d("","....................");
                 finish();
                 break;
             case R.id.btn_submit:
@@ -248,28 +253,30 @@ public class FinancialMangerActivity extends BaseActivity {
                 break;
         }
     }
+
     String mUserName;
     String mIdNumber;
     String mphoneNumber;
 
     private void eventTouch() {
-      mUserName = mUserNameTv.getText().toString();
+        mUserName = mUserNameTv.getText().toString();
         mIdNumber = mIdNumberTv.getText().toString();
-         mphoneNumber = metphone.getText().toString().trim();
+        mphoneNumber = metphone.getText().toString().trim();
 
-         if (StringUtils.stringIsEmpty(mUserName) || StringUtils.stringIsEmpty(mIdNumber)) {
+     /*   if (StringUtils.stringIsEmpty(mUserName) || StringUtils.stringIsEmpty(mIdNumber)) {
             ToastUtil.show(getApplicationContext(), "请刷身份证");
             return;
         }
         if (StringUtils.stringIsEmpty(mphoneNumber)) {
             ToastUtil.show(getApplicationContext(), "请输入手机号");
             return;
-        }
+        }*/
 
-       startActivityForResult(new Intent(getApplicationContext(),ManageFinaicalSelect.class),1);
+        startActivityForResult(new Intent(getApplicationContext(), ManageFinaicalSelect.class), 1);
 
     }
-   // String post(String url,String json)throws IOException{
+
+    // String post(String url,String json)throws IOException{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -282,7 +289,7 @@ public class FinancialMangerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-         updatePresentation();
+        updatePresentation();
         LogUtil.e("updatePresentation", ".........................55");
     }
 
@@ -297,17 +304,17 @@ public class FinancialMangerActivity extends BaseActivity {
         //得到当前route and its presentation display
         MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
                 MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
-        Display presentationDisplay =  route  !=  null ? route.getPresentationDisplay() : null;
+        Display presentationDisplay = route != null ? route.getPresentationDisplay() : null;
         // 注释 : Dismiss the current presentation if the display has changed.
-        if (mInputFingerPresentation != null && mInputFingerPresentation.getDisplay() !=  presentationDisplay) {
+        if (mInputFingerPresentation != null && mInputFingerPresentation.getDisplay() != presentationDisplay) {
             mInputFingerPresentation.dismiss();
             mInputFingerPresentation = null;
         }
-        if (mInputFingerPresentation == null &&  presentationDisplay != null) {
+        if (mInputFingerPresentation == null && presentationDisplay != null) {
             // Initialise a new Presentation for the Display
-            mInputFingerPresentation = new InputFingerPresentation(this,  presentationDisplay);
+            mInputFingerPresentation = new InputFingerPresentation(this, presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
-            mPresentation  =  mInputFingerPresentation  ;
+            mPresentation = mInputFingerPresentation;
             mInputFingerPresentation.setOnDismissListener(mOnDismissListener);
             try {
                 mInputFingerPresentation.show();
@@ -316,4 +323,12 @@ public class FinancialMangerActivity extends BaseActivity {
             }
         }
     }
-  }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+}

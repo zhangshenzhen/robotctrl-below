@@ -19,6 +19,7 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.presentation.ActivityViewWrapper;
 import com.rg2.listener.MyOnClickListener;
 import com.rg2.utils.DialogUtils;
 import com.rg2.utils.SPUtils;
@@ -96,7 +97,7 @@ public class FiveActivity extends BaseActivity {
     protected void initViewData() {
 
     }
-
+    int Applyfor =0;
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -176,7 +177,25 @@ public class FiveActivity extends BaseActivity {
 //                ToastUtil.show(FiveActivity.this, "请选择工作年数");
 //                return;
 //            }
+
+            //提交过之后就不能反回上一页,而是返回到信息采集的主页
             setResult(Activity.RESULT_OK);
+            mBackTv.setText("反回卡片详情页 ");
+            boolean b = false;
+
+            b = (Boolean) SPUtils.get(mContext, "isCreadcard", false);
+            Log.d(TAG, "激活信息采  ... 卡.." + b);
+            if (b |Applyfor ==1) {
+                Log.d(TAG, "激活信息采集软件 信用卡..2" + b);
+                SPUtils.put(mContext, "isCreadcard", false);
+                //开启网络请求,提交数据到服务器;
+                Applyfor = 1 ;
+                LoadData();
+            } else {
+                Log.d(TAG, "激活信息采集软件 借记卡..3" + b);
+                //部分信息写入发卡机;
+                WriterCard();
+            }
 
             //  startActivity(new Intent(FiveActivity.this,GifActivity.class));
         } else if (v == mCompanyPersonnelTv) {
@@ -223,22 +242,9 @@ public class FiveActivity extends BaseActivity {
             });
         } else if (v == mBackTv) {
             finish();
-        }
+         }
 
-        boolean b = false;
-        b = (Boolean) SPUtils.get(mContext, "isCreadcard", false);
-        Log.d(TAG, "激活信息采  ... 卡.." + b);
-        if (b) {
-            Log.d(TAG, "激活信息采集软件 信用卡..2" + b);
-            SPUtils.put(mContext, "isCreadcard", false);
-            //开启网络请求,提交数据到服务器;
-            LoadData();
-        } else {
-            Log.d(TAG, "激活信息采集软件 借记卡..3" + b);
-            //部分信息写入发卡机;
-            WriterCard();
-        }
-        //   finish();
+            // finish();
     }
     //写卡操作
     private void WriterCard() {
@@ -246,15 +252,11 @@ public class FiveActivity extends BaseActivity {
 
     //  链接网络;
     private void LoadData() {
-        ProgressDialog pd = new ProgressDialog(mContext);
+       ProgressDialog pd = new ProgressDialog(mContext);
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-         pd.setInverseBackgroundForced(true);
          pd.setMessage("正在加载中...");
          pd.requestWindowFeature(Window.FEATURE_NO_TITLE);
          pd.show();//显示
         //上传数据;
    }
-
-
-
 }

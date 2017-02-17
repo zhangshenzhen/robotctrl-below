@@ -86,7 +86,6 @@ public class FourActivity extends BaseActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(requestCode==1 &&resultCode== Activity.RESULT_OK)
         {
             setResult(Activity.RESULT_OK);

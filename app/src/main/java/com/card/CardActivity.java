@@ -3,6 +3,7 @@ package com.card;
 import android.content.Intent;
 import android.media.MediaRouter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,7 +23,7 @@ import butterknife.OnClick;
 public class CardActivity extends BaseActivity {
 
 
-
+    private static final String TAG ="CardActivity" ;
     @Bind(R.id.tv_back_card)
     TextView tvBackCard;
     @Bind(R.id.tv_card_applyfor)
@@ -38,6 +39,8 @@ public class CardActivity extends BaseActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_card);
+        ButterKnife.bind(this);
+
     }
 
 
@@ -85,28 +88,23 @@ public class CardActivity extends BaseActivity {
 
     @OnClick({R.id.tv_back_card, R.id.tv_card_applyfor, R.id.tv_card_business, R.id.tv_card_activate})
     public void onClick(View view) {
+        Log.d(TAG,"为什么会崩溃1");
         switch (view.getId()) {
             case R.id.tv_back_card:
                 finish();                   // 返回上一层;
                 break;
             case R.id.tv_card_applyfor:
-                startActivity(new Intent(this, ApplyForActivity.class));
+                Log.d(TAG,"为什么会崩溃2");
+                startActivity(new Intent(CardActivity.this, ApplyForActivity.class));
+                Log.d(TAG,"为什么会崩溃3");
                 break;
             case R.id.tv_card_business:
-                startActivity(new Intent(this, CardBusinessActivity.class));
+                startActivity(new Intent(CardActivity.this, CardBusinessActivity.class));
                 break;
             case R.id.tv_card_activate:
-                startActivity(new Intent(this, CardActivataActivity.class));
+                startActivity(new Intent(CardActivity.this, CardActivataActivity.class));
                 break;
         }
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
 
 }

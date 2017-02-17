@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
@@ -29,16 +30,19 @@ import butterknife.OnClick;
 public class BusinessSelectCardActivity extends BaseActivity {
     private static final String TAG = "SelectCardActivity";
     @Bind(R.id.gv_card)
-     GridView gridcard;
+    GridView gvCard;
     @Bind(R.id.btn_back)
     Button btnBack;
-    @Bind(R.id.btn_next)
-    Button btnNext;
+
     private CardAdapter adapter;
 
     private SelectCardPresentation mSelectCardPresentation;
 
-   String []  cards = new String[]{"足球卡","葵花卡","长城卡","人民卡","长城福农卡","境外卡"};
+    String[] cards = new String[]{"足球卡", "葵花卡", "长城卡", "人民卡", "长城福农卡", "境外卡"};
+    String[] details = new String []{"广发DIY卡","广发国行卡","广发南航明珠卡","广发淘宝潮女卡","广发淘宝型男卡"
+            ,"广发携程卡","广发新聪明卡","广发易车联名卡","广发真情卡"};
+    int [] pictures = new int []{R.drawable.gf_diy,R.drawable.gf_gh,R.drawable.gf_nhmz,R.drawable.gf_tbcn,R.drawable.gf_tbn
+            ,R.drawable.gf_xc,R.drawable.gf_xcm,R.drawable.gf_ycl,R.drawable.gf_zq};
 
 
     @Override
@@ -49,23 +53,24 @@ public class BusinessSelectCardActivity extends BaseActivity {
 
     @Override
     protected void initEvent() {
-        gridcard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gvCard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-               //点击条目
-                Intent intent = new Intent(BusinessSelectCardActivity.this,BusinessCarInfo.class);
-                 intent.putExtra("cardDetails", cards[position]);
-                 startActivity(intent);
-              //  Log.d(TAG ,"............."+position);
+                //点击条目
+                Intent intent = new Intent(BusinessSelectCardActivity.this, BusinessCarInfo.class);
+                intent.putExtra("cardDetails", cards[position]);
+                startActivity(intent);
+                //  Log.d(TAG ,"............."+position);
             }
         });
 
 
     }
+
     @Override
     protected void initData() {
         adapter = new CardAdapter();
-        gridcard.setAdapter(adapter);
+        gvCard.setAdapter(adapter);
 
     }
 
@@ -88,7 +93,7 @@ public class BusinessSelectCardActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mSelectCardPresentation != null){
+        if (mSelectCardPresentation != null) {
             mSelectCardPresentation.dismiss();
             mSelectCardPresentation = null;
         }
@@ -121,27 +126,30 @@ public class BusinessSelectCardActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.btn_back, R.id.btn_next})
+    @OnClick({R.id.btn_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
+                finish();
                 break;
-            case R.id.btn_next:
-                Intent intent = new Intent();
-                intent.putExtra("..",  2);//模拟传递数据；
-                break;
+
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 
 
-    private class CardAdapter extends BaseAdapter{
-
+    private class CardAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            Log.d(TAG,"...........长度为.."+cards.length);
-            return cards.length !=0 ? cards.length:0;
+            Log.d(TAG, "...........长度为.." + pictures.length);
+            return pictures.length != 0 ? pictures.length : 0;
         }
 
         @Override
@@ -151,28 +159,32 @@ public class BusinessSelectCardActivity extends BaseActivity {
 
         @Override
         public long getItemId(int position) {
-
             return 0;
         }
 
         @Override
         public View getView(int position, View converView, ViewGroup viewGroup) {
-             View view ; ViewHolder holder;
-            if (converView != null){
+            View view;
+            ApplyForSelectCardActivity.ViewHolder holder;
+            if (converView != null) {
                 view = converView;
-               holder = (ViewHolder) view.getTag();
-            }else{
-                view = View.inflate(getApplicationContext(),R.layout.card_select_item,null);
-                holder = new ViewHolder();
-                holder.tv_cardNum = (TextView) view.findViewById(R.id.tv_cardNum);
+                holder = (ApplyForSelectCardActivity.ViewHolder) view.getTag();
+            } else {
+                view = View.inflate(getApplicationContext(), R.layout.card_select_item, null);
+                holder = new ApplyForSelectCardActivity.ViewHolder();
+                holder.tv_carddetail = (TextView) view.findViewById(R.id.tv_carddetail);
+                holder.iv_cardview = (ImageView) view.findViewById(R.id.iv_cardview);
                 view.setTag(holder);
             }
             //绑定数据;
-            holder.tv_cardNum.setText(cards[position]);
+            holder.iv_cardview.setImageResource(pictures[position]);
+            holder.tv_carddetail.setText(details[position]);
             return view;
         }
     }
-       static class ViewHolder{
-           TextView tv_cardNum;
-      }
+
+    static class ViewHolder {
+        ImageView iv_cardview;
+        TextView tv_carddetail;
+    }
 }
