@@ -3,12 +3,15 @@ package com.rg2.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.media.MediaRouter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.presentation.ActivityViewWrapper;
+import com.presentation.presentionui.UserInfoPresentation;
 import com.rg2.listener.MyOnClickListener;
 import com.rg2.utils.DialogUtils;
 import com.rg2.utils.SPUtils;
@@ -46,16 +50,14 @@ public class FiveActivity extends BaseActivity {
     private TextView mSalaryTv;
     private TextView mWorkYearsTv;
     private TextView mBackTv;
+    private UserInfoPresentation mUserInfoPresentation;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
 
-    @Override
-    protected void updatePresentation() {
 
-    }
 
     @Override
     protected void initData() {
@@ -97,6 +99,52 @@ public class FiveActivity extends BaseActivity {
     protected void initViewData() {
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updatePresentation();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mUserInfoPresentation != null){
+            mUserInfoPresentation.dismiss();
+            mUserInfoPresentation= null;
+        }
+    }
+
+    @Override
+    protected void updatePresentation() {
+        // Log.d(TAG, "updatePresentation: ");
+        //得到当前route and its presentation display
+        MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
+                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+        Display presentationDisplay =  route  !=  null ? route.getPresentationDisplay() : null;
+        // 注释 : Dismiss the current presentation if the display has changed.
+        if (mUserInfoPresentation != null && mUserInfoPresentation.getDisplay() !=  presentationDisplay) {
+            mUserInfoPresentation.dismiss();
+            mUserInfoPresentation = null;
+        }
+        if (mUserInfoPresentation == null &&  presentationDisplay != null) {
+            // Initialise a new Presentation for the Display
+            mUserInfoPresentation = new UserInfoPresentation(this,  presentationDisplay);
+            //把当前的对象引用赋值给BaseActivity中的引用;
+            mPresentation  =  mUserInfoPresentation  ;
+            // Log.d(TAG, "updatePresentation: this: "+ this.toString());
+            mUserInfoPresentation.setOnDismissListener(mOnDismissListener);
+
+            // Try to show the presentation, this might fail if the display has
+            // gone away in the mean time
+            try {
+                mUserInfoPresentation.show();
+            } catch (WindowManager.InvalidDisplayException ex) {
+                // Couldn't show presentation - display was already removed
+                // Log.d(TAG, "updatePresentation: failed");
+                mUserInfoPresentation = null;
+            }
+        }
+    }
+
     int Applyfor =0;
     @Override
     public void onClick(View v) {

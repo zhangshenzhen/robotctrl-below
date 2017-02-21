@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.brick.robotctrl">
 
-     package="com.brick.robotctrl"
-   >
-<!-- android:sharedUserId="android.uid.system"-->
+    <!-- android:sharedUserId="android.uid.system" -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -12,13 +11,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.RECEIVE_HOME"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <!--<uses-permission android:name="android.permission.SHUTDOWN"/>-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_HOME" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- <uses-permission android:name="android.permission.SHUTDOWN"/> -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -26,14 +25,12 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -41,7 +38,6 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -50,8 +46,10 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.RAISED_THREAD_PRIORITY" />
-    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
     <application
         android:name=".RobotApplication"
@@ -61,7 +59,8 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.FullScreen.NoTitle">
-       <!-- android:theme="@style/AppTheme"-->
+
+        <!-- android:theme="@style/AppTheme" -->
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
@@ -83,12 +82,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-        <!--<activity-->
-            <!--android:name=".MainActivity"-->
-            <!--android:configChanges="orientation|screenSize"-->
-            <!--android:launchMode="singleTask"-->
-            <!--android:screenOrientation="landscape"-->
-            <!--android:theme="@style/AppTheme.FullScreen.NoTitle" />-->
+        <!-- <activity -->
+        <!-- android:name=".MainActivity" -->
+        <!-- android:configChanges="orientation|screenSize" -->
+        <!-- android:launchMode="singleTask" -->
+        <!-- android:screenOrientation="landscape" -->
+        <!-- android:theme="@style/AppTheme.FullScreen.NoTitle" /> -->
         <service android:name=".PlayerService" />
         <service android:name=".SpeechService" />
 
@@ -127,14 +126,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-
         <activity
             android:name=".ADActivity"
             android:label="@string/title_activity_ad"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-
         <activity
             android:name=".ImageActivity"
             android:label="@string/title_activity_ad"
@@ -165,14 +162,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-
         <activity
             android:name=".ManyQueryActivity"
             android:label="提问"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-
         <activity
             android:name=".AboutActivity"
             android:label="关于"
@@ -208,13 +203,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-
         <activity
             android:name="com.rg2.activity.PrintActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-
         <activity
             android:name="com.rg2.activity.FingerInputActivity"
             android:launchMode="singleTask"
@@ -226,49 +219,52 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
 
-          <!--卡片业务-->
+        <!-- 卡片业务 -->
         <activity
             android:name="com.card.CardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-        <!--申请信用卡-->
+        <!-- 申请信用卡 -->
         <activity
             android:name="com.card.ApplyForActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
 
-        <!--办卡-->
+        <!-- 办卡 -->
         <activity
             android:name="com.card.CardBusinessActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-        <!--卡片激活-->
+        <!-- 卡片激活 -->
         <activity
             android:name="com.card.CardActivataActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-              <!--办理卡片的卡片选择-->
+        <!-- 办理卡片的卡片选择 -->
         <activity
             android:name="com.card.BusinessSelectCardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-        <!--申请卡片的卡片选择-->
+        <!-- 申请卡片的卡片选择 -->
 
         <activity
             android:name="com.card.ApplyForSelectCardActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-            <!--卡片信息-->
-        <activity android:name="com.card.CreadCarInfo"></activity>
-        <!--卡片申请完成-->
-        <activity android:name="com.userinfo.UserInforComplete"></activity>
-        <activity android:name="com.card.BusinessCarInfo"></activity>
+        <!-- 卡片信息 -->
+        <activity android:name="com.card.CreadCarInfo" />
+        <!-- 卡片申请完成 -->
+        <activity android:name="com.userinfo.UserInforComplete" />
+        <activity android:name="com.card.BusinessCarInfo" />
+        <!-- 设置密码 -->
+        <activity android:name="com.card.SettingPasswordActivity" />
+
         <service android:name="zime.ui.ZIMEAVDemoService" />
 
         <activity android:name="com.financial.FinancialMangerActivity" />
@@ -283,8 +279,8 @@
         <activity android:name="com.financial.ManageFinaicalSelect" />
         <activity android:name="com.financial.FinanceIntroduceList" />
         <activity android:name="com.financial.InfoFinancelActivity" />
-
-
+           <!--插卡提示-->
+        <activity android:name="com.card.InserCard"></activity>
     </application>
 
 </manifest>
