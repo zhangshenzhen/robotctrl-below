@@ -6,9 +6,12 @@
     android:paddingRight="20dp"
     android:paddingTop="30dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/creadinfo"
+    >
 
     <RelativeLayout
+        android:id="@+id/rl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -31,14 +34,14 @@
             />
 
         <TextView
-            android:layout_below="@id/tv_user"
+           android:layout_below="@id/tv_user"
             android:id="@+id/tv_card_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="#6f1f16"
-            android:layout_marginTop="20dp"
-            android:text="本卡为XX银行白金卡，年费为40元/年"/>
+            android:text="本卡为XX银行白金卡，年费为40元/年"
+            android:layout_marginTop="20dp"/>
     </RelativeLayout>
 
     <RelativeLayout

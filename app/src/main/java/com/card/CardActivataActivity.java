@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
+import com.brick.robotctrl.SettingsActivity;
 import com.hdos.idCardUartDevice.JniReturnData;
 import com.hdos.idCardUartDevice.publicSecurityIDCardLib;
 import com.jly.idcard.IDcardActivity;
@@ -129,7 +130,7 @@ public class CardActivataActivity extends BaseActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                      getCard();
+    //                  getCard();
                         }
                     }).start();
                     break;
@@ -251,7 +252,7 @@ public class CardActivataActivity extends BaseActivity {
             if(StringUtils.stringIsEmpty(mUserName) || StringUtils.stringIsEmpty(mIdNumber))
             {
                 ToastUtil.show(CardActivataActivity.this,"请刷身份证");
-                return;
+              //  return;
             }
 
             if(StringUtils.stringIsEmpty(mAddress))
@@ -260,8 +261,7 @@ public class CardActivataActivity extends BaseActivity {
                 return;
             }
 
-            //
-        //  startActivityForResult(new Intent(CardActivataActivity.this,TwoActivity.class),1);
+         startActivityForResult(new Intent(CardActivataActivity.this,InserCard.class),1);
         }
     }
 

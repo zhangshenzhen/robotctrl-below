@@ -15,9 +15,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bean.serialport.CardInfoBean;
 import com.brick.robotctrl.R;
 import com.presentation.presentionui.SelectCardPresentation;
 import com.rg2.activity.BaseActivity;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,25 +42,56 @@ public class ApplyForSelectCardActivity extends BaseActivity {
 
     private SelectCardPresentation mSelectCardPresentation;
 
-    String[] cards = new String[]{"白金卡", "会员卡", "Vip金卡", "超级卡", "普通卡", "黑卡"
-            , "会员卡", "Vip金卡", "超级卡", "普通卡", "黑卡", "会员卡"};
-    String[] details = new String []{"广发DIY卡","广发国行卡","广发南航明珠卡","广发淘宝潮女卡","广发淘宝型男卡"
+
+    String[] names = new String []{"广发DIY卡","广发国行卡","广发南航明珠卡","广发淘宝潮女卡","广发淘宝型男卡"
       ,"广发携程卡","广发新聪明卡","广发易车联名卡","广发真情卡","广发国行卡","广发南航明珠卡","广发淘宝潮女卡"};
+     String[][] details = {{"自选商户类型3倍积分","积分自由抵消费或换礼"},{"刷卡消费，最高可获得100万个","集分宝（价值¥10000元）奖励！"},
+           {"刷卡消费，最高可获得100万个","集分宝（价值¥10000元）奖励！"},{"透现/分期5倍积分 ","积分折抵消费余额"},{"网购五折任买","三倍积分任送","高额保险任享"}
+           ,{"刷卡2元积1携程积分","异地提现免手续费","商旅预定有奖励"},{"商旅消费双倍奖励","里程宝”额外6%里程奖励","兑换机票兑一送一"}};
+      String[] foods = {"","免费二手车估值及置换服务，赠送高额驾驶员意外险及道路救援服务","",
+      "新开卡透现/分期优惠：首笔12期及以上分期免3期手续费","","免费二手车估值及置换服务，","" };
+
+
     int [] pictures = new int []{R.drawable.gf_diy,R.drawable.gf_gh,R.drawable.gf_nhmz,R.drawable.gf_tbcn,R.drawable.gf_tbn
             ,R.drawable.gf_xc,R.drawable.gf_xcm,R.drawable.gf_ycl,R.drawable.gf_zq,R.drawable.gf_gh,R.drawable.gf_nhmz,R.drawable.gf_tbcn};
+private ArrayList<CardInfoBean> list;
+    private CardInfoBean bean;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_select_card);
         ButterKnife.bind(this);
+      /* list = new ArrayList<>();
+        for (int i = 0; i<details.length; i++){
+            bean = new CardInfoBean();
+            bean.setTitle(names[i]);
+            bean.setBody(Arrays.asList(details[i]));
+            bean.setWaist("年费");
+            ArrayList<CardInfoBean.Waist> waists = new ArrayList<>();
+            waists.add(new CardInfoBean.Waist(1,50));
+            waists.add(new CardInfoBean.Waist(2,50));
+            bean.setWaists(waists);
+            bean.setLeg("新开卡客户免首年年费，刷卡消费6次或以上滚动免次年年费");
+            bean.setFoot(Arrays.asList(foods[i]));
+            for (String s : bean.body) {
+                TextView textView = new TextView(this);
+                textView.setText(s);
+            }
+            list.add(bean);
+        }*/
+
     }
     @Override
     protected void initEvent() {
+
+
         gvCard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 //点击条目,打开新的内容
-                startActivity(new Intent(ApplyForSelectCardActivity.this, CreadCarInfo.class));
+                Intent intent = new Intent(ApplyForSelectCardActivity.this, CreadCarInfo.class);
+                // intent.putExtra("bean",list.get(position));
+                 startActivity(intent);
                 Log.d(TAG, "............." + position);
             }
         });
@@ -166,7 +201,7 @@ public class ApplyForSelectCardActivity extends BaseActivity {
             }
             //绑定数据;
             holder.iv_cardview.setImageResource(pictures[position]);
-            holder.tv_carddetail.setText(details[position]);
+            holder.tv_carddetail.setText(names[position]);
             return view;
         }
     }

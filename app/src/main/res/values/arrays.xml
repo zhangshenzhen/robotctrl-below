@@ -160,4 +160,12 @@
         <item>500人-999人</item>
         <item>1000人以上</item>
     </string-array>
+
+    <string-array name="company_personnels">
+        <item>网购五折任买</item>
+        <item>三倍积分任送</item>
+        <item>高额保险任享</item>
+    </string-array>
+
+
 </resources>

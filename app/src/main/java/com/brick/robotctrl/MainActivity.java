@@ -3,6 +3,7 @@ package com.brick.robotctrl;
 import android.animation.ObjectAnimator;
 import android.app.ActivityManager;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -99,6 +100,7 @@ private MainPresentation  mMainPresentation;
     private TextView mtvBback;
     private Button btnMoney;
     private Button btntest;
+    private ProgressDialog pd;
 
 
     @Override
@@ -824,6 +826,7 @@ private MainPresentation  mMainPresentation;
 
     @Override //当重新获取焦点是 开启副屏的方法;
     protected void onResume() {
+
         super.onResume();
         updatePresentation();
         timer.cancel();//取消任务
@@ -832,6 +835,7 @@ private MainPresentation  mMainPresentation;
     @Override
     protected void onPause()
     {
+
         Log.i(TAG, "onPuase");
         super.onPause();
 
@@ -840,6 +844,7 @@ private MainPresentation  mMainPresentation;
 
     @Override
     protected  void onStart() {
+
         Log.i(TAG, "onStart");
         super.onStart();
     }

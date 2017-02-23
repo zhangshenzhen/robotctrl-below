@@ -40,7 +40,7 @@ public class BusinessSelectCardActivity extends BaseActivity {
 
     private SelectCardPresentation mSelectCardPresentation;
 
-    String[] cards = new String[]{"足球卡", "葵花卡", "长城卡", "人民卡", "长城福农卡", "境外卡"};
+
     String[] details = new String []{"广发DIY卡","广发国行卡","广发南航明珠卡","广发淘宝潮女卡","广发淘宝型男卡"
             ,"广发携程卡","广发新聪明卡","广发易车联名卡","广发真情卡"};
     int [] pictures = new int []{R.drawable.gf_diy,R.drawable.gf_gh,R.drawable.gf_nhmz,R.drawable.gf_tbcn,R.drawable.gf_tbn

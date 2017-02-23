@@ -7,17 +7,26 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bean.serialport.CardInfoBean;
 import com.brick.robotctrl.R;
 import com.jly.idcard.IDcardActivity;
 import com.presentation.presentionui.CardinfoPresentation;
 import com.rg2.activity.BaseActivity;
 import com.rg2.utils.SPUtils;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.brick.robotctrl.R.string.list;
 
 /**
  * Created by shenzhen on 2017/2/10.
@@ -68,7 +77,33 @@ public class CreadCarInfo extends BaseActivity {
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+     /* CardInfoBean bean = (CardInfoBean) intent.getSerializableExtra("bean");
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl);
+        for (String s : bean.body) {
+           TextView tv1 = new TextView(mContext);
+             tv1.setText(s);
+            rl.addView(tv1);
+         }
+        for (String s2 : bean.foot) {
+            TextView tv2 = new TextView(mContext);
+            tv2.setText(s2);
+            rl.addView(tv2);
+        }
+        TextView tv3 = new TextView(mContext);
+           tv3.setText(bean.leg);
+           rl.addView(tv3);
 
+        TextView tv4 = new TextView(mContext);
+                tv4.setText(bean.title);
+            rl.addView(tv4);
+
+        for (CardInfoBean.Waist waist : bean.waists) {
+            TextView tv5 = new TextView(mContext);
+            tv4.setText(waist.toString());
+            rl.addView(tv5);
+        }
+*/
     }
 
 

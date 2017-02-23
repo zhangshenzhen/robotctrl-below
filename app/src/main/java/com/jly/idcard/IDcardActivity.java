@@ -11,6 +11,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.brick.robotctrl.R;
 import com.hdos.idCardUartDevice.JniReturnData;
 import com.hdos.idCardUartDevice.publicSecurityIDCardLib;
 import com.presentation.InputFingerPresentation;
+import com.rg2.activity.ThreeActivity;
 import com.rg2.activity.TwoActivity;
 import com.rg2.listener.MyOnClickListener;
 import com.rg2.utils.CityDialog;
@@ -56,10 +58,13 @@ public class IDcardActivity extends BaseActivity {
     private TextView mIdNumberTv;
     private TextView mAddressTv;
     private Button mSubmitBtn;
-    private TextView mBackTv;
+    private Button mBackTv;
     private int retval;
     //副屏
     private InputFingerPresentation mInputFingerPresentation;
+    private EditText mResidentialtel;
+    private EditText mCompanytel;
+    private EditText mPhone;
 
 
     @Override
@@ -75,11 +80,16 @@ public class IDcardActivity extends BaseActivity {
 //        Thread tt = new Thread(new IDcardActivity());
 //        tt.start();
 
-        mBackTv=(TextView)findViewById(R.id.tv_back);
+        mBackTv=(Button)findViewById(R.id.tv_back);
         mUserNameTv = (TextView) findViewById(R.id.tv_userName);
         mIdNumberTv = (TextView) findViewById(R.id.tv_idNumber);
         mAddressTv = (TextView) findViewById(R.id.tv_address);
         mSubmitBtn = (Button) findViewById(R.id.btn_submit);
+
+        mResidentialtel = (EditText) findViewById(R.id.et_residential_tel);
+        mCompanytel = (EditText) findViewById(R.id.et_company_tel);
+        mPhone = (EditText) findViewById(R.id.et_phone);
+
         mAddressTv.setOnClickListener(this);
         mSubmitBtn.setOnClickListener(this);
         mBackTv.setOnClickListener(this);
@@ -128,7 +138,7 @@ public class IDcardActivity extends BaseActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                      getCard();
+               //       getCard();
                         }
                     }).start();
                         break;
@@ -260,6 +270,9 @@ public class IDcardActivity extends BaseActivity {
             String mUserName = mUserNameTv.getText().toString();
             String mIdNumber = mIdNumberTv.getText().toString();
             String mAddress = mAddressTv.getText().toString();
+            String mresidentialtel = mResidentialtel.getText().toString().trim();
+            String mcompanytel = mCompanytel.getText().toString().trim();
+            String mphone = mPhone.getText().toString().trim();
 
 
  /*           if(StringUtils.stringIsEmpty(mUserName) || StringUtils.stringIsEmpty(mIdNumber))
@@ -271,8 +284,16 @@ public class IDcardActivity extends BaseActivity {
             {
                 ToastUtil.show(IDcardActivity.this,"请选择公司所在区域");
                 return;
-            }*/
-            startActivityForResult(new Intent(IDcardActivity.this,TwoActivity.class),1);
+            }
+
+            if(StringUtils.stringIsEmpty(mphone))
+            {
+                ToastUtil.show(IDcardActivity.this,"请输入手机号码");
+                return;
+            }
+
+            */
+            startActivityForResult(new Intent(IDcardActivity.this,ThreeActivity.class),1);
         }
     }
 
