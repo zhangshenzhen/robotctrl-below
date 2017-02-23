@@ -1,20 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@drawable/card_collection_bg"
+              android:background="@drawable/agree_bg"
               android:orientation="vertical"
              >
 
-<include layout="@layout/layout_head"/>
+    <!--  <include layout="@layout/layout_head"/>-->
+
+    <!--<Button
+        android:id="@+id/btn_submit"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/affirm"
+        android:text="确定"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>-->
+
 
     <LinearLayout
-        android:paddingLeft="50dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+       android:paddingBottom="130dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/card_appayfor_bg"
+        >
+
+    <LinearLayout
         android:paddingRight="50dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -48,7 +71,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="50dp"
+
         android:paddingRight="50dp"
         android:layout_marginTop="20dp"
         android:gravity="center_vertical"
@@ -86,7 +109,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -128,44 +150,138 @@
                 android:padding="5dp"
                 android:textColor="@color/blackA"
                 android:textSize="16sp"/>
-        </RelativeLayout>
+            </RelativeLayout>
 
-    </LinearLayout>
+      </LinearLayout>
 
+<!--分界线-->
+        <LinearLayout
+            android:paddingRight="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_submit"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/affirm"
-        android:text="确定"
-        android:textColor="@color/white"
-        android:textSize="20sp"/>
-    <LinearLayout
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+               android:paddingRight="20dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_asterisk"
+                    android:text="住宅电话："
+                    android:layout_marginLeft="260dp"
+                    android:textColor="@color/blackA"
+                    android:textSize="20sp"/>
+
+                <EditText
+                    android:id="@+id/et_residential_tel"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:background="@drawable/input_frame"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingRight="20dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="268dp"
+                    android:text="单位电话 :"
+                    android:textColor="@color/blackA"
+                    android:textSize="20sp"/>
+
+                <EditText
+                    android:id="@+id/et_company_tel"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="13dp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:background="@drawable/input_frame"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingRight="20dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="265dp"
+                    android:text="手机号码 :"
+                    android:drawableLeft="@drawable/ic_asterisk"
+                    android:textColor="@color/blackA"
+                    android:textSize="20sp"/>
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:background="@drawable/input_frame"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+ </LinearLayout>
+    <RelativeLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_marginTop="120dp"
+          android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
         android:gravity="center_vertical"
         android:paddingLeft="50dp"
-        android:paddingRight="50dp"
+        android:paddingRight="30dp"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:src="@drawable/ic_gf_logo"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/tv_back"
+            android:textColor="#f0f"
+            android:textSize="19sp"
+            android:background="@drawable/card_back"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="130dp"
+            android:drawableRight="@drawable/back"
+            android:text="反回上一页"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <ImageView
-            android:layout_weight="1"
-            android:visibility="gone"
-            android:src="@drawable/ic_hs_logo"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_submit"
+            android:textColor="#f0f"
+            android:textSize="19sp"
+            android:background="@drawable/next_card"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:drawableRight="@drawable/nextpager"
+            android:text="下一页"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </LinearLayout>
+    </RelativeLayout>
 
 
 
-</LinearLayout>
+</RelativeLayout>

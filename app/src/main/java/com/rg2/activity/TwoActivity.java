@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bean.serialport.UserInfo;
 import com.brick.robotctrl.R;
 import com.presentation.InputFingerPresentation;
 import com.presentation.presentionui.UserInfoPresentation;
@@ -25,7 +26,7 @@ import com.rg2.utils.ToastUtil;
  */
 public class TwoActivity extends BaseActivity
 {
-    private Button mSubmitBtn;
+    private TextView mSubmitBtn;
     private EditText mResidentialAreaNoEt;//住宅区号
     private EditText mResidentialTelEt;//住宅电话
     private EditText mCompanyAreaNoEt;//公司区号
@@ -34,18 +35,24 @@ public class TwoActivity extends BaseActivity
     private EditText mPhoneEt;//用户手机
     private TextView mBackTv;
     private UserInfoPresentation mUserInfoPresentation;
+    private UserInfo instance;
 
     @Override
     protected void initViews(Bundle savedInstanceState)
     {
+        //单例
+        instance = UserInfo.getInstance();
         setContentView(R.layout.activity_two);
-        mSubmitBtn = (Button) findViewById(R.id.btn_submit);
+
+        mSubmitBtn = (TextView) findViewById(R.id.btn_submit);
 
         mResidentialAreaNoEt = (EditText) findViewById(R.id.et_residential_areaNo);
         mResidentialTelEt = (EditText) findViewById(R.id.et_residential_tel);
+
         mCompanyAreaNoEt = (EditText) findViewById(R.id.et_company_areaNo);
         mCompanyTelEt = (EditText) findViewById(R.id.et_company_tel);
         mExtensionEt = (EditText) findViewById(R.id.et_extension);
+
         mPhoneEt = (EditText) findViewById(R.id.et_phone);
         mBackTv = (TextView) findViewById(R.id.tv_back);
     }
@@ -127,6 +134,9 @@ public class TwoActivity extends BaseActivity
             String mCompanyTel = mCompanyTelEt.getText().toString().trim();
             String mExtension = mExtensionEt.getText().toString().trim();
             String mPhone = mPhoneEt.getText().toString().trim();
+            instance.setResidentialtel("住宅电话:"+mResidentialAreaNo+"-"+mResidentialTel);
+            instance.setCompanytel("单位电话:"+mCompanyAreaNo+"-"+mCompanyTel);
+            instance.setPhone("手机号"+mPhone);
 
          //检验是否输入对应的
            /* if (StringUtils.stringIsEmpty(mCompanyAreaNo))

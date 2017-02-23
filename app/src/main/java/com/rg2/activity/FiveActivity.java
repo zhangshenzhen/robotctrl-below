@@ -3,6 +3,7 @@ package com.rg2.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.media.MediaRouter;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +28,13 @@ import com.presentation.presentionui.UserInfoPresentation;
 import com.rg2.listener.MyOnClickListener;
 import com.rg2.utils.DialogUtils;
 import com.rg2.utils.SPUtils;
+import com.userinfo.InforCompleteActivity;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 
 /**
@@ -35,7 +43,7 @@ import com.rg2.utils.SPUtils;
  * 描述：一句话简单描述
  */
 public class FiveActivity extends BaseActivity {
-    private static final String TAG = "CreadCarInfo";
+    private static final String TAG = "FiveActivity";
     private Button mSubmitBtn;
     private EditText mCompanyNameEt;
     private TextView mCompanyPersonnelTv;
@@ -49,14 +57,14 @@ public class FiveActivity extends BaseActivity {
     private TextView mPostLevelTv;
     private TextView mSalaryTv;
     private TextView mWorkYearsTv;
-    private TextView mBackTv;
+    private Button mBackTv;
     private UserInfoPresentation mUserInfoPresentation;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-
+    private ProgressDialog dialog;
 
 
     @Override
@@ -67,7 +75,7 @@ public class FiveActivity extends BaseActivity {
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_five);
         mSubmitBtn = (Button) findViewById(R.id.btn_submit);
-        mBackTv = (TextView) findViewById(R.id.tv_back);
+        mBackTv = (Button) findViewById(R.id.tv_back);
         mCompanyNameEt = (EditText) findViewById(R.id.et_company_name);
         mCompanyPersonnelTv = (TextView) findViewById(R.id.tv_company_personnel);
         mCompanyProvinceEt = (EditText) findViewById(R.id.et_company_province);
@@ -96,7 +104,7 @@ public class FiveActivity extends BaseActivity {
     }
 
     @Override
-    protected void initViewData() {
+    protected void initViewData(){
 
     }
     @Override
@@ -300,11 +308,28 @@ public class FiveActivity extends BaseActivity {
 
     //  链接网络;
     private void LoadData() {
-       ProgressDialog pd = new ProgressDialog(mContext);
-        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-         pd.setMessage("正在加载中...");
-         pd.requestWindowFeature(Window.FEATURE_NO_TITLE);
-         pd.show();//显示
+         dialog = new ProgressDialog(mContext);
+         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+         dialog.setMessage("正在提交数据");
+         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+         dialog.show();//显示
         //上传数据;
-   }
+         String url = "http://www.baidu.com";
+        OkHttpUtils.get().url(url)
+                .build()
+               .execute(new StringCallback() {
+                   @Override
+                   public void onError(Call call, Exception e) {
+                       SystemClock.sleep(2000);
+                       dialog.dismiss();
+                       Log.d(TAG, "updatePresentation:"+call+"......"+e);
+                       startActivity(new Intent(FiveActivity.this, InforCompleteActivity.class));
+                      }
+                   @Override
+                   public void onResponse(Call call, String s) {
+
+                   }
+               });
+
+    }
 }

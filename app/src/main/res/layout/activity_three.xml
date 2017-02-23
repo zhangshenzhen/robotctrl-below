@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/white"
+             android:background="@drawable/agree_bg"
               android:orientation="vertical"
             >
 
-    <include layout="@layout/layout_head"/>
+   <!-- <include layout="@layout/layout_head"/>-->
+
+         <LinearLayout
+             android:layout_marginTop="60dp"
+             android:layout_marginLeft="60dp"
+             android:layout_marginRight="60dp"
+            android:layout_marginBottom="100dp"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@drawable/card_appayfor_bg"
+             android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:gravity="center_vertical"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -29,7 +40,7 @@
                 android:text="电子邮箱："
                 android:textColor="@color/blackA"
                 android:textSize="20sp"/>
-        </LinearLayout>
+             </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,7 +52,7 @@
                 android:id="@+id/et_email"
                 android:text="wangxianyun1@163.com"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/input_frame"
                 android:gravity="center_vertical"
                 android:hint="请输入电子邮箱"
@@ -87,7 +98,7 @@
                 android:text="江苏"
                 android:id="@+id/et_province"
                 android:layout_width="80dp"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/input_frame"
                 android:gravity="center_vertical"
                 android:hint="省份"
@@ -106,7 +117,7 @@
                 android:id="@+id/et_city"
                 android:text="南京"
                 android:layout_width="120dp"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/input_frame"
                 android:gravity="center_vertical"
@@ -160,7 +171,7 @@
                 android:text="中山南路221号"
                 android:id="@+id/et_carded_address"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/input_frame"
                 android:gravity="center_vertical"
                 android:hint="请与身份证上地址保持一致"
@@ -204,7 +215,7 @@
             >
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/input_frame"
                 android:gravity="center_vertical"
                 android:maxLines="1"
@@ -330,10 +341,11 @@
             <TextView
                 android:id="@+id/tv_education"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
                 android:hint="请选择"
+                android:textColorHint="@color/blackB"
                 android:maxLines="1"
                 android:padding="5dp"
                 android:textColor="@color/blackA"
@@ -384,10 +396,11 @@
             <TextView
                 android:id="@+id/tv_residential_address"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
                 android:hint="请选择住宅区域"
+                android:textColorHint="@color/blackB"
                 android:maxLines="1"
                 android:padding="5dp"
                 android:textColor="@color/blackA"
@@ -431,10 +444,11 @@
                 android:text="小营街道110号"
                 android:id="@+id/et_desc_address"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@drawable/input_frame"
                 android:gravity="center_vertical"
                 android:hint="详细街道门牌号"
+                android:textColorHint="@color/blackB"
                 android:maxLines="1"
                 android:padding="5dp"
                 android:textColor="@color/blackA"
@@ -478,6 +492,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:textColor="@color/blackB"
                 android:text="请详细填写,以确保信函准确寄出"
                 android:textSize="16sp"/>
 
@@ -526,10 +541,11 @@
             <TextView
                 android:id="@+id/tv_residential_type"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
                 android:hint="请选择"
+                android:textColorHint="@color/blackB"
                 android:maxLines="1"
                 android:padding="5dp"
                 android:textColor="@color/blackA"
@@ -580,27 +596,56 @@
             <TextView
                 android:id="@+id/tv_residence_time"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:background="@color/transparent"
                 android:gravity="center_vertical"
                 android:hint="请选择"
+               android:textColorHint="@color/blackB"
                 android:maxLines="1"
                 android:padding="5dp"
-                android:textColor="@color/blackA"
+                android:textColor="@color/blackB"
                 android:textSize="16sp"/>
 
         </RelativeLayout>
 
     </LinearLayout>
-    <Button
-        android:id="@+id/btn_submit"
-        android:layout_width="260dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/affirm"
-        android:text="确定"
-        android:textColor="@color/white"
-        android:textSize="20sp"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="50dp"
+        android:paddingRight="30dp"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/tv_back"
+            android:textColor="#f0f"
+            android:textSize="19sp"
+            android:background="@drawable/card_back"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="130dp"
+            android:drawableRight="@drawable/back"
+            android:text="反回上一页"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:textColor="#f0f"
+            android:textSize="19sp"
+            android:background="@drawable/next_card"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:drawableRight="@drawable/nextpager"
+            android:text="下一页"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</RelativeLayout>

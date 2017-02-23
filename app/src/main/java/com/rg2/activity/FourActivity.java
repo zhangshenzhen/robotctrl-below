@@ -28,7 +28,7 @@ public class FourActivity extends BaseActivity
     private EditText mRelativesPhoneEt;
     private EditText mContactNameEt;
     private EditText mContactPhoneEt;
-    private TextView mBackTv;
+    private Button mBackTv;
     private UserInfoPresentation mUserInfoPresentation;
 
 
@@ -48,7 +48,7 @@ public class FourActivity extends BaseActivity
         mRelativesPhoneEt = (EditText) findViewById(R.id.et_relatives_phone);
         mContactNameEt = (EditText) findViewById(R.id.et_contact_name);
         mContactPhoneEt = (EditText) findViewById(R.id.et_contact_phone);
-        mBackTv=(TextView)findViewById(R.id.tv_back);
+        mBackTv=(Button)findViewById(R.id.tv_back);
     }
 
     @Override
