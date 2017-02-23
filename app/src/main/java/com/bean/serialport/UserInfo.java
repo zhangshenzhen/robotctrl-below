@@ -10,12 +10,58 @@ public class UserInfo {
     String id;
     String Address;
 
+    public String getName() {
+        return name;
+    }
 
-    String number;
-    String tel;
-    String Email;
-    String relative;
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
+    //第二页面采集
+    String residentialtel;
+    String companytel;
+    String phone;
+
+    public String getResidentialtel() {
+        return residentialtel;
+    }
+
+    public void setResidentialtel(String residentialtel) {
+        this.residentialtel = residentialtel;
+    }
+
+    public String getCompanytel() {
+        return companytel;
+    }
+
+    public void setCompanytel(String companytel) {
+        this.companytel = companytel;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     private static UserInfo user;
     private UserInfo(){};

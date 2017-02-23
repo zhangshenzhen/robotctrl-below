@@ -260,7 +260,7 @@
         <!-- 卡片信息 -->
         <activity android:name="com.card.CreadCarInfo" />
         <!-- 卡片申请完成 -->
-        <activity android:name="com.userinfo.UserInforComplete" />
+        <activity android:name="com.userinfo.InforCompleteActivity" />
         <activity android:name="com.card.BusinessCarInfo" />
         <!-- 设置密码 -->
         <activity android:name="com.card.SettingPasswordActivity" />

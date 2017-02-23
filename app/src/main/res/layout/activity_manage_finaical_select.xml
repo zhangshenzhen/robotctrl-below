@@ -41,6 +41,7 @@
 
     <LinearLayout
         android:padding="8dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -50,18 +51,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:padding="8dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="30dp"
             android:textColor="#cc000000"
             android:textSize="20sp"
             android:text="查询条件"
              />
        <RadioGroup
+           android:layout_marginTop="10dp"
           android:id="@+id/rg_finacial"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:orientation="horizontal"
-           android:layout_marginLeft="15dp"
+           android:layout_marginLeft="30dp"
            >
           <RadioButton
               android:id="@+id/rb_benefith"
@@ -82,10 +85,11 @@
        </RadioGroup>
 
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="30dp"
             >
 
            <TextView
@@ -144,10 +148,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="30dp"
             >
 
             <TextView
@@ -185,10 +190,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="30dp"
             >
             <TextView
                 android:layout_width="wrap_content"
@@ -197,7 +203,7 @@
                 android:layout_marginLeft="15dp"
                 android:textSize="18sp"
                 android:padding="5dp"
-                android:text="理财金额"
+                android:text="起点金额"
                 />
             <RadioGroup
                 android:id="@+id/rg_start"
@@ -245,17 +251,32 @@
                 />
         </LinearLayout>
 
-        <!--收益-->
+          <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="30dp"
+            >
+             <!--收益-->
         <include layout="@layout/income_radioubutton"></include>
+            </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="28dp"
+            >
         <!--风险-->
         <include layout="@layout/danger_radioubutton"></include>
          <!--是否保本-->
         <include layout="@layout/basemoney_radioubutton"></include>
         <!--销售现状-->
         <include layout="@layout/salesstate_radioubutton"></include>
-
+        </LinearLayout>
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -268,7 +289,7 @@
                    android:layout_marginRight="30dp"
                    android:textSize="16sp"
                    android:textColor="@color/card_color_selector"
-                   android:background="@drawable/btn_entry_selector"
+                   android:background="@drawable/btn_reset_selector"
                    android:text="重置"/>
                 <Button
                     android:onClick="query"

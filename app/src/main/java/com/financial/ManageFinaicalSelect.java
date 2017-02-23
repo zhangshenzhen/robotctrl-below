@@ -21,11 +21,17 @@ import com.presentation.SelecttPresentation;
 import com.rg2.activity.BaseActivity;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.R.attr.foreground;
+import static android.R.attr.key;
+import static android.R.attr.value;
 
 public class ManageFinaicalSelect extends BaseActivity {
 
@@ -118,18 +124,19 @@ public class ManageFinaicalSelect extends BaseActivity {
 
 
     LoadStatelayout loadLayout;
-  private Map map ;
+  private Map <String, String> map ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
     }
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_manage_finaical_select);
         loadLayout  = new LoadStatelayout(this);
-
+        map = new HashMap();
         // loadView();
     }
 
@@ -141,16 +148,18 @@ public class ManageFinaicalSelect extends BaseActivity {
 
     @Override
     protected void initData() {
+        //默认选中的;
+        map.put("类型","收益");
+        map.put("time","30以下");
     }
  //raduiobutton的点击记录事件；
     @Override
     protected void initEvent() {
-        map = new HashMap();
+
         RadioGroup rgFinacial = (RadioGroup) findViewById(R.id.rg_finacial);
        rgFinacial.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
           @Override
           public void onCheckedChanged(RadioGroup group, int checkedId) {
-                map.remove("类型");
               switch (checkedId){
                   case R.id.rb_benefith:
                       map.put("类型","收益");
@@ -162,10 +171,42 @@ public class ManageFinaicalSelect extends BaseActivity {
                       map.put("类型","商业");
                       break;
                 }
-
+              Log.e("ManageFinaicalSelect",".."+map.size());
           }
       });
 
+        RadioGroup rgTime = (RadioGroup) findViewById(R.id.rg_time);
+        rgTime.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch (checkedId){
+                    case R.id.rb_no_time_limit:
+                        map.put("time","不限");
+                        break;
+                    case R.id.rb_before30:
+                      map.put("time","30以下");
+                        break;
+                    case R.id.rb_Limt_30:
+                        map.put("time","30以上");
+                        break;
+                    case R.id.rb_limt_90:
+                        map.put("time","90以上");
+                        break;
+                    case R.id.rb_limt_181:
+                        map.put("time","181以上");
+                        break;
+                    case R.id.rb_limt_365:
+                        map.put("time","365以上");
+                        break;
+                }
+             Log.e("ManageFinaicalSelect",".."+map.size());
+                //遍历map集合;
+                Set<String> set = map.keySet();
+                for (String key : set) {
+             Log.e("ManageFinaicalSelect",".."+key+":"+map.get(key));
+                }
+          }
+        });
     }
 
     //重置按钮；
@@ -178,8 +219,8 @@ public class ManageFinaicalSelect extends BaseActivity {
         rgStart.check(R.id.rb_no_startpoint_limit);
         rgYearBenifit.check(R.id.rb_no_yearbenifit_limit);
         rgTime.check(R.id.rb_no_time_limit);
-
-      //  Log.e("ManageFinaicalSelect",".."+map.size());
+              map.clear();;
+        Log.e("ManageFinaicalSelect",".."+map.size());
     }
 
     @Override

@@ -47,7 +47,7 @@
 
          <TextView
           style="@style/finance"
-        android:layout_marginRight="30dp"
+          android:layout_marginRight="30dp"
              android:text="在售理财产品"
              />
          <TextView

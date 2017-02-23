@@ -14,7 +14,7 @@ import com.rg2.activity.BaseActivity;
  * Created by lx on 2017/2/17.
  */
 
-public class UserInforComplete extends BaseActivity {
+public class InforCompleteActivity extends BaseActivity {
 
      private  InfoCompletePresentaion minfoCompletePresentaion;
 
