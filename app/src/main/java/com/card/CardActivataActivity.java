@@ -3,10 +3,13 @@ package com.card;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.MediaRouter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,6 +21,7 @@ import com.brick.robotctrl.SettingsActivity;
 import com.hdos.idCardUartDevice.JniReturnData;
 import com.hdos.idCardUartDevice.publicSecurityIDCardLib;
 import com.jly.idcard.IDcardActivity;
+import com.presentation.InputFingerPresentation;
 import com.rg2.activity.BaseActivity;
 import com.rg2.activity.TwoActivity;
 import com.rg2.listener.MyOnClickListener;
@@ -55,6 +59,7 @@ public class CardActivataActivity extends BaseActivity {
     private TextView mBackTv;
 
     private EditText metphone;
+    private InputFingerPresentation mInputFingerPresentation;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -88,10 +93,7 @@ public class CardActivataActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void updatePresentation() {
 
-    }
     /*身份证选卡*/
     public void click4(View view) {
         byte[]cmdSelect= new byte[]{(byte) 0xAA,(byte) 0xAA,(byte) 0xAA,(byte) 0x96,0x69,0x00,0x03,0x20,0x02,0x21};
@@ -261,7 +263,7 @@ public class CardActivataActivity extends BaseActivity {
                 return;
             }
 
-         startActivityForResult(new Intent(CardActivataActivity.this,InserCard.class),1);
+         startActivityForResult(new Intent(CardActivataActivity.this, InserCard.class),1);
         }
     }
 
@@ -272,6 +274,53 @@ public class CardActivataActivity extends BaseActivity {
         if(requestCode==1 &&resultCode== Activity.RESULT_OK)
         {
               finish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updatePresentation();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+       if( mInputFingerPresentation != null){
+           mInputFingerPresentation.dismiss();
+           mInputFingerPresentation= null;
+       }
+    }
+
+    @Override
+    protected void updatePresentation() {
+        // Log.d(TAG, "updatePresentation: ");
+        //得到当前route and its presentation display
+        MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
+                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+        Display presentationDisplay =  route  !=  null ? route.getPresentationDisplay() : null;
+        // 注释 : Dismiss the current presentation if the display has changed.
+        if (mInputFingerPresentation != null && mInputFingerPresentation.getDisplay() !=  presentationDisplay) {
+            mInputFingerPresentation.dismiss();
+            mInputFingerPresentation = null;
+        }
+        if (mInputFingerPresentation == null &&  presentationDisplay != null) {
+            // Initialise a new Presentation for the Display
+            mInputFingerPresentation = new InputFingerPresentation(this,  presentationDisplay);
+            //把当前的对象引用赋值给BaseActivity中的引用;
+            mPresentation  =  mInputFingerPresentation  ;
+            // Log.d(TAG, "updatePresentation: this: "+ this.toString());
+            mInputFingerPresentation.setOnDismissListener(mOnDismissListener);
+
+            // Try to show the presentation, this might fail if the display has
+            // gone away in the mean time
+            try {
+                mInputFingerPresentation.show();
+            } catch (WindowManager.InvalidDisplayException ex) {
+                // Couldn't show presentation - display was already removed
+                // Log.d(TAG, "updatePresentation: failed");
+                mInputFingerPresentation = null;
+            }
         }
     }
 }

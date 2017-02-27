@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="31dp"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-
        >
-        <TextView
+      <!--  <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#cc000000"
@@ -14,15 +13,13 @@
             android:padding="5dp"
             android:layout_marginLeft="15dp"
             android:text="销售状态"
-            />
+            />-->
         <RadioGroup
             android:id="@+id/rg_saless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="7dp"
-            android:layout_marginLeft="10dp"
-            >
+             >
             <RadioButton
                 android:id="@+id/rb_no_saless_limit"
                 style="@style/radiobutton"

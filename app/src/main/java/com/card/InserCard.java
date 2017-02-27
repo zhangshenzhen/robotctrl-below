@@ -1,17 +1,22 @@
 package com.card;
 
 import android.content.Intent;
+import android.media.MediaRouter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 
 import com.brick.robotctrl.R;
+import com.presentation.presentionui.CardinfoPresentation;
+import com.presentation.presentionui.InserCardPresentation;
 import com.rg2.activity.BaseActivity;
 
 public class InserCard extends BaseActivity {
 
     private static final String TAG = "InserCard";
-
+private InserCardPresentation mInserCardPresentation;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -21,10 +26,7 @@ public class InserCard extends BaseActivity {
 
 
 
-    @Override
-    protected void updatePresentation() {
 
-    }
 
     @Override
     protected void initData() {
@@ -56,4 +58,30 @@ public class InserCard extends BaseActivity {
     protected void initViewData() {
 
     }
+    @Override
+    protected void updatePresentation() {
+        // Log.d(TAG, "updatePresentation: ");
+        //得到当前route and its presentation display
+        MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
+                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+        Display presentationDisplay = route != null ? route.getPresentationDisplay() : null;
+        // 注释 : Dismiss the current presentation if the display has changed.
+        if (mInserCardPresentation != null && mInserCardPresentation.getDisplay() != presentationDisplay) {
+            mInserCardPresentation.dismiss();
+            mInserCardPresentation = null;
+        }
+        if (mInserCardPresentation == null && presentationDisplay != null) {
+            // Initialise a new Presentation for the Display
+            mInserCardPresentation = new InserCardPresentation(this, presentationDisplay);
+            //把当前的对象引用赋值给BaseActivity中的引用;
+            mPresentation = mInserCardPresentation;
+            mInserCardPresentation.setOnDismissListener(mOnDismissListener);
+            try {
+                mInserCardPresentation.show();
+            } catch (WindowManager.InvalidDisplayException ex) {
+                mInserCardPresentation = null;
+            }
+        }
+    }
+
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
+
     android:background="@color/gray"
     >
     <RelativeLayout
@@ -41,12 +41,137 @@
         android:layout_weight="1"
         android:gravity="center"
         android:layout_marginTop="15dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         >
-       <ListView
-           android:id="@+id/finance_list"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"></ListView>
+        <LinearLayout
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+              <TextView
+                android:layout_marginLeft="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="26sp"
+                android:textColor="#111"
+                android:text="产品名称"
+                />
+            <TextView
+                android:layout_marginLeft="80dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="26sp"
+                android:textColor="#111"
+                android:text="币种"
+                />
+               <RelativeLayout
+                   android:layout_marginLeft="30dp"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content">
+                   <TextView
+                       android:id="@+id/tv_time"
+                       android:textColor="#111"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textSize="26sp"
+                       android:text="投资期限"/>
+                      <ImageView
+                          android:id="@+id/iv_up"
+                          android:layout_toRightOf="@id/tv_time"
+                          android:layout_width="16dp"
+                          android:layout_height="16dp"
+                          android:src="@drawable/up"
+                          />
+                   <ImageView
+                       android:id="@+id/iv_down"
+                       android:layout_below="@id/iv_up"
+                       android:layout_toRightOf="@id/tv_time"
+                       android:layout_width="16dp"
+                       android:layout_height="16dp"
+                       android:src="@drawable/down"
+                       />
+               </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_beginmoney"
+                    android:textColor="#111"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="26sp"
+                    android:text="起点金额"/>
+                <ImageView
+                    android:id="@+id/iv_money_up"
+                    android:layout_toRightOf="@id/tv_beginmoney"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/up"
+                    />
+                <ImageView
+                    android:id="@+id/iv_money_down"
+                    android:layout_below="@id/iv_money_up"
+                    android:layout_toRightOf="@id/tv_beginmoney"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/down"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_year_rate"
+                    android:textColor="#111"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="26sp"
+                    android:text="预期年化收益率"/>
+                <ImageView
+                    android:id="@+id/iv_rate_up"
+                    android:layout_toRightOf="@id/tv_year_rate"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/up"
+                    />
+                <ImageView
+                    android:id="@+id/iv_rate_down"
+                    android:layout_below="@id/iv_rate_up"
+                    android:layout_toRightOf="@id/tv_year_rate"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/down"
+                    />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_marginLeft="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="26sp"
+                android:textColor="#111"
+                android:text="风险等级"
+                />
+
+        </LinearLayout>
+
+
+        <ListView
+            android:layout_marginLeft="80dp"
+            android:id="@+id/finance_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
 
     </LinearLayout>
 

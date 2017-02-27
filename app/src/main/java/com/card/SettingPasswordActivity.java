@@ -1,24 +1,37 @@
 package com.card;
 
 import android.app.ProgressDialog;
+import android.media.MediaRouter;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
+import com.presentation.presentionui.InserCardPresentation;
+import com.presentation.presentionui.PasswordPresentation;
 import com.rg2.activity.BaseActivity;
 import com.rg2.utils.StringUtils;
 import com.rg2.utils.ToastUtil;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.commons.httpclient.HttpClient;
 
+import java.security.KeyStore;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by lx on 2017/2/20.
@@ -33,6 +46,7 @@ public class SettingPasswordActivity extends BaseActivity {
     private Button submit;
     private TextView tvBack;
     private TextView tvNext;
+    private PasswordPresentation mPasswordPresentation;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -61,10 +75,6 @@ public class SettingPasswordActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void updatePresentation() {
-
-    }
 
     @OnClick({R.id.btn_submit, R.id.tv_back, R.id.tv_next})
     public void onClick(View view) {
@@ -85,27 +95,93 @@ public class SettingPasswordActivity extends BaseActivity {
         String password = etpassword.getText().toString().trim();
         String repassword = etrepassrord.getText().toString().trim();
         //密码不能为空， 长度
-        if (TextUtils.isEmpty(password)||password.length() !=6){
-            ToastUtil.show(mContext,"请检查密码是否符合要求");
-            Log.d(TAG,"请检查密码是否符合要求password");
+        if (TextUtils.isEmpty(password) || password.length() != 6) {
+            ToastUtil.show(mContext, "请检查密码是否符合要求");
+            Log.d(TAG, "请检查密码是否符合要求password");
+            mPasswordPresentation.passWordError();//调用方法;
             return;
-        }else if(TextUtils.isEmpty(repassword)||repassword.length() !=6){
-            ToastUtil.show(mContext,"两次密码不一致,请重新设置");
-            Log.d(TAG,"请检查密码是否符合要求password");
+        } else if (TextUtils.isEmpty(repassword) || repassword.length() != 6) {
+            Log.d(TAG, "请检查密码是否符合要求password");
+            mPasswordPresentation.passWordError();//调用方法;
             return;
-        }else if( !repassword.equals(password)){
-            ToastUtil.show(mContext,"两次密码不一致,请重新设置");
-            Log.d(TAG,"两次密码不一致,请重新设置");
+        } else if (!repassword.equals(password)) {
+            ToastUtil.show(mContext, "两次密码不一致,请重新设置");
+            Log.d(TAG, "两次密码不一致,请重新设置");
             return;
         }
         //网络请求. 提交密码数据到服务器;
-             LoadData(password,repassword);
+        LoadData(password, repassword);
     }
 
     private void LoadData(String password, String repassword) {
-        ProgressDialog pd = new ProgressDialog(mContext);
+        final ProgressDialog pd = new ProgressDialog(mContext);
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pd.setMessage("正在提交数据到服务器....");
         pd.show();
+        SystemClock.sleep(3000);
+        pd.dismiss();
+        // 如果提交成功,就提示设置完成;
+        mPasswordPresentation.passWord();
+        settingRight.setVisibility(View.VISIBLE);
+      OkHttpUtils.post().url("")
+              .addParams("","")
+              .build()
+             .execute(new Callback() {
+                 @Override
+                 public Object parseNetworkResponse(Response response) throws Exception {
+                     return null;
+                 }
+
+                 @Override
+                 public void onError(Call call, Exception e) {
+
+                 }
+
+                 @Override
+                 public void onResponse(Call call, Object o) {
+
+                 }
+             });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updatePresentation();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPasswordPresentation != null){
+            mPasswordPresentation.dismiss();
+            mPasswordPresentation= null;
+        }
+    }
+
+    @Override
+    protected void updatePresentation() {
+        // Log.d(TAG, "updatePresentation: ");
+        //得到当前route and its presentation display
+        MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
+                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+        Display presentationDisplay = route != null ? route.getPresentationDisplay() : null;
+        // 注释 : Dismiss the current presentation if the display has changed.
+        if (mPasswordPresentation != null && mPasswordPresentation.getDisplay() != presentationDisplay) {
+            mPasswordPresentation.dismiss();
+            mPasswordPresentation = null;
+        }
+        if (mPasswordPresentation == null && presentationDisplay != null) {
+            // Initialise a new Presentation for the Display
+            mPasswordPresentation = new PasswordPresentation(this, presentationDisplay);
+            //把当前的对象引用赋值给BaseActivity中的引用;
+            mPresentation = mPasswordPresentation;
+            mPasswordPresentation.setOnDismissListener(mOnDismissListener);
+            try {
+                mPasswordPresentation.show();
+            } catch (WindowManager.InvalidDisplayException ex) {
+                mPasswordPresentation = null;
+            }
+        }
     }
 }

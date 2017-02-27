@@ -79,10 +79,12 @@
 
     <!--radiobutton的样式-->
      <style name="radiobutton">
-         <item name="android:layout_width">wrap_content</item>
+         <item name="android:gravity">center</item>
+         <item name="android:layout_width">120dp</item>
          <item name="android:layout_height">wrap_content</item>
          <item name="android:layout_marginLeft">15dp</item>
-        <item name="android:textSize">18sp</item>
+         <item name="android:textSize">21sp</item>
+         <item name="android:background">@drawable/rbbtn_checked</item>
         <item name="android:textColor">@color/btn_checked</item>
      </style>
 
@@ -92,7 +94,7 @@
         <item name="android:layout_height">160dp</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">10dp</item>
-        <item name="android:textColor">@color/card_color_selector</item>
+        <item name="android:textColor">#121</item>
         <item name="android:background">@drawable/graybar</item>
         <item name="android:textSize">23sp</item>
 
@@ -103,5 +105,14 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <!--理财条款选择-->
+    <style name="financestyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:textColor">#111</item>
+         <item name="android:textSize">23sp</item>
+    </style>
 
 </resources>
