@@ -587,7 +587,11 @@ public class VideoDeviceCallBack {
 
 
 //		mRender.setBuffer(this.mPlayWidth, this.mPlayHeight, i_iWidthStrideY, i_iWidthStrideUV);
-		mRender.CopyTheRenderData(i_pFrameBuf, i_iBufLen);
+		try {
+			mRender.CopyTheRenderData(i_pFrameBuf, i_iBufLen);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		SetRotateDegreeToRender(i_iDegree);
 //		this.mRemote.requestRender();
 

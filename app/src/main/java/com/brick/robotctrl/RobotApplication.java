@@ -18,9 +18,13 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.text.AttributedCharacterIterator;
+import java.text.DateFormat;
 import java.text.Format;
+import java.util.Date;
 
 import zime.ui.ZIMEAVDemoService;
+
+import static android.R.attr.x;
 
 /**
  * Created by kjnijk on 2016-08-31.
@@ -43,9 +47,9 @@ public class RobotApplication extends Application {
 
         Intent stopIntent = new Intent(this, ZIMEAVDemoService.class);
         stopService(stopIntent);
-//        CrashHandler crashHandler = CrashHandler.getInstance();
-//        crashHandler.init(this);
- //       x.Ext.init(this);//Xutils初始化
+       CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(this);
+ //x.Ext.init(this);//Xutils初始化
         RobotApplication.context = getApplicationContext();
 
         //初始化程序崩溃调用；
@@ -59,8 +63,11 @@ public class RobotApplication extends Application {
         public void uncaughtException(Thread thread, Throwable ex) {
             Log.e("MyexceptionHandler", "......程序发现了异常，被哥们捕获了");
             StringBuffer sb = new StringBuffer();
+            Date date = new Date();
+            //格式化时间
+            String time = DateFormat.getInstance().format(date);
             sb.append("Time:");
-            sb.append(System.currentTimeMillis()+"\n");//当前的系统时间；
+            sb.append(time+"\n");//当前的系统时间；
             Field[] fields = Build.class.getDeclaredFields();
            /* for(Field field : fields){
                 try {

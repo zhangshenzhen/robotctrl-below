@@ -2,9 +2,11 @@ package com.financial;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -20,6 +22,7 @@ import butterknife.ButterKnife;
 public class FinanceIntroduceList extends BaseActivity {
 
 
+    private static final String TAG ="FinanceIntroduceList";
     @Bind(R.id.tv_back_select)
     TextView tvBackSelect;
     @Bind(R.id.activity_finance_introduce_list)
@@ -44,6 +47,13 @@ public class FinanceIntroduceList extends BaseActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d(TAG,"....这是第"+i+"个条目");
             }
         });
     }

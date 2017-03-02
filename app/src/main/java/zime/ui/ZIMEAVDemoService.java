@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
+import com.kjn.crashlog.CrashHandler;
+
 import zime.media.VideoDeviceCallBack;
 import zime.media.ZIMEClientJni;
 import zime.media.ZIMEVideoClientJNI;
@@ -195,7 +197,8 @@ public class ZIMEAVDemoService extends Service {
 
         Log.i(ZIMETAG, "-------------Exit Button--------------3");
         Log.d(ZIMETAG,"service destroy");
-        super.onDestroy();
+
+          super.onDestroy();
         //System.exit(0);
     }
 

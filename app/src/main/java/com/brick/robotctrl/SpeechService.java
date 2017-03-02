@@ -138,13 +138,11 @@ public class SpeechService extends Service{
         public void onPlayerEventStateChange(TTSCommonPlayer.PlayerEvent playerEvent) {
             Log.i(TAG, "onStateChange " + playerEvent.name());
         }
-
     }
 
     private boolean initPlayer() {
         // 读取用户的调用的能力
         String capKey = mAccountInfo.getCapKey();
-
         // 构造Tts初始化的帮助类的实例
         TtsInitParam ttsInitParam = new TtsInitParam();
         // 获取App应用中的lib的路径

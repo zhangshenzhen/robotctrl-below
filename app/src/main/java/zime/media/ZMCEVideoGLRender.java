@@ -214,7 +214,11 @@ public class ZMCEVideoGLRender implements GLSurfaceView.Renderer
 			}
 
 			mBuffer.clear();
-			mBuffer.put(i_pFrameBuf, 0, i_iBufLen);
+			try {
+				mBuffer.put(i_pFrameBuf, 0, i_iBufLen);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			return;
 		}

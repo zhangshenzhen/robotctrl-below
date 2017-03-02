@@ -112,6 +112,16 @@ public class FiveActivity extends BaseActivity {
         super.onResume();
         updatePresentation();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mUserInfoPresentation != null) {
+            mUserInfoPresentation.dismiss();
+            mUserInfoPresentation= null;
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
