@@ -45,15 +45,14 @@ public class RobotApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Intent stopIntent = new Intent(this, ZIMEAVDemoService.class);
-        stopService(stopIntent);
+         Intent stopIntent = new Intent(this, ZIMEAVDemoService.class);
+         stopService(stopIntent);
        CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
- //x.Ext.init(this);//Xutils初始化
+          //x.Ext.init(this);//Xutils初始化
         RobotApplication.context = getApplicationContext();
-
         //初始化程序崩溃调用；
-         Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
+        // Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
 
     }
 
