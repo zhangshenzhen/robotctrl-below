@@ -16,7 +16,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@drawable/card_appayfor_bg"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="40dp"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp"
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="40dp"
         android:layout_marginRight="20dp"
         >
         <Button

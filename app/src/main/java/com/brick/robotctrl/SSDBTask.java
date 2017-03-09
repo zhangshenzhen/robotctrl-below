@@ -274,7 +274,6 @@ public class SSDBTask extends TimerTask {
         } catch (Exception e) {
             e.printStackTrace();
 //            SSDBQuery(ACTION_CONNECT);
-
         }
     }
     @Override
@@ -476,6 +475,4 @@ public class SSDBTask extends TimerTask {
     public synchronized void SSDBQuery(int codeType, String key, String val) {
         cmdList.add(CmdEntry.create(codeType, key, val));
     }
-
-
 }

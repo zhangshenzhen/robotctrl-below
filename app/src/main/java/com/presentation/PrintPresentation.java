@@ -32,10 +32,10 @@ public class PrintPresentation extends  BasePresentation {
         boolean ispaper = false;//模拟判断机器内部是否有纸质小票;
         if(ispaper ){
           mpaper.setVisibility(View.GONE);
-        }else {
+
+          }else {
             mprint.setVisibility(View.GONE);
             mpaper.setVisibility(View.VISIBLE);
         }
-
     };
 }

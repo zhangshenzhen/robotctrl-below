@@ -7,16 +7,12 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bean.serialport.UserInfo;
 import com.brick.robotctrl.R;
-import com.presentation.InputFingerPresentation;
 import com.presentation.presentionui.UserInfoPresentation;
-import com.rg2.utils.StringUtils;
-import com.rg2.utils.ToastUtil;
 
 
 /**

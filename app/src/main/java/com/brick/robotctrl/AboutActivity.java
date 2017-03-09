@@ -201,8 +201,7 @@ public class AboutActivity extends BaseActivity {
                 ftp.closeConnect();   // 使用closeConnect()方法关闭FTP访问
                // contextHandler.sendEmptyMessage(SSDBTask.key_ApkUpdate);
                 //replace finish()?
-                Intent intent = new Intent();
-                intent.setClass(AboutActivity.this, MainActivity.class);
+                Intent intent = new Intent(AboutActivity.this, MainActivity.class);
                 startActivity(intent);
                 }
             }catch(Exception e){

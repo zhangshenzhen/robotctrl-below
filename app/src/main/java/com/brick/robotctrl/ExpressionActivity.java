@@ -136,7 +136,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 		//屏幕适配;
 //     gifView.setShowDimension(screenWidth, screenHeight);
 
-		changeExpression(index);
+		 changeExpression(index);
 		mGestureDetector = new GestureDetector(this, new ExGestureListener());
 	}
 	@Override

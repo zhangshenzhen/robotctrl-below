@@ -20,16 +20,13 @@ import android.widget.TextView;
 import com.brick.robotctrl.R;
 import com.hdos.idCardUartDevice.JniReturnData;
 import com.hdos.idCardUartDevice.publicSecurityIDCardLib;
-import com.presentation.InputFingerPresentation;
+import com.presentation.IdCardPresentation;
 import com.rg2.activity.BaseActivity;
 import com.rg2.utils.LogUtil;
-import com.rg2.utils.StringUtils;
-import com.rg2.utils.ToastUtil;
 
 import java.io.UnsupportedEncodingException;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class FinancialMangerActivity extends BaseActivity {
@@ -58,7 +55,7 @@ public class FinancialMangerActivity extends BaseActivity {
     private EditText metphone;
 
     //副屏
-    private InputFingerPresentation mInputFingerPresentation;
+    private IdCardPresentation mInputFingerPresentation;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -312,7 +309,7 @@ public class FinancialMangerActivity extends BaseActivity {
         }
         if (mInputFingerPresentation == null && presentationDisplay != null) {
             // Initialise a new Presentation for the Display
-            mInputFingerPresentation = new InputFingerPresentation(this, presentationDisplay);
+            mInputFingerPresentation = new IdCardPresentation(this, presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
             mPresentation = mInputFingerPresentation;
             mInputFingerPresentation.setOnDismissListener(mOnDismissListener);

@@ -30,7 +30,7 @@ import static android.R.attr.x;
  * Created by kjnijk on 2016-08-31.
  */
 public class RobotApplication extends Application {
-
+    private final static String TAG = "RobotApplication";
   /*  protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         Debug.startMethodTracing("zhang_san");
@@ -45,14 +45,18 @@ public class RobotApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-         Intent stopIntent = new Intent(this, ZIMEAVDemoService.class);
+        Intent stopIntent = new Intent(this, ZIMEAVDemoService.class);
          stopService(stopIntent);
-       CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(this);
+
+        CrashHandler crashHandler = CrashHandler.getInstance();
+
+         crashHandler.init(this);
+
           //x.Ext.init(this);//Xutils初始化
         RobotApplication.context = getApplicationContext();
         //初始化程序崩溃调用；
-        // Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
+        Log.d(TAG, "..........4");
+       // Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
 
     }
 

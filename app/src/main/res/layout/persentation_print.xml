@@ -11,16 +11,19 @@
         android:layout_height="wrap_content"
          android:layout_centerInParent="true"
         android:text="点击业务打印纸质编号...."
+        android:textSize="36sp"
+        android:textColor="#121"
         />
 
     <TextView
         android:id="@+id/paper"
-        android:background="@drawable/nopager"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:text="请安装打印纸。。"
+        android:textSize="36sp"
+        android:textColor="#121"
         />
-
 
 </RelativeLayout>

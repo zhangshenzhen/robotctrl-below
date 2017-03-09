@@ -130,7 +130,6 @@ private MainPresentation  mMainPresentation;
         DispQueue.start();
 
         initData();
-
         initChangeListener();
 //        PlayerService.startAction(this, mp3Url);
 //        relative timer
@@ -142,8 +141,11 @@ private MainPresentation  mMainPresentation;
         AboutActivity about = new AboutActivity();
         AboutActivity.MyThread tt = about.new MyThread(ssdbTask.robotName);
         tt.start();
-          Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
-           startService(startIntent); // 启动服务
+
+        Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
+         startService(startIntent); // 启动服务
+
+
         Log.d(TAG, "ZIMEService");
 //        //ExpressionActivity.startAction(MainActivity.this, 12);
     }
@@ -554,7 +556,7 @@ private MainPresentation  mMainPresentation;
                  */
                 case SSDBTask.Key_Location:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:Location \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ----------11--------Key:Location \tvalue:" + rlt);
                     if (!rlt.equals(""))
                     {
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);
@@ -565,7 +567,7 @@ private MainPresentation  mMainPresentation;
                     rlt = (String) msg.obj;
                     if (!rlt.equals(""))
                     {
-                        Log.d(TAG, "handleMessage: ------------------Key:VideoPlay \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ---------12---------Key:VideoPlay \tvalue:" + rlt);
                         String[] strArray = rlt.split(" ");
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_VideoPlay], "");
                         switch (strArray[0])
@@ -653,7 +655,7 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_VideoPlayList:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ----------13--------Key:SetParam \tvalue:" + rlt);
                     ssdbTask.pushFileList();
                     //                    if(!rlt.equals(""))   {
                     //                        Log.d(TAG, "videoplaylist: hehe");
@@ -662,7 +664,7 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_RobotMsg:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ---------14---------Key:SetParam \tvalue:" + rlt);
                     if (!rlt.equals(""))
                     {
                         //!!!!!!!!!!!执行videorobotmsg操作
@@ -671,7 +673,7 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_BatteryVolt:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ---------15---------Key:SetParam \tvalue:" + rlt);
                     if (!rlt.equals(""))
                     {
                         //!!!!!!!!!!!执行BatteryVolt操作
@@ -680,7 +682,7 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_NetworkDelay:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ---------16---------Key:SetParam \tvalue:" + rlt);
                     if (!rlt.equals("")) {
                         //!!!!!!!!!!!执行NetworkDelay操作
                         SSDBTask.enableNetworkDelay = false;
@@ -688,7 +690,7 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_CurrentTime:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ---------17---------Key:SetParam \tvalue:" + rlt);
                     if (!rlt.equals("")){
                         //!!!!!!!!!!!执行CurrentTime操作
                         SSDBTask.enableCurrentTime = false;
@@ -696,7 +698,7 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_DisableAudio:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ---------18---------Key:SetParam \tvalue:" + rlt);
                     if (!rlt.equals("")){
                         //!!!!!!!!!!!执行ForbidAudio操作
                         SSDBTask.enableForbidAudio = false;
@@ -705,7 +707,7 @@ private MainPresentation  mMainPresentation;
                 // by gaowie end
                 case SSDBTask.Key_DirCtrl:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:DirCtrl \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ---------19---------Key:DirCtrl \tvalue:" + rlt);
                     if (rlt.equals("EndDirCtl")) {
                         SSDBTask.enableDirCtl = false;
                     }
@@ -715,7 +717,7 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_SetParam:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:SetParam \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ---------20---------Key:SetParam \tvalue:" + rlt);
                     if (!rlt.equals("")) {
                         serialCtrl.setRobotRate(rlt);
                         SSDBTask.enableSetParameter = false;
@@ -723,7 +725,7 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_ChangeBrow:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:ChangeBrow \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ---------21---------Key:ChangeBrow \tvalue:" + rlt);
                     if (!rlt.equals("")){
                         SSDBTask.enableChangeBrow = false;
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
@@ -738,7 +740,7 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_SetVolume:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:SetVolume \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ---------22---------Key:SetVolume \tvalue:" + rlt);
                     if (!rlt.equals(""))
                     {
                         int volume = Integer.parseInt(rlt);
@@ -754,7 +756,7 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_Message:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: ------------------Key:Message \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: --------23----------Key:Message \tvalue:" + rlt);
                     if (!rlt.equals(""))
                     {
                         SpeechService.startAction(MainActivity.this, Base64Decode(rlt));

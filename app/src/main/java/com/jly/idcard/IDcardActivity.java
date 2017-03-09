@@ -21,14 +21,11 @@ import com.brick.robotctrl.BaseActivity;
 import com.brick.robotctrl.R;
 import com.hdos.idCardUartDevice.JniReturnData;
 import com.hdos.idCardUartDevice.publicSecurityIDCardLib;
-import com.presentation.InputFingerPresentation;
+import com.presentation.IdCardPresentation;
 import com.rg2.activity.ThreeActivity;
-import com.rg2.activity.TwoActivity;
 import com.rg2.listener.MyOnClickListener;
 import com.rg2.utils.CityDialog;
 import com.rg2.utils.LogUtil;
-import com.rg2.utils.StringUtils;
-import com.rg2.utils.ToastUtil;
 
 import java.io.UnsupportedEncodingException;
 
@@ -61,7 +58,7 @@ public class IDcardActivity extends BaseActivity {
     private Button mBackTv;
     private int retval;
     //副屏
-    private InputFingerPresentation mInputFingerPresentation;
+    private IdCardPresentation mcardPresentation;
     private EditText mResidentialtel;
     private EditText mCompanytel;
     private EditText mPhone;
@@ -332,26 +329,26 @@ public class IDcardActivity extends BaseActivity {
                 MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
         Display presentationDisplay =  route  !=  null ? route.getPresentationDisplay() : null;
         // 注释 : Dismiss the current presentation if the display has changed.
-        if (mInputFingerPresentation != null && mInputFingerPresentation.getDisplay() !=  presentationDisplay) {
-            mInputFingerPresentation.dismiss();
-            mInputFingerPresentation = null;
+        if (mcardPresentation != null && mcardPresentation.getDisplay() !=  presentationDisplay) {
+            mcardPresentation.dismiss();
+            mcardPresentation = null;
         }
-        if (mInputFingerPresentation == null &&  presentationDisplay != null) {
+        if (mcardPresentation == null &&  presentationDisplay != null) {
             // Initialise a new Presentation for the Display
-            mInputFingerPresentation = new InputFingerPresentation(this,  presentationDisplay);
+            mcardPresentation = new IdCardPresentation(this,  presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
-            mPresentation  =  mInputFingerPresentation  ;
+            mPresentation  = mcardPresentation;
             // Log.d(TAG, "updatePresentation: this: "+ this.toString());
-            mInputFingerPresentation.setOnDismissListener(mOnDismissListener);
+            mcardPresentation.setOnDismissListener(mOnDismissListener);
 
             // Try to show the presentation, this might fail if the display has
             // gone away in the mean time
             try {
-                mInputFingerPresentation.show();
+                mcardPresentation.show();
             } catch (WindowManager.InvalidDisplayException ex) {
                 // Couldn't show presentation - display was already removed
                 // Log.d(TAG, "updatePresentation: failed");
-                mInputFingerPresentation = null;
+                mcardPresentation = null;
             }
         }
     }

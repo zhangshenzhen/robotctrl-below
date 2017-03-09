@@ -195,7 +195,7 @@ private ArrayList<CardInfoBean> list;
             } else {
                 view = View.inflate(getApplicationContext(), R.layout.card_select_item, null);
                 holder = new ViewHolder();
-                holder.tv_carddetail = (TextView)findViewById(R.id.tv_carddetail);
+                holder.tv_carddetail = (TextView) view.findViewById(R.id.tv_carddetail);
                 holder.iv_cardview = (ImageView) view.findViewById(R.id.iv_cardview);
                 view.setTag(holder);
             }
