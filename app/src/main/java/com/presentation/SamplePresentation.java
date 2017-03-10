@@ -69,7 +69,7 @@ public class SamplePresentation extends BasePresentation {
         TextView tv = new TextView(mContext);
         tv.setText("欢迎使用智能型机器人，很高兴为您服务！！！");
         tv.setTextSize(36);
-        tv.setTextColor(Color.RED);
+        tv.setTextColor(Color.BLACK);
         tv.setGravity(Gravity.CENTER);
         Rl.addView(tv);
      }

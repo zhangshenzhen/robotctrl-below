@@ -68,7 +68,7 @@
         android:theme="@style/ContentOverlay">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
@@ -76,12 +76,26 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-              <!--  <category android:name="android.intent.category.HOME" />
-                <category android:name="android.intent.category.DEFAULT" />-->
+                <!--  <category android:name="android.intent.category.HOME" />
+                  <category android:name="android.intent.category.DEFAULT" />-->
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/ContentOverlay">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+              &lt;!&ndash;  <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />&ndash;&gt;
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+
         <activity
             android:name=".RobotInfoActivity"
             android:configChanges="orientation|screenSize"

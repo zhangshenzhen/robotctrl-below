@@ -135,7 +135,10 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             };
 
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
     @Override
     protected void onStop() {

@@ -56,7 +56,7 @@ public class RobotApplication extends Application {
         RobotApplication.context = getApplicationContext();
         //初始化程序崩溃调用；
         Log.d(TAG, "..........4");
-       // Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
+        Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
 
     }
 

@@ -134,19 +134,18 @@ private MainPresentation  mMainPresentation;
 //        PlayerService.startAction(this, mp3Url);
 //        relative timer
 
-        Timer timer = new Timer(true);
-        timer.schedule(queryTask, 200, 200); //改指令执行后延时1000ms后执行run，之后每1000ms执行�?次run
+         Timer timer = new Timer(true);
+         timer.schedule(queryTask, 200, 200); //改指令执行后延时1000ms后执行run，之后每1000ms执行�?次run
         //   timer.cancel(); //结束Timer所有的计时器;
         initHandler();
         AboutActivity about = new AboutActivity();
         AboutActivity.MyThread tt = about.new MyThread(ssdbTask.robotName);
         tt.start();
+        //被移动到SplashActivity界面中进行开启服务;
+//        Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
+//        startService(startIntent); // 启动服务
 
-        Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
-         startService(startIntent); // 启动服务
-
-
-        Log.d(TAG, "ZIMEService");
+           Log.d(TAG, "ZIMEService");
 //        //ExpressionActivity.startAction(MainActivity.this, 12);
     }
     /*监听
@@ -746,7 +745,7 @@ private MainPresentation  mMainPresentation;
                         int volume = Integer.parseInt(rlt);
                         if (volume > 100){
                             volume = 100;
-                        }
+                      }
                         else if (volume < 0){
                             volume = 0;
                         }

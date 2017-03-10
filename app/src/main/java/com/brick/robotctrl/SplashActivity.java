@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.display.DisplayManager;
+import android.media.MediaPlayer;
 import android.media.MediaRouter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -24,55 +26,119 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.presentation.ActivityViewWrapper;
 import com.presentation.Okienko;
 import com.presentation.SamplePresentation;
 import com.rg2.activity.*;
+import com.rg2.activity.BaseActivity;
+
+import zime.ui.ZIMEAVDemoService;
 
 /**
  * Created by shenzhen on 2017/1/7.
  */
 
-public class SplashActivity extends com.rg2.activity.BaseActivity {
+public class SplashActivity extends BaseActivity {
 
-    private ImageView imageView;
-
-
+    private static final String TAG ="SplashActivity" ;
     private SamplePresentation mPresentation;
-    private TextView tvNext;
+    private VideoView vv;
+    private  Uri mUri;
+
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_splash);//主屏幕;
-        Log.e("activity","....1");
+        vv = (VideoView) findViewById(R.id.vv);
     }
 
-    public void updatePresentation() {
-        Log.e("调用副屏","....1");
-       // Log.d(TAG, "updatePresentation: ");
-        //得到当前route and its presentation display
-        MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
-                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
-        Display presentationDisplay =  route  !=  null ? route.getPresentationDisplay() : null;
+    @Override
+    protected void initData() {
 
-        // 注释 : Dismiss the current presentation if the display has changed.
-        if (mPresentation != null && mPresentation.getDisplay() !=  presentationDisplay) {
+        Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
+        startService(startIntent); // 启动服务
+
+         mUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.red);
+         vv.setVideoURI(Uri.parse(String.valueOf(mUri)));
+         vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+          @Override
+          public void onPrepared(MediaPlayer mediaPlayer) {
+                vv.start();
+          }
+        });
+
+    }
+    @Override
+    protected void initViewData() {
+
+    }
+
+    @Override
+    protected void initEvent() {
+        //视频播放的监听事件;
+        vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+              startActivity( new Intent(SplashActivity.this, MainActivity.class));
+            }
+        });
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        // Log.d(TAG, "onResume: ");
+        super.onResume();
+        // Register a callback for all events related to live video devices
+        mMediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mMediaRouterCallback);
+        // Update the displays based on the currently active routes
+        updatePresentation();
+    }
+
+    @Override
+    protected void onPause() {
+        // Log.d(TAG, "onPause: ");
+        super.onPause();
+      updatePresentation();
+    }
+
+    @Override
+    protected void onStop() {
+         super.onStop();
+        if (mPresentation != null) {
             mPresentation.dismiss();
             mPresentation = null;
         }
-        if (mPresentation == null &&  presentationDisplay != null) {
+    }
 
+    public void updatePresentation() {
+        // Log.d(TAG, "updatePresentation: ");
+        //得到当前route and its presentation display
+        MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
+                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+        Display presentationDisplay = route != null ? route.getPresentationDisplay() : null;
+
+        // 注释 : Dismiss the current presentation if the display has changed.
+        if (mPresentation != null && mPresentation.getDisplay() != presentationDisplay) {
+            mPresentation.dismiss();
+            mPresentation = null;
+        }
+        if (mPresentation == null && presentationDisplay != null) {
             // Initialise a new Presentation for the Display
-
-            mPresentation = new SamplePresentation(this,  presentationDisplay);
+            mPresentation = new SamplePresentation(this, presentationDisplay);
             // Log.d(TAG, "updatePresentation: this: "+ this.toString());
             mPresentation.setOnDismissListener(mOnDismissListener);
-
             // Try to show the presentation, this might fail if the display has
             // gone away in the mean time
             try {
-                mPresentation.show();
+                   mPresentation.show();
             } catch (WindowManager.InvalidDisplayException ex) {
                 // Couldn't show presentation - display was already removed
                 // Log.d(TAG, "updatePresentation: failed");
@@ -81,95 +147,4 @@ public class SplashActivity extends com.rg2.activity.BaseActivity {
         }
     }
 
-    @Override
-    protected void initData() {
-        imageView = (ImageView) findViewById(R.id.imageView);
-    }
-
-    @Override
-    protected void onResume() {
-        Log.e("获取焦点","....1");
-       // Log.d(TAG, "onResume: ");
-        super.onResume();
-        // Register a callback for all events related to live video devices
-        mMediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mMediaRouterCallback);
-        // Update the displays based on the currently active routes
-        updatePresentation();
-    }
-    @Override
-    protected void onPause() {
-       // Log.d(TAG, "onPause: ");
-        super.onPause();
-        Log.e("失去焦点","....1");
-        // Stop listening for changes to media routes.
-        updatePresentation();
-        Log.e("失去焦点","....11");
-    }
-
-
-    @Override
-    protected void onStop() {
-        //Log.d(TAG, "onStop: ");
-        super.onStop();
-        // Dismiss the presentation when the activity is not visible.
-        if (mPresentation != null) {
-            mPresentation.dismiss();
-            mPresentation = null;
-        }
-    }
-
-    @Override  //动画
-    protected void initEvent() {
-        //动画旋转
-        RotateAnimation animation = new RotateAnimation(0,1080, Animation.RELATIVE_TO_SELF
-                ,0.5f , Animation.RELATIVE_TO_SELF, 0.5f);
-        animation.setDuration(1600);
-        animation.setFillAfter(true);//保持结束状态
-        //设置缩放
-        ScaleAnimation scaleAnimation = new ScaleAnimation(0,1,0,1,Animation.RELATIVE_TO_SELF
-                ,0.5f , Animation.RELATIVE_TO_SELF, 0.5f);
-        scaleAnimation.setDuration(1600);
-        scaleAnimation.setFillAfter(true);
-        //设置渐变色
-        AlphaAnimation alphaAnimation = new AlphaAnimation(0,1);
-        alphaAnimation.setDuration(2000);
-        alphaAnimation.setFillAfter(true);
-
-        //开启动画集合;
-        AnimationSet set = new AnimationSet(false);
-        set.addAnimation(animation);
-        set.addAnimation(scaleAnimation);
-        set.addAnimation(alphaAnimation);
-        imageView.startAnimation(set);
-
-      /*  //动画的时机的处理事件监听事件;
-        set.setAnimationListener(new Animation.AnimationListener() {
-            @Override // @Override 动画结束后调用的方法;
-            public void onAnimationEnd(Animation animation) {
-               // SystemClock.sleep(1000);//睡眠
-                Intent intent = new Intent(SplashActivity.this,  RobotInfoActivity.class);
-                 startActivity(intent);
-            }
-            @Override    //动画开始执行的方法;
-            public void onAnimationStart(Animation animation) {
-            }
-            @Override   //重复动画的时执行的方法;
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-*/
-    }
-
-    @Override
-    protected void initViewData() {
-        tvNext = (TextView) findViewById(R.id.tv_next);
-        tvNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-             startActivity(intent);
-            }
-        });
-       }
 }
