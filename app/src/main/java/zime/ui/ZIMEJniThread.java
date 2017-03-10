@@ -5,7 +5,10 @@ import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
+
+import com.rg2.utils.LogUtil;
 
 import zime.media.ZIMEClientJni;
 import zime.media.ZIMEVideoClientJNI;
@@ -18,7 +21,7 @@ public class ZIMEJniThread extends Thread
 {
 	private static final String ZIMETAG = ZIMEJniThread.class.getCanonicalName();
 	public static ZIMEMedia mZIMEMedia = null;
-	private Handler mMsgHandler  = null;
+  private Handler mMsgHandler  = null;
 	private ZIMEAudio mZIMEAudio = null;
 	private ZIMEConfig mConf = null;
 	private ZIMEVideoClientJNI mVJNI = null;
@@ -28,7 +31,7 @@ public class ZIMEJniThread extends Thread
 	private AudioManager am = null;
 
 	final Handler handler = new Handler();
-	Runnable runnable=new Runnable(){
+	Runnable runnable =new Runnable(){
 		public void run() {
 			handler.postDelayed(this, 1000);
 			// TODO Auto-generated method stub
@@ -100,9 +103,6 @@ public class ZIMEJniThread extends Thread
 //		    	Log.e(ZIMETAG, "    ");
 			}
 
-
-
-
 		}
 	};
 
@@ -137,11 +137,11 @@ public class ZIMEJniThread extends Thread
 		mZIMEMedia.SetLogCallBack();
 
 		// 创建引擎	
-		int resultCode = ZIMEVideoClientJNI.SetLogPath("/sdcard");
+		int resultCode = ZIMEVideoClientJNI.SetLogPath("/sdcard");   // = 0;
 		Log.e(ZIMETAG, "ZIMEVideoClient set log path: resultCode = " + resultCode);
 
 		resultCode = ZIMEVideoClientJNI.Create();
-		if(0 != resultCode){
+		if(0 != resultCode){                                       // = -1;
 			Log.e(ZIMETAG, "ZIMEVideoClient Create failed!!, Ret = " + resultCode);
 			return;
 		}
@@ -168,27 +168,37 @@ public class ZIMEJniThread extends Thread
 		mActivity = activity;
 	}
 
-	public int Input(int msgWhat, Object msgObj){
-		Message msg = mMsgHandler.obtainMessage();
-		msg.what = msgWhat;
-		msg.obj = msgObj;
-		mMsgHandler.sendMessage(msg);
+	public int Input(final int msgWhat, final Object msgObj){
+		Log.d(ZIMETAG, "Thread.currentThread=0"+Thread.currentThread());
+	new Thread(){
+			@Override
+			public void run() {
+				super.run();
+				Log.d(ZIMETAG, "Thread.currentThread=1"+Thread.currentThread());
+				Message msg = mMsgHandler.obtainMessage();
+			 	//Message msg = Message.obtain();
+				Log.d(ZIMETAG, "msgObj="+msgObj  +"--msgWhat="+msgWhat + "--mMsgHandler----"+mMsgHandler);
+				msg.what = msgWhat;
+				msg.obj = msgObj;
+				mMsgHandler.sendMessage(msg);
+			}
+		}.start();
 		return 0;
 	}
 
 	private void SetConf(ZIMEConfig i_ZIMEConfig){
 		Log.e(ZIMETAG, "SetConf, ip = " + i_ZIMEConfig.mRecvIP);
 
-		if(!ZIMEConfig.mIsOnlyAudio)
-		{
-			mZIMEMedia.init(mVJNI);
-			mZIMEMedia.SetConf(i_ZIMEConfig);
-			ZIMEVideoClientJNI.SetActivity(mActivity);
-		}
-		else
-		{
-			mZIMEAudio.SetConf(i_ZIMEConfig);
-		}
+				  if(!ZIMEConfig.mIsOnlyAudio)
+				  {
+					  mZIMEMedia.init(mVJNI);
+					  mZIMEMedia.SetConf(i_ZIMEConfig);
+					  ZIMEVideoClientJNI.SetActivity(mActivity);
+				  }
+				  else
+				  {
+					  mZIMEAudio.SetConf(i_ZIMEConfig);
+				  }
 
 		return;
 	}
@@ -340,24 +350,23 @@ public class ZIMEJniThread extends Thread
 		return;
 	}
 
-	@Override
+	// @Override
 	public void run(){
 		Looper.prepare();
-
-		mMsgHandler = new Handler(){
+		Log.d(ZIMETAG, "Thread.currentThread=2"+Thread.currentThread());
+		  mMsgHandler = new Handler(){
 			@Override
 			public void handleMessage(Message msg){
-				Log.e("ZIMETAG", "handle Message---" + msg.what);
-
-
+				Log.e("ZIMETAG",mMsgHandler+"--handle Message---" + msg.what);
 				switch (msg.what)
 				{
 					case ZIMEConfig.SET_PARAM:
 					{
 						if(null != (ZIMEConfig)msg.obj)
 						{
-							mConf = (ZIMEConfig)msg.obj;
+							mConf = (ZIMEConfig) msg.obj;
 							SetConf(mConf);
+							LogUtil.d("ZIMETAG","--mConf ="+mConf );
 						}
 
 						break;
@@ -368,6 +377,7 @@ public class ZIMEJniThread extends Thread
 						{
 							mConf = (ZIMEConfig)msg.obj;
 							SetVideoConf(mConf);
+							LogUtil.d("ZIMETAG","--mConf ="+mConf );
 						}
 
 						break;
@@ -378,34 +388,43 @@ public class ZIMEJniThread extends Thread
 						{
 							mConf = (ZIMEConfig)msg.obj;
 							SetAudioConf(mConf);
+							LogUtil.d("ZIMETAG","-SET_AUDIOPARAM_BEFORSTART-mConf ="+mConf );
 						}
 
 						break;
 					}
 					case ZIMEConfig.START:
 						Start();
+						LogUtil.d("ZIMETAG","-START ="+ZIMEConfig.START );
 						break;
 					case ZIMEConfig.STOP:
 						Stop();
+						LogUtil.d("ZIMETAG","-STOP ="+ZIMEConfig.STOP );
 						break;
 					case ZIMEConfig.EXIT:
 						Exit();
+						LogUtil.d("ZIMETAG","-EXIT ="+ZIMEConfig.EXIT );
 						break;
 					case ZIMEConfig.STARTSEND:
 						StartSend();
+						LogUtil.d("ZIMETAG","-STARTSEND ="+ZIMEConfig.STARTSEND );
 						break;
 					case ZIMEConfig.STARTRECV:
 						StartRecv();
+						LogUtil.d("ZIMETAG","-STARTRECV ="+ZIMEConfig.STARTRECV );
 						break;
 
 					case ZIMEConfig.ASTART_BY_AVCLIENTINTERFACE:
 						StartAByAVClientInterface();
+						LogUtil.d("ZIMETAG","-ASTART_BY_AVCLIENTINTERFACE ="+ZIMEConfig.ASTART_BY_AVCLIENTINTERFACE );
 						break;
 					case ZIMEConfig.TOA:
 						toa();
+						LogUtil.d("ZIMETAG","-TOA ="+ZIMEConfig.TOA );
 						break;
 					case ZIMEConfig.TOAV:
 						toAV();
+						LogUtil.d("ZIMETAG","-TOAV ="+ZIMEConfig.TOAV );
 						break;
 					default:
 						break;
@@ -414,6 +433,5 @@ public class ZIMEJniThread extends Thread
 		};
 		Looper.loop();
 	}
-
 
 }
