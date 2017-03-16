@@ -1,10 +1,13 @@
 package com.financial;
 
 import android.app.ProgressDialog;
+import android.media.MediaRouter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -14,6 +17,8 @@ import android.widget.TextView;
 
 import com.brick.robotctrl.R;
 import com.card.ApplyForSelectCardActivity;
+import com.presentation.IdCardPresentation;
+import com.presentation.presentionui.FinancelistPresentation;
 import com.rg2.activity.BaseActivity;
 
 import butterknife.Bind;
@@ -33,6 +38,7 @@ public class FinanceIntroduceList extends BaseActivity {
      String[] moneys = {"50000.00","300000.00","300000.00","300000.00","360000.00","800000.00"};
      String[] rates = {"以官网公布为准","4.6%","4.6%","4.55%","4.6%","4.5%"};
     private ListView list;
+    private FinancelistPresentation mFinancelistPresentation;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -63,10 +69,7 @@ public class FinanceIntroduceList extends BaseActivity {
        list.setAdapter(new FinanceAdapter());
     }
 
-    @Override
-    protected void updatePresentation() {
 
-    }
 
    @Override
     protected void initViewData() {
@@ -127,5 +130,31 @@ public class FinanceIntroduceList extends BaseActivity {
         TextView   tvtime;
         TextView   tvkind;
         TextView   tvname;
+    }
+
+    @Override
+    protected void updatePresentation() {
+        // Log.d(TAG, "updatePresentation: ");
+        //得到当前route and its presentation display
+        MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
+                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+        Display presentationDisplay = route != null ? route.getPresentationDisplay() : null;
+        // 注释 : Dismiss the current presentation if the display has changed.
+        if (mFinancelistPresentation != null && mFinancelistPresentation.getDisplay() != presentationDisplay) {
+            mFinancelistPresentation.dismiss();
+            mFinancelistPresentation = null;
+        }
+        if (mFinancelistPresentation == null && presentationDisplay != null) {
+            // Initialise a new Presentation for the Display
+            mFinancelistPresentation = new FinancelistPresentation(this, presentationDisplay);
+            //把当前的对象引用赋值给BaseActivity中的引用;
+            mPresentation = mFinancelistPresentation;
+            mFinancelistPresentation.setOnDismissListener(mOnDismissListener);
+            try {
+                mFinancelistPresentation.show();
+            } catch (WindowManager.InvalidDisplayException ex) {
+                mFinancelistPresentation = null;
+            }
+        }
     }
 }

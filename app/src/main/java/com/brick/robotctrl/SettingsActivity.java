@@ -20,24 +20,24 @@ import java.util.List;
 public class SettingsActivity extends AppCompatPreferenceActivity{
     private static final String TAG = "SettingsActivity";
 
-//    UserTimer userTimer = null;
-
+    //  UserTimer userTimer = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG,"--------1");
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
         decorView.setSystemUiVisibility(uiOptions);
         setupActionBar();
-
+        Log.d(TAG,"--------2");
         BaseActivity.clearTimerCount();
     }
 
     // display the return button in action bar
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
+        Log.d(TAG,"--------3");
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -47,6 +47,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
     public void onBuildHeaders(List<PreferenceActivity.Header> target) {
 //        loadHeadersFromResource(R.xml.pref_headers, target);
         //NOTE1 用简单的GeneralPreferenceFragment配置界面 代替 默认的Headers 设置列表
+        Log.d(TAG,"--------4");
         getFragmentManager().beginTransaction().
                 add(android.R.id.content, new GeneralPreferenceFragment()).commit();
         Log.i(TAG, "onBuildHeaders");
@@ -70,10 +71,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
         private static Preference  developerPreference;
         @Override
         public void onCreate(Bundle savedInstanceState) {
+            Log.d(TAG,"--------5");
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
             setHasOptionsMenu(true);
-
+            Log.d(TAG,"--------6");
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
@@ -84,7 +86,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity{
             bindPreferenceSummaryToValue(findPreference(getString(R.string.list)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serialCOM)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.serialBaud)));
-
             bindPreferenceSummaryToValue(findPreference("developerKey"));
             developerPreference =  findPreference("developerKey");
 

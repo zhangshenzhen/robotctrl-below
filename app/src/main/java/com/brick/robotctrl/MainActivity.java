@@ -939,7 +939,7 @@ private MainPresentation  mMainPresentation;
             if ((networkInfo != null && networkInfo.isAvailable()) && ssdbTask.stop)
             {
                 Toast.makeText(context, "network is available, ssdb server haven't started, starting connect ssdb server", Toast.LENGTH_SHORT).show();
-        //        handler.sendEmptyMessage(ssdbConn);
+         //     handler.sendEmptyMessage(ssdbConn);
             }
             else
             {

@@ -1,5 +1,6 @@
 package com.rg2.activity;
 
+import android.content.SharedPreferences;
 import android.media.MediaRouter;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import com.brick.robotctrl.*;
 import com.brick.robotctrl.BaseActivity;
 import com.presentation.PrintPresentation;
 import com.presentation.SamplePresentation;
+import com.rg2.utils.SPUtils;
 import com.rg2.utils.StringUtils;
 
 import org.w3c.dom.Text;
@@ -21,10 +23,14 @@ import org.w3c.dom.Text;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
+import static com.rg2.utils.SPUtils.*;
+import static com.rg2.utils.SPUtils.put;
+
 /**
  * Created by Brick on 2016/12/10.
  */
 public class PrintActivity extends com.rg2.activity.BaseActivity{
+    private static final String TAG = "PrintActivity";
     private TextView   mBackTv;
     private  Button   mSubmitBnt1, mSubmitBnt2, mSubmitBnt3;
     SerialCtrl serialCtrlPrinter = null;
@@ -81,11 +87,14 @@ public class PrintActivity extends com.rg2.activity.BaseActivity{
             // Try to show the presentation, this might fail if the display has
             // gone away in the mean time
             try {
-                Log.e("SamplePresentation","................28");
+                Log.e("SamplePresentation","........PrintActivity........28");
+                if(countNum >=10){
+                    mPrintPresentation.initViewData(false);
+                    Log.d("PrintActivity","..提示没有打印纸。。。");
+                }
                 mPrintPresentation.show();
             } catch (WindowManager.InvalidDisplayException ex) {
                 // Couldn't show presentation - display was already removed
-
                 mPrintPresentation = null;
             }
         }
@@ -95,12 +104,15 @@ public class PrintActivity extends com.rg2.activity.BaseActivity{
     public void onClick(View v){
         switch (v.getId()){
             case R.id.btn_submit1:
+                CountPtint();
                 print1();
                 break;
             case R.id.btn_submit2:
+                CountPtint();
                 print2();
                 break;
             case R.id.btn_submit3:
+                CountPtint();
                 print3();
                 break;
             case R.id.tv_back:
@@ -108,10 +120,30 @@ public class PrintActivity extends com.rg2.activity.BaseActivity{
                 break;
         }
     }
+  //计数器
+     private  int countNum ;
 
+    public void CountPtint(){
+        //采用sp进行物理存储，打开退出关闭程序不影响计数器的数值;
+        countNum = (int) SPUtils.get(mContext, "countNum",0);
+        Log.d(TAG,"countNum=  存"+countNum);
+        if (countNum<9){
+            ++countNum;
+            SPUtils.put(mContext,"countNum", countNum);//存储变量
+            mPrintPresentation.initViewData(true);
+            Log.d(TAG,"countNum="+countNum+"还剩"+(10-countNum)+"张纸");
+        }else {
+            ++countNum;
+            Log.d(TAG,"countNum="+countNum+"还剩"+(10-countNum)+"张纸");
+            countNum = 0;//复原变量到初始值；
+            SPUtils.put(mContext,"countNum", countNum);
+            Log.d(TAG,"countNum="+countNum);
+            mPrintPresentation.initViewData(false);
+        }
+        mPrintPresentation.show();
+    }
 
-    private void print1()
-    {
+    private void print1(){
         //  String str ="1234567890ABCDEFGHIJ中华人民共和";
         //  String str="中华人民共和";
         String time = StringUtils.getDateToString(new Date());
@@ -233,7 +265,8 @@ public class PrintActivity extends com.rg2.activity.BaseActivity{
     @Override
     protected void onResume() {
         super.onResume();
-      updatePresentation();
+        Log.d(TAG,"打印的Activity");
+        updatePresentation();
     }
 
     @Override

@@ -33,7 +33,11 @@ private InserCardPresentation mInserCardPresentation;
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initEvent();
+    }
 
     @Override
     protected void initEvent() {

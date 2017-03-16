@@ -28,12 +28,10 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         initData();
-
     }
 
     @Override
     protected void updatePresentation() {
-
     }
 
     //初始化控件

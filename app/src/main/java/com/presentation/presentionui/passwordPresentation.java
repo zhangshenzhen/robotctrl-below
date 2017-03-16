@@ -35,7 +35,7 @@ public class PasswordPresentation extends  BasePresentation {
         password.setText("您两次输入的密码不一致,请重新输入");
     }
     public void passWord(){
-        password.setText("您的密码已设置");
+        password.setText("您的密码已设置完成");
     }
 
 }

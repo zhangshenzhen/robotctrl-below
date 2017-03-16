@@ -321,7 +321,6 @@ public class FiveActivity extends BaseActivity {
          dialog = new ProgressDialog(mContext);
          dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
          dialog.setMessage("正在提交数据");
-         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
          dialog.show();//显示
         //上传数据;
          String url = "http://www.baidu.com";

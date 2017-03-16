@@ -12,7 +12,7 @@ import java.security.InvalidParameterException;
  * @author benjaminwan
  *串口辅助工具类
  */
-public abstract class SerialHelper{
+public abstract class  SerialHelper{
 	private SerialPort mSerialPort;
 	private OutputStream mOutputStream;
 	private InputStream mInputStream;
@@ -112,7 +112,7 @@ public abstract class SerialHelper{
 			}
 		}
 	}
-	//----------------------------------------------------
+//----------------------------------------------------
 	private class SendThread extends Thread{
 		public boolean suspendFlag = true;// 控制线程的执行
 		@Override

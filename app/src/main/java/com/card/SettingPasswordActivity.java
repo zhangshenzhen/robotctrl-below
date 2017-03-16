@@ -1,6 +1,7 @@
 package com.card;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.media.MediaRouter;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -18,8 +19,10 @@ import com.brick.robotctrl.R;
 import com.presentation.presentionui.InserCardPresentation;
 import com.presentation.presentionui.PasswordPresentation;
 import com.rg2.activity.BaseActivity;
+import com.rg2.activity.FiveActivity;
 import com.rg2.utils.StringUtils;
 import com.rg2.utils.ToastUtil;
+import com.userinfo.InforCompleteActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -116,32 +119,29 @@ public class SettingPasswordActivity extends BaseActivity {
     private void LoadData(String password, String repassword) {
         final ProgressDialog pd = new ProgressDialog(mContext);
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pd.setMessage("正在提交数据到服务器....");
+        pd.setMessage("正在提交您设置的密码....");
         pd.show();
-        SystemClock.sleep(3000);
-        pd.dismiss();
-        // 如果提交成功,就提示设置完成;
+        //上传数据;
+        String url = "https://www.baidu.com";
+        OkHttpUtils.get().url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        SystemClock.sleep(1000);
+                        pd.dismiss();
+                        Log.d(TAG, "Exception:"+call+"......"+e);
+                    }
+                    @Override
+                    public void onResponse(Call call, String s) {
+                        pd.dismiss();
+                        Log.d(TAG, "String:"+call+"......"+s);
+                        settingRight.setVisibility(View.VISIBLE);
+                    }
+                });
+        //显示出设置正确的图标；
         mPasswordPresentation.passWord();
         settingRight.setVisibility(View.VISIBLE);
-      OkHttpUtils.post().url("")
-              .addParams("","")
-              .build()
-             .execute(new Callback() {
-                 @Override
-                 public Object parseNetworkResponse(Response response) throws Exception {
-                     return null;
-                 }
-
-                 @Override
-                 public void onError(Call call, Exception e) {
-
-                 }
-
-                 @Override
-                 public void onResponse(Call call, Object o) {
-
-                 }
-             });
     }
 
     @Override

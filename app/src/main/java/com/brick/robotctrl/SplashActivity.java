@@ -72,11 +72,9 @@ public class SplashActivity extends BaseActivity {
                 vv.start();
           }
         });
-
     }
     @Override
     protected void initViewData() {
-
     }
 
     @Override
@@ -85,7 +83,7 @@ public class SplashActivity extends BaseActivity {
         vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-              startActivity( new Intent(SplashActivity.this, MainActivity.class));
+            startActivity( new Intent(SplashActivity.this, MainActivity.class));
             }
         });
     }

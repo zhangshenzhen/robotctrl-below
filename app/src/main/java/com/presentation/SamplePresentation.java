@@ -59,7 +59,6 @@ public class SamplePresentation extends BasePresentation {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
         // Set the content view to the custom layout
         // Inflate a layout.
         //调用setContentView()来指定您要在辅助显示屏上显示的UI
@@ -73,7 +72,5 @@ public class SamplePresentation extends BasePresentation {
         tv.setGravity(Gravity.CENTER);
         Rl.addView(tv);
      }
-
-
 }
 

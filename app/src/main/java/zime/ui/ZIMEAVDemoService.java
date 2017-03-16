@@ -147,9 +147,7 @@ public class ZIMEAVDemoService extends Service {
           Log.d(ZIMETAG, "Thread.currentThread="+Thread.currentThread());
           Log.e(ZIMETAG,"9");
           Log.e(ZIMETAG,"10");
-
           VideoDeviceCallBack.SetCodecType(ZIMEConfig.mCodecType);
-
             if(ZIMEConfig.mCodecType == ZIMEConfig.enumZIME_AMLOGICHARDWEAR)
            {
                 Log.e(ZIMETAG,"11");

@@ -96,8 +96,8 @@ public class RobotApplication extends Application {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            android.os.Process.killProcess(android.os.Process.myPid());
-//            Log.e("MyexceptionHandler", "......启动自杀方式，再次激活程序");
+//        android.os.Process.killProcess(android.os.Process.myPid());
+//        Log.e("MyexceptionHandler", "......启动自杀方式，再次激活程序");
 
         }
     }

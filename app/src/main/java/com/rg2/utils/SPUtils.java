@@ -25,12 +25,11 @@ public class SPUtils {
 
     /**
      * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
-     *
-     * @param context 上下文
+     *  @param context 上下文
      * @param key     键
      * @param object  值
      */
-    public static void put(Context context, String key, Object object) {
+    public static int put(Context context, String key, Object object) {
 
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
@@ -50,6 +49,7 @@ public class SPUtils {
             editor.putString(key, object.toString());
         }
         SharedPreferencesCompat.apply(editor);
+        return 0;
     }
 
     /**
