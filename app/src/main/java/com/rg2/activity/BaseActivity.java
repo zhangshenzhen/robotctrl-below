@@ -148,7 +148,7 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
                 | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
         decorView.setSystemUiVisibility(uiOptions);
         super.onResume();
-        updatePresentation();
+     //   updatePresentation();
     }
 
     //@Override
