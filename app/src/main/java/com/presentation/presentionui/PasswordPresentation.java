@@ -12,7 +12,7 @@ import com.presentation.BasePresentation;
  * Created by shenzhen on 2017/1/13.
  */
 
-public class PasswordPresentation extends  BasePresentation {
+public class PasswordPresentation extends BasePresentation {
 
 
     private TextView password;

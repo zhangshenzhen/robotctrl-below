@@ -7,8 +7,10 @@ import android.os.Build;
 import android.os.Debug;
 import android.os.Environment;
 import android.util.Log;
+import android.os.Handler;
 
 import com.kjn.crashlog.CrashHandler;
+import com.tencent.bugly.crashreport.CrashReport;
 
 
 import java.io.File;
@@ -48,16 +50,16 @@ public class RobotApplication extends Application {
         Intent stopIntent = new Intent(this, ZIMEAVDemoService.class);
          stopService(stopIntent);
 
-        CrashHandler crashHandler = CrashHandler.getInstance();
-
-         crashHandler.init(this);
+        //CrashHandler crashHandler = CrashHandler.getInstance();
+        //crashHandler.init(this);
 
           //x.Ext.init(this);//Xutils初始化
-        RobotApplication.context = getApplicationContext();
+        //RobotApplication.context = getApplicationContext();
         //初始化程序崩溃调用；
-        Log.d(TAG, "..........4");
-        Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
+        //Log.d(TAG, "..........4");
+        //Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
 
+        CrashReport.initCrashReport(getApplicationContext(), "124afbac58", true);
     }
 
     private class MyexceptionHandler implements Thread.UncaughtExceptionHandler {
