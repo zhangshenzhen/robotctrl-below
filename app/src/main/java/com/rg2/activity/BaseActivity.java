@@ -38,6 +38,9 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         mContext = this;
 
         super.onCreate(savedInstanceState);
+        //启动时隐藏软键盘,但EditText的光标还在，点击编辑框才弹出软键盘；
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         //设置为横屏幕;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//横屏
         initViews(savedInstanceState);//主屏幕
@@ -128,7 +131,7 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
     @Override
     protected void onPause() {
         super.onPause();
-        updatePresentation();
+         updatePresentation();
      mMediaRouter.removeCallback(mMediaRouterCallback);
     }
 
@@ -148,7 +151,10 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
                 | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
         decorView.setSystemUiVisibility(uiOptions);
         super.onResume();
-     //   updatePresentation();
+        // Listen for changes to media routes.
+        mMediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mMediaRouterCallback);
+
+        updatePresentation();
     }
 
     //@Override
