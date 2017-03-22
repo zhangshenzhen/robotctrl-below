@@ -270,8 +270,8 @@ private MainPresentation  mMainPresentation;
     //点击事件
     @Override
     public void onClick(View view) {
+        LogUtil.e("MainActivity", "..System.currentTimeMillis()"+System.currentTimeMillis());
         switch (view.getId()){
-
             case R.id.btn_setting:
                 startActivity(new Intent(MainActivity.this, FingerInputActivity.class));
                 break;
@@ -281,7 +281,6 @@ private MainPresentation  mMainPresentation;
                 break;
             case R.id.Printer:
                 startActivity(new Intent(MainActivity.this, PrintActivity.class));
-
                 break;
             case R.id.btn_money:
                 startActivity(new Intent(MainActivity.this, FinancialMangerActivity.class));
@@ -656,10 +655,10 @@ private MainPresentation  mMainPresentation;
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ----------13--------Key:SetParam \tvalue:" + rlt);
                     ssdbTask.pushFileList();
-                    //                    if(!rlt.equals(""))   {
-                    //                        Log.d(TAG, "videoplaylist: hehe");
-                    //                        SSDBTask.enableVideoPlayList=false;
-                    //                    }
+                    //   if(!rlt.equals(""))   {
+                    //   Log.d(TAG, "videoplaylist: hehe");
+                    //   SSDBTask.enableVideoPlayList=false;
+                    //    }
                     break;
                 case SSDBTask.Key_RobotMsg:
                     rlt = (String) msg.obj;
@@ -827,8 +826,8 @@ private MainPresentation  mMainPresentation;
 
     @Override //当重新获取焦点是 开启副屏的方法;
     protected void onResume() {
-
         super.onResume();
+        LogUtil.e(TAG, "..System.currentTimeMillis()"+System.currentTimeMillis());
         updatePresentation();
         timer.cancel();//取消任务
     }
@@ -849,7 +848,6 @@ private MainPresentation  mMainPresentation;
         Log.i(TAG, "onStart");
         super.onStart();
     }
-
 
         @Override
         protected void onStop() {

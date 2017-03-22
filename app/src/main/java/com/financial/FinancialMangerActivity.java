@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 
 
 public class FinancialMangerActivity extends BaseActivity {
+    private static final String TAG ="FinancialManger" ;
     private byte[] name = new byte[32];
     private byte[] sex = new byte[6];
     private byte[] birth = new byte[18];
@@ -60,7 +61,7 @@ public class FinancialMangerActivity extends BaseActivity {
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_financial);
-
+        LogUtil.e(TAG, "..System.currentTimeMillis()"+System.currentTimeMillis());
         iDCardDevice = new publicSecurityIDCardLib();
     }
 
@@ -240,9 +241,9 @@ public class FinancialMangerActivity extends BaseActivity {
     }
     @Override
     public void onClick(View view) {
+            LogUtil.e(TAG, "..System.currentTimeMillis()"+System.currentTimeMillis());
         switch (view.getId()) {
             case R.id.tv_back:
-                Log.d("","....................");
                 finish();
                 break;
             case R.id.btn_submit:
@@ -321,11 +322,11 @@ public class FinancialMangerActivity extends BaseActivity {
         }
     }
 
-    @Override
+   /* @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-    }
+    }*/
 
 }

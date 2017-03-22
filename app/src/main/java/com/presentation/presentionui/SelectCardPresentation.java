@@ -13,8 +13,6 @@ import com.presentation.BasePresentation;
 
 public class SelectCardPresentation extends  BasePresentation {
 
-
-
     public SelectCardPresentation(Context outerContext, Display display) {
         super(outerContext, display);
     }
@@ -23,8 +21,6 @@ public class SelectCardPresentation extends  BasePresentation {
         setContentView(R.layout.persentation_selece_card);
       }
      public void initViewData(){}
-
-
 
 
 }

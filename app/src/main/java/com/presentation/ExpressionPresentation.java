@@ -18,8 +18,7 @@ public class ExpressionPresentation extends  BasePresentation {
 
     @Override
       protected void initView(Bundle savedInstanceState) {
-
         setContentView(R.layout.persentation_pression);
-     }
+      }
 
 }

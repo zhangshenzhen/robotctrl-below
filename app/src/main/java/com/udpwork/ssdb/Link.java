@@ -74,7 +74,7 @@ public class Link {
 		os.write(buf.buf, buf.data, buf.size);
 		os.flush();
 	}
-	
+
 	private List<byte[]> recv() throws Exception{
 		input.nice();
 		InputStream is = sock.getInputStream();

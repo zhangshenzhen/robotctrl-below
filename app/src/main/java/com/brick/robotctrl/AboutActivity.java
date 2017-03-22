@@ -199,7 +199,7 @@ public class AboutActivity extends BaseActivity {
                     Log.d(TAG, "暂无更新");
                    //	如果没有更新应用，则跳回MainActivity,否则发送handler事件进行安装
                 ftp.closeConnect();   // 使用closeConnect()方法关闭FTP访问
-               // contextHandler.sendEmptyMessage(SSDBTask.key_ApkUpdate);
+             //   contextHandler.sendEmptyMessage(SSDBTask.key_ApkUpdate);
                 //replace finish()?
                 Intent intent = new Intent(AboutActivity.this, MainActivity.class);
                 startActivity(intent);

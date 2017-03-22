@@ -3,16 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:id="@+id/rl"
-               >
+    android:id="@+id/rl" >
 
-   <!-- <FrameLayout
-         android:layout_centerInParent="true"
-        android:id="@+id/activity_view_vice"
+    <TextView
+        android:id="@+id/tv_remin"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="欢迎使用智能型机器人，很高兴为您服务！！！"
+        android:textSize="36sp"
+        android:textColor="@color/blackB"
+        />
 
-      </FrameLayout>-->
 
 
 </RelativeLayout>

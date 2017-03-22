@@ -106,6 +106,11 @@ public class CreadCarInfo extends BaseActivity {
 */
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updatePresentation();
+    }
 
     @Override
     protected void initEvent() {

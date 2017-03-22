@@ -71,7 +71,7 @@ public class NoAnswerQueryActivity extends BaseActivity {
         stopIntent.putExtra("url", mp3Url);
         Log.d(TAG, "onCreate: starting PlayService");
         stopIntent.setClass(NoAnswerQueryActivity.this, PlayerService.class);
-        stopService(stopIntent);
+        stopService(stopIntent);//关闭服务;
         super.onStop();
     }
 

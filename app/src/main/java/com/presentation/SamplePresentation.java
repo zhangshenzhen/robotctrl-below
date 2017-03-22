@@ -48,6 +48,8 @@ import com.brick.robotctrl.R;
 //扩展Presentation类并实现onCreate()方法;
 public class SamplePresentation extends BasePresentation {
 
+    private TextView tvremin;
+
     public SamplePresentation(Context outerContext, Display display) {
         super(outerContext, display);
         mContext = outerContext;
@@ -63,14 +65,7 @@ public class SamplePresentation extends BasePresentation {
         // Inflate a layout.
         //调用setContentView()来指定您要在辅助显示屏上显示的UI
         setContentView(R.layout.okienko_vice);
-        RelativeLayout Rl = (RelativeLayout) findViewById(R.id.rl);
-        //动态添加布局
-        TextView tv = new TextView(mContext);
-        tv.setText("欢迎使用智能型机器人，很高兴为您服务！！！");
-        tv.setTextSize(36);
-        tv.setTextColor(Color.BLACK);
-        tv.setGravity(Gravity.CENTER);
-        Rl.addView(tv);
-     }
+        tvremin = (TextView) findViewById(R.id.tv_remin);
+      }
 }
 

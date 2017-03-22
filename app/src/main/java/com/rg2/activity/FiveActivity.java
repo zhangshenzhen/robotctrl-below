@@ -322,23 +322,22 @@ public class FiveActivity extends BaseActivity {
          dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
          dialog.setMessage("正在提交数据");
          dialog.show();//显示
-        //上传数据;
-         String url = "http://www.baidu.com";
-        OkHttpUtils.get().url(url)
+        //上传数据,请求数据;
+          String path = "http://www.baidu.com";
+          OkHttpUtils.post().url(path)
+//                  .addParams("XXX","YYY")
+//                  .addParams("EE","RR")
+//                  .addParams("RR","RR")
                 .build()
                .execute(new StringCallback() {
                    @Override
                    public void onError(Call call, Exception e) {
-                       SystemClock.sleep(2000);
-                       dialog.dismiss();
-                       Log.d(TAG, "updatePresentation:"+call+"......"+e);
-                       startActivity(new Intent(FiveActivity.this, InforCompleteActivity.class));
                       }
                    @Override
                    public void onResponse(Call call, String s) {
-
+                      // startActivity(new Intent(FiveActivity.this, InforCompleteActivity.class));
+                       Log.d(TAG, "请求下的数据为" + s);
                    }
                });
-
     }
 }

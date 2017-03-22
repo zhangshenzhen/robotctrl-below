@@ -93,11 +93,11 @@ public class SettingPasswordActivity extends BaseActivity {
                 break;
         }
     }
-
     private void Submit() {
         String password = etpassword.getText().toString().trim();
         String repassword = etrepassrord.getText().toString().trim();
         //密码不能为空， 长度
+         settingRight.setVisibility(View.GONE);//隐藏
         if (TextUtils.isEmpty(password) || password.length() != 6) {
             ToastUtil.show(mContext, "请检查密码是否符合要求");
             Log.d(TAG, "请检查密码是否符合要求password");
@@ -141,7 +141,6 @@ public class SettingPasswordActivity extends BaseActivity {
                 });
         //显示出设置正确的图标；
         mPasswordPresentation.passWord();
-        settingRight.setVisibility(View.VISIBLE);
     }
 
     @Override

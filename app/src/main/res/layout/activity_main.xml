@@ -24,13 +24,13 @@
         app:popupTheme="@style/AppTheme.Settings" />
 
     <Button
-        android:layout_width="200dp"
-        android:layout_height="80dp"
+        android:layout_width="260dp"
+        android:layout_height="100dp"
        android:layout_toLeftOf="@+id/IDButtonTest"
         android:id="@+id/Printer"
         android:textSize="30dp"
         android:layout_marginRight="60dp"
-       android:layout_marginTop="100dp"
+       android:layout_marginTop="160dp"
         android:background="@drawable/button"
         android:text="取号"
 
@@ -50,8 +50,8 @@
         />
 
     <Button
-    android:layout_width="200dp"
-    android:layout_height="80dp"
+        android:layout_width="260dp"
+        android:layout_height="100dp"
     android:text="指纹"
     android:layout_marginTop="61dp"
      android:layout_marginRight="60dp"
@@ -63,8 +63,8 @@
 
   <Button
       android:id="@+id/btn_test"
-      android:layout_width="200dp"
-      android:layout_height="80dp"
+      android:layout_width="260dp"
+      android:layout_height="100dp"
       android:text="测试按钮"
       android:textSize="30dp"
          android:layout_toRightOf="@+id/btn_setting"
@@ -73,20 +73,20 @@
       android:background="@drawable/button"/>
 
     <Button
-        android:layout_width="200dp"
-        android:layout_height="80dp"
+        android:layout_width="260dp"
+        android:layout_height="100dp"
         android:text="办理信用卡"
         android:textSize="30dp"
         android:background="@drawable/button"
         android:id="@+id/IDButtonTest"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="160dp"
       android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="200dp"
-        android:layout_height="80dp"
+        android:layout_width="260dp"
+        android:layout_height="100dp"
         android:layout_marginLeft="60dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="160dp"
         android:text="理财"
         android:textSize="30dp"
         android:background="@drawable/button"

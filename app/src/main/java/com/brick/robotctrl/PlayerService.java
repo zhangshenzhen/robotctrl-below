@@ -7,9 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 @SuppressLint("NewApi")
 public class PlayerService extends Service {
@@ -18,7 +22,7 @@ public class PlayerService extends Service {
     private String path;                        //音乐文件路径
     private boolean isPause;                    //暂停状态
 
-    private static String mp3Url = null;
+    private static String mp3Url= null;
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -30,7 +34,7 @@ public class PlayerService extends Service {
         if (mediaPlayer.isPlaying()) {
             stop();
         }
-//        path = intent.getStringExtra("url");
+ //       path = intent.getStringExtra("url");
         path = mp3Url;
         Log.d(TAG, "onStartCommand: " + path);
 //        int msg = intent.getIntExtra("MSG", 0);
@@ -47,6 +51,7 @@ public class PlayerService extends Service {
     private void play(int position) {
         try {
             mediaPlayer.reset();//把各项参数恢复到初始状态
+            Log.d(TAG,"开始准备音乐资源");
             mediaPlayer.setDataSource(path);
             mediaPlayer.prepare();  //进行缓冲
             mediaPlayer.setOnPreparedListener(new PreparedListener(position));//注册一个监听器
@@ -103,6 +108,7 @@ public class PlayerService extends Service {
 
         @Override
         public void onPrepared(MediaPlayer mp) {
+            Log.d(TAG,"开始播放音乐start"+mp);
             mediaPlayer.start();    //开始播放
             if (positon > 0) {    //如果音乐不是从头播放
                 mediaPlayer.seekTo(positon);
@@ -110,27 +116,26 @@ public class PlayerService extends Service {
         }
     }
 
-
     public static void startAction(Context context, String url) {
         File file = new File(url);
+        Log.d(TAG, "--"+file.exists());
         if ( !file.exists() ) {
             Log.d(TAG, "startPlayerService: File:" + url + " not exist! startPlayerService no effective");
             return;
         }
         stopAction(context);
-
         Intent playIntent = new Intent();
-//        playIntent.putExtra("url", url);
+//      playIntent.putExtra("url", url);
         mp3Url = url;
-//        intent.putExtra("MSG", 0);
-        Log.d("", "startPlayerService: starting PlayService");
+//      intent.putExtra("MSG", 0);
+        Log.d(TAG, "startPlayerService: starting PlayService");
         playIntent.setClass(context, PlayerService.class);
         context.startService(playIntent);       //启动服务
     }
 
     public static void stopAction(Context context) {
         Intent stopIntent = new Intent();
-        Log.d("", "stopPlayerService: starting stopService");
+        Log.d(TAG, "stopPlayerService: starting stopService");
         stopIntent.setClass(context, PlayerService.class);
         context.stopService(stopIntent);       //关闭服务
     }

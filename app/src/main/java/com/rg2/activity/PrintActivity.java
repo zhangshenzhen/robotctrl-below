@@ -3,6 +3,7 @@ package com.rg2.activity;
 import android.content.SharedPreferences;
 import android.media.MediaRouter;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
@@ -15,6 +16,7 @@ import com.brick.robotctrl.*;
 import com.brick.robotctrl.BaseActivity;
 import com.presentation.PrintPresentation;
 import com.presentation.SamplePresentation;
+import com.rg2.utils.LogUtil;
 import com.rg2.utils.SPUtils;
 import com.rg2.utils.StringUtils;
 
@@ -46,6 +48,7 @@ public class PrintActivity extends com.rg2.activity.BaseActivity{
     protected void initViews(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_print);
+
         mBackTv = (TextView) findViewById(R.id.tv_back);
         mSubmitBnt1 = (Button) findViewById(R.id.btn_submit1);
         mSubmitBnt2 = (Button) findViewById(R.id.btn_submit2);
@@ -127,18 +130,18 @@ public class PrintActivity extends com.rg2.activity.BaseActivity{
         //采用sp进行物理存储，打开退出关闭程序不影响计数器的数值;
         countNum = (int) SPUtils.get(mContext, "countNum",0);
         Log.d(TAG,"countNum=  存"+countNum);
+        Log.d(TAG,"countNum=  存"+getPackageName());
         if (countNum<9){
             ++countNum;
             SPUtils.put(mContext,"countNum", countNum);//存储变量
             mPrintPresentation.initViewData(true);
-            Log.d(TAG,"countNum="+countNum+"还剩"+(10-countNum)+"张纸");
-        }else {
+          }else {
             ++countNum;
             Log.d(TAG,"countNum="+countNum+"还剩"+(10-countNum)+"张纸");
             countNum = 0;//复原变量到初始值；
             SPUtils.put(mContext,"countNum", countNum);
             Log.d(TAG,"countNum="+countNum);
-            mPrintPresentation.initViewData(false);
+          mPrintPresentation.initViewData(false);
         }
         mPrintPresentation.show();
     }
@@ -266,6 +269,7 @@ public class PrintActivity extends com.rg2.activity.BaseActivity{
     protected void onResume() {
         super.onResume();
         Log.d(TAG,"打印的Activity");
+        LogUtil.e(TAG, "..System.currentTimeMillis()"+System.currentTimeMillis());
         updatePresentation();
     }
 

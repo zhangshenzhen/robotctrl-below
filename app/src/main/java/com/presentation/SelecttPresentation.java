@@ -26,7 +26,4 @@ public class SelecttPresentation extends  BasePresentation {
       }
      public void initViewData(){}
 
-
-
-
 }

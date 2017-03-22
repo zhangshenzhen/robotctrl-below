@@ -156,6 +156,12 @@ public class ApplyForActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        updatePresentation();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         updatePresentation();

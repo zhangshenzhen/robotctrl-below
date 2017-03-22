@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.brick.robotctrl.R;
 import com.presentation.presentionui.CardPresentation;
 import com.rg2.activity.BaseActivity;
-
+import com.rg2.utils.LogUtil;
 
 
 import butterknife.Bind;
@@ -58,6 +58,13 @@ public class CardActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtil.e(TAG, "..System.currentTimeMillis()"+System.currentTimeMillis());
+        updatePresentation();
+    }
+
     /*开启副屏的*/
     @Override
     protected void updatePresentation() {
@@ -88,13 +95,12 @@ public class CardActivity extends BaseActivity {
 
     @OnClick({R.id.tv_back_card, R.id.tv_card_applyfor, R.id.tv_card_business, R.id.tv_card_activate})
     public void onClick(View view) {
-        Log.d(TAG,"为什么会崩溃1");
+        LogUtil.e(TAG, "..System.currentTimeMillis()"+System.currentTimeMillis());
         switch (view.getId()) {
             case R.id.tv_back_card:
                 finish();                   // 返回上一层;
                 break;
             case R.id.tv_card_applyfor:
-                Log.d(TAG,"为什么会崩溃2");
                 startActivity(new Intent(CardActivity.this, ApplyForActivity.class));
                 Log.d(TAG,"为什么会崩溃3");
                 break;
