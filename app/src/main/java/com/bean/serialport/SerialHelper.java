@@ -1,5 +1,7 @@
 package com.bean.serialport;
 
+import android.util.Log;
+
 import com.cedric.serialport.SerialPort;
 
 import java.io.File;
@@ -64,6 +66,7 @@ public abstract class  SerialHelper{
 		try
 		{
 			mOutputStream.write(bOutArray);
+
 		} catch (IOException e)
 		{
 			e.printStackTrace();

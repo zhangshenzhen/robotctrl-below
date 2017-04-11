@@ -184,41 +184,52 @@ public class SerialCtrl {
         Log.d(TAG, "robotMove: ");
         switch (dir) {
             case "up":
-                sendPortData(ComA, "FF01FF01");
+               // sendPortData(ComA, "FF01FF01");
+                sendPortData(ComA, "55AA7E0001020100830D");
                 break;
             case "down":
-                sendPortData(ComA, "FF02FF02");
+               // sendPortData(ComA, "FF02FF02");
+                sendPortData(ComA, "55AA7E0001020200840D");
                 break;
             case "left":
-                sendPortData(ComA, "FF03FF03");
+               // sendPortData(ComA, "FF03FF03");
+                sendPortData(ComA, "55AA7E0001020300850D");
                 break;
             case "right":
-                sendPortData(ComA, "FF04FF04");
+               // sendPortData(ComA, "FF04FF04");
+                sendPortData(ComA, "55AA7E0001020400860D");
                 break;
             case "stop":
-                sendPortData(ComA, "FF05FF05");
+              //  sendPortData(ComA, "FF05FF05");
+                sendPortData(ComA, "55AA7E0001020500870D");
                 break;
             case "headup":
-                sendPortData(ComA, "FF11FF11");
+              //  sendPortData(ComA, "FF11FF11");
+                sendPortData(ComA, "55AA7E0001021100910D");
                 break;
             case "headdown":
-                sendPortData(ComA, "FF12FF12");
+              //  sendPortData(ComA, "FF12FF12");
+                sendPortData(ComA, "55AA7E0001021200920D");
                 break;
             case "headleft":
-                sendPortData(ComA, "FF13FF13");
+              // sendPortData(ComA, "FF13FF13");
+                sendPortData(ComA, "55AA7E0001021300930D");
                 break;
             case "headright":
-                sendPortData(ComA, "FF14FF14");
+              //  sendPortData(ComA, "FF14FF14");
+                sendPortData(ComA, "55AA7E0001021400940D");
                 break;
             case "headmid":
-                sendPortData(ComA, "FF15FF15");
+              //  sendPortData(ComA, "FF15FF15");
+                sendPortData(ComA, "55AA7E0001021500950D");
                 break;
             default:
         }
     }
     public int getBattery()      //发送获取电压命令
     {
-        sendPortData(ComA, "FF10FF10");
+      //  sendPortData(ComA, "FF10FF10");
+        sendPortData(ComA, "55AA7E0001021000900D");
         return batteryNum;
     }
 

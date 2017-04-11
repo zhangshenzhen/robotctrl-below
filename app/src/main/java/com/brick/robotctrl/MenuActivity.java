@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.fragment.FunctionActivity;
 import com.jly.idcard.IDcardActivity;
 
 
@@ -19,6 +20,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     TextView prodButton = null;
     TextView busButton = null;
     TextView aboutButton = null;
+    TextView function = null;
 
     private RelativeLayout menuActivity = null;
     private RelativeLayout reback1;
@@ -41,6 +43,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         prodButton = (TextView) findViewById(R.id.textView4);
         busButton = (TextView) findViewById(R.id.textView5);
         aboutButton = (TextView) findViewById(R.id.textView6);
+        function = (TextView) findViewById(R.id.textView7);
         reback1 = (RelativeLayout) findViewById(R.id.reback);
 
         IDButton.setOnClickListener(this);
@@ -48,6 +51,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         prodButton.setOnClickListener(this);
         busButton.setOnClickListener(this);
         aboutButton.setOnClickListener(this);
+        function.setOnClickListener(this);
         reback1.setOnClickListener(this);
 
     }
@@ -59,7 +63,6 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
             case R.id.textView2:
                 clearTimerCount();
                 startActivity(new Intent(MenuActivity.this, IDcardActivity.class));
-
                 break;
             case R.id.textView3:
                 clearTimerCount();
@@ -69,22 +72,24 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
             case R.id.textView4:
                 clearTimerCount();
                 startActivity(new Intent(MenuActivity.this, ManyQueryActivity.class));
-
                 break;
             case R.id.textView5:
                 clearTimerCount();
                 startActivity(new Intent(MenuActivity.this, QuestTestActivity.class));
-
                 break;
             case R.id.textView6:
                 clearTimerCount();
                 startActivity(new Intent(MenuActivity.this, AboutActivity.class));
                 break;
+            case R.id.textView7:
+                clearTimerCount();
+                startActivity(new Intent(MenuActivity.this, FunctionActivity.class));
+                break;
             case R.id.reback:
                 finish();//退出当前的Activity;
                 break;
         }
-    }
+  }
 
 
     @Override

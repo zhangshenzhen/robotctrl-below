@@ -17,6 +17,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.bean.serialport.UserInfo;
+
 import java.io.IOException;
 
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
@@ -63,6 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         mContext = this;
         super.onCreate(savedInstanceState);
+
         //设置为横屏幕;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//横屏
         screenWidth = getWindowManager().getDefaultDisplay().getWidth();       // 屏幕宽（像素，如：480px）
@@ -176,6 +179,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         if (mGestureDetector.onTouchEvent(event))
             return true;
 

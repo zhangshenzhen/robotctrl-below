@@ -1,6 +1,7 @@
 package com.brick.robotctrl;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -40,6 +41,7 @@ import com.jly.idcard.IDcardActivity;
 import com.kjn.videoview.ADVideo;
 import com.presentation.MainPresentation;
 import com.rg2.activity.*;
+import com.rg2.activity.BaseActivity;
 import com.rg2.utils.LogUtil;
 
 import java.io.File;
@@ -52,7 +54,7 @@ import java.util.TimerTask;
 import it.sauronsoftware.base64.Base64;
 import zime.ui.ZIMEAVDemoService;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends com.brick.robotctrl.BaseActivity {
     private static final String TAG = "MainActivity";
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
 
@@ -246,7 +248,7 @@ private MainPresentation  mMainPresentation;
 
 
     //初始化控件;
-    private void initData() {
+    public void initData() {
 
         mSettingBtn = (Button) findViewById(R.id.btn_setting);
         printButton = (Button) findViewById(R.id.Printer);
@@ -267,6 +269,7 @@ private MainPresentation  mMainPresentation;
         IDButton.setOnClickListener(this);
         mtvBback.setOnClickListener(this);
     }
+
     //点击事件
     @Override
     public void onClick(View view) {
@@ -290,7 +293,6 @@ private MainPresentation  mMainPresentation;
                 break;
             case R.id.btn_test:
                 startActivity(new Intent(MainActivity.this, MenuActivity.class));
-
                 break;
         }
     }
@@ -827,6 +829,8 @@ private MainPresentation  mMainPresentation;
     @Override //当重新获取焦点是 开启副屏的方法;
     protected void onResume() {
         super.onResume();
+
+        setResult(Activity.RESULT_OK);//开启新的ActivityForResult();
         LogUtil.e(TAG, "..System.currentTimeMillis()"+System.currentTimeMillis());
         updatePresentation();
         timer.cancel();//取消任务
@@ -903,7 +907,7 @@ private MainPresentation  mMainPresentation;
                     while (true)
                     {
                         batteryVoltVal = serialCtrl.getBattery();
-                        //                        Log.d("abc", "run: batteryVoltVal = " + batteryVoltVal);
+                      Log.d("abc", "run: batteryVoltVal = " + batteryVoltVal);
                         if (batteryVoltVal != 0)
                         {
                             runOnUiThread(new Runnable()

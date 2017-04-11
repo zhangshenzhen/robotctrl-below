@@ -70,15 +70,12 @@ public class FinanceIntroduceList extends BaseActivity {
     }
 
 
-
    @Override
     protected void initViewData() {
-
     }
 
     private class FinanceAdapter extends BaseAdapter{
-
-
+        
         @Override
         public int getCount() {
             return names.length==0 ? 0:names.length;

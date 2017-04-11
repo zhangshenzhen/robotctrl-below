@@ -1,6 +1,7 @@
 package com.brick.robotctrl;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -71,7 +72,7 @@ public class SplashActivity extends BaseActivity {
         vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-            startActivity( new Intent(SplashActivity.this, MainActivity.class));
+            startActivityForResult( new Intent(SplashActivity.this, MainActivity.class),1);
             }
         });
     }
@@ -133,4 +134,13 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==1 &&resultCode== Activity.RESULT_OK)
+        {
+            finish();
+        }
+    }
 }
