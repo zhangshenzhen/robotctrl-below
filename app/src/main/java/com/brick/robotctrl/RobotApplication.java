@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Debug;
 import android.os.Environment;
-import android.util.Log;
 import android.os.Handler;
+import android.util.Log;
 
 import com.kjn.crashlog.CrashHandler;
-import com.tencent.bugly.crashreport.CrashReport;
+import com.rg2.utils.LogUtil;
 
 
 import java.io.File;
@@ -43,23 +43,29 @@ public class RobotApplication extends Application {
     public static Context getAppContext() {
         return RobotApplication.context;
     }
+    //发卡机串口全局引用
+    public static SerialCtrl serialCtrlcard ;
     @Override
     public void onCreate() {
         super.onCreate();
-
+        RobotApplication.context = getApplicationContext();
+        //初始化服务
         Intent stopIntent = new Intent(this, ZIMEAVDemoService.class);
          stopService(stopIntent);
-
-        //CrashHandler crashHandler = CrashHandler.getInstance();
-        //crashHandler.init(this);
-
-          //x.Ext.init(this);//Xutils初始化
-        //RobotApplication.context = getApplicationContext();
-        //初始化程序崩溃调用；
-        //Log.d(TAG, "..........4");
-        //Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
-
-        CrashReport.initCrashReport(getApplicationContext(), "124afbac58", true);
+        //启动错误捕获日志
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(this);
+         //初始化发卡机
+//        serialCtrlcard = new SerialCtrl(context, new Handler(), "ttyUSB1111", 115200111, "sendcard");
+//        serialCtrlcard.sendPortData(serialCtrlcard.ComA,"55AA7E0004020300860D");//
+//        //把卡片移动到准备位置
+//        serialCtrlcard.sendPortData(serialCtrlcard.ComA,"55AA7E0004020400870D");//
+//        LogUtil.d(TAG,"serialCtrlcardComA:"+serialCtrlcard.ComA);
+//        LogUtil.d(TAG,"serialCtrlcardserialCOM:"+serialCtrlcard.serialCOM);
+//        LogUtil.d(TAG,"serialCtrlcardserialBaud:"+serialCtrlcard.serialBaud);
+        //初始化程序崩溃调用
+        Log.d(TAG, "..........4");
+      //  Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
     }
 
     private class MyexceptionHandler implements Thread.UncaughtExceptionHandler {
