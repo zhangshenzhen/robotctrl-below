@@ -7,6 +7,7 @@ import android.media.MediaRouter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -33,8 +34,9 @@ import java.io.UnsupportedEncodingException;
  * Created by jiangly on 2016/6/22.
  */
 
-public class IDcardActivity extends BaseActivity {
+public class IDcardActivity extends com.rg2.activity.BaseActivity {
 
+    private static final String TAG ="IDcardActivity" ;
     private byte[] name = new byte[32];
     private byte[] sex = new byte[6];
     private byte[] birth = new byte[18];
@@ -64,11 +66,10 @@ public class IDcardActivity extends BaseActivity {
     private EditText mPhone;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UserInfo instance = UserInfo.getInstance();//单例
-
 
         setContentView(R.layout.activity_id_card);
         LogUtil.e("IDcardActivity", ".........................52");
@@ -270,8 +271,16 @@ public class IDcardActivity extends BaseActivity {
             String mresidentialtel = mResidentialtel.getText().toString().trim();
             String mcompanytel = mCompanytel.getText().toString().trim();
             String mphone = mPhone.getText().toString().trim();
-
-
+            //把信息存到单例中
+            instance.setName("用户名："+mUserName);
+            instance.setId("用户ID："+mIdNumber);
+            instance.setCompanyaddress("公司区域"+mAddress);
+            instance.setCompanytel("公司电话："+mresidentialtel);
+            instance.setResidentialtel("住宅电话："+mcompanytel);
+            instance.setPhone("手机号:"+mphone);
+            Log.d(TAG,"instance@"+instance.getCompanyaddress()+","+instance.getCompanytel()+":二"
+                    +instance.getResidentialtel()+":三"+instance.getPhone());
+          //  Log.d(TAG,"instance$"+UserInfo.getUser(instance).toString());
  /*           if(StringUtils.stringIsEmpty(mUserName) || StringUtils.stringIsEmpty(mIdNumber))
             {
                 ToastUtil.show(IDcardActivity.this,"请刷身份证");
@@ -282,18 +291,15 @@ public class IDcardActivity extends BaseActivity {
                 ToastUtil.show(IDcardActivity.this,"请选择公司所在区域");
                 return;
             }
-
             if(StringUtils.stringIsEmpty(mphone))
             {
                 ToastUtil.show(IDcardActivity.this,"请输入手机号码");
                 return;
             }
-
             */
             startActivityForResult(new Intent(IDcardActivity.this,ThreeActivity.class),1);
         }
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -351,6 +357,26 @@ public class IDcardActivity extends BaseActivity {
                 mcardPresentation = null;
             }
         }
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    protected void initViews(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void initEvent() {
+
+    }
+
+    @Override
+    protected void initViewData() {
+
     }
 }
 

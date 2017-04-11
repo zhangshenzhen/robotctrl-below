@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaRouter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -28,6 +30,7 @@ import com.rg2.utils.ToastUtil;
  */
 public class ThreeActivity extends BaseActivity
 {
+    private static final String TAG = "ThreeActivity";
     private EditText mEmailEt;
     private EditText mProvinceEt;
     private EditText mCityEt;
@@ -96,7 +99,6 @@ public class ThreeActivity extends BaseActivity
             mUserInfoPresentation= null;
         }
     }
-
     @Override
     protected void updatePresentation() {
         // Log.d(TAG, "updatePresentation: ");
@@ -139,13 +141,28 @@ public class ThreeActivity extends BaseActivity
             String mProvince = mProvinceEt.getText().toString();
             String mCity = mCityEt.getText().toString();
             String mCardedAddress = mCardedAddressEt.getText().toString();
-            String mMaritalStatus = mMaritalStatusRg.getCheckedRadioButtonId() + "";
+           // String mMaritalStatus = mMaritalStatusRg.getCheckedRadioButtonId()+"";
+            //获取RadioGroup中RadioButton控件
+            RadioButton radioButton = (RadioButton) findViewById(mMaritalStatusRg.getCheckedRadioButtonId());
+            //获取获取RadioGroup中RadioButton控件的值
+            String mMaritalStatus = radioButton.getText().toString();
             String mEducation = mEducationTv.getText().toString();
             String mResidentialAddress = mResidentialAddressTv.getText().toString();
             String mDescAddress = mDescAddressEt.getText().toString();
-
             String mResidentialType = mResidentialTypeTv.getText().toString();
             String mResidenceTime = mResidenceTimeTv.getText().toString();
+           //把信息存到单例中；
+            instance.setEmaill("邮箱："+mEmail);
+            instance.setProvince(mProvince+"省");
+            instance.setCity(mCity+"市");
+            instance.setStreet("详细地址："+mResidentialAddress);
+            instance.setStreet("国籍："+"中国");
+            instance.setMarriage("婚姻状况:"+mMaritalStatus);
+            instance.setEducation("学历："+mEducation);
+            instance.setResidentialtype("住宅类型："+mResidentialType);
+            instance.setResidentialyeare("住宅年限："+mResidenceTime);
+            instance.setResidentialaddress("住宅地址："+mResidentialAddress+mDescAddress);
+            Log.d(TAG,"instance一"+instance.getMarriage());
 
 //                        if (!StringUtils.checkEmail(mEmail))
 //                        {

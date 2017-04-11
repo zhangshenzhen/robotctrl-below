@@ -15,6 +15,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 
@@ -65,6 +67,9 @@ public class FiveActivity extends BaseActivity {
      */
     private GoogleApiClient client;
     private ProgressDialog dialog;
+    private RadioGroup  maritalstatus  ,mprofessional;
+    private RadioButton buttonprofessional;
+    private RadioButton buttonaritalstatus;
 
 
     @Override
@@ -88,8 +93,14 @@ public class FiveActivity extends BaseActivity {
         mPostLevelTv = (TextView) findViewById(R.id.tv_post_level);
         mSalaryTv = (TextView) findViewById(R.id.tv_salary);
         mWorkYearsTv = (TextView) findViewById(R.id.tv_work_years);
+        mprofessional = (RadioGroup) findViewById(R.id.rg_professional);//职称
+        //获取获取RadioGroup中RadioButton控件
+        buttonprofessional = (RadioButton) findViewById(mprofessional.getCheckedRadioButtonId());
+        maritalstatus = (RadioGroup) findViewById(R.id.rg_marital_status);//社保
+        //获取获取RadioGroup中RadioButton控件
+        buttonaritalstatus = (RadioButton) findViewById(maritalstatus.getCheckedRadioButtonId());
 
-    }
+      }
 
     @Override
     protected void initEvent() {
@@ -181,7 +192,19 @@ public class FiveActivity extends BaseActivity {
             String mSalary = mSalaryTv.getText().toString();
             String mWorkYears = mWorkYearsTv.getText().toString();
 
-
+            //  信息保存到单例中；
+            instance.setCompanyName("公司名称:"+mCompanyName);
+            instance.setElpmoyeeNum("公司人数:"+mCompanyPersonnel);
+            instance.setGetCompanyaddress("公司地址:"+mCompanyProvince+mCompanyCity+mCompanyAddress);
+             instance.setBusinessnature("行业性质:"+mCompanyType);
+            instance.setCompanyNature("公司性质:"+mCompanyIndustry);
+            instance.setBranch("所在部门:"+mDepartment);
+            instance.setPosition("职位:"+mPost);
+            instance.setLevel("职位级别:"+mPostLevel);
+            instance.setSalaryYesr("年薪:"+mSalary);
+            instance.setWorkYears("任职年限:"+mWorkYears);
+            instance.setSecurity("是否办理社保:"+buttonaritalstatus.getText().toString());
+            instance.setProfesssitional("职称:"+buttonprofessional.getText().toString());
 //            if (StringUtils.stringIsEmpty(mCompanyName))
 //            {
 //                ToastUtil.show(FiveActivity.this, "请输入公司的名称");
@@ -312,6 +335,9 @@ public class FiveActivity extends BaseActivity {
 
             // finish();
     }
+
+
+
     //写卡操作
     private void WriterCard() {
     }
