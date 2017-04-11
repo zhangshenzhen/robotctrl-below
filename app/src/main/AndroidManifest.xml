@@ -3,7 +3,7 @@
 
     package="com.brick.robotctrl">
 
-    <!-- android:sharedUserId="android.uid.system" -->
+   <!-- android:sharedUserId="android.uid.system" -->
    <!-- <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"/>-->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -27,6 +27,17 @@
     <!--<uses-permission android:name="android.permission.SHUTDOWN"/>-->
     <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission  android:name="android.permission.WRITE_SETTINGS"/>
+  /*声音的权限*/
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+     /*自动适配屏屏幕分辨率的功能 */
+
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:anyDensity="true"/>
 
     <application
         android:name=".RobotApplication"
@@ -165,6 +176,11 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
         <activity
+            android:name="com.fragment.FunctionActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />
+        <activity
             android:name="zime.ui.ZIMEAVDemoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
@@ -258,10 +274,7 @@
         <service android:name="zime.ui.ZIMEAVDemoService" />
 
         <activity android:name="com.financial.FinancialMangerActivity" />
-        <!--
- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -271,6 +284,16 @@
         <activity android:name="com.financial.InfoFinancelActivity" />
            <!--插卡提示-->
         <activity android:name="com.card.InserCard"></activity>
+
+
+          <!--广播接收者-->
+        <receiver android:name="com.receiver.NetSwitchReceiver">
+            <intent-filter>
+                <action android:name="com.receiver.NetSwitchReceiver"></action>
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>
