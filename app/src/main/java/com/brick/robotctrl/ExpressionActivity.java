@@ -42,29 +42,39 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
         Debug.stopMethodTracing();
     }*/
 
-
 	enum EXPRESSION {
-		机器人得意(R.drawable.deyi, "deyi", 0),
-		机器人尴尬(R.drawable.ganga, "ganga", 1),
-		机器人好奇(R.drawable.haoqi, "haoqi", 2),
-		机器人怀疑(R.drawable.huaiyi, "huaiyi", 3),
-		机器人坏笑(R.drawable.huaixiao, "huaixiao", 4),
-		机器人惊讶(R.drawable.jingya, "jingya", 5),
-		机器人开心(R.drawable.kaixin, "kaixin", 6),
-		机器人瞌睡(R.drawable.keshui, "keshui", 7),
-		机器人可爱(R.drawable.keai, "keai", 8),
-		机器人可怜(R.drawable.kelian, "kelian", 9),
-		机器人哭泣(R.drawable.kuqi, "kuqi", 10),
-		机器人愤怒(R.drawable.fennu, "fennu", 11),
-		机器人亲亲(R.drawable.qinqin, "qinqin", 12),
-		机器人撒娇(R.drawable.sajiao, "sajiao", 13),
-		机器人调皮(R.drawable.tiaopi, "tiaopi", 14),
-		机器人委屈(R.drawable.weiqu, "weiqu", 15),
-		机器人温怒(R.drawable.wennu, "wennu", 16),
-		机器人荫郁(R.drawable.yinyu, "yinyu", 17),
-		机器人责问(R.drawable.zewen, "zewen", 18),
-		机器人眨眼(R.drawable.zhayan, "zhayan", 19),
-		机器人专注(R.drawable.zhuanzhu, "zhuanzhu", 20);
+		机器人愤怒(R.drawable.fennu, "fennu", 0),
+		机器人花痴(R.drawable.huachi, "huachi", 1),
+		机器人惊讶(R.drawable.jingya, "jingya", 2),
+		机器人开心(R.drawable.kaixin, "kaixin", 3),
+		机器人可怜(R.drawable.kelian, "kelian", 4),
+		机器人瞌睡(R.drawable.keshui, "keshui", 5),
+		机器人哭泣(R.drawable.kuqi, "kuqi", 6),
+		机器人调皮(R.drawable.tiaopi, "tiaopi", 7),
+		机器人委屈(R.drawable.weiqu, "weiqu", 8),
+		机器人微笑(R.drawable.weixiao, "weixiao", 9),
+		机器人郁闷(R.drawable.yumen, "yumen", 10);
+//		机器人得意(R.drawable.deyi, "deyi", 0),
+//		机器人尴尬(R.drawable.ganga, "ganga", 1),
+//		机器人好奇(R.drawable.haoqi, "haoqi", 2),
+//		机器人怀疑(R.drawable.huaiyi, "huaiyi", 3),
+//		机器人坏笑(R.drawable.huaixiao, "huaixiao", 4),
+//		机器人惊讶(R.drawable.jingya, "jingya", 5),
+//		机器人开心(R.drawable.kaixin, "kaixin", 6),
+//		机器人瞌睡(R.drawable.keshui, "keshui", 7),
+//		机器人可爱(R.drawable.keai, "keai", 8),
+//		机器人可怜(R.drawable.kelian, "kelian", 9),
+//		机器人哭泣(R.drawable.kuqi, "kuqi", 10),
+//		机器人愤怒(R.drawable.fennu, "fennu", 11),
+//		机器人亲亲(R.drawable.qinqin, "qinqin", 12),
+//		机器人撒娇(R.drawable.sajiao, "sajiao", 13),
+//		机器人调皮(R.drawable.tiaopi, "tiaopi", 14),
+//		机器人委屈(R.drawable.weiqu, "weiqu", 15),
+//		机器人温怒(R.drawable.wennu, "wennu", 16),
+//		机器人荫郁(R.drawable.yinyu, "yinyu", 17),
+//		机器人责问(R.drawable.zewen, "zewen", 18),
+//		机器人眨眼(R.drawable.zhayan, "zhayan", 19),
+//		机器人专注(R.drawable.zhuanzhu, "zhuanzhu", 20);
 
 		private int id;
 		private String name;
@@ -87,7 +97,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 					return exp;
 				}
 			}
-			return EXPRESSION.机器人可爱;
+			return EXPRESSION.机器人开心;//return EXPRESSION.机器人可爱;
 		}
 		public static EXPRESSION getExpression( String name ) {
 			for ( EXPRESSION exp: EXPRESSION.values()) {
@@ -95,7 +105,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 					return exp;
 				}
 			}
-			return EXPRESSION.机器人可爱;
+			return EXPRESSION.机器人开心;
 		}
 	}
 
@@ -127,7 +137,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 		Log.e("TAG" + "  getDefaultDisplay", "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);
 		    Intent intent = getIntent();
 		//   	index = intent.getStringExtra("index");
-				//    Log.e("express","................"+express);
+		//    Log.e("express","................"+express);
 		index = intent.getIntExtra("index",1);
 		//	  userTimer = new UserTimer();
 		gifView = (GifView) findViewById(R.id.gif2);
@@ -173,6 +183,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 
 	@Override
 	protected void initData() {
+
 	}
 
 	@Override
@@ -182,8 +193,18 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(ExpressionActivity.this, MainActivity.class));
-			}
+			       //同事切换为银行内网;
+					Log.d(TAG,"注册广播准备切换网络1");
+					Intent intent = new Intent("com.receiver.NetSwitchReceiver");
+					sendBroadcast(intent);
+					}
 		});
+
+
+
+
+
+
 
 	}
 
@@ -237,7 +258,6 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 		}
 	}
 
-
 	public static void changeExpression(int index) {
 		Log.d(TAG, "changeExpression: current expression:" + currentIndex + "\tset expression:" + index);
 		if ( currentIndex != index ) {
@@ -249,7 +269,6 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 			Log.d(TAG, "changeExpression: ..... " + index);
 		}
 	}
-
 
 	public void onClick(View v) {
 		//clearTimerCount();
