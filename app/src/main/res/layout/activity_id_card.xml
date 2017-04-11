@@ -184,9 +184,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginLeft="5dp"
-                    android:gravity="center"
+                    android:textColor="@color/blackA"
                     android:inputType="number"
                     android:background="@drawable/input_frame"/>
+                   <!-- android:gravity="center"-->
 
             </LinearLayout>
 
@@ -211,9 +212,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginLeft="13dp"
-                    android:gravity="center"
+                    android:textColor="@color/blackA"
                     android:inputType="number"
                     android:background="@drawable/input_frame"/>
+                 <!--   android:gravity="center"-->
 
             </LinearLayout>
 
@@ -239,9 +241,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
-                    android:gravity="center"
+                    android:textColor="@color/blackA"
                     android:inputType="number"
                     android:background="@drawable/input_frame"/>
+                  <!--  android:gravity="center"-->
             </LinearLayout>
 
         </LinearLayout>

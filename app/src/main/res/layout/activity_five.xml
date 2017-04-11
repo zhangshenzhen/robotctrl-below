@@ -628,6 +628,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             >
+
             <RadioGroup
                 android:id="@+id/rg_marital_status"
                 android:layout_width="match_parent"
@@ -689,11 +690,13 @@
             android:orientation="horizontal"
             >
             <RadioGroup
+                android:id="@+id/rg_professional"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/rg_professional_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
@@ -703,6 +706,7 @@
                     />
 
                 <RadioButton
+                    android:id="@+id/rg_professional_2"
                     android:checked="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -711,7 +715,6 @@
                     android:textColor="@color/blackA"
                     android:textSize="16sp"
                     />
-
                    </RadioGroup>
 
                  </LinearLayout>
