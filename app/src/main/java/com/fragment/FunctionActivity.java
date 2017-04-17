@@ -27,9 +27,10 @@ public class FunctionActivity extends BaseActivity {
     android.app.FragmentTransaction ft;
     /**
      * 需要测试的功能*/
-       String [] funtitems = new String[]{"界面白点","wifi","USB接口","扬声器麦克风","摄像头",
-       "SIM卡","USB接口","触摸界面",};
-        Fragment[] fragments = { new ScreenFragment(),new WIFIFragment(), new USBFragment(),new SoundFragment()};
+       String [] funtitems = new String[]{"界面白点","wifi","USB接口","摄像头","扬声器麦克风",
+       "SIM卡状态"};
+        Fragment[] fragments = { new ScreenFragment(),new WIFIFragment(), new USBFragment(), new CameraFragment()
+                ,new SoundFragment(),new SIMStateFragment() };
        private ListView lv_funct;
 
     @Override
@@ -92,8 +93,7 @@ public class FunctionActivity extends BaseActivity {
                 view = View.inflate(mContext, R.layout.function_item,null);
                 holder.tv_functname = (TextView) view.findViewById(R.id.tv_functname);
                 view.setTag(holder);
-            }
-            //绑定数据
+            }            //绑定数据
             holder.tv_functname.setText(funtitems[position]);
             return view;
         }

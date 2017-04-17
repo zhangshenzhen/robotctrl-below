@@ -145,7 +145,7 @@ public class ApplyForActivity extends BaseActivity {
             // Initialise a new Presentation for the Display
             mapplyforPresentation = new ApplyforPresentation(this, presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
-            mPresentation = mapplyforPresentation;
+
             mapplyforPresentation.setOnDismissListener(mOnDismissListener);
             try {
                 mapplyforPresentation.show();

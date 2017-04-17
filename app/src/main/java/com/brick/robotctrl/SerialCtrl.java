@@ -181,27 +181,27 @@ public class SerialCtrl {
 
 // relative robot
     public void robotMove(String dir) {
-        Log.d(TAG, "robotMove: ");
+        Log.d(TAG, "robotMove: "+dir);
         switch (dir) {
             case "up":
                // sendPortData(ComA, "FF01FF01");
-                sendPortData(ComA, "55AA7E0001020100830D");
+                sendPortData(ComA, "55AA7E0001020100810D");
                 break;
             case "down":
                // sendPortData(ComA, "FF02FF02");
-                sendPortData(ComA, "55AA7E0001020200840D");
+                sendPortData(ComA, "55AA7E0001020200820D");
                 break;
             case "left":
                // sendPortData(ComA, "FF03FF03");
-                sendPortData(ComA, "55AA7E0001020300850D");
+                sendPortData(ComA, "55AA7E0001020300830D");
                 break;
             case "right":
                // sendPortData(ComA, "FF04FF04");
-                sendPortData(ComA, "55AA7E0001020400860D");
+                sendPortData(ComA, "55AA7E0001020400840D");
                 break;
             case "stop":
               //  sendPortData(ComA, "FF05FF05");
-                sendPortData(ComA, "55AA7E0001020500870D");
+                sendPortData(ComA, "55AA7E0001020500850D");
                 break;
             case "headup":
               //  sendPortData(ComA, "FF11FF11");

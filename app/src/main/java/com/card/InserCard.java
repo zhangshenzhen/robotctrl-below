@@ -78,7 +78,7 @@ private InserCardPresentation mInserCardPresentation;
             // Initialise a new Presentation for the Display
             mInserCardPresentation = new InserCardPresentation(this, presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
-            mPresentation = mInserCardPresentation;
+
             mInserCardPresentation.setOnDismissListener(mOnDismissListener);
             try {
                 mInserCardPresentation.show();

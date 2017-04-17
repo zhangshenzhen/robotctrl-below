@@ -108,11 +108,11 @@ public class CardBusinessActivity extends BaseActivity {
 
     @Override
     protected void updatePresentation() {
-        // Log.d(TAG, "updatePresentation: ");
         //得到当前route and its presentation display
         MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
                 MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
         Display presentationDisplay = route != null ? route.getPresentationDisplay() : null;
+          Log.d(TAG, mApplyforPresentation+"updatePresentation: "+presentationDisplay);
         // 注释 : Dismiss the current presentation if the display has changed.
         if (mApplyforPresentation != null && mApplyforPresentation.getDisplay() != presentationDisplay) {
             mApplyforPresentation.dismiss();
@@ -122,7 +122,7 @@ public class CardBusinessActivity extends BaseActivity {
             // Initialise a new Presentation for the Display
             mApplyforPresentation = new ApplyforPresentation(this, presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
-            mPresentation = mApplyforPresentation;
+
             mApplyforPresentation.setOnDismissListener(mOnDismissListener);
             try {
                 mApplyforPresentation.show();
@@ -132,14 +132,28 @@ public class CardBusinessActivity extends BaseActivity {
         }
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         updatePresentation();
-
+     }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mApplyforPresentation != null){
+            mApplyforPresentation.dismiss();
+            mApplyforPresentation = null;
+        }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mApplyforPresentation != null){
+            mApplyforPresentation.dismiss();
+            mApplyforPresentation = null;
+        }
+    }
 
     @OnClick({R.id.btn_back,R.id.btn_next})
     public void onClick(View view) {

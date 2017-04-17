@@ -148,7 +148,7 @@ private ArrayList<CardInfoBean> list;
             // Initialise a new Presentation for the Display
             mSelectCardPresentation = new SelectCardPresentation(this, presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
-            mPresentation = mSelectCardPresentation;
+
             mSelectCardPresentation.setOnDismissListener(mOnDismissListener);
             try {
                 mSelectCardPresentation.show();

@@ -174,7 +174,7 @@ public class SettingPasswordActivity extends BaseActivity {
             // Initialise a new Presentation for the Display
             mPasswordPresentation = new PasswordPresentation(this, presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
-            mPresentation = mPasswordPresentation;
+
             mPasswordPresentation.setOnDismissListener(mOnDismissListener);
             try {
                 mPasswordPresentation.show();

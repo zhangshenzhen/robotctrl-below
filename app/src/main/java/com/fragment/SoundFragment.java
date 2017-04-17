@@ -17,6 +17,9 @@ import com.brick.robotctrl.R;
 public class SoundFragment extends BaseFragment {
 
     private RecordThread rec;
+    private boolean flag = true;
+    private AudioRecord audioRecord;
+    private AudioTrack audioTrack;
 
     @Override
     public View initView() {
@@ -41,16 +44,16 @@ public class SoundFragment extends BaseFragment {
             int plyBufSize = AudioTrack.getMinBufferSize(frequency,
                     channelConfiguration, audioEncoding)*2;
 
-            AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency,
+            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency,
                     channelConfiguration, audioEncoding, recBufSize);
 
-            AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency,
+            audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, frequency,
                     channelConfiguration, audioEncoding, plyBufSize, AudioTrack.MODE_STREAM);
 
             byte[] recBuf = new byte[recBufSize];
             audioRecord.startRecording();
             audioTrack.play();
-            while(true){
+            while(flag){
                 int readLen = audioRecord.read(recBuf, 0, recBufSize);
                 audioTrack.write(recBuf, 0, readLen);
                 Log.d("SoundFragment","....sound");
@@ -61,15 +64,15 @@ public class SoundFragment extends BaseFragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-
-        if (rec != null){
-            try {
-                rec.destroy();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public void onStop() {
+        super.onStop();
+         flag = false;
+        try {
+            audioTrack.stop();
+            audioRecord.stop();
+            rec.stop();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         }
     }
 }

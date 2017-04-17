@@ -324,7 +324,17 @@ public class IDcardActivity extends com.rg2.activity.BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updatePresentation();//加载副屏幕;
+        Log.d(TAG,"加载了");
+       updatePresentation();//加载副屏幕;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mcardPresentation != null){
+            mcardPresentation.dismiss();
+            mcardPresentation = null;
+        }
     }
 
     @Override

@@ -31,6 +31,7 @@ public class USBFragment extends BaseFragment {
     @Override
     public void initData() {
         textView = (TextView)getActivity().findViewById(R.id.tv_usb);
+       // usbManager = (UsbManager)getActivity().getSystemService(getActivity().USB_SERVICE);
         usbManager = (UsbManager)getActivity().getSystemService(Context.USB_SERVICE);
         Receiver();
     }
@@ -52,9 +53,9 @@ public class USBFragment extends BaseFragment {
                           } else {
                               Log.d(TAG,"断开");
                               addText("connected : " + "已断开");
-                          }
-            }
-         }
+                       }
+                 }
+             }
         };
         Log.d(TAG,"Receiver2");
         intentFilter = new IntentFilter();
@@ -68,18 +69,13 @@ public class USBFragment extends BaseFragment {
         Log.d(TAG,"Receiver4:"+getActivity().registerReceiver(receiver,intentFilter));
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-      getActivity().unregisterReceiver(receiver);
-    }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (receiver !=null) {
             getActivity().unregisterReceiver(receiver);
         }
+        super.onDestroy();
     }
     private void addText(String str) {
         textView.setText(str+"\n");

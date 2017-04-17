@@ -115,7 +115,7 @@ public class FourActivity extends BaseActivity
             // Initialise a new Presentation for the Display
             mUserInfoPresentation = new UserInfoPresentation(this,  presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
-            mPresentation  =  mUserInfoPresentation  ;
+
             // Log.d(TAG, "updatePresentation: this: "+ this.toString());
             mUserInfoPresentation.setOnDismissListener(mOnDismissListener);
 

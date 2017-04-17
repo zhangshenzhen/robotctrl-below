@@ -84,16 +84,16 @@ public class SplashActivity extends BaseActivity {
         // Log.d(TAG, "onResume: ");
         super.onResume();
         // Register a callback for all events related to live video devices
-        mMediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mMediaRouterCallback);
+       // mMediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mMediaRouterCallback);
         // Update the displays based on the currently active routes
-        updatePresentation();
+        //updatePresentation();
     }
 
     @Override
     protected void onPause() {
         // Log.d(TAG, "onPause: ");
         super.onPause();
-      updatePresentation();
+
     }
 
     @Override
@@ -103,6 +103,11 @@ public class SplashActivity extends BaseActivity {
             mPresentation.dismiss();
             mPresentation = null;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     public void updatePresentation() {
