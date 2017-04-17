@@ -54,7 +54,7 @@ import java.util.TimerTask;
 import it.sauronsoftware.base64.Base64;
 import zime.ui.ZIMEAVDemoService;
 
-public class MainActivity extends com.brick.robotctrl.BaseActivity {
+public class MainActivity extends com.brick.robotctrl.BaseActivity{
     private static final String TAG = "MainActivity";
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
 
@@ -710,9 +710,11 @@ private MainPresentation  mMainPresentation;
                     Log.d(TAG, "handleMessage: ---------19---------Key:DirCtrl \tvalue:" + rlt);
                     if (rlt.equals("EndDirCtl")) {
                         SSDBTask.enableDirCtl = false;
+                        Log.d(TAG, "handleMessage: ---------19-2--------Key:DirCtrl \tvalue:" + rlt);
                     }
                     else if (!rlt.equals("")){
                         serialCtrl.robotMove(rlt);
+                        Log.d(TAG, "handleMessage: ---------19-3--------Key:DirCtrl \tvalue:" + rlt);
                     }
                     break;
                 case SSDBTask.Key_SetParam:
@@ -730,6 +732,7 @@ private MainPresentation  mMainPresentation;
                         SSDBTask.enableChangeBrow = false;
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+                        Log.d(TAG, "handleMessage: ---------21-2--------Key:ChangeBrow \tvalue:" + rlt);
                         if (cn.getClassName().equals("com.brick.robotctrl.ExpressionActivity")){
                             ExpressionActivity.changeExpression(Integer.parseInt(rlt));
                             Log.d(TAG, "handleMessage: changebrowed");
@@ -829,7 +832,6 @@ private MainPresentation  mMainPresentation;
     @Override //当重新获取焦点是 开启副屏的方法;
     protected void onResume() {
         super.onResume();
-
         setResult(Activity.RESULT_OK);//开启新的ActivityForResult();
         LogUtil.e(TAG, "..System.currentTimeMillis()"+System.currentTimeMillis());
         updatePresentation();
@@ -907,7 +909,7 @@ private MainPresentation  mMainPresentation;
                     while (true)
                     {
                         batteryVoltVal = serialCtrl.getBattery();
-                      Log.d("abc", "run: batteryVoltVal = " + batteryVoltVal);
+                        // Log.d("abc", "run: batteryVoltVal = " + batteryVoltVal);
                         if (batteryVoltVal != 0)
                         {
                             runOnUiThread(new Runnable()
@@ -918,7 +920,7 @@ private MainPresentation  mMainPresentation;
                                 }
                             });
                         }
-                        Thread.sleep(1000);//显示性能高的话，可以把此数�?�调小�??
+                        Thread.sleep(500);//显示性能高的话，可以把此数�?�调小�??
                     }
                 } catch (Exception e)
                 {
@@ -929,7 +931,8 @@ private MainPresentation  mMainPresentation;
             Log.d(TAG, "run: while over");
         }
     }
-
+    /*
+    * 网络连接的广播接收者*/
     class netWorkChangeReceiver extends BroadcastReceiver
     {
         @Override

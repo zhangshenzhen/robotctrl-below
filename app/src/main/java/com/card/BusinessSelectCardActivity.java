@@ -89,7 +89,16 @@ public class BusinessSelectCardActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        updatePresentation();
+       // updatePresentation();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mSelectCardPresentation != null) {
+            mSelectCardPresentation.dismiss();
+            mSelectCardPresentation = null;
+        }
     }
 
     @Override
@@ -103,11 +112,11 @@ public class BusinessSelectCardActivity extends BaseActivity {
 
     @Override
     protected void updatePresentation() {
-        // Log.d(TAG, "updatePresentation: ");
         //得到当前route and its presentation display
         MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
                 MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
         Display presentationDisplay = route != null ? route.getPresentationDisplay() : null;
+         Log.d(TAG, mSelectCardPresentation+"updatePresentation: "+presentationDisplay);
         // 注释 : Dismiss the current presentation if the display has changed.
         if (mSelectCardPresentation != null && mSelectCardPresentation.getDisplay() != presentationDisplay) {
             mSelectCardPresentation.dismiss();
@@ -117,9 +126,10 @@ public class BusinessSelectCardActivity extends BaseActivity {
             // Initialise a new Presentation for the Display
             mSelectCardPresentation = new SelectCardPresentation(this, presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
-            mPresentation = mSelectCardPresentation;
+
             mSelectCardPresentation.setOnDismissListener(mOnDismissListener);
             try {
+                Log.d(TAG, "updatePresentation: "+"again_Back");
                 mSelectCardPresentation.show();
             } catch (WindowManager.InvalidDisplayException ex) {
                 mSelectCardPresentation = null;
@@ -150,7 +160,6 @@ public class BusinessSelectCardActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            Log.d(TAG, "...........长度为.." + pictures.length);
             return pictures.length != 0 ? pictures.length : 0;
         }
 

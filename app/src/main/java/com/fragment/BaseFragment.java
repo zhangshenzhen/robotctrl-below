@@ -59,7 +59,6 @@ public abstract class BaseFragment extends Fragment {
      * @called Fragemnt需要一个布局的时候
      */
     public abstract View initView();
-
     /**
      * @des 初始化Fragment里面的数据加载
      * @des 在BaseFragmentCommon中, 不知道如何具体进行数据加载,交给子类,子类是选择性实现

@@ -108,7 +108,7 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         //intent中获取数据
         initData();
         // 代码和初始化数据
-        initViewData();
+         initViewData();
         //事件;
         initEvent();
     }
@@ -315,6 +315,7 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
          updatePresentation();
      mMediaRouter.removeCallback(mMediaRouterCallback);
     }
+
 
     @Override
     protected void onDestroy() {

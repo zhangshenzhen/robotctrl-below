@@ -165,7 +165,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 			// Initialise a new Presentation for the Display
 			mexpressionPresentation = new ExpressionPresentation(this,  presentationDisplay);
 			//把当前的对象引用赋值给BaseActivity中的引用;
-			  mPresentation  =  mexpressionPresentation  ;
+
 				// Log.d(TAG, "updatePresentation: this: "+ this.toString());
 			mexpressionPresentation.setOnDismissListener(mOnDismissListener);
 

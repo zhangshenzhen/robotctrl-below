@@ -82,7 +82,7 @@ public class BusinessCarInfo extends BaseActivity {
             // Initialise a new Presentation for the Display
             mCardinfoPresentation = new CardinfoPresentation(this, presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
-            mPresentation = mCardinfoPresentation;
+
             mCardinfoPresentation.setOnDismissListener(mOnDismissListener);
             try {
                 mCardinfoPresentation.show();
@@ -91,5 +91,4 @@ public class BusinessCarInfo extends BaseActivity {
             }
         }
     }
-
 }
