@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.bean.serialport.UserInfo;
-import com.receiver.NetSwitchReceiver;
 
 import java.io.IOException;
 
@@ -74,7 +73,6 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         mContext = this;
         //单例
         instance = UserInfo.getInstance();
-
         super.onCreate(savedInstanceState);
         //启动时隐藏软键盘,但EditText的光标还在，点击编辑框才弹出软键盘；
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
