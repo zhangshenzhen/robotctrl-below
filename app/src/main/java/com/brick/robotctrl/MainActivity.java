@@ -1,6 +1,5 @@
 package com.brick.robotctrl;
 
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
@@ -19,7 +18,6 @@ import android.media.MediaRouter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -37,11 +35,9 @@ import android.widget.Toast;
 import com.card.CardActivity;
 import com.financial.FinancialMangerActivity;
 import com.jly.batteryView.BatteryView;
-import com.jly.idcard.IDcardActivity;
 import com.kjn.videoview.ADVideo;
 import com.presentation.MainPresentation;
 import com.rg2.activity.*;
-import com.rg2.activity.BaseActivity;
 import com.rg2.utils.LogUtil;
 
 import java.io.File;
@@ -144,8 +140,14 @@ private MainPresentation  mMainPresentation;
         AboutActivity.MyThread tt = about.new MyThread(ssdbTask.robotName);
         tt.start();
         //被移动到SplashActivity界面中进行开启服务;
-//        Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
-//        startService(startIntent); // 启动服务
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+        Intent startIntent = new Intent(MainActivity.this, ZIMEAVDemoService.class);
+        startService(startIntent); // 启动服务
+            }
+        }.start();
 
            Log.d(TAG, "ZIMEService");
 //        //ExpressionActivity.startAction(MainActivity.this, 12);
