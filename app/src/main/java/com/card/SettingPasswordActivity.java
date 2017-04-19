@@ -150,8 +150,8 @@ public class SettingPasswordActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         if (mPasswordPresentation != null){
             mPasswordPresentation.dismiss();
             mPasswordPresentation= null;

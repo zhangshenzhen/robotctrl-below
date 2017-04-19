@@ -21,11 +21,9 @@ public abstract class BasePresentation extends Presentation {
         super(outerContext, display);
         mContext = outerContext;
     }
-
     public BasePresentation(Context outerContext, Display display, int theme) {
         super(outerContext, display, theme);
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +32,6 @@ public abstract class BasePresentation extends Presentation {
         initView(savedInstanceState);
         initViewData();
     }
-
 
     //抽象方法 初始化副屏幕的布局;
     protected abstract void initView(Bundle savedInstanceState);

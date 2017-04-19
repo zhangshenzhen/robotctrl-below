@@ -113,6 +113,15 @@ public class CreadCarInfo extends BaseActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if(mCardinfoPresentation != null){
+            mCardinfoPresentation.dismiss();
+            mCardinfoPresentation= null;
+        }
+    }
+
+    @Override
     protected void initEvent() {
     }
 

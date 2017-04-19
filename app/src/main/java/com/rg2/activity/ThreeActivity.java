@@ -93,7 +93,7 @@ public class ThreeActivity extends BaseActivity
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         super.onDestroy();
         if (mUserInfoPresentation != null){
             mUserInfoPresentation.dismiss();

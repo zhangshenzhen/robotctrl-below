@@ -130,6 +130,15 @@ public class FinanceIntroduceList extends BaseActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if (mFinancelistPresentation != null){
+            mFinancelistPresentation.dismiss();
+            mFinancelistPresentation = null;
+        }
+    }
+
+    @Override
     protected void updatePresentation() {
         // Log.d(TAG, "updatePresentation: ");
         //得到当前route and its presentation display

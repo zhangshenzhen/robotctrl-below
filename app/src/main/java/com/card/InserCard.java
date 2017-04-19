@@ -37,8 +37,16 @@ private InserCardPresentation mInserCardPresentation;
     protected void onResume() {
         super.onResume();
         initEvent();
+        updatePresentation();
     }
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mInserCardPresentation != null){
+            mInserCardPresentation.dismiss();
+            mInserCardPresentation= null;
+        }
+    }
     @Override
     protected void initEvent() {
         //模拟读卡操作;

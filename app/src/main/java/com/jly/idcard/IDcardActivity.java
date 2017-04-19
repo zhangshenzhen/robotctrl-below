@@ -136,7 +136,7 @@ public class IDcardActivity extends com.rg2.activity.BaseActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-               //       getCard();
+                          getCard();
                         }
                     }).start();
                         break;

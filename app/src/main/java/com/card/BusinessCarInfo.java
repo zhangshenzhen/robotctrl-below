@@ -52,6 +52,15 @@ public class BusinessCarInfo extends BaseActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if(mCardinfoPresentation != null){
+            mCardinfoPresentation.dismiss();
+            mCardinfoPresentation = null;
+        }
+    }
+
+    @Override
     protected void initEvent() {
     }
     @OnClick({R.id.btn_back, R.id.btn_next})

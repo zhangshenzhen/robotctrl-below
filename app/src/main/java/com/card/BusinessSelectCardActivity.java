@@ -83,7 +83,7 @@ public class BusinessSelectCardActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updatePresentation();
+      //  updatePresentation();
     }
 
     @Override
@@ -104,10 +104,7 @@ public class BusinessSelectCardActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mSelectCardPresentation != null) {
-            mSelectCardPresentation.dismiss();
-            mSelectCardPresentation = null;
-        }
+
     }
 
     @Override
@@ -116,7 +113,7 @@ public class BusinessSelectCardActivity extends BaseActivity {
         MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
                 MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
         Display presentationDisplay = route != null ? route.getPresentationDisplay() : null;
-         Log.d(TAG, mSelectCardPresentation+"updatePresentation: "+presentationDisplay);
+        Log.d(TAG, (presentationDisplay!=null)+"/updatePresentation: "+mSelectCardPresentation);
         // 注释 : Dismiss the current presentation if the display has changed.
         if (mSelectCardPresentation != null && mSelectCardPresentation.getDisplay() != presentationDisplay) {
             mSelectCardPresentation.dismiss();
@@ -148,12 +145,12 @@ public class BusinessSelectCardActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//
+//
+//    }
 
 
     private class CardAdapter extends BaseAdapter {

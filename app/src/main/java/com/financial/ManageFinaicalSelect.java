@@ -250,7 +250,7 @@ public class ManageFinaicalSelect extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         super.onDestroy();
         if (mselecttPresentation != null) {
             mselecttPresentation.dismiss();

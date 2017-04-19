@@ -91,7 +91,7 @@ public class FourActivity extends BaseActivity
         updatePresentation();
     }
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         super.onDestroy();
         if (mUserInfoPresentation != null){
             mUserInfoPresentation.dismiss();

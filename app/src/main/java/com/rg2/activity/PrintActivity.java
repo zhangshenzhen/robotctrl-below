@@ -274,7 +274,7 @@ public class PrintActivity extends com.rg2.activity.BaseActivity{
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         super.onDestroy();
         if (mPrintPresentation != null){
             mPrintPresentation.dismiss();

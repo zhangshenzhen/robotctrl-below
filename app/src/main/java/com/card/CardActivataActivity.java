@@ -130,7 +130,7 @@ public class CardActivataActivity extends BaseActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-    //                  getCard();
+                       getCard();
                         }
                     }).start();
                     break;
