@@ -9,13 +9,10 @@ import android.opengl.GLES11Ext;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.os.PowerManager;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.Toast;
-
-import com.kjn.crashlog.CrashHandler;
 
 import zime.media.VideoDeviceCallBack;
 import zime.media.ZIMEClientJni;
@@ -73,54 +70,55 @@ public class ZIMEAVDemoService extends Service {
     }
 
     @Override
-    public void onStart(Intent intent, int startId) {
-        super.onStart(intent, startId);
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(ZIMETAG,"onStartCommand");
         mContext = this;
         am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
-         surfaceTexture = new SurfaceTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES);
-
-         ZIMEVideoClientJNI.ZIMELoadLibrary();
-            Log.e(ZIMETAG,"1");
-          mVideoClientJNI = new ZIMEVideoClientJNI();
-            mVideoClientJNI = new ZIMEVideoClientJNI();
-            mAudioClientJNI = new ZIMEClientJni();
-            Log.e(ZIMETAG,"2");
-            mZIMEConfig = new ZIMEConfig();
-            Log.e(ZIMETAG,"3");
 
 
-            mDiaglogBuilder = new ZIMEDialogSetting.Builder(mContext);
-            mDiaglogBuilder.SetZIMESDKClient(mVideoClientJNI, mAudioClientJNI, mZIMEConfig);
-            mDialogSetting = mDiaglogBuilder.create();
-             //mDialogSetting = mDiaglogBuilder.create(*//*mViewHandler*//*);
-             mDialogSetting.setAudioManager(am);
+        surfaceTexture = new SurfaceTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES);
 
-            Log.e(ZIMETAG,"4");
+        ZIMEVideoClientJNI.ZIMELoadLibrary();
+        Log.e(ZIMETAG,"1");
+        mVideoClientJNI = new ZIMEVideoClientJNI();
+        mVideoClientJNI = new ZIMEVideoClientJNI();
+        mAudioClientJNI = new ZIMEClientJni();
+        Log.e(ZIMETAG,"2");
+        mZIMEConfig = new ZIMEConfig();
+        Log.e(ZIMETAG,"3");
 
-            mDialogDTMFDialerBuilder = new ZIMEDialogDTMFDialer.DTMFDialerBuilder(mContext);
-            mDialogDTMFDialerBuilder.SetZIMESDKClient(mVideoClientJNI, mAudioClientJNI, mZIMEConfig);
-            mDialogDTMFDialer  = mDialogDTMFDialerBuilder.create();
-            Log.e(ZIMETAG,"5");
+        mDiaglogBuilder = new ZIMEDialogSetting.Builder(mContext);
+        mDiaglogBuilder.SetZIMESDKClient(mVideoClientJNI, mAudioClientJNI, mZIMEConfig);
+        mDialogSetting = mDiaglogBuilder.create(/*mViewHandler*/);
+        mDialogSetting.setAudioManager(am);
+        Log.e(ZIMETAG,"4");
 
-           mZIMEJniThread = new ZIMEJniThread(mVideoClientJNI, mAudioClientJNI);
-            Log.e(ZIMETAG,"6");
+        mDialogDTMFDialerBuilder = new ZIMEDialogDTMFDialer.DTMFDialerBuilder(mContext);
+        mDialogDTMFDialerBuilder.SetZIMESDKClient(mVideoClientJNI, mAudioClientJNI, mZIMEConfig);
+        mDialogDTMFDialer  = mDialogDTMFDialerBuilder.create();
+        Log.e(ZIMETAG,"5");
+
+        mZIMEJniThread = new ZIMEJniThread(mVideoClientJNI, mAudioClientJNI);
+        Log.e(ZIMETAG,"6");
         /*mZIMEJniThread.SetActivity(ZIMEAVDemoActivity.this);
         VideoDeviceCallBack.SetCurActivity(this);*/
-            Log.e(ZIMETAG,"7");
-            mZIMEJniThread.setAudioMan(am);
+        Log.e(ZIMETAG,"7");
+        mZIMEJniThread.setAudioMan(am);
 
-            // opengl
-            mVideoGLRender = new ZMCEVideoGLRender();
-            //mVideoGLRender.SetGLSurface(mSurfaceRemoteView);
-            Log.e(ZIMETAG,"8");
+        // opengl
+        mVideoGLRender = new ZMCEVideoGLRender();
+        //mVideoGLRender.SetGLSurface(mSurfaceRemoteView);
+        Log.e(ZIMETAG,"8");
 
-            Log.e(ZIMETAG,"x");
+
+
+        Log.e(ZIMETAG,"x");
+        int eRet = ZIMEVideoClientJNI.ConnectDevice(mZIMEConfig.mChannelId, m_iDeviceType);
+        String logString = "surfaceCreated---ConnectDevice Device:" + m_iDeviceType + "----ret: " + eRet;
+        Toast.makeText(mContext, logString, Toast.LENGTH_LONG).show();
+        m_iDeviceType = DEVTYPE_DEFAULT_VALUE;
+
         boolean mbHaveStart = false;
         if(mbHaveStart == false)
         {
@@ -129,66 +127,67 @@ public class ZIMEAVDemoService extends Service {
             mbHaveStart = true;
             Log.e(ZIMETAG,"y1");
         }
-        Log.e(ZIMETAG,"y2"+System.currentTimeMillis());
 
-            int eRet = ZIMEVideoClientJNI.ConnectDevice(mZIMEConfig.mChannelId, m_iDeviceType);
-            String logString = "surfaceCreated---ConnectDevice Device:" + m_iDeviceType + "----ret: " + eRet;
-            Toast.makeText(mContext, logString, Toast.LENGTH_LONG).show();
-            m_iDeviceType = DEVTYPE_DEFAULT_VALUE;
+        for(int x = 0;x<10000;x++) {
+            for(int y = 0;y<1100;y++)
+            {}
+        }
+        Log.e(ZIMETAG,"y2");
 
-  //       for(int x = 0;x<10000;x++) {
- //            for(int y = 0;y<1100;y++)
- //            {}
- //         }
-         Log.e(ZIMETAG,"y2"+System.currentTimeMillis());
-         Log.i(ZIMETAG, "-------------Start AV Button--------------");
+        Log.i(ZIMETAG, "-------------Start AV Button--------------");
+        mZIMEJniThread.Input(ZIMEConfig.SET_PARAM, mZIMEConfig);
+        Log.e(ZIMETAG,"9");
+        mZIMEJniThread.Input(ZIMEConfig.START, null);
+        Log.e(ZIMETAG,"10");
 
-          mZIMEJniThread.Input(ZIMEConfig.SET_PARAM, mZIMEConfig);
-          Log.d(ZIMETAG, "Thread.currentThread="+Thread.currentThread());
-          Log.e(ZIMETAG,"9");
-          Log.e(ZIMETAG,"10");
-          VideoDeviceCallBack.SetCodecType(ZIMEConfig.mCodecType);
-            if(ZIMEConfig.mCodecType == ZIMEConfig.enumZIME_AMLOGICHARDWEAR)
-           {
-                Log.e(ZIMETAG,"11");
-                mVideoGLRender.useMediaCodecInfo(false, 0);
+        VideoDeviceCallBack.SetCodecType(ZIMEConfig.mCodecType);
 
-                //mVideoGLRender.setAmlogicEnable(true);
-            }
-            else if(ZIMEConfig.mCodecType == ZIMEConfig.enumZIME_MediaCodec)
-            {
-                mVideoGLRender.useMediaCodecInfo(true, mYUVType);
+        if(ZIMEConfig.mCodecType == ZIMEConfig.enumZIME_AMLOGICHARDWEAR)
+        {
+            Log.e(ZIMETAG,"11");
+            mVideoGLRender.useMediaCodecInfo(false, 0);
 
-                //mVideoGLRender.setAmlogicEnable(false);
-            }
-            else
-            {
-                mVideoGLRender.useMediaCodecInfo(false, 0);
-                //mVideoGLRender.setAmlogicEnable(false);
-            }
+            //mVideoGLRender.setAmlogicEnable(true);
+        }
+        else if(ZIMEConfig.mCodecType == ZIMEConfig.enumZIME_MediaCodec)
+        {
+            mVideoGLRender.useMediaCodecInfo(true, mYUVType);
 
-            if(ZIMEConfig.mIsOnlyAudio)
-            {
-                //mButtonSwtich.setEnabled(false);
-                //mButtonSendOneIFrame.setEnabled(false);
-            }
-            else
-            {
-                //mButtonSwtich.setEnabled(true);
-                //mButtonSwtich.setText("SwitchA");
-                //ButtonSendOneIFrame.setEnabled(true);
-            }
+            //mVideoGLRender.setAmlogicEnable(false);
+        }
+        else
+        {
+            mVideoGLRender.useMediaCodecInfo(false, 0);
+            //mVideoGLRender.setAmlogicEnable(false);
+        }
+
+        if(ZIMEConfig.mIsOnlyAudio)
+        {
+            //mButtonSwtich.setEnabled(false);
+            //mButtonSendOneIFrame.setEnabled(false);
+        }
+        else
+        {
+            //mButtonSwtich.setEnabled(true);
+            //mButtonSwtich.setText("SwitchA");
+            //ButtonSendOneIFrame.setEnabled(true);
+        }
 
         mStarted = true;
         mStopped = false;
         mDialogSetting.setStatus(mStarted, mStopped);
+
+
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
+
         Log.i(ZIMETAG, "-------------Exit Button--------------1");
+
         mZIMEJniThread.Input(ZIMEConfig.EXIT, null);
+
         ToastUtil.cancelToast();
 
         mStarted = false;
@@ -196,8 +195,7 @@ public class ZIMEAVDemoService extends Service {
 
         Log.i(ZIMETAG, "-------------Exit Button--------------3");
         Log.d(ZIMETAG,"service destroy");
-
-          super.onDestroy();
+        super.onDestroy();
         //System.exit(0);
     }
 
