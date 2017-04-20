@@ -140,14 +140,9 @@ private MainPresentation  mMainPresentation;
         AboutActivity.MyThread tt = about.new MyThread(ssdbTask.robotName);
         tt.start();
         //被移动到SplashActivity界面中进行开启服务;
-        new Thread(){
-            @Override
-            public void run() {
-                super.run();
+
         Intent startIntent = new Intent(MainActivity.this, ZIMEAVDemoService.class);
         startService(startIntent); // 启动服务
-            }
-        }.start();
 
            Log.d(TAG, "ZIMEService");
 //        //ExpressionActivity.startAction(MainActivity.this, 12);
