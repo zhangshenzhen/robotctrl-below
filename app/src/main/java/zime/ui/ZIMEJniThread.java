@@ -30,7 +30,7 @@ public class ZIMEJniThread extends Thread
 	private Object mActivity;
 	private AudioManager am = null;
 
-	final Handler handler = new Handler();
+	/*final Handler handler = new Handler();
 	Runnable runnable =new Runnable(){
 		public void run() {
 			handler.postDelayed(this, 1000);
@@ -104,9 +104,9 @@ public class ZIMEJniThread extends Thread
 			}
 
 		}
-	};
+	};*/
 
-	public String GetSwitchInfo(int i_eSwitchInfo)
+	/*public String GetSwitchInfo(int i_eSwitchInfo)
 	{
 		switch(i_eSwitchInfo)
 		{
@@ -122,7 +122,7 @@ public class ZIMEJniThread extends Thread
 			default:
 				return "-1";
 		}
-	}
+	}*/
 
 	public ZIMEJniThread(ZIMEVideoClientJNI i_VClientJni, ZIMEClientJni i_AClientJni) {
 		mVJNI = i_VClientJni;
@@ -170,10 +170,8 @@ public class ZIMEJniThread extends Thread
 
 	public int Input(final int msgWhat, final Object msgObj){
 		Log.d(ZIMETAG, "Thread.currentThread=0"+Thread.currentThread());
-//修改的代码	new Thread(){
-//			@Override
-//			public void run() {
-//				super.run();
+				while(null == mMsgHandler) {
+				}
 				Log.d(ZIMETAG, "Thread.currentThread=1"+Thread.currentThread());
 				Message msg = mMsgHandler.obtainMessage();
 			 	//Message msg = Message.obtain();
@@ -181,8 +179,6 @@ public class ZIMEJniThread extends Thread
 				msg.what = msgWhat;
 				msg.obj = msgObj;
 				mMsgHandler.sendMessage(msg);
-//			}
-//		}.start();
 		return 0;
 	}
 
@@ -244,7 +240,7 @@ public class ZIMEJniThread extends Thread
 			mZIMEAudio.Start();
 		}
 
-		handler.postDelayed(runnable, 4000);
+		//handler.postDelayed(runnable, 4000);
 		return;
 	}
 
@@ -254,7 +250,7 @@ public class ZIMEJniThread extends Thread
 		if (mZIMEAudio == null && mZIMEMedia == null) {
 			return;
 		}
-		handler.removeCallbacks(runnable);
+		//handler.removeCallbacks(runnable);
 		if(!ZIMEConfig.mIsOnlyAudio)
 		{
 			mZIMEMedia.Stop();
@@ -298,7 +294,7 @@ public class ZIMEJniThread extends Thread
 			mZIMEMedia.StartSend();
 		}
 
-		handler.postDelayed(runnable, 4000);
+		//handler.postDelayed(runnable, 4000);
 
 		return;
 	}
@@ -316,7 +312,7 @@ public class ZIMEJniThread extends Thread
 			mZIMEMedia.StartRecv();
 		}
 
-		handler.postDelayed(runnable, 4000);
+		//handler.postDelayed(runnable, 4000);
 
 		return;
 	}
@@ -336,7 +332,7 @@ public class ZIMEJniThread extends Thread
 			mZIMEMedia.StartAudio();
 		}
 
-		handler.postDelayed(runnable, 4000);
+		//handler.postDelayed(runnable, 4000);
 		return;
 	}
 

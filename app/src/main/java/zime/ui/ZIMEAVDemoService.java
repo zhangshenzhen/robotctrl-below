@@ -100,39 +100,18 @@ public class ZIMEAVDemoService extends Service {
         Log.e(ZIMETAG,"5");
 
         mZIMEJniThread = new ZIMEJniThread(mVideoClientJNI, mAudioClientJNI);
-        Log.e(ZIMETAG,"6");
-        /*mZIMEJniThread.SetActivity(ZIMEAVDemoActivity.this);
-        VideoDeviceCallBack.SetCurActivity(this);*/
         Log.e(ZIMETAG,"7");
         mZIMEJniThread.setAudioMan(am);
 
         // opengl
         mVideoGLRender = new ZMCEVideoGLRender();
-        //mVideoGLRender.SetGLSurface(mSurfaceRemoteView);
-        Log.e(ZIMETAG,"8");
-
-
-
-        Log.e(ZIMETAG,"x");
         int eRet = ZIMEVideoClientJNI.ConnectDevice(mZIMEConfig.mChannelId, m_iDeviceType);
         String logString = "surfaceCreated---ConnectDevice Device:" + m_iDeviceType + "----ret: " + eRet;
         Toast.makeText(mContext, logString, Toast.LENGTH_LONG).show();
         m_iDeviceType = DEVTYPE_DEFAULT_VALUE;
 
-        boolean mbHaveStart = false;
-        if(mbHaveStart == false)
-        {
             Log.e(ZIMETAG,"y");
             mZIMEJniThread.start();
-            mbHaveStart = true;
-            Log.e(ZIMETAG,"y1");
-        }
-
-        for(int x = 0;x<10000;x++) {
-            for(int y = 0;y<1100;y++)
-            {}
-        }
-        Log.e(ZIMETAG,"y2");
 
         Log.i(ZIMETAG, "-------------Start AV Button--------------");
         mZIMEJniThread.Input(ZIMEConfig.SET_PARAM, mZIMEConfig);
