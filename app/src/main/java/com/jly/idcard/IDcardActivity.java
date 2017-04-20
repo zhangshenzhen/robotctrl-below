@@ -303,7 +303,7 @@ public class IDcardActivity extends com.rg2.activity.BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d("ActivityResult","第一个");
         if(requestCode==1 &&resultCode==Activity.RESULT_OK)
         {
             finish();

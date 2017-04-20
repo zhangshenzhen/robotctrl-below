@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaRouter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -161,6 +162,7 @@ public class TwoActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("ActivityResult","第二个");
         if(requestCode==1 &&resultCode== Activity.RESULT_OK)
         {
             setResult(Activity.RESULT_OK);

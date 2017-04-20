@@ -170,10 +170,10 @@ public class ZIMEJniThread extends Thread
 
 	public int Input(final int msgWhat, final Object msgObj){
 		Log.d(ZIMETAG, "Thread.currentThread=0"+Thread.currentThread());
-	new Thread(){
-			@Override
-			public void run() {
-				super.run();
+//修改的代码	new Thread(){
+//			@Override
+//			public void run() {
+//				super.run();
 				Log.d(ZIMETAG, "Thread.currentThread=1"+Thread.currentThread());
 				Message msg = mMsgHandler.obtainMessage();
 			 	//Message msg = Message.obtain();
@@ -181,8 +181,8 @@ public class ZIMEJniThread extends Thread
 				msg.what = msgWhat;
 				msg.obj = msgObj;
 				mMsgHandler.sendMessage(msg);
-			}
-		}.start();
+//			}
+//		}.start();
 		return 0;
 	}
 

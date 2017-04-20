@@ -330,6 +330,7 @@ public class FiveActivity extends BaseActivity {
                 }
             });
         } else if (v == mBackTv) {
+            Log.d("ActivityResult","第五个");
             finish();
          }
 

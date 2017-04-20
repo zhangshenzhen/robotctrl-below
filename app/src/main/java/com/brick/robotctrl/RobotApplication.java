@@ -4,29 +4,21 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Debug;
 import android.os.Environment;
-import android.os.Handler;
 import android.util.Log;
 
 import com.kjn.crashlog.CrashHandler;
-import com.rg2.utils.LogUtil;
 
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
-import java.text.AttributedCharacterIterator;
 import java.text.DateFormat;
-import java.text.Format;
 import java.util.Date;
 
 import zime.ui.ZIMEAVDemoService;
-
-import static android.R.attr.x;
 
 /**
  * Created by kjnijk on 2016-08-31.
@@ -65,7 +57,7 @@ public class RobotApplication extends Application {
 //        LogUtil.d(TAG,"serialCtrlcardserialBaud:"+serialCtrlcard.serialBaud);
         //初始化程序崩溃调用
         Log.d(TAG, "..........4");
-      //  Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
+        Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
     }
 
     private class MyexceptionHandler implements Thread.UncaughtExceptionHandler {

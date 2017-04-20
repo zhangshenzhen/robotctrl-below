@@ -279,7 +279,7 @@ public class ThreeActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d("ActivityResult","第三个");
         if(requestCode==1 &&resultCode== Activity.RESULT_OK)
         {
             setResult(Activity.RESULT_OK);

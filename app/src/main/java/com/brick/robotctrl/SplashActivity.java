@@ -1,33 +1,19 @@
 package com.brick.robotctrl;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.hardware.display.DisplayManager;
 import android.media.MediaPlayer;
 import android.media.MediaRouter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.Display;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import android.widget.VideoView;
 
 
-import com.presentation.Okienko;
 import com.presentation.SamplePresentation;
-import com.rg2.activity.*;
 import com.rg2.activity.BaseActivity;
-
-import zime.ui.ZIMEAVDemoService;
 
 /**
  * Created by shenzhen on 2017/1/7.
@@ -49,9 +35,6 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
-        Intent startIntent = new Intent(this, ZIMEAVDemoService.class);
-        startService(startIntent); // 启动服务
 
          mUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.red);
          vv.setVideoURI(Uri.parse(String.valueOf(mUri)));
@@ -99,6 +82,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onStop() {
          super.onStop();
+         vv.pause();
         if (mPresentation != null) {
             mPresentation.dismiss();
             mPresentation = null;

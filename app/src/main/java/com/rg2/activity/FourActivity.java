@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaRouter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -167,8 +168,10 @@ public class FourActivity extends BaseActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("ActivityResult","第四个");
         if(requestCode==1 &&resultCode== Activity.RESULT_OK)
         {
+            Log.d("ActivityResult","第四—个");
             setResult(Activity.RESULT_OK);
             finish();
         }
