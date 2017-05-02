@@ -30,100 +30,6 @@ public class ZIMEJniThread extends Thread
 	private Object mActivity;
 	private AudioManager am = null;
 
-	/*final Handler handler = new Handler();
-	Runnable runnable =new Runnable(){
-		public void run() {
-			handler.postDelayed(this, 1000);
-			// TODO Auto-generated method stub
-			//要做的事情
-			if(ifGetQos == 1)
-			{
-				T_ZIMEAudioUplinkStat uplinkAudioQosStat   = new T_ZIMEAudioUplinkStat(0,0,0,0,0,0);
-				T_ZIMEAudioDownlinkStat downlinkAudioQosStat = new T_ZIMEAudioDownlinkStat(0,0,0,0,0,0);
-				T_ZIMEVideoUplinkStat uplinkVideoQosStat   = new T_ZIMEVideoUplinkStat(0,0,0,0,0,0,0,0,-1,-1,-1,-1,-1,-1,-1);
-				T_ZIMEVideoDownlinkStat downlinkVideoQosStat = new T_ZIMEVideoDownlinkStat(0,0,0,0,0,0,0,0,-1,-1,-1,-1,-1,-1, -1);
-
-				String DownLinkQos = "";
-				if(!ZIMEConfig.mIsOnlyAudio)
-				{
-//					mZIMEMedia.GetAudioQosStat(uplinkAudioQosStat,downlinkAudioQosStat);
-//					mZIMEMedia.GetVideoQosStat(uplinkVideoQosStat,downlinkVideoQosStat);
-
-					DownLinkQos = "DownQoS" + "\n" +
-							"Jitter A/V:" +  downlinkAudioQosStat.iCurJitter + "/" + downlinkVideoQosStat.iCurJitter + "\n" +
-							"Lost A/V:" + downlinkAudioQosStat.iCurFractionLost +"/" + downlinkVideoQosStat.iCurFractionLost + "\n" +
-							"RTT A/V:" +  downlinkAudioQosStat.iCurRTT +"/" + downlinkVideoQosStat.iCurRTT + "\n" +
-							"Audio \n" +
-							"kbps S/R:" + uplinkAudioQosStat.iCurBitrate + "/" +  downlinkAudioQosStat.iCurBitrate + "\n" +
-							"Video \n" +
-							"FPS C/S/R/D:" + uplinkVideoQosStat.iRealCapFrameRate + "/" + uplinkVideoQosStat.iRealFrameRate + "/" + downlinkVideoQosStat.iRecvFrameRate + "/" +  downlinkVideoQosStat.iDisplayFrameRate + "\n" +
-							"Res S/R:" + uplinkVideoQosStat.iWidth + "/" +  downlinkVideoQosStat.iWidth + "\n" +
-							"Trigger S/R:" + GetSwitchInfo(uplinkVideoQosStat.iResSwitchTrigger) + "/" +  GetSwitchInfo(downlinkVideoQosStat.iResSwitchTrigger) + "\n" +
-							"Total kbps S/R:" + uplinkVideoQosStat.iCurBitrate + "/" +  downlinkVideoQosStat.iCurBitrate + "\n" +
-							"Encode kbps S:" + uplinkVideoQosStat.iExpectedESBitRate  + "\n" +
-							"ES kbps S/R:" + uplinkVideoQosStat.iRealESBitRate_Cur + "/" +  downlinkVideoQosStat.iESBitRate_Cur + "\n" +
-							"Red kbps S/R:" + uplinkVideoQosStat.iRedundantBitRate_Cur + "/" +  downlinkVideoQosStat.iRedundantBitRate_Cur + "\n" +
-							"Network Lost:" + downlinkVideoQosStat.iCurFractionLost + "%" + "\n" +
-							"Real Lost:" + downlinkVideoQosStat.iRealPktLostRate + "%" + "\n"
-					;
-				}
-				else {
-					mZIMEAudio.GetAudioQosStat(uplinkAudioQosStat,downlinkAudioQosStat);
-
-					DownLinkQos = "DownQoS" + "\n" +
-							"Jitter :" +  downlinkAudioQosStat.iCurJitter  + "\n" +
-							"Lost :" + downlinkAudioQosStat.iCurFractionLost  + "\n" +
-							"RTT :" +  downlinkAudioQosStat.iCurRTT  + "\n" +
-							"kbps S/R:" + uplinkAudioQosStat.iCurBitrate + "/" +  downlinkAudioQosStat.iCurBitrate + "\n" ;
-				}
-
-
-
-				//((ZIMEAVDemoActivity) mActivity).GetDownLinkQosToShow(DownLinkQos);
-
-//		    	Log.e(ZIMETAG, "############# 音视频上行参数：" );
-//		    	Log.e(ZIMETAG, "############# A码率" + " " + uplinkAudioQosStat.iCurBitrate + " ,V码率" + uplinkVideoQosStat.iCurBitrate);
-//		    	Log.e(ZIMETAG, "############# A抖动" + " " + uplinkAudioQosStat.iCurJitter + " ,V抖动" + uplinkVideoQosStat.iCurJitter);
-//		    	Log.e(ZIMETAG, "############# A丢包率" + " " + uplinkAudioQosStat.iCurFractionLost + " ,V丢包率" + uplinkVideoQosStat.iCurFractionLost);
-//		    	Log.e(ZIMETAG, "############# A丢包总数" + " " + uplinkAudioQosStat.iTotalFractionLost + " ,V丢包总数" + uplinkVideoQosStat.iTotalFractionLost);
-//		    	Log.e(ZIMETAG, "############# A平均码率" + " " + uplinkAudioQosStat.iAvgBitrate + " ,V平均码率" + uplinkVideoQosStat.iAvgBitrate);
-//		    	Log.e(ZIMETAG, "############# A RTT" + " " + uplinkAudioQosStat.iCurRTT + " ,V RTT" + uplinkVideoQosStat.iCurRTT);
-//		    	Log.e(ZIMETAG, "############# V 期望帧率" + " " + uplinkVideoQosStat.iExpectedFrameRate);
-//		    	Log.e(ZIMETAG, "############# V 实际帧率" + " " + uplinkVideoQosStat.iRealFrameRate);
-//		    	Log.e(ZIMETAG, "    ");
-//		    	Log.e(ZIMETAG, "############# 音视频下行参数：" );
-//		    	Log.e(ZIMETAG, "############# A码率" + " " + downlinkAudioQosStat.iCurBitrate + " ,V码率" + downlinkVideoQosStat.iCurBitrate);
-//		    	Log.e(ZIMETAG, "############# A抖动" + " " + downlinkAudioQosStat.iCurJitter + " ,V抖动" + downlinkVideoQosStat.iCurJitter);
-//		    	Log.e(ZIMETAG, "############# A丢包率" + " " + downlinkAudioQosStat.iCurFractionLost + " ,V丢包率" + downlinkVideoQosStat.iCurFractionLost);
-//		    	Log.e(ZIMETAG, "############# A丢包总数" + " " + downlinkAudioQosStat.iTotalFractionLost + " ,V丢包总数" + downlinkVideoQosStat.iTotalFractionLost);
-//		    	Log.e(ZIMETAG, "############# A平均码率" + " " + downlinkAudioQosStat.iAvgBitrate + " ,V平均码率" + downlinkVideoQosStat.iAvgBitrate);
-//		    	Log.e(ZIMETAG, "############# A RTT" + " " + downlinkAudioQosStat.iCurRTT + " ,V RTT" + downlinkVideoQosStat.iCurRTT);
-//		    	Log.e(ZIMETAG, "############# V 接收帧率" + " " + downlinkVideoQosStat.iRecvFrameRate);
-//		    	Log.e(ZIMETAG, "############# V 显示帧率" + " " + downlinkVideoQosStat.iDisplayFrameRate);		    	
-//		    	Log.e(ZIMETAG, "    ");
-			}
-
-		}
-	};*/
-
-	/*public String GetSwitchInfo(int i_eSwitchInfo)
-	{
-		switch(i_eSwitchInfo)
-		{
-			case 0: //enumZIME_SenderPerfHungry
-				return "SHungry";
-			case 1: //enumZIME_RecverPerfHungry
-				return "RHungry";
-			case 2: //enumZIME_NetWorkBad
-				return "NWBad";
-			case 3: //enumZIME_NetWorkGood
-				return "NWGood";
-			case 4: //enumZIME_ResSwitchMax
-			default:
-				return "-1";
-		}
-	}*/
-
 	public ZIMEJniThread(ZIMEVideoClientJNI i_VClientJni, ZIMEClientJni i_AClientJni) {
 		mVJNI = i_VClientJni;
 		mAJNI = i_AClientJni;
@@ -155,10 +61,6 @@ public class ZIMEJniThread extends Thread
 			return;
 		}
 		mZIMEAudio = new ZIMEAudio(mAJNI);
-		/*mZIMEAudio.Exit();
-		mZIMEAudio = new ZIMEAudio(mAJNI);
-		Log.d("1111111111111111111111","222222222222222222222222222222222222222222222222");*/
-		//mZIMEAudio.setAudioMan(am);
 
 		Log.e(ZIMETAG, "ZIMEJniThread Constructor--------- ");
 	}
