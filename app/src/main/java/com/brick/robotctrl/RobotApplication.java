@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.kjn.crashlog.CrashHandler;
+import com.rg2.utils.LogUtil;
 
 
 import java.io.File;
@@ -48,14 +49,12 @@ public class RobotApplication extends Application {
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
          //初始化发卡机
-//        serialCtrlcard = new SerialCtrl(context, new Handler(), "ttyUSB1111", 115200111, "sendcard");
-//        serialCtrlcard.sendPortData(serialCtrlcard.ComA,"55AA7E0004020300860D");//
-//        //把卡片移动到准备位置
-//        serialCtrlcard.sendPortData(serialCtrlcard.ComA,"55AA7E0004020400870D");//
+        //serialCtrlcard = new SerialCtrl(context, new Handler(), "ttyUSB1111", 115200, "sendcard");
+       // serialCtrlcard.sendPortData(serialCtrlcard.ComA,"55AA7E0004020100840D");//开始
 //        LogUtil.d(TAG,"serialCtrlcardComA:"+serialCtrlcard.ComA);
 //        LogUtil.d(TAG,"serialCtrlcardserialCOM:"+serialCtrlcard.serialCOM);
 //        LogUtil.d(TAG,"serialCtrlcardserialBaud:"+serialCtrlcard.serialBaud);
-        //初始化程序崩溃调用
+         //初始化程序崩溃调用
         Log.d(TAG, "..........4");
         Thread.currentThread().setUncaughtExceptionHandler(new MyexceptionHandler());
     }
@@ -82,7 +81,7 @@ public class RobotApplication extends Application {
                 }
             }*/
 
-            //错误日志, 吧异常写到文件中；
+            //错误日志, 把异常写到文件中；
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             ex.printStackTrace(pw);
@@ -100,5 +99,12 @@ public class RobotApplication extends Application {
 //        Log.e("MyexceptionHandler", "......启动自杀方式，再次激活程序");
 
         }
+    }
+/*
+* 程序终止的时候执行*/
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        LogUtil.d(TAG,"程序结束了。。。。。。。。");
     }
 }

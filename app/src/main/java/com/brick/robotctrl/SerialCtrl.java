@@ -134,6 +134,14 @@ public class SerialCtrl {
             ComPort.sendHex(sOut);
         }
     }
+//   // read
+//    public  String sendPortData(SerialHelper ComPort,String sOut){
+//        if (ComPort!=null && ComPort.isOpen())
+//        {
+//            ComPort.sendHex(sOut);
+//        }
+//        return
+//    }
     public  void sendPortText(SerialHelper ComPort,byte[] sOut){
         if (ComPort!=null && ComPort.isOpen())
         {
@@ -205,22 +213,26 @@ public class SerialCtrl {
                 break;
             case "headup":
               //  sendPortData(ComA, "FF11FF11");
+              //  sendPortData(ComA, "55AA7E0004020100840D");//开始
                 sendPortData(ComA, "55AA7E0001021100910D");
                 break;
             case "headdown":
               //  sendPortData(ComA, "FF12FF12");
+               // sendPortData(ComA, "55AA7E0004020300860D");//初始化
                 sendPortData(ComA, "55AA7E0001021200920D");
                 break;
             case "headleft":
               // sendPortData(ComA, "FF13FF13");
-                sendPortData(ComA, "55AA7E0001021300930D");
+              //  sendPortData(ComA, "55AA7E0004020400870D");//准备
+               sendPortData(ComA, "55AA7E0001021300930D");
                 break;
             case "headright":
               //  sendPortData(ComA, "FF14FF14");
-                sendPortData(ComA, "55AA7E0001021400940D");
+               // sendPortData(ComA, "55AA7E0004020500880D");//吐卡
+               sendPortData(ComA, "55AA7E0001021400940D");
                 break;
             case "headmid":
-              //  sendPortData(ComA, "FF15FF15");
+                //sendPortData(ComA, "FF15FF15");
                 sendPortData(ComA, "55AA7E0001021500950D");
                 break;
             default:
@@ -228,8 +240,9 @@ public class SerialCtrl {
     }
     public int getBattery()      //发送获取电压命令
     {
-      //  sendPortData(ComA, "FF10FF10");
-        sendPortData(ComA, "55AA7E0001021000900D");
+      //  sendPortData(ComA, "FF10FF10");;55AA7E0004020600890D
+      //  sendPortData(ComA, "55AA7E0001021000900D");
+          sendPortData(ComA, "55AA7E0001021000900D");
         return batteryNum;
     }
 
@@ -264,6 +277,6 @@ public class SerialCtrl {
         Log.d(TAG, "setRobotRate: " + "FF07" +Integer.toHexString(turnRate) +Integer.toHexString(turnRateBCC));
         sendPortData(ComA, "FF08" + Integer.toHexString(headRate) +Integer.toHexString(headRateBCC));
         Log.d(TAG, "setRobotRate: " + "FF08" + Integer.toHexString(headRate) +Integer.toHexString(headRateBCC));
-//        sendPortData(ComA, "FF16"+splitRate[3]+String.valueOf(timeoutTimeBCC));
+//      sendPortData(ComA, "FF16"+splitRate[3]+String.valueOf(timeoutTimeBCC));
     }
 }

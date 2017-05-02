@@ -268,7 +268,7 @@ public class FiveActivity extends BaseActivity {
 //            }
 
             //提交过之后就不能反回上一页,而是返回到信息采集的主页
-            setResult(Activity.RESULT_OK);
+            setResult(Activity.RESULT_OK);//可以放在返回按键中finish之前执行有效;
             mBackTv.setText("反回卡片详情页 ");
             boolean b = false;
 

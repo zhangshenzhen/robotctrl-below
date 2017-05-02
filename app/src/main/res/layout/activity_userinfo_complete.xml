@@ -32,7 +32,43 @@
              android:textColor="#222"
              android:text="工作人员将在48小时内与您取得联系,请保持手机通畅"
              />
+     <LinearLayout
 
+         android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+         android:layout_marginBottom="150dp"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         >
+
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始"/>
+         <Button
+             android:id="@+id/initialize"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="初始化"/>
+         <Button
+             android:id="@+id/paperable"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="准备"/>
+         <Button
+             android:id="@+id/readcard"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="读卡"/>
+         <Button
+             android:id="@+id/outcard"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="吐卡"/>
+
+     </LinearLayout>
 
 
 

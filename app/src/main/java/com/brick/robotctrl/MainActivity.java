@@ -906,7 +906,7 @@ private MainPresentation  mMainPresentation;
                     while (true)
                     {
                         batteryVoltVal = serialCtrl.getBattery();
-                        // Log.d("abc", "run: batteryVoltVal = " + batteryVoltVal);
+                         Log.d("abc", "run: batteryVoltVal = " + batteryVoltVal);
                         if (batteryVoltVal != 0)
                         {
                             runOnUiThread(new Runnable()

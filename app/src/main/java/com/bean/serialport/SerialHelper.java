@@ -93,10 +93,13 @@ public abstract class  SerialHelper{
 			while(!isInterrupted()) {
 				try
 				{
+					Log.e("ReadThread","test");
 					if (mInputStream == null) return;
 					byte[] buffer=new byte[512];
 					int size = mInputStream.read(buffer);
+					Log.e("ReadThread","test2");
 					if (size > 0){
+						Log.e("ReadThread","test3::"+size);
 						ComBean ComRecData = new ComBean(sPort,buffer,size);
 						onDataReceived(ComRecData);
 					}

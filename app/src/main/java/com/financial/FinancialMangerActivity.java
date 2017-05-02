@@ -130,7 +130,7 @@ public class FinancialMangerActivity extends BaseActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                             getCard();
+                            getCard();
                         }
                     }).start();
                     break;
@@ -294,10 +294,6 @@ public class FinancialMangerActivity extends BaseActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (mInputFingerPresentation != null){
-            mInputFingerPresentation.dismiss();
-            mInputFingerPresentation = null;
-        }
     }
 
     @Override
