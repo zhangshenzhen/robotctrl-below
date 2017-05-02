@@ -124,6 +124,10 @@ public class ZIMEJniThread extends Thread
 	private void Start(){
 		Log.e(ZIMETAG, "Start" + "--" + mConf.mRecvIP);
 
+		while(null == mZIMEMedia) {
+			Log.d(ZIMETAG,"WAIT......");
+		}
+
 		if(mConf.mSaveH26XFile)
 		{
 			mZIMEMedia.SetVideoModeSet();
