@@ -107,4 +107,5 @@ public class RobotApplication extends Application {
         super.onTerminate();
         LogUtil.d(TAG,"程序结束了。。。。。。。。");
     }
+
 }

@@ -48,6 +48,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import it.sauronsoftware.base64.Base64;
+import zime.ui.CommandExecution;
 import zime.ui.ZIMEAVDemoService;
 
 public class MainActivity extends com.brick.robotctrl.BaseActivity{
@@ -141,10 +142,13 @@ private MainPresentation  mMainPresentation;
         tt.start();
         //被移动到SplashActivity界面中进行开启服务;
 
-        Intent startIntent = new Intent(MainActivity.this, ZIMEAVDemoService.class);
-        startService(startIntent); // 启动服务
 
-           Log.d(TAG, "ZIMEService");
+                Intent startIntent = new Intent(MainActivity.this, ZIMEAVDemoService.class);
+                startService(startIntent); // 启动服务
+
+                Log.d(TAG, "ZIMEService");
+
+
 //        //ExpressionActivity.startAction(MainActivity.this, 12);
     }
     /*监听
@@ -886,6 +890,8 @@ private MainPresentation  mMainPresentation;
         unregisterReceiver(netWorkChangeReceiver);
         Intent stopSpeechServiceIntent = new Intent(this, SpeechService.class);
         stopService(stopSpeechServiceIntent);
+
+        CommandExecution.execCommand("busybox killall edge",true);
     }
 
     //----------------------------------------------------电池电压刷新显示线程
