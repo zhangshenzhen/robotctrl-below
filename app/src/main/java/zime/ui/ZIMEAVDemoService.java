@@ -73,8 +73,8 @@ public class ZIMEAVDemoService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String[] str = new String[]{"edge -a 192.168.100.34 -c test -k 123456 -l 118.178.122.224:8080 &",
-                        "ip route delete 192.168.100.0/24","ip route add 192.168.100.0/24 via 192.168.100.34 dev edge0 table local"};
+                String[] str = new String[]{"edge -a 192.168.10.8 -c test -k 123456 -l 118.178.122.224:8080 &",
+                        "ip route delete 192.168.10.0/24","ip route add 192.168.10.0/24 via 192.168.10.8 dev edge0 table local"};
                 proId = CommandExecution.execCommand(str,true).getId();
             }
         }).start();
