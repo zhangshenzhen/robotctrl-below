@@ -804,7 +804,7 @@ private MainPresentation  mMainPresentation;
     {
         Log.d(TAG, "onActivityResult: resultCode:" + resultCode);
         if (requestCode == 0)
-        {
+       {
             //            if (resultCode == RESULT_OK) {        // left top back resultCode = 0
             if (serverChanged)
             {

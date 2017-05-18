@@ -73,9 +73,12 @@ public class ZIMEAVDemoService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String[] str = new String[]{"edge -a 192.168.10.8 -c test -k 123456 -l 118.178.122.224:8080 &",
-                        "ip route delete 192.168.10.0/24","ip route add 192.168.10.0/24 via 192.168.10.8 dev edge0 table local"};
-                proId = CommandExecution.execCommand(str,true).getId();
+                String[] str = new String[]{"edge -a 192.168.10.8 -c test -k 123456 -l 118.178.122.224:8080 &","sleep 1",
+                        "busybox ip route delete 192.168.10.0/24","busybox ip route add 192.168.10.0/24 via 192.168.10.8 dev edge0 table local"};
+                CommandExecution.execCommand(str,true);
+                /*String[] str = new String[]{"edge -a 192.168.100.34 -c test -k 123456 -l 118.178.122.224:8080 &","sleep 1",
+                        "busybox ip route delete 192.168.100.0/24","busybox ip route add 192.168.100.0/24 via 192.168.100.34 dev edge0 table local"};
+                CommandExecution.execCommand(str,true);*/
             }
         }).start();
 
@@ -156,52 +159,5 @@ public class ZIMEAVDemoService extends Service {
     }
 
 
-    private void execShellCmd(String cmd) {
-        try {
-            Log.d(ZIMETAG, "execShellCmd1: " + cmd);
-            // 申请获取root权限，这一步很重要，不然会没有作用
-            Process process = Runtime.getRuntime().exec("su");
-            // 获取输出流
-            OutputStream outputStream = process.getOutputStream();
-            DataOutputStream dataOutputStream = new DataOutputStream(
-                    outputStream);
-            dataOutputStream.writeBytes(cmd);
-            dataOutputStream.flush();
-            dataOutputStream.close();
-            outputStream.close();
-            /*InputStream inputStream = process.getInputStream();
-            InputStreamReader buInputStreamReader = new InputStreamReader(inputStream);//装饰器模式
-            BufferedReader bufferedReader = new BufferedReader(buInputStreamReader);//直接读字符串
-            String str = null;
-            StringBuilder sb = new StringBuilder();
-            while((str = bufferedReader.readLine())!=null){
-                sb.append(str);//每读一行拼接到sb里面去
-                sb.append("\n");//每一行一个换行符
-            }
-            Log.d(ZIMETAG, sb.toString());*/
-            Log.d(ZIMETAG, "execShellCmd2: " + cmd);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
-    public static String do_exec(String cmd) {
-        Log.d(ZIMETAG, "do_exec1: " + cmd);
-        String resultMsg = "";
-        try {
-            Process p = Runtime.getRuntime().exec(cmd);
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(p.getInputStream()));
-            String line = null;
-            while ((line = in.readLine()) != null) {
-                resultMsg += line + "|";
-            }
-            Log.d(ZIMETAG, "do_exec2: " + cmd);
-            Log.e(ZIMETAG,resultMsg);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return resultMsg;
-    }
 
 }
