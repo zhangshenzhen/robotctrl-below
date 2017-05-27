@@ -15,6 +15,8 @@ import android.widget.VideoView;
 import com.presentation.SamplePresentation;
 import com.rg2.activity.BaseActivity;
 
+import static com.brick.robotctrl.RobotApplication.serialCtrlcard;
+
 /**
  * Created by shenzhen on 2017/1/7.
  */
@@ -47,6 +49,7 @@ public class SplashActivity extends BaseActivity {
     }
     @Override
     protected void initViewData() {
+        serialCtrlcard.sendPortData(serialCtrlcard.ComA, "55AA7E0004020100840D");//开始
     }
 
     @Override
@@ -55,6 +58,7 @@ public class SplashActivity extends BaseActivity {
         vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
+                serialCtrlcard.sendPortData(serialCtrlcard.ComA, "55AA7E0004020300860D");//初始化
             startActivityForResult( new Intent(SplashActivity.this, MainActivity.class),1);
             }
         });
@@ -82,7 +86,9 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onStop() {
          super.onStop();
-         vv.pause();
+         if(vv != null){
+             vv=null;
+         }
         if (mPresentation != null) {
             mPresentation.dismiss();
             mPresentation = null;

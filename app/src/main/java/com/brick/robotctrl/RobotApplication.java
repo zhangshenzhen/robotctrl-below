@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 
 import com.kjn.crashlog.CrashHandler;
@@ -48,8 +49,8 @@ public class RobotApplication extends Application {
         //启动错误捕获日志
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
-         //初始化发卡机
-        //serialCtrlcard = new SerialCtrl(context, new Handler(), "ttyUSB1111", 115200, "sendcard");
+        //初始化发卡机
+        serialCtrlcard = new SerialCtrl(this, new Handler(), "ttymxc0", 9600, "robotctrl");
        // serialCtrlcard.sendPortData(serialCtrlcard.ComA,"55AA7E0004020100840D");//开始
 //        LogUtil.d(TAG,"serialCtrlcardComA:"+serialCtrlcard.ComA);
 //        LogUtil.d(TAG,"serialCtrlcardserialCOM:"+serialCtrlcard.serialCOM);

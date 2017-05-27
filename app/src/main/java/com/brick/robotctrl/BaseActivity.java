@@ -265,19 +265,16 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             mVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
             if (mVolume < 0)
                 mVolume = 0;
-
             // 显示
 //            mOperationBg.setImageResource(R.drawable.video_volumn_bg);
 //            mVolumeBrightnessLayout.setVisibility(View.VISIBLE);
         }
-
         int nextVolume = (int) (percent * mMaxVolume) + mVolume;
         if (nextVolume > mMaxVolume) {
             nextVolume = mMaxVolume;
         } else if (nextVolume < 0) {
             nextVolume = 0;
         }
-
         // 变更声音
         mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, nextVolume, 0);
 

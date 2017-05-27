@@ -1,10 +1,7 @@
 package com.rg2.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.hardware.display.DisplayManager;
 import android.media.AudioManager;
@@ -112,11 +109,6 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
     }
     @Override
     public boolean onTouchEvent(MotionEvent event)  {
-               if(event.getAction()==MotionEvent.ACTION_DOWN){
-                   Log.d(TAG,"注册广播准备切换网络1");
-                   Intent intent = new Intent("com.receiver.NetSwitchReceiver");
-                   sendBroadcast(intent);
-                 }
 
         if (mGestureDetector.onTouchEvent(event))
             return true;

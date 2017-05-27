@@ -38,6 +38,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import okhttp3.Call;
 import okhttp3.Response;
 
+import static com.brick.robotctrl.RobotApplication.serialCtrlcard;
+
 
 /**
  * 作者：王先云 on 2016/9/1 15:49
@@ -341,6 +343,9 @@ public class FiveActivity extends BaseActivity {
 
     //写卡操作
     private void WriterCard() {
+        serialCtrlcard.sendPortData(serialCtrlcard.ComA, "55AA7E0004020400870D");//准备
+        SystemClock.sleep(2800);
+        serialCtrlcard.sendPortData(serialCtrlcard.ComA, "55AA7E0004020500880D");//吐卡
     }
 
     //  链接网络;

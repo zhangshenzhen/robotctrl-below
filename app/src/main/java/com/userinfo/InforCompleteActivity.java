@@ -65,7 +65,7 @@ public class InforCompleteActivity extends BaseActivity {
                 break;
             case R.id.readcard:
                 String st = String.valueOf(serialCtrlcard.getBattery());//读取
-                   Log.d("serialCtrlcard:",""+st);
+                Log.d("serialCtrlcard:",""+st);
                 break;
             case R.id.outcard:
                 serialCtrlcard.sendPortData(serialCtrlcard.ComA, "55AA7E0004020500880D");//吐卡

@@ -4,26 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaRouter;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.Switch;
 
 import com.ant.liao.GifView;
 import com.ant.liao.GifView.GifImageType;
-import com.bumptech.glide.Glide;
 import com.presentation.ExpressionPresentation;
-import com.presentation.SamplePresentation;
-import com.rg2.activity.*;
-
-import java.util.Random;
 
 public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 	private static final String TAG = "ExpressionActivity";
@@ -188,23 +179,6 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 
 	@Override
 	protected void initEvent() {
-		//点击表情机如业务办理的界面；
-		gifView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(ExpressionActivity.this, MainActivity.class));
-			       //同事切换为银行内网;
-					Log.d(TAG,"注册广播准备切换网络1");
-					Intent intent = new Intent("com.receiver.NetSwitchReceiver");
-					sendBroadcast(intent);
-					}
-		});
-
-
-
-
-
-
 
 	}
 
@@ -225,6 +199,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 	/** 手势结束 */
 	private void endGesture() {
 	}
+
 	private class ExGestureListener extends GestureDetector.SimpleOnGestureListener {
 		long[] mHitsL = new long[5];
 		long[] mHitsR = new long[5];
