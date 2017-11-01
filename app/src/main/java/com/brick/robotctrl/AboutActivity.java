@@ -2,24 +2,13 @@ package com.brick.robotctrl;
 
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.display.DisplayManager;
-import android.media.MediaRouter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
-import android.view.Display;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.kjn.ftpabout.FTPAsk;
-import com.kjn.ftpabout.Result;
-import com.presentation.ActivityViewWrapper;
-import com.presentation.Okienko;
-import com.presentation.SamplePresentation;
 
 import org.apache.commons.net.ftp.FTPFile;
 
@@ -40,25 +29,7 @@ public class AboutActivity extends BaseActivity {
 //    public Intent intentM = new Intent(Intent.ACTION_VIEW);
 //    public Intent intentA = new Intent(Intent.ACTION_VIEW);
 
-    //拷贝的代码;
-   // private final String TAG = "OkienkaTest";
-    private ActivityViewWrapper mActivityViewWrapper;
-    private ViewGroup mDesktop;
-    private MediaRouter mMediaRouter;
-    private DisplayManager mDisplayManager;
-    private SamplePresentation mPresentation;
-    private Okienko mPrimaryApp;
-    private Okienko mSecondaryApp;
-    private int mCount = 0;
-    private int mTotalDisplays = 0;
-    private float mScaleX, mScaleY;
-    private String mSecondaryTouch;
-    ActionBar actionBar;
 
-    Button button = null;
-    Button button1 = null;
-    private Display presentationDisplay;
-    private Button btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,8 +80,8 @@ public class AboutActivity extends BaseActivity {
         private String robotName = null;
 
         boolean downloadSuccessFlag = false;
-        List<FTPFile> remoteFile;
-        List<File> localFile;
+        List<FTPFile> remoteFile;//远程ftp上的文件
+        List<File> localFile;    //本地文件
         String AfileNameDown [] =new String[2];
         boolean isAPK = false;
 
@@ -138,7 +109,7 @@ public class AboutActivity extends BaseActivity {
                // openConnect()方法登陆FTP服务器，并获得FTP指定目录下的文件列表remoteFile;
                 ftp.openConnect();
                 Log.d(TAG, "onCreate: 123");
-                File mfile = new File(MLOCAL_PATH);//local movies path
+                File mfile = new File(MLOCAL_PATH);//local movies path /*创建本地文件,若有就不用创建*/
                 File[] mfiles = mfile.listFiles();//local download path
                 File afile = new File(ALOCAL_PATH);
                 File[] afiles = afile.listFiles();

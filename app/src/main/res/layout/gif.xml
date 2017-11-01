@@ -6,14 +6,14 @@
     android:id="@+id/gifActivity"
               >
    <!-- android:background="#203040"-->
-    <TextView
+   <!-- <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="android"
         android:textColor="#fff"
         android:textSize="36sp"
-        />
+        />-->
 
    <!-- <ImageView
         android:id="@+id/gif2"
@@ -27,5 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>

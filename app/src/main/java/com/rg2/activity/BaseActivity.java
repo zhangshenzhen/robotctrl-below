@@ -1,5 +1,6 @@
 package com.rg2.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
@@ -8,15 +9,12 @@ import android.media.AudioManager;
 import android.media.MediaRouter;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-
-import com.bean.serialport.UserInfo;
 
 import java.io.IOException;
 
@@ -26,7 +24,7 @@ import java.io.IOException;
  * 邮箱：wangxianyun1@163.com
  * 描述：一句话简单描述
  */
-public abstract class BaseActivity extends FragmentActivity implements View.OnClickListener {
+public abstract class BaseActivity extends Activity implements View.OnClickListener {
     private static final String TAG ="BaseActivity" ;
     private static int timerOutCount = 0;
     private int screenWidth;
@@ -41,6 +39,7 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
      */
     private int mVolume = -1;
     private GestureDetector mGestureDetector;
+    private View decorView;
 
     public static void clearTimerCount() {
         timerOutCount = 0;
@@ -63,21 +62,21 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
     public String mSecondaryTouch;
 
     public Object mPresentation;
-    public UserInfo instance ;
+   // public UserInfo instance ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mContext = this;
         //单例
-        instance = UserInfo.getInstance();
+       // instance = UserInfo.getInstance();
         super.onCreate(savedInstanceState);
         //启动时隐藏软键盘,但EditText的光标还在，点击编辑框才弹出软键盘；
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        View decorView = getWindow().getDecorView();
+        decorView = getWindow().getDecorView();
 
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+       /* int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
-        decorView.setSystemUiVisibility(uiOptions);
+        decorView.setSystemUiVisibility(uiOptions);*/
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -107,6 +106,22 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
         //事件;
         initEvent();
     }
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Log.i(TAG,"。。系统获取了焦点");
+        if (hasFocus){
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event)  {
 
@@ -307,10 +322,7 @@ public abstract class BaseActivity extends FragmentActivity implements View.OnCl
     }
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+
 
     @Override
     protected void onResume() {

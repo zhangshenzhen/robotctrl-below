@@ -2,15 +2,12 @@ package com.brick.robotctrl;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Environment;
-import android.os.Handler;
 import android.util.Log;
 
 import com.kjn.crashlog.CrashHandler;
 import com.rg2.utils.LogUtil;
-
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,8 +16,6 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.util.Date;
-
-import zime.ui.ZIMEAVDemoService;
 
 /**
  * Created by kjnijk on 2016-08-31.
@@ -44,13 +39,13 @@ public class RobotApplication extends Application {
         super.onCreate();
         RobotApplication.context = getApplicationContext();
         //初始化服务
-        Intent stopIntent = new Intent(this, ZIMEAVDemoService.class);
-         stopService(stopIntent);
+      //  Intent stopIntent = new Intent(this, ZIMEAVDemoService.class);
+      //   stopService(stopIntent);
         //启动错误捕获日志
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
         //初始化发卡机
-        serialCtrlcard = new SerialCtrl(this, new Handler(), "ttymxc0", 9600, "robotctrl");
+      // serialCtrlcard = new SerialCtrl(this, new Handler(), "ttyS3", 9600, "robotctrl");
        // serialCtrlcard.sendPortData(serialCtrlcard.ComA,"55AA7E0004020100840D");//开始
 //        LogUtil.d(TAG,"serialCtrlcardComA:"+serialCtrlcard.ComA);
 //        LogUtil.d(TAG,"serialCtrlcardserialCOM:"+serialCtrlcard.serialCOM);
@@ -89,7 +84,7 @@ public class RobotApplication extends Application {
             sb.append(sw.toString());//追加；
 
             try {
-                File file = new File(Environment.getExternalStorageDirectory(),"Robort_error.log");
+                File file = new File(Environment.getExternalStorageDirectory(),"Robort_error.txt");
                 FileOutputStream fos = new FileOutputStream(file);
                 fos.write(sb.toString().getBytes());
                 fos.close();
@@ -103,10 +98,24 @@ public class RobotApplication extends Application {
     }
 /*
 * 程序终止的时候执行*/
+
     @Override
     public void onTerminate() {
         super.onTerminate();
-        LogUtil.d(TAG,"程序结束了。。。。。。。。");
+        ActivityCollerctor.finishAll();
+        LogUtil.i(TAG,"关机啦");
     }
+  /*
+* 程序低内存的时候执行*/
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+    }
+    /*
+  * 程序清理内存的时候执行*/
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+    }
 }

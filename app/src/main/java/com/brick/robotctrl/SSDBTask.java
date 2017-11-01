@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.kjn.videoview.HttpAsk;
 import com.udpwork.ssdb.SSDB;
 
 import java.io.File;
@@ -29,14 +28,17 @@ public class SSDBTask extends TimerTask {
     public static final int ACTION_HSET = 0x0004;
     public static final int ACTION_HGET = 0x0008;
 
+    
     private Handler contextHandler = null;
     private Context context = null;
     private SSDB ssdbClient =null;
-    //public String serverIp = "60.171.108.192";
-    public String serverIp = "118.178.122.224";
-    public int serverPort = 8888;
-    public String robotName = "seu";
-    public String robotLocation = "江苏南大电子信息技术股份有限公司";
+   // public String serverIp = "120.25.66.79";
+    public String serverIp = "222.190.128.98";
+    public int serverPort = 20177;
+   // public int serverPort = 8888;
+   // public String robotName = "seu";
+    public String robotName = "hs19";
+    public String robotLocation = "江苏红石信息集成服务有限公司";
     public String videoPlayList = null;
     private final int serverSite = 222;
     private String serverSiteString = null;
@@ -65,12 +67,14 @@ public class SSDBTask extends TimerTask {
 
     Timer timer = new Timer();
 
+
+
     private static class CmdEntry<T, K, V> {
         public final T cmdType;
         public final K key;
         public final V val;
 
-        private CmdEntry(T type, K key, V val) {
+        public CmdEntry(T type, K key, V val) {
             this.cmdType = type;
             this.key = key;
             this.val = val;
@@ -113,7 +117,8 @@ public class SSDBTask extends TimerTask {
         }
         timer.schedule(this, 50, 50);
 //        connect();
-        new Thread() {
+       /* 注释掉, 不需要
+       new Thread() {
             @Override
             public void run() {
                 // 需要花时间计算的方法
@@ -124,23 +129,23 @@ public class SSDBTask extends TimerTask {
 //					for(int i = 0; i < strArray.length; i++){
 //						Log.d(TAG, "strArray: " +strArray[i]);
 //					}
-                    String ans = HttpAsk.posturl("http://60.171.108.151:8076/rb/t_getproperty.aspx?action=queryall&"+strArray[1]+"&"+strArray[2]);
+                   String ans = HttpAsk.posturl("http://60.171.108.151:8076/rb/t_getproperty.aspx?action=queryall&"+strArray[1]+"&"+strArray[2]);
                     String[] strArray1 = ans.split(" ");
 //					for(int i = 0; i < strArray1.length; i++){
-//						Log.d(TAG, "strArray: " +strArray1[i]);;
+//						Log.d(TAG, "strArray1: " +strArray1[i]);;
 //					}
                     String[] strArray3 = strArray1[1].split("=");
 //					for(int i = 0; i < strArray3.length; i++){
-//						Log.d(TAG, "strArray: " +strArray3[i]);;
+//						Log.d(TAG, "strArray3: " +strArray3[i]);;
 //					}
                     robotLocation = strArray3[1];
 
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
-                Log.d(TAG, "serverSite: " + robotLocation);
+             //   Log.d(TAG, "serverSite: " + robotLocation);
             }
-        }.start();
+        }.start();*/
 //        pushFileList();
     }
     public void pushFileList(){
@@ -218,7 +223,6 @@ public class SSDBTask extends TimerTask {
     }
 
     public boolean stop = true;
-
     public static final int Key_Event = 0;
     public static final int Key_DirCtrl = 1;
     public static final int Key_SetParam = 2;
@@ -276,7 +280,7 @@ public class SSDBTask extends TimerTask {
 //            SSDBQuery(ACTION_CONNECT);
         }
     }
-    @Override
+   @Override
     public synchronized void run() {
 //        Log.d(TAG, "run: stop:" + stop);
 
@@ -388,6 +392,10 @@ public class SSDBTask extends TimerTask {
                                 message.what = Key_DirCtrl;
                                 message.obj = new String(rlt, "GBK");
                                 contextHandler.sendMessage(message);
+                               /* if(rlt.equals("stop")||rlt.equals("headmid")) {
+                                    SSDBTask.enableDirCtl = false;
+                                }*/
+
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

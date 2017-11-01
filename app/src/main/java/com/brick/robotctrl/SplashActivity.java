@@ -6,16 +6,13 @@ import android.media.MediaPlayer;
 import android.media.MediaRouter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
-
 import android.widget.VideoView;
-
 
 import com.presentation.SamplePresentation;
 import com.rg2.activity.BaseActivity;
-
-import static com.brick.robotctrl.RobotApplication.serialCtrlcard;
 
 /**
  * Created by shenzhen on 2017/1/7.
@@ -33,32 +30,48 @@ public class SplashActivity extends BaseActivity {
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_splash);//主屏幕;
         vv = (VideoView) findViewById(R.id.vv);
+
+//        Intent startIntent = new Intent(SplashActivity.this, ZIMEAVDemoService.class);
+//        startService(startIntent); // 启动服务
+
     }
 
     @Override
     protected void initData() {
-
          mUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.red);
          vv.setVideoURI(Uri.parse(String.valueOf(mUri)));
          vv.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-          @Override
-          public void onPrepared(MediaPlayer mediaPlayer) {
-                vv.start();
-          }
-        });
+                  @Override
+               public void onPrepared(MediaPlayer mediaPlayer) {
+                   if(vv != null) {
+                    Log.i(TAG, "initData:VideoView "+vv);
+                      vv.start();
+                    }
+                  }
+              });
     }
     @Override
     protected void initViewData() {
-        serialCtrlcard.sendPortData(serialCtrlcard.ComA, "55AA7E0004020100840D");//开始
+     /* new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String[] str = new String[]{"edge -a 192.168.10.8 -c test -k 123456 -l 222.190.128.98:8080 &","sleep 1",
+                        "busybox ip route delete 192.168.10.0/24","busybox ip route add 192.168.10.0/24 via 192.168.10.8 dev edge0 table local"};
+                CommandExecution.execCommand(str,true);
+              *//* String[] str = new String[]{"edge -a 192.168.100.34 -c test -k 123456 -l 222.190.128.98:8080 &","sleep 1",
+                        "busybox ip route delete 192.168.100.0/24","busybox ip route add 192.168.100.0/24 via 192.168.100.34 dev edge0 table local"};
+                CommandExecution.execCommand(str,true);*//*
+            }
+        }).start();*/
     }
 
     @Override
     protected void initEvent() {
+
         //视频播放的监听事件;
         vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                serialCtrlcard.sendPortData(serialCtrlcard.ComA, "55AA7E0004020300860D");//初始化
             startActivityForResult( new Intent(SplashActivity.this, MainActivity.class),1);
             }
         });
@@ -73,7 +86,7 @@ public class SplashActivity extends BaseActivity {
         // Register a callback for all events related to live video devices
        // mMediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mMediaRouterCallback);
         // Update the displays based on the currently active routes
-        //updatePresentation();
+       // updatePresentation();//在父类中调用
     }
 
     @Override

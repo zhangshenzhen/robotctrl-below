@@ -2,13 +2,11 @@ package com.brick.robotctrl;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.display.DisplayManager;
 import android.media.AudioManager;
 import android.media.MediaRouter;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,9 +15,9 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.bean.serialport.UserInfo;
-
 import java.io.IOException;
+
+import static android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
 
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "BaseActivity";
@@ -37,6 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     private int mVolume = -1;
     private GestureDetector mGestureDetector;
+    private View decorView;
 
     public static void clearTimerCount() {
         timerOutCount = 0;
@@ -65,20 +64,26 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         mContext = this;
         super.onCreate(savedInstanceState);
-
         //设置为横屏幕;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//横屏
         screenWidth = getWindowManager().getDefaultDisplay().getWidth();       // 屏幕宽（像素，如：480px）
         screenHeight = getWindowManager().getDefaultDisplay().getHeight();      // 屏幕高（像素，如：800p）
 
-        View decorView = getWindow().getDecorView();
+        decorView = getWindow().getDecorView();
 //        Hide both the navigation bar and the status bar.
 //        SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
 //        a general rule, you should design your app to hide the status bar whenever you
 //        hide the navigation bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
-        decorView.setSystemUiVisibility(uiOptions);
+        //隐藏虚拟按键。导航栏的属性
+        /*SYSTEM_UI_FLAG_HIDE_NAVIGATION //隐藏状态栏
+          SYSTEM_UI_FLAG_FULLSCREEN     //全屏;
+          SYSTEM_UI_FLAG_IMMERSIVE      //可以获取焦点
+          SYSTEM_UI_FLAG_IMMERSIVE_STICKY  //一段时间后自动隐藏
+          SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION和SYSTEM_UI_FLAG_LAYOUT_STABLE)来防止系统栏隐藏时内容区域大小发生变化
+        * */
+//        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
+//        decorView.setSystemUiVisibility(uiOptions);
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -98,11 +103,27 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             if (display == null)
                 break;
             mTotalDisplays++;//  mTotalDisplays = 1;
-
         }
-        mSecondaryTouch = System.getProperty("persist.secondary.touch", "ft5x06");
+      //   mSecondaryTouch = System.getProperty("persist.secondary.touch", "ft5x06");
+        ActivityCollerctor.AddActivity(this);//把所有Activity存入集合
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Log.i(TAG,"系统获取了焦点");
+        if (hasFocus){
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
 
     }
+
     //回调函数;
     public final MediaRouter.SimpleCallback mMediaRouterCallback =
             new MediaRouter.SimpleCallback() {
@@ -165,16 +186,18 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 //        SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
 //        a general rule, you should design your app to hide the status bar whenever you
 //        hide the navigation bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
         decorView.setSystemUiVisibility(uiOptions);
         super.onResume();
+        updatePresentation();
     }
 
     @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: ");
         super.onDestroy();
+        ActivityCollerctor.RemoveActivity(this);
     }
 
     @Override
@@ -200,7 +223,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         mVolume = -1;
     }
 
-    @Override
+   @Override
     public void onClick(View view) {
 
     }

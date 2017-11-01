@@ -168,7 +168,7 @@ public class ADVideo {
         per = videoView.getCurrentPosition();
     }
 
-    public void resume(){
+    public static void resume(){
         //videoView.seekTo(per);
         videoView.resume();
         videoView.start();

@@ -1,11 +1,11 @@
 package com.brick.robotctrl;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
+import android.media.MediaRouter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -16,11 +16,14 @@ import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.VideoView;
 
 import com.kjn.videoview.ADVideo;
-/*此Activity法暂不考虑*/
-public class ADActivity extends Activity {
+import com.presentation.MainPresentation;
+
+
+public class ADActivity extends BaseActivity {
     private final String TAG = "ADActivity";
 
     private VideoView videoView;
@@ -55,6 +58,7 @@ public class ADActivity extends Activity {
 
         // videoview 实现
         videoView = (VideoView) findViewById(R.id.videoView);
+        videoView.setZOrderOnTop(true);
 //      mVolumeBrightnessLayout = findViewById(R.id.operation_volume_brightness);
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -86,6 +90,9 @@ public class ADActivity extends Activity {
 //                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE;
 //        decorView.setSystemUiVisibility(uiOptions);
     }
+
+
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -98,7 +105,7 @@ public class ADActivity extends Activity {
                     message.what = videoInfo;
                     message.obj = percentString;
                     contextHandler2.sendMessage(message);
-                    ExpressionActivity.startAction(ADActivity.this, 0);
+                    ExpressionActivity.startAction(ADActivity.this, 1);
                     break;
                 case PROGRESS:
                     int currentPosition,duration;
@@ -231,6 +238,10 @@ public class ADActivity extends Activity {
     protected void onStop() {
         Log.i(TAG, "onStop");
         super.onStop();
+        if(mMainPresentation !=null){
+            mMainPresentation.dismiss();
+            mMainPresentation = null;
+        }
         finish();
     }
 
@@ -254,6 +265,39 @@ public class ADActivity extends Activity {
         super.onDestroy();
     }
 
+    /**副屏
+     * */
+    private MainPresentation mMainPresentation;
+    @Override
+    protected void updatePresentation() {
+        //得到当前route and its presentation display
+        MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
+                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+        Display presentationDisplay =  route  !=  null ? route.getPresentationDisplay() : null;
+        if (mMainPresentation != null && mMainPresentation.getDisplay() !=  presentationDisplay) {
+            mMainPresentation.dismiss();
+            mMainPresentation = null;
+        }
+        if (mMainPresentation == null &&  presentationDisplay != null) {
+            // Initialise a new Presentation for the Display
+            Log.d(TAG, "MainPresentation............main ..2");
+            mMainPresentation = new MainPresentation(this,  presentationDisplay);
+            //把当前的对象引用赋值给BaseActivity中的引用;
+            mPresentation  =  mMainPresentation  ;
+            // Log.d(TAG, "updatePresentation: this: "+ this.toString());
+            mMainPresentation.setOnDismissListener(mOnDismissListener);
+
+            // Try to show the presentation, this might fail if the display has
+            // gone away in the mean time
+            try {
+                mMainPresentation.show();
+            } catch (WindowManager.InvalidDisplayException ex) {
+                // Couldn't show presentation - display was already removed
+                // Log.d(TAG, "updatePresentation: failed");
+                mMainPresentation = null;
+            }
+        }
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mGestureDetector.onTouchEvent(event))

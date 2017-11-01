@@ -98,7 +98,7 @@ public class CityDialog extends BaseCity
 
 
         initProvinceDatas(mContext);
-        mViewProvince.setViewAdapter(new ArrayWheelAdapter<String>(mContext, mProvinceDatas));
+        mViewProvince.setViewAdapter(new ArrayWheelAdapter<String>(mContext,mProvinceDatas));
         // 设置可见条目数量
         mViewProvince.setVisibleItems(7);
         mViewCity.setVisibleItems(7);

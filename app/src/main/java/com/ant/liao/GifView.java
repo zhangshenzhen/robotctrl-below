@@ -1,7 +1,5 @@
 package com.ant.liao;
 
-import java.io.InputStream;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -15,6 +13,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import java.io.InputStream;
+
 /**
  * GifView<br>
  * 本类可以显示一个gif动画，其使用方法和android的其它view（如imageview)一样。<br>
@@ -22,7 +22,7 @@ import android.view.View;
  * @author liao
  *
  */
-public class GifView extends View implements GifAction{
+public class GifView extends View implements GifAction {
 
 
 	public static int aa=0;

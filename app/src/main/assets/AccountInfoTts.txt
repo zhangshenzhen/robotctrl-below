@@ -10,7 +10,7 @@ appKey=ed5d549e
 developerKey=e9519f8525975fc1c0964fa0d5bbc775
 
 #灵云云服务的接口地址 
-cloudUrl=test.api.hcicloud.com:8888
+cloudUrl=test.api.hcicloud.com:20177
 
 #需要运行的灵云能力
 capKey=tts.cloud.wangjing

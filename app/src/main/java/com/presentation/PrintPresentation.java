@@ -1,11 +1,7 @@
 package com.presentation;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -14,13 +10,11 @@ import android.widget.TextView;
 import com.brick.robotctrl.PlayerService;
 import com.brick.robotctrl.R;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by shenzhen on 2017/1/13.
  */
 
-public class PrintPresentation extends  BasePresentation {
+public class PrintPresentation extends BasePresentation {
 
     private TextView mprint;
     private TextView mpaper;

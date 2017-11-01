@@ -69,6 +69,7 @@ public class SerialFunc {
 			result[j]=HexToByte(inHex.substring(i,i+2));
 			j++;
 		}
+		//Log.d("sendPortData : ","result : "+result);
 	    return result; 
 	}
 }

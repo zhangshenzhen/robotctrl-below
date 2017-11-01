@@ -18,18 +18,8 @@ package com.presentation;
 
 import android.app.Presentation;
 import android.content.Context;
-import android.graphics.Color;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.brick.robotctrl.R;
@@ -47,7 +37,6 @@ import com.brick.robotctrl.R;
  */
 //扩展Presentation类并实现onCreate()方法;
 public class SamplePresentation extends BasePresentation {
-
     private TextView tvremin;
 
     public SamplePresentation(Context outerContext, Display display) {
@@ -66,6 +55,8 @@ public class SamplePresentation extends BasePresentation {
         //调用setContentView()来指定您要在辅助显示屏上显示的UI
         setContentView(R.layout.okienko_vice);
         tvremin = (TextView) findViewById(R.id.tv_remin);
+
+       // tvremin.setText("宽度像素:"+width+" 高度像素:"+hight+" 密度:"+denesity+"密度Dpi"+denestyDpi);
       }
 }
 

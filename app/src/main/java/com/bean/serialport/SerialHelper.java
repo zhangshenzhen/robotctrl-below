@@ -27,7 +27,7 @@ public abstract class  SerialHelper{
 	private int iDelay=500;
 	//----------------------------------------------------
 	public SerialHelper(String sPort,int iBaudRate){
-		this.sPort = sPort;
+		this.sPort = sPort; //sport = serialCtrl.serialCOM --->SerialControl.sport
 		this.iBaudRate=iBaudRate;
 	}
 	public SerialHelper(){
@@ -65,6 +65,7 @@ public abstract class  SerialHelper{
 	public void send(byte[] bOutArray){
 		try
 		{
+			//Log.d("sendPortData : ","send : "+bOutArray);
 			mOutputStream.write(bOutArray);
 
 		} catch (IOException e)
@@ -75,6 +76,7 @@ public abstract class  SerialHelper{
 	//----------------------------------------------------
 	public void sendHex(String sHex){
 		byte[] bOutArray = SerialFunc.HexToByteArr(sHex);
+		//Log.d("sendPortData : ","bOutArray : "+bOutArray);
 		send(bOutArray);		
 	}
 	public void sendTxt(byte[] bOutArray){
@@ -94,10 +96,13 @@ public abstract class  SerialHelper{
 				try
 				{
 					Log.e("ReadThread","test");
-					if (mInputStream == null) return;
+					if (mInputStream == null){ return;}
 					byte[] buffer=new byte[512];
-					int size = mInputStream.read(buffer);
-					Log.e("ReadThread","test2");
+					int size = 0 ;
+					while ((mInputStream.read()!= -1)){
+					  size = mInputStream.read();
+					 Log.e("ReadThread","test2");
+					   }
 					if (size > 0){
 						Log.e("ReadThread","test3::"+size);
 						ComBean ComRecData = new ComBean(sPort,buffer,size);

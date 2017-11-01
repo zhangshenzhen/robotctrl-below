@@ -18,7 +18,8 @@ import java.security.InvalidParameterException;
 public class SerialCtrl {
     public final String TAG = "SerialCtrl";
     private String TAGElse;
-    public String serialCOM = "ttymxc0";
+   // public String serialCOM = "ttymxc0";
+    public String serialCOM = "ttyS3";
     public int serialBaud = 9600;
     public SerialControl ComA = null;
 
@@ -43,6 +44,7 @@ public class SerialCtrl {
         setSerialBaud(sp.getString(context.getString(R.string.serialBaud), String.valueOf(serialBaud)));
 
         ComA = new SerialControl();
+
         openSerialCOM();
   //    sendPortData(ComA, "FF10FF10");
     }
@@ -102,7 +104,7 @@ public class SerialCtrl {
                             batteryNum = GetMid(RmShake, 7);                  //更新电池值
                             loop = 0;
 //                        Log.d("onDataReceived", "getbattery: " + batteryNum);
-                        }
+                        }     ;
                     }
                     Log.d(TAG, "onDataReceived: success" + TAGElse);
                 } catch (Exception e) {
@@ -131,6 +133,7 @@ public class SerialCtrl {
     public  void sendPortData(SerialHelper ComPort,String sOut){
         if (ComPort!=null && ComPort.isOpen())
         {
+           // Log.d("sendPortData : ","sOut : "+sOut);
             ComPort.sendHex(sOut);
         }
     }
@@ -194,46 +197,56 @@ public class SerialCtrl {
             case "up":
                // sendPortData(ComA, "FF01FF01");
                 sendPortData(ComA, "55AA7E0001020100810D");
+
                 break;
             case "down":
-               // sendPortData(ComA, "FF02FF02");
+                // sendPortData(ComA, "FF02FF02");
                 sendPortData(ComA, "55AA7E0001020200820D");
+               // sendPortData(ComA, "82");
                 break;
             case "left":
                // sendPortData(ComA, "FF03FF03");
-                sendPortData(ComA, "55AA7E0001020300830D");
+               sendPortData(ComA, "55AA7E0001020300830D");
+               // sendPortData(ComA, "83");
                 break;
             case "right":
                // sendPortData(ComA, "FF04FF04");
                 sendPortData(ComA, "55AA7E0001020400840D");
+              //  sendPortData(ComA, "84");
                 break;
             case "stop":
               //  sendPortData(ComA, "FF05FF05");
                 sendPortData(ComA, "55AA7E0001020500850D");
+               // sendPortData(ComA, "85");
                 break;
             case "headup":
               //  sendPortData(ComA, "FF11FF11");
               //  sendPortData(ComA, "55AA7E0004020100840D");//开始
                 sendPortData(ComA, "55AA7E0001021100910D");
+              //  sendPortData(ComA, "91");
                 break;
             case "headdown":
               //  sendPortData(ComA, "FF12FF12");
                // sendPortData(ComA, "55AA7E0004020300860D");//初始化
                 sendPortData(ComA, "55AA7E0001021200920D");
+               // sendPortData(ComA, "92");
                 break;
             case "headleft":
               // sendPortData(ComA, "FF13FF13");
               //  sendPortData(ComA, "55AA7E0004020400870D");//准备
                sendPortData(ComA, "55AA7E0001021300930D");
+              //  sendPortData(ComA, "93");
                 break;
             case "headright":
-              //  sendPortData(ComA, "FF14FF14");
+               // sendPortData(ComA, "FF14FF14");
                // sendPortData(ComA, "55AA7E0004020500880D");//吐卡
                sendPortData(ComA, "55AA7E0001021400940D");
+              //  sendPortData(ComA, "94");
                 break;
             case "headmid":
                 //sendPortData(ComA, "FF15FF15");
                 sendPortData(ComA, "55AA7E0001021500950D");
+               // sendPortData(ComA, "95");
                 break;
             default:
         }
@@ -262,21 +275,34 @@ public class SerialCtrl {
         exeRate = Integer.parseInt(splitRate[0])*2;
         turnRate = Integer.parseInt(splitRate[1])*2;
         headRate = Integer.parseInt(splitRate[2])*2;
+      /*  exeRate = Integer.parseInt(splitRate[0])*2;
+        turnRate = Integer.parseInt(splitRate[1])*2;
+        headRate = Integer.parseInt(splitRate[2])*2;*/
         exeRateBCC = (0xFF ^ 0x06 )^exeRate;
         turnRateBCC = ( 0xFF ^ 0x07) ^ turnRate;
         headRateBCC = ( 0xFF ^ 0x08) ^ headRate;
-//        timeoutTimeBCC =  0xFF & 0x16 & (Integer.parseInt(splitRate[3]));
+//      timeoutTimeBCC =  0xFF & 0x16 & (Integer.parseInt(splitRate[3]));
 
         for (int i=0; i < 4; i++) {
-            Log.d(TAG, "setRobotRate: "+ splitRate[i]);
+            Log.d(TAG, "setRobotRate: arr "+ splitRate[i]);
         }
+
         sendPortData(ComA, "FF06" + Integer.toHexString(exeRate) + Integer.toHexString(exeRateBCC));
-        //Log.d(TAG, "setRobotRate: " +Integer.toHexString(exeRate));
+        //Log.d(TAG, "setRobotRate: " +Integer.toHexString(exeRate) + Integer.toHexString(exeRateBCC));
         Log.d(TAG, "setRobotRate: " + "FF06" +Integer.toHexString(exeRate) + Integer.toHexString(exeRateBCC));
         sendPortData(ComA, "FF07" + Integer.toHexString(turnRate) +Integer.toHexString(turnRateBCC));
         Log.d(TAG, "setRobotRate: " + "FF07" +Integer.toHexString(turnRate) +Integer.toHexString(turnRateBCC));
         sendPortData(ComA, "FF08" + Integer.toHexString(headRate) +Integer.toHexString(headRateBCC));
         Log.d(TAG, "setRobotRate: " + "FF08" + Integer.toHexString(headRate) +Integer.toHexString(headRateBCC));
 //      sendPortData(ComA, "FF16"+splitRate[3]+String.valueOf(timeoutTimeBCC));
+
+/*        sendPortData(ComA, "FF06"  + Integer.toHexString(exeRateBCC)+"0B");
+        //Log.d(TAG, "setRobotRate: " +Integer.toHexString(exeRate));
+        Log.d(TAG, "setRobotRate: " + "FF06" +Integer.toHexString(exeRate) + Integer.toHexString(exeRateBCC));
+        sendPortData(ComA, "FF07" +Integer.toHexString(turnRateBCC)+"0C");
+        Log.d(TAG, "setRobotRate: " + "FF07" +Integer.toHexString(turnRate) +Integer.toHexString(turnRateBCC));
+        sendPortData(ComA, "FF08" +Integer.toHexString(headRateBCC)+"0D");
+        Log.d(TAG, "setRobotRate: " + "FF08" + Integer.toHexString(headRate) +Integer.toHexString(headRateBCC)+"0D");
+//      sendPortData(ComA, "FF16"+splitRate[3]+String.valueOf(timeoutTimeBCC));*/
     }
 }

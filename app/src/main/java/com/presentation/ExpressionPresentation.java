@@ -1,7 +1,6 @@
 package com.presentation;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Display;
 
@@ -19,6 +18,6 @@ public class ExpressionPresentation extends  BasePresentation {
     @Override
       protected void initView(Bundle savedInstanceState) {
         setContentView(R.layout.persentation_pression);
-      }
 
+      }
 }

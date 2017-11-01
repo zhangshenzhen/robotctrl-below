@@ -6,20 +6,10 @@ import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.opengl.GLES11Ext;
-import android.opengl.GLSurfaceView;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.PowerManager;
+import android.os.SystemClock;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 
 import zime.media.VideoDeviceCallBack;
 import zime.media.ZIMEClientJni;
@@ -70,13 +60,13 @@ public class ZIMEAVDemoService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(ZIMETAG,"onStartCommand");
-        new Thread(new Runnable() {
+      new Thread(new Runnable() {
             @Override
             public void run() {
-                String[] str = new String[]{"edge -a 192.168.10.8 -c test -k 123456 -l 118.178.122.224:8080 &","sleep 1",
-                        "busybox ip route delete 192.168.10.0/24","busybox ip route add 192.168.10.0/24 via 192.168.10.8 dev edge0 table local"};
+                String[] str = new String[]{"edge -a 192.168.100.8 -c test -k 123456 -l 222.190.128.98:8080 &","sleep 1",
+                        "busybox ip route delete 192.168.100.0/24","busybox ip route add 192.168.100.0/24 via 192.168.100.8 dev edge0 table local"};
                 CommandExecution.execCommand(str,true);
-                /*String[] str = new String[]{"edge -a 192.168.100.34 -c test -k 123456 -l 118.178.122.224:8080 &","sleep 1",
+                /*String[] str = new String[]{"edge -a 192.168.100.34 -c test -k 123456 -l 222.190.128.98:8080 &","sleep 1",
                         "busybox ip route delete 192.168.100.0/24","busybox ip route add 192.168.100.0/24 via 192.168.100.34 dev edge0 table local"};
                 CommandExecution.execCommand(str,true);*/
             }
@@ -92,6 +82,7 @@ public class ZIMEAVDemoService extends Service {
         mVideoClientJNI = new ZIMEVideoClientJNI();
         mAudioClientJNI = new ZIMEClientJni();
         mZIMEConfig = new ZIMEConfig();
+        Log.i(ZIMETAG, "-------------Start AV Button------------1--");
 
         mDiaglogBuilder = new ZIMEDialogSetting.Builder(mContext);
         mDiaglogBuilder.SetZIMESDKClient(mVideoClientJNI, mAudioClientJNI, mZIMEConfig);
@@ -103,6 +94,7 @@ public class ZIMEAVDemoService extends Service {
         mDialogDTMFDialer  = mDialogDTMFDialerBuilder.create();
 
         mZIMEJniThread = new ZIMEJniThread(mVideoClientJNI, mAudioClientJNI);
+        Log.i(ZIMETAG, "-------------Start AV Button------------2--");
 
         // opengl
         mVideoGLRender = new ZMCEVideoGLRender();
@@ -110,16 +102,16 @@ public class ZIMEAVDemoService extends Service {
         String logString = "surfaceCreated---ConnectDevice Device:" + m_iDeviceType + "----ret: " + eRet;
         Toast.makeText(mContext, logString, Toast.LENGTH_LONG).show();
         m_iDeviceType = DEVTYPE_DEFAULT_VALUE;
-
+        Log.i(ZIMETAG, "-------------Start AV Button------------3--");
         mZIMEJniThread.setAudioMan(am);
         mZIMEJniThread.start();
-
-        Log.i(ZIMETAG, "-------------Start AV Button--------------");
+        SystemClock.sleep(80);//保证线程开启后在执行下面的代码;
+        Log.i(ZIMETAG, "-------------Start AV Button------------4--");
         mZIMEJniThread.Input(ZIMEConfig.SET_PARAM, mZIMEConfig);
         mZIMEJniThread.Input(ZIMEConfig.START, null);
 
         VideoDeviceCallBack.SetCodecType(ZIMEConfig.mCodecType);
-
+        Log.i(ZIMETAG, "-------------Start AV Button------------5--");
         if(ZIMEConfig.mCodecType == ZIMEConfig.enumZIME_AMLOGICHARDWEAR)
         {
             mVideoGLRender.useMediaCodecInfo(false, 0);
@@ -137,7 +129,7 @@ public class ZIMEAVDemoService extends Service {
         mStopped = false;
         mDialogSetting.setStatus(mStarted, mStopped);
 
-
+        Log.i(ZIMETAG, "-------------Start AV Button------------6--");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -157,7 +149,5 @@ public class ZIMEAVDemoService extends Service {
         Log.d(ZIMETAG,"service destroy");
         super.onDestroy();
     }
-
-
 
 }

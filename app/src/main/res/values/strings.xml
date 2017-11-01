@@ -22,7 +22,7 @@
     <string name="title_activity_ad">ADActivity</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="appVersion">RobotCtrl_master_v1.30.36.0926_alpha</string>
-<!--RobotCtrl_master_v1.30.36.0926_alpha-->
+    <!--RobotCtrl_master_v1.30.36.0926_alpha-->
 
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>

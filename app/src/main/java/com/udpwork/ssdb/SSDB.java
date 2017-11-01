@@ -7,7 +7,7 @@ import java.util.List;
  * SSDB Java client SDK.
  * Example:
  * <pre>
- * SSDB ssdb = new SSDB("127.0.0.1", 8888);
+ * SSDB ssdb = new SSDB("127.0.0.1", 20177);
  * ssdb.set("a", "123");
  * byte[] val = ssdb.get("a");
  * ssdb.close();

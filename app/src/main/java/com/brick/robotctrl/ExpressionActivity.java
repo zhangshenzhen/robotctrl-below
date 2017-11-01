@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaRouter;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -18,7 +17,7 @@ import com.presentation.ExpressionPresentation;
 
 public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 	private static final String TAG = "ExpressionActivity";
-   private ExpressionPresentation   mexpressionPresentation;
+   private ExpressionPresentation mexpressionPresentation;
 	private static GifView gifView;
 	private int index = 0;
 //	UserTimer userTimer = null;
@@ -35,16 +34,17 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 
 	enum EXPRESSION {
 		机器人愤怒(R.drawable.fennu, "fennu", 0),
-		机器人花痴(R.drawable.huachi, "huachi", 1),
+		机器人嘟嘴(R.drawable.duzui, "duzui", 1),
 		机器人惊讶(R.drawable.jingya, "jingya", 2),
-		机器人开心(R.drawable.kaixin, "kaixin", 3),
+		机器人花痴(R.drawable.huachi, "huachi", 3),
 		机器人可怜(R.drawable.kelian, "kelian", 4),
-		机器人瞌睡(R.drawable.keshui, "keshui", 5),
+		机器人可爱(R.drawable.keai, "keshui", 5),
 		机器人哭泣(R.drawable.kuqi, "kuqi", 6),
 		机器人调皮(R.drawable.tiaopi, "tiaopi", 7),
 		机器人委屈(R.drawable.weiqu, "weiqu", 8),
 		机器人微笑(R.drawable.weixiao, "weixiao", 9),
-		机器人郁闷(R.drawable.yumen, "yumen", 10);
+		机器人郁闷(R.drawable.yumen, "yumen", 10),
+		机器人充电(R.drawable.chongdian, "chongdian", 11);
 //		机器人得意(R.drawable.deyi, "deyi", 0),
 //		机器人尴尬(R.drawable.ganga, "ganga", 1),
 //		机器人好奇(R.drawable.haoqi, "haoqi", 2),
@@ -76,7 +76,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 			this.index = index;
 		}
 		public static int getExpressionSize() {
-			int ExpressionSize = 0;
+			int ExpressionSize = 1;
 			for ( EXPRESSION exp: EXPRESSION.values()) {
 				ExpressionSize++;
 			}
@@ -88,7 +88,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 					return exp;
 				}
 			}
-			return EXPRESSION.机器人开心;//return EXPRESSION.机器人可爱;
+			return EXPRESSION.机器人嘟嘴;//return EXPRESSION.机器人可爱;
 		}
 		public static EXPRESSION getExpression( String name ) {
 			for ( EXPRESSION exp: EXPRESSION.values()) {
@@ -96,7 +96,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 					return exp;
 				}
 			}
-			return EXPRESSION.机器人开心;
+			return EXPRESSION.机器人嘟嘴;
 		}
 	}
 
@@ -130,6 +130,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 		//   	index = intent.getStringExtra("index");
 		//    Log.e("express","................"+express);
 		index = intent.getIntExtra("index",1);
+		 Log.i("express","........<...>........"+index);
 		//	  userTimer = new UserTimer();
 		gifView = (GifView) findViewById(R.id.gif2);
 		// 	gifView.setOnClickListener(this);
@@ -138,7 +139,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 //     gifView.setShowDimension(screenWidth, screenHeight);
 
 		 changeExpression(index);
-		mGestureDetector = new GestureDetector(this, new ExGestureListener());
+	//	mGestureDetector = new GestureDetector(this, new ExGestureListener());
 	}
 	@Override
 	protected void updatePresentation() {
@@ -171,13 +172,19 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 			}
 		}
 	}
-
+/*
+* 暂时不用先屏蔽掉*/
 	@Override
 	protected void initData() {
-
+		gifView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			//	startActivity(new Intent( ExpressionActivity.this , FunctionSelectActivity.class));
+			}
+		});
 	}
 
-	@Override
+	@Override    //触摸表情返回到选择界面
 	protected void initEvent() {
 
 	}
@@ -200,7 +207,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 	private void endGesture() {
 	}
 
-	private class ExGestureListener extends GestureDetector.SimpleOnGestureListener {
+/*	private class ExGestureListener extends GestureDetector.SimpleOnGestureListener {
 		long[] mHitsL = new long[5];
 		long[] mHitsR = new long[5];
 
@@ -231,17 +238,25 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 			}
 			return true;
 		}
-	}
+	}*/
 
 	public static void changeExpression(int index) {
 		Log.d(TAG, "changeExpression: current expression:" + currentIndex + "\tset expression:" + index);
 		if ( currentIndex != index ) {
-			System.gc();
-			gifView.setGifImage(EXPRESSION.getExpression(index).id);
-			gifView.showAnimation();
-			currentIndex = index;
-        	//Glide.with(RobotApplication.getAppContext()).load(EXPRESSION.getExpression(index).id).into(gifView);
-			Log.d(TAG, "changeExpression: ..... " + index);
+			if (index > EXPRESSION.getExpressionSize()-2) {
+				//如果表情角标大于表情枚举个数，从0开始一次递增显示表情
+				index = index -(EXPRESSION.getExpressionSize()-1);
+				Log.d(TAG, EXPRESSION.getExpressionSize()+"changeExpression 大于枚举长度: ..... " + index);
+			   }
+				System.gc();
+				gifView.setGifImage(EXPRESSION.getExpression(index).id);
+				gifView.showAnimation();
+				currentIndex = index;
+				//Glide.with(RobotApplication.getAppContext()).load(EXPRESSION.getExpression(index).id).into(gifView);
+				Log.d(TAG, "changeExpression: ..... " + index);
+
+		}else {
+			Log.d(TAG, "changeExpression等于当前表情编号: ..... " + index);
 		}
 	}
 
@@ -250,7 +265,10 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 		int index = currentIndex;
 		index++;
 		if ( index >= EXPRESSION.getExpressionSize())
-			index = 0;
+		 index = 0;
+		/*//如果表情角标大于表情美剧个数，从0开始一次递增显示表情
+		index = index - EXPRESSION.getExpressionSize();*/
+		Log.d(TAG, "index - EXPRESSION.getExpressionSize(): ..... " + index);
 		changeExpression(index);
 	  }
 
@@ -269,19 +287,43 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 	}
 
 	@Override
+	protected void onRestart() {
+		super.onRestart();
+		//updatePresentation();
+		Log.i(TAG, "onRestart:updatePresentation 执行了");
+	}
+
+	@Override
 	protected void onResume() {
 		super.onResume();
-		updatePresentation();
+		//updatePresentation();//父类中已经被调用了;
+		Log.i(TAG, "onResume:updatePresentation 执行了");
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if ( mexpressionPresentation!= null) {
+			mexpressionPresentation.dismiss();
+			mexpressionPresentation = null;
+		}
+		Log.i(TAG, "onPause:updatePresentation 执行了");
 	}
 
 	@Override
     protected void onStop() {
-        Log.i(TAG, "onStop");
         currentIndex = -1;		// restart expression
         super.onStop();
 		if ( mexpressionPresentation!= null) {
 			mexpressionPresentation.dismiss();
 			mexpressionPresentation = null;
 		}
+        Log.i(TAG, "updatePresentation onStop"+mexpressionPresentation);
     }
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Log.i(TAG, "updatePresentation onDestroy"+mexpressionPresentation);
+	}
 }

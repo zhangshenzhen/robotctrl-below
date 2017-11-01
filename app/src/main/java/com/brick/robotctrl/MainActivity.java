@@ -22,7 +22,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -32,12 +31,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.card.CardActivity;
-import com.financial.FinancialMangerActivity;
+import com.ant.liao.GifView;
 import com.jly.batteryView.BatteryView;
 import com.kjn.videoview.ADVideo;
 import com.presentation.MainPresentation;
-import com.rg2.activity.*;
+import com.rg2.activity.ShellUtils;
 import com.rg2.utils.LogUtil;
 
 import java.io.File;
@@ -100,6 +98,8 @@ private MainPresentation  mMainPresentation;
     private Button btnMoney;
     private Button btntest;
     private ProgressDialog pd;
+    private GifView gif;
+
 
 
     @Override
@@ -111,13 +111,19 @@ private MainPresentation  mMainPresentation;
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         // updatePresentation();//在BaseActivity中调用
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // remove text in toolbar
-        toolbar.setTitle("");
+       // toolbar.setTitle("");
        // setSupportActionBar(toolbar);
 
-        ssdbTask = new SSDBTask(MainActivity.this, handler);
-        serialCtrl = new SerialCtrl(MainActivity.this, handler, "ttymxc0", 9600, "robotctrl");
+        gif = (GifView) findViewById(R.id.gif);
+
+        gif.setGifImage(R.drawable.weixiao);
+
+        ssdbTask = new SSDBTask(MainActivity.this, handler);  //ttymxc0
+      //  serialCtrl = new SerialCtrl(MainActivity.this, handler, "ttymxc0", 9600, "robotctrl");
+        serialCtrl = new SerialCtrl(MainActivity.this, handler, "ttyS3", 9600, "robotctrl");
+         //打印机
         serialCtrlPrinter = new SerialCtrl(MainActivity.this, handler, "ttyUSB1", 9600, "printer");
         // serialCtrlPrinter.setSerialCOM("/dev/ttyUSB0");
         intentFilter = new IntentFilter();
@@ -126,7 +132,7 @@ private MainPresentation  mMainPresentation;
         netWorkChangeReceiver = new netWorkChangeReceiver();
         registerReceiver(netWorkChangeReceiver, intentFilter);
         DispQueue = new DispQueueThread();      //获取电压显示线程
-        DispQueue.start();
+        DispQueue.start();  //暂时关闭此线程,
 
         initData();
         initChangeListener();
@@ -134,7 +140,8 @@ private MainPresentation  mMainPresentation;
 //        relative timer
 
          Timer timer = new Timer(true);
-         timer.schedule(queryTask, 200, 200); //改指令执行后延时1000ms后执行run，之后每1000ms执行�?次run
+         //改指令执行后延时1000ms后执行run，之后每1000ms执行�?次run
+         timer.schedule(queryTask, 200, 200);
         //   timer.cancel(); //结束Timer所有的计时器;
         initHandler();
         AboutActivity about = new AboutActivity();
@@ -142,12 +149,10 @@ private MainPresentation  mMainPresentation;
         tt.start();
         //被移动到SplashActivity界面中进行开启服务;
 
-
-                Intent startIntent = new Intent(MainActivity.this, ZIMEAVDemoService.class);
-                startService(startIntent); // 启动服务
+//         Intent startIntent = new Intent(MainActivity.this, ZIMEAVDemoService.class);
+//         startService(startIntent); // 启动服务
 
                 Log.d(TAG, "ZIMEService");
-
 
 //        //ExpressionActivity.startAction(MainActivity.this, 12);
     }
@@ -251,31 +256,37 @@ private MainPresentation  mMainPresentation;
     //初始化控件;
     public void initData() {
 
-        mSettingBtn = (Button) findViewById(R.id.btn_setting);
+       /* mSettingBtn = (Button) findViewById(R.id.btn_setting);
         printButton = (Button) findViewById(R.id.Printer);
         IDButton = (Button) findViewById(R.id.IDButtonTest);
         btnMoney = (Button) findViewById(R.id.btn_money);
          btntest  =    (Button) findViewById(R.id.btn_test);
-
-
         mtvBback = (TextView) findViewById(R.id.tv_back);
-
-
           mSettingBtn.setOnClickListener(this);
 //        mbtnmenue.setOnClickListener(this);
 //        mquestion.setOnClickListener(this);
-        printButton.setOnClickListener(this);
-        btnMoney.setOnClickListener(this);
-        btntest.setOnClickListener(this);
-        IDButton.setOnClickListener(this);
-        mtvBback.setOnClickListener(this);
+         printButton.setOnClickListener(this);
+         btnMoney.setOnClickListener(this);
+         btntest.setOnClickListener(this);
+         IDButton.setOnClickListener(this);
+          mtvBback.setOnClickListener(this);*/
+          gif.setOnClickListener(this);
+
     }
 
     //点击事件
     @Override
     public void onClick(View view) {
         LogUtil.e("MainActivity", "..System.currentTimeMillis()"+System.currentTimeMillis());
-        switch (view.getId()){
+       switch (view.getId()){
+         /*  case R.id.gif:
+               Log.i(TAG, "onClick: 点击了界面");
+               //暂时不用，先屏蔽掉
+            //   startActivity(new Intent(MainActivity.this,FunctionSelectActivity.class));
+               break;*/
+
+
+            /*
             case R.id.btn_setting:
                 startActivity(new Intent(MainActivity.this, FingerInputActivity.class));
                 break;
@@ -294,7 +305,7 @@ private MainPresentation  mMainPresentation;
                 break;
             case R.id.btn_test:
                 startActivity(new Intent(MainActivity.this, MenuActivity.class));
-                break;
+                break;*/
         }
     }
 
@@ -403,9 +414,10 @@ private MainPresentation  mMainPresentation;
             switch (msg.what){
                 case videoInfo:
                     ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_VideoInfo], (String) msg.obj);
-                    Log.d(TAG, "handleMessage: videoInfo");
+                    Log.d(TAG, "handleMessage: ----------8------- ");
                     break;
                 case ssdbConn:
+                    Log.d(TAG, "handleMessage: ----------9------- ");
                     ssdbTask.connect();
                     break;
                 case SSDBTask.Key_Event:
@@ -415,28 +427,29 @@ private MainPresentation  mMainPresentation;
                      * 2. 清除服务器中该event事件�?
                      */
                     String rlt = (String) msg.obj;
-                    //                    Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                    Log.d(TAG, "handleMessage: ----------10--------Key:Location \tvalue:" + rlt);
                     if (rlt.equals("DirCtl"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-1-------Key:Event \tvalue:" + rlt);
                         SSDBTask.enableDirCtl = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                         ComponentName an = am.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                        Log.d(TAG, "handleMessage: clear Event"+an.getClassName());
                         if (!an.getClassName().equals("com.brick.robotctrl.ExpressionActivity"))
                         {
-                            ExpressionActivity.startAction(MainActivity.this, 0);
+                          ExpressionActivity.startAction(MainActivity.this, 9 );
                         }
                     }
                     if (rlt.equals("EndDirCtl")) {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-2------- Key:Event \tvalue:" + rlt);
                         SSDBTask.enableDirCtl = false;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("Charge")) {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-3------- Key:Event \tvalue:" + rlt);
                         //SSDBTask.enableCharge = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         //充电
@@ -445,27 +458,27 @@ private MainPresentation  mMainPresentation;
                     }
                     if (rlt.equals("setparam"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-4------- Key:Event \tvalue:" + rlt);
                         SSDBTask.enableSetParameter = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("Brow"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-5-------Key:Event \tvalue:" + rlt);
                         SSDBTask.enableChangeBrow = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("SetVolume"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-6------- Key:Event \tvalue:" + rlt);
                         SSDBTask.enableSetVolume = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                     }
                     if (rlt.equals("EndVideo"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-7------- Key:Event \tvalue:" + rlt);
                         SSDBTask.enableVideoPlay = false;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
@@ -473,77 +486,77 @@ private MainPresentation  mMainPresentation;
                     // by gaowei start
                     if (rlt.equals("VideoPlay"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-8------- Key:Event \tvalue:" + rlt);
                         SSDBTask.enableVideoPlay = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("VideoPlayList"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-9------- Key:Event \tvalue:" + rlt);
                         SSDBTask.enableVideoPlayList = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("RobotMsg"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-10------- Key:Event \tvalue:" + rlt);
                         SSDBTask.enableRobotMsg = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("BatteryVolt"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-11------- Key:Event \tvalue:" + rlt);
                         SSDBTask.enableBatteryVolt = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("NetworkDelay"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-12------- Key:Event \tvalue:" + rlt);
                         SSDBTask.enableNetworkDelay = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("Location"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-13------- Key:Event \tvalue:" + rlt);
                         SSDBTask.enableLocation = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("CurrentTime"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage:  ----------10-14-------Key:Event \tvalue:" + rlt);
                         SSDBTask.enableCurrentTime = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("DisableAudio"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-15------- Key:Event \tvalue:" + rlt);
                         SSDBTask.enableForbidAudio = true;//使能静音
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                     }
                     if (rlt.equals("reboot"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-16------- Key:Event \tvalue:" + rlt);
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                         MainActivity.super.onReboot();
                     }
                     if (rlt.equals("shutdown"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-17------- Key:Event \tvalue:" + rlt);
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
                         MainActivity.super.onShutdown();
                     }
                     if (rlt.equals("message"))
                     {
-                        Log.d(TAG, "handleMessage: Key:Event \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ----------10-18------- Key:Event \tvalue:" + rlt);
                         ssdbTask.enableGetMessage = true;
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
@@ -583,6 +596,9 @@ private MainPresentation  mMainPresentation;
                                 if (!an.getClassName().equals("com.brick.robotctrl.ADActivity"))
                                 {
                                     ADActivity.startAction(MainActivity.this, strArray[0], null);
+                                } else{
+                                    Log.e("test111111111111", "");
+                                    ADVideo.resume();
                                 }
                                 //                                else{
                                 //                                    ADVideo.start();
@@ -600,14 +616,16 @@ private MainPresentation  mMainPresentation;
                             case "Stop":
                                 ActivityManager bm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
                                 ComponentName bn = bm.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                                Log.d(TAG, "handleMessage: ----------12-2--------Key:Stop \tvalue:" + bn.getClassName());
+
                                 if (bn.getClassName().equals("com.brick.robotctrl.ADActivity"))
                                 {
                                     ADVideo.stopPlayBack();
-                                    ExpressionActivity.startAction(MainActivity.this, 0);
+                                    ExpressionActivity.startAction(MainActivity.this, 1);
                                 }
                                 else if (bn.getClassName().equals("com.brick.robotctrl.ImageActivity"))
                                 {
-                                    ExpressionActivity.startAction(MainActivity.this, 0);
+                                    ExpressionActivity.startAction(MainActivity.this, 1);
                                 }
                                 break;
                             case "Single":
@@ -658,10 +676,10 @@ private MainPresentation  mMainPresentation;
                     rlt = (String) msg.obj;
                     Log.d(TAG, "handleMessage: ----------13--------Key:SetParam \tvalue:" + rlt);
                     ssdbTask.pushFileList();
-                    //   if(!rlt.equals(""))   {
-                    //   Log.d(TAG, "videoplaylist: hehe");
-                    //   SSDBTask.enableVideoPlayList=false;
-                    //    }
+                       if(!rlt.equals(""))   {
+                       Log.d(TAG, "videoplaylist: hehe");
+                       SSDBTask.enableVideoPlayList=false;
+                        }
                     break;
                 case SSDBTask.Key_RobotMsg:
                     rlt = (String) msg.obj;
@@ -716,6 +734,10 @@ private MainPresentation  mMainPresentation;
                     else if (!rlt.equals("")){
                         serialCtrl.robotMove(rlt);
                         Log.d(TAG, "handleMessage: ---------19-3--------Key:DirCtrl \tvalue:" + rlt);
+                         //修改的代码
+                       /* if(rlt.equals("stop")||rlt.equals("headmid")) {
+                            SSDBTask.enableDirCtl = false;
+                        }*/
                     }
                     break;
                 case SSDBTask.Key_SetParam:
@@ -733,11 +755,12 @@ private MainPresentation  mMainPresentation;
                         SSDBTask.enableChangeBrow = false;
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-                        Log.d(TAG, "handleMessage: ---------21-2--------Key:ChangeBrow \tvalue:" + rlt);
+                        Log.d(TAG, "handleMessage: ---------21-2--------Key:ChangeBrow \tvalue:"+rlt +" : "+ cn.getClassName());
                         if (cn.getClassName().equals("com.brick.robotctrl.ExpressionActivity")){
                             ExpressionActivity.changeExpression(Integer.parseInt(rlt));
                             Log.d(TAG, "handleMessage: changebrowed");
-                        } else {
+                        } else { //添加的代码,修改实现初次成功切换表情;
+                           ExpressionActivity.startAction(MainActivity.this, Integer.parseInt(rlt));
                             Log.d(TAG, "handleMessage: change brow failure because of current activity is not ExpressionActivity");
                         }
                     }
@@ -760,7 +783,7 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_Message:
                     rlt = (String) msg.obj;
-                    Log.d(TAG, "handleMessage: --------23----------Key:Message \tvalue:" + rlt);
+                    Log.d(TAG, rlt+"handleMessage: --------23----------Key:Message \tvalue:" + rlt);
                     if (!rlt.equals(""))
                     {
                         SpeechService.startAction(MainActivity.this, Base64Decode(rlt));
@@ -819,7 +842,7 @@ private MainPresentation  mMainPresentation;
             if (robotLocationChanged)
             {
                 robotLocationChanged = false;
-                ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask.robotLocation);
+                ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Location], ssdbTask. robotLocation);
             }
         }
     }
@@ -835,18 +858,20 @@ private MainPresentation  mMainPresentation;
         super.onResume();
         setResult(Activity.RESULT_OK);//开启新的ActivityForResult();
         LogUtil.e(TAG, "..System.currentTimeMillis()"+System.currentTimeMillis());
-        updatePresentation();
+       // updatePresentation();//在父类中已经被调用了，
         timer.cancel();//取消任务
     }
 
     @Override
     protected void onPause()
     {
-
-        Log.i(TAG, "onPuase");
         super.onPause();
-
         timer.cancel(); //结束Timer所有的计时器;
+        if ( mMainPresentation!= null) {
+            mMainPresentation.dismiss();
+            mMainPresentation = null;
+        }
+        Log.i(TAG, "onPuase在这里停止掉");
     }
 
     @Override
@@ -858,13 +883,12 @@ private MainPresentation  mMainPresentation;
 
         @Override
         protected void onStop() {
-            Log.i(TAG, "onStop");
-
            super.onStop();
             if ( mMainPresentation!= null) {
                 mMainPresentation.dismiss();
                 mMainPresentation = null;
             }
+            Log.i(TAG, "onStop: MainActivity停止了么？");
        }
 
     @Override
@@ -890,8 +914,8 @@ private MainPresentation  mMainPresentation;
         unregisterReceiver(netWorkChangeReceiver);
         Intent stopSpeechServiceIntent = new Intent(this, SpeechService.class);
         stopService(stopSpeechServiceIntent);
-
-        CommandExecution.execCommand("busybox killall edge",true);
+        //穿网自启动相关的
+       // CommandExecution.execCommand("busybox killall edge",true);
     }
 
     //----------------------------------------------------电池电压刷新显示线程
@@ -910,8 +934,8 @@ private MainPresentation  mMainPresentation;
                 try
                 {
                     while (true)
-                    {
-                        batteryVoltVal = serialCtrl.getBattery();
+                    {//暂时屏蔽
+                       batteryVoltVal = serialCtrl.getBattery();
                          Log.d("abc", "run: batteryVoltVal = " + batteryVoltVal);
                         if (batteryVoltVal != 0)
                         {

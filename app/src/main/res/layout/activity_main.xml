@@ -5,15 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/white"
     tools:context="com.brick.robotctrl.MainActivity"
     android:id="@+id/mainActivity"
     tools:ignore="ContentDescription"
     android:keepScreenOn="true">
 
+   <com.ant.liao.GifView
+       android:id="@+id/gif"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_centerVertical="true"
+       android:layout_centerHorizontal="true" />
 
-    <android.support.v7.widget.Toolbar
 
+   <!-- <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
@@ -91,6 +97,6 @@
         android:textSize="30dp"
         android:background="@drawable/button"
         android:id="@+id/btn_money"
-         android:layout_toRightOf="@id/IDButtonTest" />
+         android:layout_toRightOf="@id/IDButtonTest" />-->
 
 </RelativeLayout>

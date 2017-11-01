@@ -57,7 +57,7 @@ public class SerialPort {
 				throw new SecurityException();
 			}
 		}
-
+          //关联串口的文件描述符（FileDescriptor），并把文件的输入输出流与之关联，在代码之中
 	    	mFd = open(device.getAbsolutePath(), baudrate, flags);
 		if (mFd == null) {
 			Log.e(TAG, "native open returns null");
@@ -76,7 +76,7 @@ public class SerialPort {
 		return mFileOutputStream;
 	}
 
-	// JNI
+	// JNI  ;  创建了打开串口和关闭串口的本地方法
 	private native static FileDescriptor open(String path, int baudrate, int flags);
 	public native void close();
 	static {

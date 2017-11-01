@@ -1,9 +1,7 @@
 package com.rg2.activity;
 
-import android.content.SharedPreferences;
 import android.media.MediaRouter;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
@@ -12,26 +10,20 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.brick.robotctrl.*;
-import com.brick.robotctrl.BaseActivity;
+import com.brick.robotctrl.R;
+import com.brick.robotctrl.SerialCtrl;
 import com.presentation.PrintPresentation;
-import com.presentation.SamplePresentation;
 import com.rg2.utils.LogUtil;
 import com.rg2.utils.SPUtils;
 import com.rg2.utils.StringUtils;
 
-import org.w3c.dom.Text;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-
-import static com.rg2.utils.SPUtils.*;
-import static com.rg2.utils.SPUtils.put;
 
 /**
  * Created by Brick on 2016/12/10.
  */
-public class PrintActivity extends com.rg2.activity.BaseActivity{
+public class PrintActivity extends BaseActivity{
     private static final String TAG = "PrintActivity";
     private TextView   mBackTv;
     private  Button   mSubmitBnt1, mSubmitBnt2, mSubmitBnt3;
@@ -48,6 +40,8 @@ public class PrintActivity extends com.rg2.activity.BaseActivity{
     protected void initViews(Bundle savedInstanceState)
     {
         setContentView(R.layout.activity_print);
+
+        LogUtil.e(TAG, "..initViews.currentTimeMillis()"+System.currentTimeMillis());
 
         mBackTv = (TextView) findViewById(R.id.tv_back);
         mSubmitBnt1 = (Button) findViewById(R.id.btn_submit1);
@@ -69,7 +63,7 @@ public class PrintActivity extends com.rg2.activity.BaseActivity{
     @Override
     protected void initViewData()
     {
-      serialCtrlPrinter = new SerialCtrl(PrintActivity.this, new Handler(), "ttyUSB1", 9600, "printer");
+       serialCtrlPrinter = new SerialCtrl(PrintActivity.this, new Handler(), "ttyUSB1", 9600, "printer");
     }
 
 
@@ -270,15 +264,21 @@ public class PrintActivity extends com.rg2.activity.BaseActivity{
         super.onResume();
         Log.d(TAG,"打印的Activity");
         LogUtil.e(TAG, "..System.currentTimeMillis()"+System.currentTimeMillis());
-        updatePresentation();
+       // updatePresentation();//在父类中已经被调用了
     }
 
     @Override
     protected void onStop() {
-        super.onDestroy();
+        super.onStop();
         if (mPrintPresentation != null){
             mPrintPresentation.dismiss();
             mPrintPresentation = null;
         }
+        Log.i(TAG, "onStop: 停止了么？");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

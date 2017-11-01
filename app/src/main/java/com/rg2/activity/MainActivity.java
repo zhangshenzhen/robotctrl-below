@@ -1,6 +1,5 @@
 package com.rg2.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -96,7 +95,7 @@ public class MainActivity extends BaseActivity
 //                return;
 //            }
 
-            startActivity(new Intent(this,TwoActivity.class));
+          //  startActivity(new Intent(this,TwoActivity.class));
         }
     }
 }
