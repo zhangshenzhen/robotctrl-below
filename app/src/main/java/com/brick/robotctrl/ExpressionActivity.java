@@ -44,6 +44,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 		机器人委屈(R.drawable.weiqu, "weiqu", 8),
 		机器人微笑(R.drawable.weixiao, "weixiao", 9),
 		机器人郁闷(R.drawable.yumen, "yumen", 10),
+
 		机器人充电(R.drawable.chongdian, "chongdian", 11);
 //		机器人得意(R.drawable.deyi, "deyi", 0),
 //		机器人尴尬(R.drawable.ganga, "ganga", 1),
