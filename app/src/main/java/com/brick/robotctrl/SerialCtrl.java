@@ -65,7 +65,7 @@ public class SerialCtrl {
             this.serialBaud = Integer.parseInt(serialBaud);
         }
     }
-
+    //打开串口
     public void openSerialCOM() {
         Log.d(TAG, "openSerialCOM: serialBaud:" + serialBaud + "\tserialCOM:" + serialCOM);
         ShowMessage("Open " + serialCOM + " successful, the BaudRate is " + serialBaud);
