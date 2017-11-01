@@ -46,9 +46,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import it.sauronsoftware.base64.Base64;
-import zime.ui.CommandExecution;
 import zime.ui.ZIMEAVDemoService;
-
+///*https://zhangshenzhen@bitbucket.org/pumpkine/robotctrl.git*/
 public class MainActivity extends com.brick.robotctrl.BaseActivity{
     private static final String TAG = "MainActivity";
     SharedPreferences.OnSharedPreferenceChangeListener presChangeListener = null;
