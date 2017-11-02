@@ -249,6 +249,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 				index = index -(EXPRESSION.getExpressionSize()-1);
 				Log.d(TAG, EXPRESSION.getExpressionSize()+"changeExpression 大于枚举长度: ..... " + index);
 			   }
+
 				System.gc();
 				gifView.setGifImage(EXPRESSION.getExpression(index).id);
 				gifView.showAnimation();
