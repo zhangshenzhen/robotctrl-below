@@ -28,16 +28,16 @@ public class SSDBTask extends TimerTask {
     public static final int ACTION_HSET = 0x0004;
     public static final int ACTION_HGET = 0x0008;
 
-    
+
     private Handler contextHandler = null;
     private Context context = null;
-    private SSDB ssdbClient =null;
-   // public String serverIp = "120.25.66.79";
+    private SSDB ssdbClient = null;
+    // public String serverIp = "120.25.66.79";
     public String serverIp = "222.190.128.98";
     public int serverPort = 20177;
-   // public int serverPort = 8888;
-   // public String robotName = "seu";
-    public String robotName = "hs19";
+    // public int serverPort = 8888;
+    // public String robotName = "seu";
+    public String robotName = "hs32";
     public String robotLocation = "江苏红石信息集成服务有限公司";
     public String videoPlayList = null;
     private final int serverSite = 222;
@@ -66,8 +66,6 @@ public class SSDBTask extends TimerTask {
     }
 
     Timer timer = new Timer();
-
-
 
     private static class CmdEntry<T, K, V> {
         public final T cmdType;
@@ -116,44 +114,17 @@ public class SSDBTask extends TimerTask {
             e.printStackTrace();
         }
         timer.schedule(this, 50, 50);
-//        connect();
-       /* 注释掉, 不需要
-       new Thread() {
-            @Override
-            public void run() {
-                // 需要花时间计算的方法
-                try {
-                    String str = HttpAsk.posturl("http://60.171.108.151:8076/rb/t_loginbyrobot.aspx?action=login&robotcode=r00004&password=123456");
-                    Log.d(TAG, "HttpAsk: " + str);
-                    String[] strArray = str.split(" ");
-//					for(int i = 0; i < strArray.length; i++){
-//						Log.d(TAG, "strArray: " +strArray[i]);
-//					}
-                   String ans = HttpAsk.posturl("http://60.171.108.151:8076/rb/t_getproperty.aspx?action=queryall&"+strArray[1]+"&"+strArray[2]);
-                    String[] strArray1 = ans.split(" ");
-//					for(int i = 0; i < strArray1.length; i++){
-//						Log.d(TAG, "strArray1: " +strArray1[i]);;
-//					}
-                    String[] strArray3 = strArray1[1].split("=");
-//					for(int i = 0; i < strArray3.length; i++){
-//						Log.d(TAG, "strArray3: " +strArray3[i]);;
-//					}
-                    robotLocation = strArray3[1];
+        connect();
 
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-             //   Log.d(TAG, "serverSite: " + robotLocation);
-            }
-        }.start();*/
 //        pushFileList();
     }
-    public void pushFileList(){
+
+    public void pushFileList() {
         try {
             File file = new File(Environment.getExternalStorageDirectory()
-                    .getPath()+"/Movies");
+                    .getPath() + "/Movies");
             File[] files = file.listFiles();
-            if (files.length == 0){
+            if (files.length == 0) {
                 Log.d(TAG, "pushFileList: 为空");
             }
             if (files.length > 1) {
@@ -182,12 +153,12 @@ public class SSDBTask extends TimerTask {
                         }
                     }
                 }
-                videoPlayList = videoPlayList + files[files.length-1].getAbsolutePath().substring(files[files.length-1].getAbsolutePath().lastIndexOf("/") + 1);
+                videoPlayList = videoPlayList + files[files.length - 1].getAbsolutePath().substring(files[files.length - 1].getAbsolutePath().lastIndexOf("/") + 1);
             }
-            if(files.length == 1){
+            if (files.length == 1) {
                 videoPlayList = files[0].getAbsolutePath().substring(files[0].getAbsolutePath().lastIndexOf("/") + 1);
             }
-            Log.d(TAG, "SSDBTask: "  + videoPlayList);
+            Log.d(TAG, "SSDBTask: " + videoPlayList);
             SSDBQuery(ACTION_HSET, event[Key_VideoPlayList], videoPlayList);
         } catch (Exception e) {
             Log.d("getfile", "查找异常!");
@@ -237,30 +208,30 @@ public class SSDBTask extends TimerTask {
     public static final int Key_CurrentTime = 11;
     public static final int Key_DisableAudio = 12;
     public static final int Key_SetVolume = 13;
-	public static final int Key_EndVideo=14;
-    public static final int key_ApkUpdate=15;               //用来更新apk的，跟ssdb没关系，放在这里只是为了统一,15被谁用了
-    public static final int Key_Message=16;
-    public static final int key_IDCard=17;
+    public static final int Key_EndVideo = 14;
+    public static final int key_ApkUpdate = 15;               //用来更新apk的，跟ssdb没关系，放在这里只是为了统一,15被谁用了
+    public static final int Key_Message = 16;
+    public static final int key_IDCard = 17;
 
     public static final String[] event = new String[]{
             "event", "DirCtl", "param", "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt", "NetworkDelay", "Location",
-            "Brow", "CurrentTime", "DisableAudio", "Volume","EndVideo", "", "Message"};
-   ////////////////////////gaowei/////////////////////////////
-    public static boolean enableForbidAudio=false;
-    public static boolean enableCurrentTime=false;
-    public static boolean enableLocation=false;
-    public static boolean enableNetworkDelay=false;
-    public static boolean enableBatteryVolt=false;
-    public static boolean enableRobotMsg=false;             //
-    public static boolean enableVideoPlayList=false;        //
-    public static boolean enableVideoPlay=false;            //
-//    public static boolean enableVideoInfo=false;            //
+            "Brow", "CurrentTime", "DisableAudio", "Volume", "EndVideo", "", "Message"};
+    ////////////////////////gaowei/////////////////////////////
+    public static boolean enableForbidAudio = false;
+    public static boolean enableCurrentTime = false;
+    public static boolean enableLocation = false;
+    public static boolean enableNetworkDelay = false;
+    public static boolean enableBatteryVolt = false;
+    public static boolean enableRobotMsg = false;             //
+    public static boolean enableVideoPlayList = false;        //
+    public static boolean enableVideoPlay = false;            //
+    //    public static boolean enableVideoInfo=false;            //
     ////////////////////////gaowei////////////////////////////
     public static boolean enableDirCtl = false;
     public static boolean enableChangeBrow = false;
     public static boolean enableSetParameter = false;
     public static boolean enableSetVolume = false;
-	// public static boolean enableEndVideo = false;
+    // public static boolean enableEndVideo = false;
     public static boolean enableGetMessage = false;
 
     private int iCount = 0;
@@ -273,6 +244,7 @@ public class SSDBTask extends TimerTask {
                 Message message = new Message();
                 message.what = Key_Type;
                 message.obj = new String(rlt, "GBK");
+                Log.d(TAG, "what :" + message.what + "----------SSDB-0------ Key:"+(String) message.obj);
                 contextHandler.sendMessage(message);
             }
         } catch (Exception e) {
@@ -280,7 +252,8 @@ public class SSDBTask extends TimerTask {
 //            SSDBQuery(ACTION_CONNECT);
         }
     }
-   @Override
+
+    @Override
     public synchronized void run() {
 //        Log.d(TAG, "run: stop:" + stop);
 
@@ -289,6 +262,7 @@ public class SSDBTask extends TimerTask {
         }
         while (cmdList.size() > 0) {
             CmdEntry<Integer, String, String> cmd = null;
+            Log.d(TAG, "----------cmdList------- vaule"+cmdList.toString());
             try {
                 cmd = cmdList.poll();
             } catch (Exception e) {
@@ -297,9 +271,10 @@ public class SSDBTask extends TimerTask {
             if (cmd == null) {
                 return;
             }
-//            Log.i(TAG, "run: " + cmd);
+            Log.i(TAG, "run:------ " + cmd);
+                Log.d(TAG, "----------cmd.cmdType------- Key:"+cmd.cmdType);
             switch (cmd.cmdType) {
-                case ACTION_CONNECT:
+                case ACTION_CONNECT://1
                     try {
                         Log.d(TAG, "run: ACTION_CONNECT");
                         ssdbClient = new SSDB(serverIp, serverPort);
@@ -310,30 +285,31 @@ public class SSDBTask extends TimerTask {
                         e.printStackTrace();
                     }
                     break;
-                case ACTION_DISCONNECT:
+                case ACTION_DISCONNECT://2
                     if (ssdbClient != null) {
                         ssdbClient.close();
                         ssdbClient = null;
                     }
                     break;
-                case ACTION_HSET:
+                case ACTION_HSET://4
                     try {
 //                       ssdbClient = new SSDB(serverIp, serverPort);
-                       ssdbClient.hset(robotName, cmd.key, cmd.val);
+                        ssdbClient.hset(robotName, cmd.key, cmd.val);
                     } catch (Exception e) {
                         e.printStackTrace();
                         SSDBQuery(ACTION_CONNECT);
                     }
                     break;
-                case ACTION_HGET:
+                case ACTION_HGET://8
                     if (++iCount >= 5) {        // 1s check
                         iCount = 0;
-                        try {
+                        try {                                       //event 数组内的关键字当做参数
                             byte[] rlt = ssdbClient.hget(robotName, event[Key_Event]); // check event
                             if (rlt != null) {
                                 Message message = new Message();
                                 message.what = Key_Event;
                                 message.obj = new String(rlt, "GBK");
+                                Log.d(TAG, "what :" + message.what + "----------SSDB-1------ Key:"+(String) message.obj);
                                 contextHandler.sendMessage(message);
                             }
                         } catch (Exception e) {
@@ -343,45 +319,45 @@ public class SSDBTask extends TimerTask {
 //                            SSDBQuery(ACTION_CONNECT);    // 异常处理不应该是重新连接
                         }
                     }
-                    // by gaowei start
-                    if(enableVideoPlay){
+                    // by gaowei start//enableVideoPlay
+                    if (enableVideoPlay) {
                         sendMessageToMain(Key_VideoPlay);
-                    }else {
+                    } else {
 //                        SSDBQuery(ACTION_HSET, event[Key_VideoPlay], "");
                     }
-                    if(enableVideoPlayList){
+                    if (enableVideoPlayList) {
                         sendMessageToMain(Key_VideoPlayList);
-                    }else{
+                    } else {
 //                        SSDBQuery(ACTION_HSET, event[Key_VideoPlayList], "");
                     }
-                    if(enableRobotMsg){
+                    if (enableRobotMsg) {
                         sendMessageToMain(Key_RobotMsg);
-                    }else{
+                    } else {
 //                        SSDBQuery(ACTION_HSET, event[Key_RobotMsg], "");
                     }
-                    if(enableBatteryVolt){
+                    if (enableBatteryVolt) {
                         sendMessageToMain(Key_BatteryVolt);
-                    }else{
+                    } else {
 //                        SSDBQuery(ACTION_HSET, event[Key_BatteryVolt], "");
                     }
-                    if(enableNetworkDelay){
+                    if (enableNetworkDelay) {
                         sendMessageToMain(Key_NetworkDelay);
-                    }else{
+                    } else {
 //                        SSDBQuery(ACTION_HSET, event[Key_NetworkDelay], "");
                     }
-                    if(enableLocation){
+                    if (enableLocation) {
                         sendMessageToMain(Key_Location);
-                    }else{
+                    } else {
 //                        SSDBQuery(ACTION_HSET, event[Key_Location]);
                     }
-                    if(enableCurrentTime){
+                    if (enableCurrentTime) {
                         sendMessageToMain(Key_CurrentTime);
-                    }else{
+                    } else {
 //                        SSDBQuery(ACTION_HSET, event[Key_CurrentTime]);
                     }
-                    if(enableForbidAudio){
+                    if (enableForbidAudio) {
                         sendMessageToMain(Key_DisableAudio);
-                    }else{
+                    } else {
 //                        SSDBQuery(ACTION_HSET, event[Key_DisableAudio]);
                     }
                     if (enableDirCtl) {             // check control move
@@ -391,8 +367,9 @@ public class SSDBTask extends TimerTask {
                                 Message message = new Message();
                                 message.what = Key_DirCtrl;
                                 message.obj = new String(rlt, "GBK");
+                                Log.d(TAG, "what :" + message.what + "----------SSDB-2------ Key:" + (String) message.obj);
                                 contextHandler.sendMessage(message);
-                               /* if(rlt.equals("stop")||rlt.equals("headmid")) {
+                              /*  if(rlt.equals("stop")||rlt.equals("headmid")) {
                                     SSDBTask.enableDirCtl = false;
                                 }*/
 
@@ -404,13 +381,14 @@ public class SSDBTask extends TimerTask {
                     } else {
 //                        SSDBQuery(ACTION_HSET, event[Key_DirCtrl], "");
                     }
-                    if ( enableSetParameter ) {     // check rate parameter
+                    if (enableSetParameter) {     // check rate parameter
                         try {
                             byte[] rlt = ssdbClient.hget(robotName, event[Key_SetParam]);
                             if (rlt != null) {
                                 Message message = new Message();
                                 message.what = Key_SetParam;
                                 message.obj = new String(rlt, "GBK");
+                                Log.d(TAG, "what :" + message.what + "----------SSDB-3------ Key:" + (String) message.obj);
                                 contextHandler.sendMessage(message);
                             }
                         } catch (Exception e) {
@@ -420,13 +398,14 @@ public class SSDBTask extends TimerTask {
                     } else {
 //                        SSDBQuery(ACTION_HSET, event[Key_SetParam], "");
                     }
-                    if ( enableChangeBrow ) {       // check emotion change
+                    if (enableChangeBrow) {       // check emotion change
                         try {
                             byte[] rlt = ssdbClient.hget(robotName, event[Key_ChangeBrow]);
                             if (rlt != null) {
                                 Message message = new Message();
                                 message.what = Key_ChangeBrow;
                                 message.obj = new String(rlt, "GBK");
+                                Log.d(TAG, "what :" + message.what + "----------SSDB-4------ Key:" + (String) message.obj);
                                 contextHandler.sendMessage(message);
                             }
                         } catch (Exception e) {
@@ -436,13 +415,14 @@ public class SSDBTask extends TimerTask {
                     } else {
 //                        SSDBQuery(ACTION_HSET, event[Key_ChangeBrow], "");
                     }
-                    if ( enableSetVolume ) {       // check volume change
+                    if (enableSetVolume) {       // check volume change
                         try {
                             byte[] rlt = ssdbClient.hget(robotName, event[Key_SetVolume]);
                             if (rlt != null) {
                                 Message message = new Message();
                                 message.what = Key_SetVolume;
                                 message.obj = new String(rlt, "GBK");
+                                Log.d(TAG, "what :" + message.what + "----------SSDB-5------ Key:" + (String) message.obj);
                                 contextHandler.sendMessage(message);
                             }
                         } catch (Exception e) {
@@ -453,13 +433,14 @@ public class SSDBTask extends TimerTask {
 //                    else {
 //                        SSDBQuery(ACTION_HSET, event[Key_ChangeBrow], "");      // 后面不能清
 //                    }
-                    if( enableGetMessage ) {
+                    if (enableGetMessage) {
                         try {
                             byte[] rlt = ssdbClient.hget(robotName, event[Key_Message]);
                             if (rlt != null) {
                                 Message message = new Message();
                                 message.what = Key_Message;
                                 message.obj = new String(rlt, "GBK");
+                                Log.d(TAG, "what :" + message.what + "----------SSDB-6------ Key:" + (String) message.obj);
                                 contextHandler.sendMessage(message);
                             }
                         } catch (Exception e) {

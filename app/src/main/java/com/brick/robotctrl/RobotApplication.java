@@ -38,12 +38,15 @@ public class RobotApplication extends Application {
     public void onCreate() {
         super.onCreate();
         RobotApplication.context = getApplicationContext();
-        //初始化服务
-      //  Intent stopIntent = new Intent(this, ZIMEAVDemoService.class);
-      //   stopService(stopIntent);
-        //启动错误捕获日志
+           //初始化服务
+          //  Intent stopIntent = new Intent(this, ZIMEAVDemoService.class);
+          //   stopService(stopIntent);
+              //启动错误捕获日志
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(this);
+
+
+
         //初始化发卡机
       // serialCtrlcard = new SerialCtrl(this, new Handler(), "ttyS3", 9600, "robotctrl");
        // serialCtrlcard.sendPortData(serialCtrlcard.ComA,"55AA7E0004020100840D");//开始

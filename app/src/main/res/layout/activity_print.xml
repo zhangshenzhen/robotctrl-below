@@ -6,46 +6,52 @@
                 android:orientation="vertical"
     >
     <include layout="@layout/layout_head"/>
+
+
     <LinearLayout
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:padding="20dp">
 
       <!--  android:background="@drawable/common_red_bg_5dp"-->
         <Button
+
             android:id="@+id/btn_submit1"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/button"
+            android:background="@drawable/function_selector"
             android:text="对公业务"
-            android:textColor="@color/white"
+            android:textColor="@color/enter_color_selector"
             android:textSize="30sp"/>
 
         <Button
+
             android:id="@+id/btn_submit2"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/button"
+            android:background="@drawable/function_selector"
             android:text="对私业务"
-            android:textColor="@color/white"
+            android:textColor="@color/enter_color_selector"
             android:textSize="30sp"/>
 
         <Button
+
             android:id="@+id/btn_submit3"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/button"
+            android:background="@drawable/function_selector"
             android:text="理财业务"
-            android:textColor="@color/white"
+            android:textColor="@color/enter_color_selector"
             android:textSize="30sp"/>
 
     </LinearLayout>

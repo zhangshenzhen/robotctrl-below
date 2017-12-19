@@ -14,12 +14,16 @@ import com.brick.robotctrl.R;
 public class MainPresentation extends  BasePresentation {
     public MainPresentation(Context outerContext, Display display) {
         super(outerContext, display);
+
+
     }
+
 
     @Override
       protected void initView(Bundle savedInstanceState) {
         Log.d("MainPresentation", "MainPresentation............main ..2");
         setContentView(R.layout.persentation_main);
      }
+
 
 }

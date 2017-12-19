@@ -2,6 +2,7 @@ package com.presentation;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -33,9 +34,10 @@ public class PrintPresentation extends BasePresentation {
     public void initViewData(boolean ispaper){
          mprint = (TextView) findViewById(R.id.print);
          mpaper = (TextView) findViewById(R.id.paper);
-         path = "/data/data/com.brick.robotctrl/dream.mp3";
+        // path = "/data/data/com.brick.robotctrl/dream.mp3";
 //        String path2 = "/data/data/dream.mp3";//需要在目录下放入资源文件；
-//        String path3 = Environment.getExternalStorageDirectory().getPath()+"/dream.mp3";
+         String path = Environment.getExternalStorageDirectory()
+                .getPath()+"/Music/we_are_diffent.mp3";
          if(ispaper ){
           mpaper.setVisibility(View.GONE);
           mprint.setVisibility(View.VISIBLE);

@@ -20,7 +20,7 @@ import android.view.WindowManager;
 import android.widget.VideoView;
 
 import com.kjn.videoview.ADVideo;
-import com.presentation.MainPresentation;
+import com.presentation.VideoPresentation;
 
 
 public class ADActivity extends BaseActivity {
@@ -45,7 +45,9 @@ public class ADActivity extends BaseActivity {
     private static Handler contextHandler2 = null;
     private String path;
 //    private View mVolumeBrightnessLayout;
-
+    /**副屏
+     * */
+    private VideoPresentation mVideoPresentation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
@@ -69,6 +71,7 @@ public class ADActivity extends BaseActivity {
         adVideo = new ADVideo(videoView, handler);
         switch (mode){
             case "SingleCycle":
+                Log.d(TAG, "onCreate: filename 主" + fileName);
                 videoPlayTargetCycle();
                 break;
             case "ContinuePlay":
@@ -76,6 +79,7 @@ public class ADActivity extends BaseActivity {
                 break;
             case "Single":
                 videoPlayTargetSingle();
+
                 break;
             case "Cycle":
                 videoCycleFrom(fileName);
@@ -238,9 +242,9 @@ public class ADActivity extends BaseActivity {
     protected void onStop() {
         Log.i(TAG, "onStop");
         super.onStop();
-        if(mMainPresentation !=null){
-            mMainPresentation.dismiss();
-            mMainPresentation = null;
+        if(mVideoPresentation !=null){
+            mVideoPresentation.dismiss();
+            mVideoPresentation = null;
         }
         finish();
     }
@@ -265,36 +269,36 @@ public class ADActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    /**副屏
-     * */
-    private MainPresentation mMainPresentation;
+
     @Override
     protected void updatePresentation() {
         //得到当前route and its presentation display
         MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
                 MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
         Display presentationDisplay =  route  !=  null ? route.getPresentationDisplay() : null;
-        if (mMainPresentation != null && mMainPresentation.getDisplay() !=  presentationDisplay) {
-            mMainPresentation.dismiss();
-            mMainPresentation = null;
+        if (mVideoPresentation != null && mVideoPresentation.getDisplay() !=  presentationDisplay) {
+            mVideoPresentation.dismiss();
+            mVideoPresentation = null;
         }
-        if (mMainPresentation == null &&  presentationDisplay != null) {
+        if (mVideoPresentation == null &&  presentationDisplay != null) {
             // Initialise a new Presentation for the Display
             Log.d(TAG, "MainPresentation............main ..2");
-            mMainPresentation = new MainPresentation(this,  presentationDisplay);
+            mVideoPresentation = new VideoPresentation(this,  presentationDisplay);
             //把当前的对象引用赋值给BaseActivity中的引用;
-            mPresentation  =  mMainPresentation  ;
+            mPresentation  =  mVideoPresentation  ;
             // Log.d(TAG, "updatePresentation: this: "+ this.toString());
-            mMainPresentation.setOnDismissListener(mOnDismissListener);
+            mVideoPresentation.setOnDismissListener(mOnDismissListener);
 
             // Try to show the presentation, this might fail if the display has
             // gone away in the mean time
             try {
-                mMainPresentation.show();
+                mVideoPresentation.show();
+                Log.d(TAG, "onCreate: filename 副" + fileName);
+                mVideoPresentation.initViewVideoData(true , fileName);
             } catch (WindowManager.InvalidDisplayException ex) {
                 // Couldn't show presentation - display was already removed
                 // Log.d(TAG, "updatePresentation: failed");
-                mMainPresentation = null;
+                mVideoPresentation = null;
             }
         }
     }

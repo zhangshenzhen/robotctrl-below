@@ -1,7 +1,9 @@
 package com.brick.robotctrl;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRouter;
 import android.net.Uri;
@@ -55,12 +57,14 @@ public class SplashActivity extends BaseActivity {
      /* new Thread(new Runnable() {
             @Override
             public void run() {
-                String[] str = new String[]{"edge -a 192.168.10.8 -c test -k 123456 -l 222.190.128.98:8080 &","sleep 1",
-                        "busybox ip route delete 192.168.10.0/24","busybox ip route add 192.168.10.0/24 via 192.168.10.8 dev edge0 table local"};
+         String[] str = new String[]{"edge -a 192.168.10.8 -c test -k 123456 -l 222.190.128.98:8080 &","sleep 1",
+         "busybox ip route delete 192.168.10.0/24",
+          "busybox ip route add 192.168.10.0/24 via 192.168.10.8 dev edge0 table local"};
                 CommandExecution.execCommand(str,true);
-              *//* String[] str = new String[]{"edge -a 192.168.100.34 -c test -k 123456 -l 222.190.128.98:8080 &","sleep 1",
+              */
+        /* String[] str = new String[]{"edge -a 192.168.100.34 -c test -k 123456 -l 222.190.128.98:8080 &","sleep 1",
                         "busybox ip route delete 192.168.100.0/24","busybox ip route add 192.168.100.0/24 via 192.168.100.34 dev edge0 table local"};
-                CommandExecution.execCommand(str,true);*//*
+                CommandExecution.execCommand(str,true);/*
             }
         }).start();*/
     }
@@ -72,6 +76,16 @@ public class SplashActivity extends BaseActivity {
         vv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
+                //获取最大音乐量值
+                AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+                int  current = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
+                Log.e(TAG, "设置前媒体音量 ："+current);
+
+                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,13,0);
+                int  current2 = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
+                Log.e(TAG, "当前媒体音量 ："+current2);
+
             startActivityForResult( new Intent(SplashActivity.this, MainActivity.class),1);
             }
         });

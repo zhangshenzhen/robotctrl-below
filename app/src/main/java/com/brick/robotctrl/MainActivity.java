@@ -37,10 +37,13 @@ import com.kjn.videoview.ADVideo;
 import com.presentation.MainPresentation;
 import com.rg2.activity.ShellUtils;
 import com.rg2.utils.LogUtil;
+import com.rg2.utils.StringUtils;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -120,10 +123,11 @@ private MainPresentation  mMainPresentation;
         gif.setGifImage(R.drawable.weixiao);
 
         ssdbTask = new SSDBTask(MainActivity.this, handler);  //ttymxc0
-      //  serialCtrl = new SerialCtrl(MainActivity.this, handler, "ttymxc0", 9600, "robotctrl");
+       // serialCtrl = new SerialCtrl(MainActivity.this, handler, "ttymxc0", 9600, "robotctrl");
         serialCtrl = new SerialCtrl(MainActivity.this, handler, "ttyS3", 9600, "robotctrl");
-         //打印机
-        serialCtrlPrinter = new SerialCtrl(MainActivity.this, handler, "ttyUSB1", 9600, "printer");
+
+         //打印机              ttyUSB1
+        serialCtrlPrinter = new SerialCtrl(MainActivity.this, handler, "ttyS1", 9600, "printer");
         // serialCtrlPrinter.setSerialCOM("/dev/ttyUSB0");
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -131,10 +135,10 @@ private MainPresentation  mMainPresentation;
         netWorkChangeReceiver = new netWorkChangeReceiver();
         registerReceiver(netWorkChangeReceiver, intentFilter);
         DispQueue = new DispQueueThread();      //获取电压显示线程
-        DispQueue.start();  //暂时关闭此线程,
+       // DispQueue.start();  //暂时关闭此线程,
 
-        initData();
-        initChangeListener();
+          initData();
+          initChangeListener();
 //        PlayerService.startAction(this, mp3Url);
 //        relative timer
 
@@ -278,11 +282,11 @@ private MainPresentation  mMainPresentation;
     public void onClick(View view) {
         LogUtil.e("MainActivity", "..System.currentTimeMillis()"+System.currentTimeMillis());
        switch (view.getId()){
-         /*  case R.id.gif:
+           case R.id.gif:
                Log.i(TAG, "onClick: 点击了界面");
                //暂时不用，先屏蔽掉
-            //   startActivity(new Intent(MainActivity.this,FunctionSelectActivity.class));
-               break;*/
+               startActivity(new Intent(MainActivity.this,FunctionSelectActivity.class));
+               break;
 
 
             /*
@@ -544,7 +548,10 @@ private MainPresentation  mMainPresentation;
                         Log.d(TAG, "handleMessage: ----------10-16------- Key:Event \tvalue:" + rlt);
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
                         Log.d(TAG, "handleMessage: clear Event");
-                        MainActivity.super.onReboot();
+                        Log.d(TAG, "restart: " + "重启机器人" );
+                        Intent iReboot = new Intent(Intent.ACTION_REBOOT);
+                        iReboot.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        MainActivity.this.startActivity(iReboot);
                     }
                     if (rlt.equals("shutdown"))
                     {
@@ -600,7 +607,7 @@ private MainPresentation  mMainPresentation;
                                     ADVideo.resume();
                                 }
                                 //                                else{
-                                //                                    ADVideo.start();
+                                //                                    ADVideo2.start();
                                 //                                }
                                 break;
                             case "Pause":
@@ -731,10 +738,11 @@ private MainPresentation  mMainPresentation;
                         Log.d(TAG, "handleMessage: ---------19-2--------Key:DirCtrl \tvalue:" + rlt);
                     }
                     else if (!rlt.equals("")){
-                        serialCtrl.robotMove(rlt);
                         Log.d(TAG, "handleMessage: ---------19-3--------Key:DirCtrl \tvalue:" + rlt);
+
+                        serialCtrl.robotMove(rlt);
                          //修改的代码
-                       /* if(rlt.equals("stop")||rlt.equals("headmid")) {
+                      /*  if(rlt.equals("stop")||rlt.equals("headmid")) {
                             SSDBTask.enableDirCtl = false;
                         }*/
                     }
@@ -782,10 +790,47 @@ private MainPresentation  mMainPresentation;
                     break;
                 case SSDBTask.Key_Message:
                     rlt = (String) msg.obj;
+                  /*  ActivityManager fm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+                    ComponentName fn = fm.getRunningTasks(1).get(0).topActivity;//得到某一活动*/
                     Log.d(TAG, rlt+"handleMessage: --------23----------Key:Message \tvalue:" + rlt);
                     if (!rlt.equals(""))
-                    {
-                        SpeechService.startAction(MainActivity.this, Base64Decode(rlt));
+                    {  //在这里测试其他的功能暂时注释掉，
+                      //  SpeechService.startAction(MainActivity.this, Base64Decode(rlt));
+                       switch (rlt){
+                           case "a":
+                               print3();
+                               break;
+                           case "A" :
+                               print3();
+                               break;
+                           case "b":
+                               print3();
+                               break;
+                           case "B" :
+                               print3();
+                               break;
+                           case "c":
+                               print3();
+                               break;
+                           case "C" :
+                               print3();
+                               break;
+
+                       }
+
+
+
+                        // 设置音量max大小为  15;
+                        //获取最大音乐量值
+                     /*   int voice = Integer.parseInt(rlt);
+                           if(voice>=15){
+                            voice =15;
+                           }
+
+                        AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,voice,0);
+                        int  current2 = mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
+                        Log.e(TAG, "当前媒体音量 ："+current2);*/
                         SSDBTask.enableGetMessage = false;
                     }
                     break;
@@ -810,7 +855,7 @@ private MainPresentation  mMainPresentation;
     {
         String apkDirPath = Environment.getExternalStorageDirectory().getPath() + "/Download";
         File apkFile = new File(apkDirPath);
-        File[] apkFiles = apkFile.listFiles();
+        File[] apkFiles = apkFile.listFiles();//把该文件夹下的文件封装成文件的集合
 
         for (int i = 0; i < apkFiles.length; i++){
             if (needUpdate(apkFiles[i].getAbsolutePath())){
@@ -991,11 +1036,11 @@ private MainPresentation  mMainPresentation;
                 ApplicationInfo apkInfo = info.applicationInfo;
                 //   String appName = pm.getApplicationLabel(apkInfo).toString();
                 String packageName = apkInfo.packageName;   //得到安装包名�?
-                String versionName = info.versionName;            //得到版本信息
-                int versionCode = info.versionCode;            //得到版本信息
+                String versionName = info.versionName;      //得到版本信息
+                int versionCode = info.versionCode;        //得到版本信息
 
-                //              Drawable icon = pm.getApplicationIcon(appInfo);//得到图标信息
-                //              appName:RobotCtrl packagename: com.brick.robotctrl version: v1.27.31
+                //Drawable icon = pm.getApplicationIcon(appInfo);//得到图标信息
+                //appName:RobotCtrl packagename: com.brick.robotctrl version: v1.27.31
                 Log.d(TAG, "apkInfo:packagename: " + packageName + " versionName: " + versionName + " versionCode: " + versionCode);
 
           String appVersionName = getVersion(packageName);
@@ -1054,5 +1099,53 @@ private MainPresentation  mMainPresentation;
         return null;
     }
 
+      // 客服叫号
+    private void print3()
+    {
+        //  String str ="1234567890ABCDEFGHIJ中华人民共和";
+        String time = StringUtils.getDateToString(new Date());
+
+        String str0 = "                                ";
+        String str1 = "                      2016-12-13";
+        String str2 = "                                ";
+        String str3 = "                                ";
+        String str4 = "               16号             ";
+        String str5 = "                                ";
+        String str6 = "                                ";
+        String str7 = "理财业务    柜台032             ";
+        String str8 = "                                ";
+        String str9 = "                                ";
+        sendPortText(str9);
+        sendPortText(str9);
+        sendPortText(str9);
+        sendPortText(str9);
+        sendPortText(str9);
+        sendPortText(str8);
+        sendPortText(str7);
+        sendPortText(str6);
+        sendPortText(str5);
+        sendPortText(str4);
+        sendPortText(str3);
+        sendPortText(str2);
+        sendPortText(str1);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+    }
+
+    private void sendPortText(String content)
+    {
+        byte[] temp = null;
+        try
+        {
+            temp = content.getBytes("gbk");
+        } catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
+        }
+        serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA, temp);
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.kjn.videoview;
+package com.presentation;
 
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -12,7 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ADVideo {
+public class ADVideo2 {
     private final String TAG = "ADVideo2";
     private static VideoView videoView;
     private List<String> videoList;
@@ -23,7 +23,7 @@ public class ADVideo {
     private final int PROGRESS = 102;
     public static String path;
 
-    public ADVideo (VideoView videoView, Handler handler){
+    public ADVideo2(VideoView videoView, Handler handler){
         this.videoView = videoView;
         this.contextHandler = handler;
     }

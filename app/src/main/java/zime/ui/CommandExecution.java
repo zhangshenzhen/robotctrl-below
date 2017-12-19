@@ -4,12 +4,12 @@ package zime.ui;
  * Created by li on 2017/5/16.
  */
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import android.util.Log;
 
 /**
  * 执行shell脚本工具类
@@ -110,6 +110,7 @@ public class CommandExecution {
                 e.printStackTrace();
             }
         } catch (Exception e) {
+
             String errmsg = e.getMessage();
             if (errmsg != null) {
                 Log.e(TAG, errmsg);

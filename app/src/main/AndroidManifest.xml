@@ -170,7 +170,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".FunctionSelectActivity" >
+        <activity android:name=".FunctionSelectActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            >
         </activity>
     </application>
 

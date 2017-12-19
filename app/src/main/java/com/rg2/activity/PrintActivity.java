@@ -17,8 +17,15 @@ import com.rg2.utils.LogUtil;
 import com.rg2.utils.SPUtils;
 import com.rg2.utils.StringUtils;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by Brick on 2016/12/10.
@@ -30,6 +37,7 @@ public class PrintActivity extends BaseActivity{
     SerialCtrl serialCtrlPrinter = null;
     //副屏
     private PrintPresentation mPrintPresentation;
+
 
 
     @Override
@@ -63,7 +71,9 @@ public class PrintActivity extends BaseActivity{
     @Override
     protected void initViewData()
     {
-       serialCtrlPrinter = new SerialCtrl(PrintActivity.this, new Handler(), "ttyUSB1", 9600, "printer");
+    // serialCtrlPrinter = new SerialCtrl(PrintActivity.this, new Handler(), "ttyUSB1", 9600, "printer");
+       serialCtrlPrinter = new SerialCtrl(PrintActivity.this, new Handler(), "ttyS1", 9600, "printer");
+
     }
 
 
@@ -110,23 +120,26 @@ public class PrintActivity extends BaseActivity{
                 break;
             case R.id.btn_submit3:
                 CountPtint();
-                print3();
+               // print3();
+                print4();
                 break;
             case R.id.tv_back:
                 finish();
                 break;
         }
     }
-  //计数器
+
+
+    //计数器
      private  int countNum ;
 
     public void CountPtint(){
         //采用sp进行物理存储，打开退出关闭程序不影响计数器的数值;
         countNum = (int) SPUtils.get(mContext, "countNum",0);
-        Log.d(TAG,"countNum=  存"+countNum);
-        Log.d(TAG,"countNum=  存"+getPackageName());
+         Log.d(TAG,"countNum= 取出"+countNum);
         if (countNum<9){
             ++countNum;
+            Log.d(TAG,"countNum=  打印"+countNum);
             SPUtils.put(mContext,"countNum", countNum);//存储变量
             mPrintPresentation.initViewData(true);
           }else {
@@ -144,21 +157,18 @@ public class PrintActivity extends BaseActivity{
         //  String str ="1234567890ABCDEFGHIJ中华人民共和";
         //  String str="中华人民共和";
         String time = StringUtils.getDateToString(new Date());
+           //每行24个字符
+        String str0 = "                        ";
+        String str1 = "              2016-12-09";
+        String str2 = "                        ";
+        String str3 = "                        ";
+        String str4 = "               8号      ";
+        String str5 = "                        ";
+        String str6 = "                        ";
+        String str7 = "对公业务    柜台032     ";
+        String str8 = "                        ";
+        String str9 = "                        ";
 
-        String str0 = "                                ";
-        String str1 = "                      2016-12-12";
-        String str2 = "                                ";
-        String str3 = "                                ";
-        String str4 = "               8号              ";
-        String str5 = "                                ";
-        String str6 = "                                ";
-        String str7 = "对公业务    柜台032             ";
-        String str8 = "                                ";
-        String str9 = "                                ";
-        sendPortText(str9);
-        sendPortText(str9);
-        sendPortText(str9);
-        sendPortText(str9);
         sendPortText(str9);
         sendPortText(str8);
         sendPortText(str7);
@@ -171,8 +181,7 @@ public class PrintActivity extends BaseActivity{
         sendPortText(str0);
         sendPortText(str0);
         sendPortText(str0);
-        sendPortText(str0);
-        sendPortText(str0);
+
     }
 
     private void print2()
@@ -184,7 +193,7 @@ public class PrintActivity extends BaseActivity{
         String str1 = "                      2016-12-12";
         String str2 = "                                ";
         String str3 = "                                ";
-        String str4 = "               8号              ";
+        String str4 = "               9号              ";
         String str5 = "                                ";
         String str6 = "                                ";
         String str7 = "对私业务    柜台032             ";
@@ -216,10 +225,10 @@ public class PrintActivity extends BaseActivity{
         String time = StringUtils.getDateToString(new Date());
 
         String str0 = "                                ";
-        String str1 = "                      2016-12-12";
+        String str1 = "                      2016-12-13";
         String str2 = "                                ";
         String str3 = "                                ";
-        String str4 = "               8号              ";
+        String str4 = "               16号             ";
         String str5 = "                                ";
         String str6 = "                                ";
         String str7 = "理财业务    柜台032             ";
@@ -245,6 +254,44 @@ public class PrintActivity extends BaseActivity{
         sendPortText(str0);
     }
 
+    private void print4() {
+        String url = "http://192.168.43.28:8080/mm/Gson.json";
+        //1,创建okheepclient对象
+        OkHttpClient okHttpClient = new OkHttpClient();
+        //2, 构建请求对象，请求体
+        Request request = new Request.Builder().url(url).build();
+        //3,创建发送请求
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                // String   stream = InputStreamTools.readStream(response.body().byteStream());
+                String str0 = "                                ";
+               // String str1 = "  "+R.drawable.ic_gf_logo+" "+"\n";
+                String   stream = response.body().string();
+                        Log.d(TAG, "print4  : "+stream);
+                   if (stream ==null){
+                     print3();
+                    }else {
+                     sendPortText(str0);
+                     sendPortText(str0);
+                     sendPortText(str0);
+                     sendPortText(stream+"\n");
+                     sendPortText(stream+"\n");
+                     sendPortText(stream+"\n");
+                     sendPortText(stream+"\n");
+                     sendPortText(str0);
+                     sendPortText(str0);
+                     sendPortText(str0);
+                     sendPortText(str0);
+                    }
+            }
+        });
+       // String streamData = OrderNum.getDate();
+       //Log.d(TAG, "print4  : "+streamData);
+    }
 
     private void sendPortText(String content)
     {
@@ -281,4 +328,6 @@ public class PrintActivity extends BaseActivity{
     protected void onDestroy() {
         super.onDestroy();
     }
+
+
 }

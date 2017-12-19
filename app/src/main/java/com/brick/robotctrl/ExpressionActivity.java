@@ -179,7 +179,7 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 		gifView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-			//	startActivity(new Intent( ExpressionActivity.this , FunctionSelectActivity.class));
+				startActivity(new Intent( ExpressionActivity.this , FunctionSelectActivity.class));
 			}
 		});
 	}
@@ -256,7 +256,6 @@ public class ExpressionActivity extends com.rg2.activity.BaseActivity  {
 				currentIndex = index;
 				//Glide.with(RobotApplication.getAppContext()).load(EXPRESSION.getExpression(index).id).into(gifView);
 				Log.d(TAG, "changeExpression: ..... " + index);
-
 		}else {
 			Log.d(TAG, "changeExpression等于当前表情编号: ..... " + index);
 		}
