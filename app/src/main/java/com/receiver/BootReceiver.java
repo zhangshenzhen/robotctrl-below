@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.brick.robotctrl.SplashActivity;
+import com.brick.robotctrl.MainActivity;
 
 
 /**
@@ -20,7 +20,7 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG,"开机啦");
 //     if(intent.getAction().equals(ACTION)) {     // boot
-        Intent intent2 = new Intent(context, SplashActivity.class);
+        Intent intent2 = new Intent(context, MainActivity.class);
         intent2.setAction("android.intent.action.MAIN");
         intent2.addCategory("android.intent.category.LAUNCHER");
         intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

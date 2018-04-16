@@ -1,31 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:sharedUserId="android.uid.system"
+
     package="com.brick.robotctrl"  >
 
     <!-- android:sharedUserId="android.uid.system" -->
-    <!-- <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"/> -->/*声音的权限*/<uses-permission android:name="android.permission.INTERNET" />
+    /*android:installLocation="preferExternal"*//*安装路径为Sd卡*/
+    <uses-feature android:name="android.hardware.usb.host"/>
+
+    <!-- 开机启动 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
+    <uses-permission android:name="android.permission.SET_DEBUG_APP" />
+    <!--允许一个程序打开窗口使用 显示在其他所有程序的顶层-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+
+    <!-- 软件权限 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <!-- 震动 -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 格式化sd卡 -->
     <uses-permission android:name="android.permission.MOUNT_FORMAT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
+
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- GPS权限 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <uses-permission android:name="android.permission.RECEIVE_HOME" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- <uses-permission android:name="android.permission.SHUTDOWN"/> -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 修改声音设置 -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <!-- <uses-permission android:name="android.permission.SHUTDOWN"/> -->
-    <!-- <uses-permission android:name="android.permission.INSTALL_PACKAGES" /> -->
-    <uses-permission android:name="android.permission.READ_LOGS" />
+    <!--安装或卸载文件 -->
+     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <!-- <uses-permission android:name="android.permission.READ_LOGS" />-->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
   /*声音的权限*/
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -46,7 +74,7 @@
         android:supportsRtl="true"
         android:theme="@style/ContentOverlay" >
         <activity
-            android:name=".SplashActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
@@ -58,54 +86,39 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
+
+        <!-- <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
-            android:theme="@style/ContentOverlay" >
+            android:theme="@style/ContentOverlay">
+        </activity>-->
 
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-              &lt;!&ndash;  <category android:name="android.intent.category.HOME" />
-                <category android:name="android.intent.category.DEFAULT" />&ndash;&gt;
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-        </activity>
-
-        <!-- <activity -->
-        <!-- android:name=".MainActivity" -->
-        <!-- android:configChanges="orientation|screenSize" -->
-        <!-- android:launchMode="singleTask" -->
-        <!-- android:screenOrientation="landscape" -->
-        <!-- android:theme="@style/AppTheme.FullScreen.NoTitle" /> -->
-        <service android:name=".PlayerService" />
-        <service android:name=".SpeechService" />
-
-        <activity
-            android:name=".SettingsActivity"
-            android:icon="@drawable/ic_action_settings"
-            android:label="@string/settings"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.Settings" >
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                &lt;!&ndash;<category android:name="android.intent.category.HOME" />&ndash;&gt;
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-        </activity>
         <activity
             android:name=".ExpressionActivity"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.FullScreen.NoTitle" />
+            android:theme="@style/ContentOverlay"/>
+
+        <activity
+            android:name=".WeatherActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/ContentOverlay"/>
+
+        <activity
+            android:name="com.rg2.activity.BankActivity"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/ContentOverlay"/>
+
+        <service android:name=".PlayerService" />
+        <service android:name=".SpeechService" />
+
         <activity
             android:name=".ADActivity"
             android:label="@string/title_activity_ad"
@@ -118,19 +131,19 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen.NoTitle" />
-        <activity
+     <!--   <activity
             android:name=".AboutActivity"
             android:label="关于"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.FullScreen.NoTitle" />
-        <activity
+            android:theme="@style/AppTheme.FullScreen.NoTitle" />-->
+       <!-- <activity
             android:name="zime.ui.ZIMEAVDemoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:multiprocess="true"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape" />-->
       <!--  <activity
             android:name=".ShowSureQueryActivity"
             android:label="提问"
@@ -155,7 +168,7 @@
 
         <!-- 设置密码 -->
 
-        <service android:name="zime.ui.ZIMEAVDemoService" />
+
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -165,7 +178,6 @@
         <receiver android:name="com.receiver.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </receiver>
