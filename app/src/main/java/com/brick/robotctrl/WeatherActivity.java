@@ -79,10 +79,10 @@ public class WeatherActivity extends BaseActivity {
           loadWeb(index);
     }
     public static void loadWeb(int index){
-          String path1 = "https://tianqi.so.com/weather/101130101";
+          String path1 = "https://tianqi.so.com/weather/101230101";
            //南京天气
           //String path1 = "http://www.weather.com.cn/weather/101190101.shtml";
-          String path2 = "http://www.hmccb.com/";
+          String path2 = "http://www.boc.cn/";
             if (index==10){
                 webView.loadUrl(path1);
             }else {

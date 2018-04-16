@@ -35,8 +35,8 @@ private static Context context;
 
 
 	enum EXPRESSION {
-		机器人愤怒(R.drawable.hami2, "fennu", 0),
-		机器人嘟嘴(R.drawable.hami2, "duzui", 1);
+		机器人Logo(R.drawable.china_bank, "fennu", 0),
+		机器人Logo2(R.drawable.china_bank, "duzui", 1);
 		/*机器人惊讶(R.drawable.jingya, "jingya", 2),
 		机器人花痴(R.drawable.huachi, "huachi", 3),
 		机器人可怜(R.drawable.kelian, "kelian", 4),
@@ -70,7 +70,7 @@ private static Context context;
 					return exp;
 				}
 			}
-			return EXPRESSION.机器人嘟嘴;//return EXPRESSION.机器人可爱;
+			return EXPRESSION.机器人Logo2;//return EXPRESSION.机器人可爱;
 		}
 		public static EXPRESSION getExpression( String name ) {
 			for ( EXPRESSION exp: EXPRESSION.values()) {
@@ -78,7 +78,7 @@ private static Context context;
 					return exp;
 				}
 			}
-			return EXPRESSION.机器人嘟嘴;
+			return EXPRESSION.机器人Logo2;
 		}
 	}
 
