@@ -172,7 +172,8 @@ public class ADVideo {
     }
     public static void resume(){
         //videoView.seekTo(per);
-        //videoView.resume();
+        //videoView.resume();//
+        //防止从头播放
         videoView.start();
 
     }
