@@ -10,9 +10,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.ant.liao.GifView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.rg2.utils.ToastUtil;
 
@@ -21,7 +21,6 @@ import java.io.File;
 public class ExpressionActivity extends BaseActivity  {
 	private static final String TAG = "ExpressionActivity";
 
-	private static GifView gifView;
 	private int index = 0;
 //	UserTimer userTimer = null;
 	private static int currentIndex = -1;
@@ -35,8 +34,8 @@ private static Context context;
 
 
 	enum EXPRESSION {
-		机器人Logo(R.drawable.china_bank, "fennu", 0),
-		机器人Logo2(R.drawable.china_bank, "duzui", 1);
+		机器人Logo(R.drawable.smart_robot, "fennu", 0),
+		机器人Logo2(R.drawable.smart_robot, "duzui", 1);
 		/*机器人惊讶(R.drawable.jingya, "jingya", 2),
 		机器人花痴(R.drawable.huachi, "huachi", 3),
 		机器人可怜(R.drawable.kelian, "kelian", 4),
@@ -140,34 +139,33 @@ private static Context context;
 		Log.d(TAG, "changeExpression: current expression:" + currentIndex + "\tset expression:" + index);
 
 		if ( currentIndex != index ) {
-		/*	if (index > EXPRESSION.getExpressionSize()-2) {
-				//如果表情角标大于表情枚举个数，从0开始一次递增显示表情
-			index = index -(EXPRESSION.getExpressionSize()-1);
-			Log.d(TAG, EXPRESSION.getExpressionSize()+"changeExpression 大于枚举长度: ..... " + index);
-		   }*/
 			System.gc();//垃圾回收机制
-			/*if(index <=11 ) {
-				gifView.setGifImage(EXPRESSION.getExpression(index).id);
-				gifView.showAnimation();
-			 } else {*/
-
-			   if(index==1){
-				 Glide.with(RobotApplication.getAppContext()).load(EXPRESSION.getExpression(1).id).priority(Priority.IMMEDIATE).into(igv);
-				   currentIndex = index;
+			     if(index==1){
+				   Glide.with(RobotApplication.getAppContext()).load(EXPRESSION.getExpression(1).id).priority(Priority.IMMEDIATE).into(igv);
+				     currentIndex = index;
 			          return;
-			   }
+			    }
+
+				  //图片文件夹
+				  String picDir2  = Environment.getExternalStorageDirectory().getPath()+"/Pictures/";
+				  String jpgpath2 = picDir2+index+".gif";//本地图片完整地址
+				  File jpgfile3 = new File(jpgpath2);
+				   if (jpgfile3.exists()){
+				    Glide.with(RobotApplication.getAppContext()).load(jpgpath2).asGif().skipMemoryCache( true )
+					.priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.NONE).into(igv);
+					 currentIndex = index;
+				     return;
+				    }
+
 				//图片文件夹
 		        String picDir  = Environment.getExternalStorageDirectory().getPath()+"/Pictures/";
 				String jpgpath = picDir+index+".jpg";//本地图片完整地址
 			     File jpgfile = new File(jpgpath);
                 if (jpgfile.exists()){
-
 					try {
-		      Glide.with(RobotApplication.getAppContext()).load(jpgpath).priority(Priority.IMMEDIATE).into(igv);
-			//.skipMemoryCache(flase).priority(Priority.HIGH).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(igv);*/
-		    	/*  FileInputStream	fis = new FileInputStream(new File(gifpath));
-					gifView.setGifImage(fis);
-					gifView.showAnimation();*/
+		        Glide.with(RobotApplication.getAppContext()).load(jpgpath).skipMemoryCache( true )
+				.priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.NONE).into(igv);
+
 					Log.d(TAG, "changeExpression: 存在这张图片"+jpgpath);
 					ToastUtil.show(RobotApplication.getAppContext(),"存在这张图片,真开心 ^_^ ");
 					} catch (Exception e) {
@@ -176,10 +174,8 @@ private static Context context;
 				}else {
 					Log.d(TAG, "changeExpression: 不存在这张图片"+jpgpath);
 					Glide.with(RobotApplication.getAppContext()).load(EXPRESSION.getExpression(0).id).priority(Priority.IMMEDIATE).into(igv);
-					/*gifView.setGifImage(EXPRESSION.getExpression(9).id);
-					 gifView.showAnimation();*/
 				}
-			/*}*/
+
 
 		     currentIndex = index;
 			Log.d(TAG, "changeExpression: ..... " + index);

@@ -28,7 +28,6 @@ public class SSDBTask extends TimerTask {
     public static final int ACTION_HSET = 0x0004;
     public static final int ACTION_HGET = 0x0008;
 
-
     private Handler contextHandler = null;
     private Context context = null;
     private SSDB ssdbClient = null;
@@ -36,7 +35,7 @@ public class SSDBTask extends TimerTask {
     public String serverIp = "222.190.128.98";
     public int serverPort = 20177;
 
-    public String robotName = "hs37B";
+    public String robotName = "hs10B";
     public String robotLocation = "江苏红石信息集成服务有限公司";
     public String videoPlayList = null;
     private final int serverSite = 222;
@@ -127,14 +126,14 @@ public class SSDBTask extends TimerTask {
             if (files.length == 0) {
                 Log.d(TAG, "pushFileList: 为空");
             }
-            if (files.length > 1) {
+            if (files.length >=1) {
                 videoPlayList = null;
                 for (int i = 0; i < files.length - 1; i++) {
                     if (
                             files[i].getAbsolutePath().endsWith(".avi") ||
                             files[i].getAbsolutePath().endsWith(".mp4") ||
                             files[i].getAbsolutePath().endsWith(".3gp") ||
-                            files[i].getAbsolutePath().endsWith(".jpg")
+                            files[i].getAbsolutePath().endsWith(".mp3")
                         //  files[i].getAbsolutePath().endsWith(".flv")
                         // files[i].getAbsolutePath().endsWith(".gif")||
                         // files[i].getAbsolutePath().endsWith(".mkv")||
@@ -216,7 +215,7 @@ public class SSDBTask extends TimerTask {
 
     public static final String[] event = new String[]{
             "event", "DirCtl", "param", "VideoPlay", "VideoInfo", "VideoPlayList", "RobotMsg", "BatteryVolt", "NetworkDelay", "Location",
-            "Brow", "CurrentTime", "DisableAudio", "Volume", "EndVideo", "", "Message"};
+            "Brow", "CurrentTime", "DisableAudio", "SetVolume", "EndVideo", "", "Message"};
     ////////////////////////gaowei/////////////////////////////
     public static boolean enableForbidAudio = false;
     public static boolean enableCurrentTime = false;
@@ -256,30 +255,26 @@ public class SSDBTask extends TimerTask {
 
     @Override
     public synchronized void run() {
-//        Log.d(TAG, "run: stop:" + stop);
-  /*      try {
-            byte[] rlt = ssdbClient.hget(robotName, event[13]); // check event
-            Log.d(TAG, "----------SSDB-S------ Key:"+new String(rlt,"GBK"))
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+
+        Log.d(TAG, "---------S-SSDB------- Key:");
 
         if (stop) {
            return;
          }
         while (cmdList.size() > 0) {
             CmdEntry<Integer, String, String> cmd = null;
-            Log.d(TAG, "----------cmdList------- vaule"+cmdList.toString());
             try {
+            Log.d(TAG, "----------cmdList------- vaule"+cmdList.toString());
                 cmd = cmdList.poll();
             } catch (Exception e) {
+                cmd = cmdList.peek();
+                cmdList.clear();
                 e.printStackTrace();
             }
             if (cmd == null) {
                 return;
             }
-            Log.i(TAG, "run:------ " + cmd);
-                Log.d(TAG, "----------cmd.cmdType------- Key:"+cmd.cmdType);
+
             switch (cmd.cmdType) {
                 case ACTION_CONNECT://1
                     try {

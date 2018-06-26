@@ -109,13 +109,6 @@
             android:screenOrientation="landscape"
             android:theme="@style/ContentOverlay"/>
 
-        <activity
-            android:name="com.rg2.activity.BankActivity"
-            android:configChanges="orientation|screenSize"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:theme="@style/ContentOverlay"/>
-
         <service android:name=".PlayerService" />
         <service android:name=".SpeechService" />
 

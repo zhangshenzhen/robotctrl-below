@@ -71,28 +71,38 @@ public class WeatherActivity extends BaseActivity {
         // 开启 DOM storage API 功能
         webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setUserAgentString("电脑");
-
+        //设定支持缩放
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
         //设置自适应屏幕
-        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN );
+       webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN );
         webView.getSettings().setLoadWithOverviewMode ( true );
-       // String path1 = "http://www.weather.com.cn/weather/101190101.shtml";
+
           loadWeb(index);
     }
     public static void loadWeb(int index){
-          String path1 = "https://tianqi.so.com/weather/101230101";
            //南京天气
-          //String path1 = "http://www.weather.com.cn/weather/101190101.shtml";
-          String path2 = "http://www.boc.cn/";
-            if (index==10){
-                webView.loadUrl(path1);
-            }else {
-                webView.loadUrl(path2);
-            }
+          String url = "http://www.weather.com.cn/weather/101190101.shtml";
+          //广州天气http://www.weather.com.cn/weather/101280101.shtml
+         //沈阳
+        // String url = "http://www.weather.com.cn/weather/101070101.shtml";
+       //北京
+        // String url =  "https://tianqi.so.com/weather/101010100";
+         //广发 http://www.cgbchina.com.cn/
+        //中国银行http://www.boc.cn/
+
+         String url2 = "http://www.jsredstonetech.cn/";
+
+          if (index==10){
+                webView.loadUrl(url);
+          }else {
+                webView.loadUrl(url2);
+           }
             //设置使用WevView加载 不使用系统浏览器加载;
-            webView.setWebViewClient(new WebViewClient(){
+          webView.setWebViewClient(new WebViewClient(){
                 @Override
              public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    view.loadUrl(url);
+                view.loadUrl(url);
                     return true;
                 }
             });

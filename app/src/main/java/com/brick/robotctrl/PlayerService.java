@@ -7,13 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
-import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 @SuppressLint("NewApi")
 public class PlayerService extends Service {

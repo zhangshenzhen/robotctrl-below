@@ -30,7 +30,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ant.liao.GifView;
 import com.ftp.FtpDownLoad;
 import com.jly.batteryView.BatteryView;
 import com.kjn.videoview.ADVideo;
@@ -103,21 +102,9 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
     private Button btnMoney;
     private Button btntest;
     private ProgressDialog pd;
-    private GifView gif;
 
     //无线网工具类
     public WifiAdmin wifiAdmin;
-  //  private shellThread shellthread;
-  /*  private String[] shell = new String[]{
-            "ip ru flush",
-            "ip ru add to 192.168.100.0/24 lookup eth0" ,
-            "ip ru add to 10.0.0.0/8 lookup wlan0",
-            "ip ru add to 132.0.0.0/8 lookup wlan0",
-            "ip ru add to 172.0.0.0/8 lookup wlan0",
-            "ip ru add to 192.0.0.0/8 lookup wlan0",
-            "ip ru add to all lookup eth0"};*/
-
-
     public WebView webView;
     public Timer timer;
 
@@ -130,15 +117,10 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-
         ssdbTask = new SSDBTask(MainActivity.this, handler);  //ttymxc0
-       // serialCtrl = new SerialCtrl(MainActivity.this, handler, "ttymxc0", 9600, "robotctrl");
-     //暂时屏蔽
+       //暂时屏蔽
        // serialCtrl = new SerialCtrl(MainActivity.this, handler, "ttyS3", 9600, "robotctrl");
 
-         //打印机
-       // serialCtrlPrinter = new SerialCtrl(MainActivity.this, handler, "ttyUSB1", 9600, "printer");
-        // serialCtrlPrinter.setSerialCOM("/dev/ttyUSB0");
         netWorkChangeReceiver = new netWorkChangeReceiver();
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -152,14 +134,6 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
 //        filter.addAction("android.Net.wifi.WIFI_STATE_CHANGED");
 //        filter.addAction("android.net.wifi.STATE_CHANGE");
 //        registerReceiver(mNetworkConnectChangedReceiver, filter);
-
-          //以太网监听
-//        mETHERNETConnectChangedReceiver = new ETHERNETConnectChangedReceiver();
-//        IntentFilter filter2 = new IntentFilter();
-//        filter2.addAction("android.NET.conn.CONNECTIVITY_CHANGE "); //网络连接消息
-//        filter2.addAction("android.net.ethernet.ETHERNET_STATE_CHANGED"); //以太网消息
-//        filter2.addAction("android.net.ethernet.STATE_CHANGE");
-//        this.registerReceiver(mETHERNETConnectChangedReceiver, filter2);
 
         initData();
        // initChangeListener();
@@ -256,9 +230,9 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
     //在oncreate方法中;
     private void initHandler() {
          ADActivity.setHandler(handler);
-       // AboutActivity.setHandler(handler);
-        //Presentation
-    // VideoPresentation.setHandler(handler);
+      // AboutActivity.setHandler(handler);
+      //Presentation
+     // VideoPresentation.setHandler(handler);
     }
 
 
@@ -516,14 +490,14 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
                     {
                         Log.d(TAG, "handleMessage: ----------10-17-1------ Key:Event \tvalue:" + rlt);
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
-                        FtpDownLoad.downLoad("hs32/picture/","/mnt/sdcard/Pictures/");
+                        FtpDownLoad.downLoad("hs24/picture/","/mnt/sdcard/Pictures/");
                         Log.d(TAG, "downLoad: " + "机器人开始下载。。。。" );
                     }
                     if (rlt.equals("downLoadMovies"))
                     {
                         Log.d(TAG, "handleMessage: ----------10-17-2------ Key:Event \tvalue:" + rlt);
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
-                        FtpDownLoad.downLoad("hs32/movie/","/mnt/sdcard/Movies/");
+                        FtpDownLoad.downLoad("hs24/movie/","/mnt/sdcard/Movies/");
                         Log.d(TAG, "downLoadMovies: " + "机器人开始下载。。。。" );
                     }
                     if (rlt.equals("shutdown"))
@@ -567,7 +541,7 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
                         {
                             case "Play":
                                 startActivity(new Intent().setClass(MainActivity.this, ADActivity.class));
-                                //singleTask 此Activity实例之上的其他Activity实例统统出栈，使此Activity实例成为栈顶对象，显示到幕前�?   break;
+                                //singleTask 此Activity实例之上的其他Activity实例统统出栈，使此Activity实例成为栈顶对象，显示到幕前�?
                                 break;
                             case "ContinuePlay":
                                 ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
@@ -739,12 +713,12 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
                         Log.d(TAG, "handleMessage: ---------21-2--------Key:ChangeBrow \tvalue:"+rlt +" : "+ cn.getClassName());
-                        if(Integer.parseInt(rlt) >= 10) {
+                        if(Integer.parseInt(rlt) >=10)  {//暂时更改的
                             if (!cn.getClassName().equals("com.brick.robotctrl.WeatherActivity")) {
                               WeatherActivity.startActionweathert(MainActivity.this, Integer.parseInt(rlt));
                                 Log.d(TAG, "handleMessage: loadWeatherActivity--1");
                             } else {
-                               WeatherActivity.loadWeb(Integer.parseInt(rlt));
+                                WeatherActivity.loadWeb(Integer.parseInt(rlt));
                                 Log.d(TAG, "handleMessage: loadWeatherActivity--2");
                             }
                             return;
@@ -773,11 +747,11 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
                         int volume = Integer.parseInt(rlt);
                         if (volume > 100){
                             volume = 100;
-                      }
+                       }
                         else if (volume < 0){
                             volume = 0;
                         }
-                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume / 5, 0);
+                        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
                     }
                         SSDBTask.enableSetVolume = false;
                     break;
@@ -791,7 +765,8 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
                       //  SpeechService.startAction(MainActivity.this, Base64Decode(rlt));
                        // 设置音量max大小为  15;
                         //获取最大音乐量值
-                    SSDBTask.enableGetMessage = false;
+                     SSDBTask.enableGetMessage = false;
+
                      String path = Environment.getExternalStorageDirectory().getPath()+"/";
                       if (rlt.length()>=3){
                         Log.e(TAG, "文件路径length ："+rlt.length());
@@ -884,7 +859,7 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
         super.onResume();
         setResult(Activity.RESULT_OK);//开启新的ActivityForResult();
         LogUtil.e(TAG, "生命------onResume..System.currentTimeMillis()"+System.currentTimeMillis());
-        ExpressionActivity.startAction(MainActivity.this,0);
+        ExpressionActivity.startAction(MainActivity.this,1);
        // timer.cancel();//取消任务
     }
 
