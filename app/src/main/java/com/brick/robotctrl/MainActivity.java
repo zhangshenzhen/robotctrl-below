@@ -976,6 +976,7 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
 
     public class DispQueueThread extends Thread
     {
+
         @Override
         public void run()
         {
