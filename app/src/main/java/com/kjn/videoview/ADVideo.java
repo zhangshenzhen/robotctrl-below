@@ -7,6 +7,9 @@ import android.util.Log;
 import android.widget.VideoView;
 
 import com.brick.robotctrl.ADActivity;
+import com.brick.robotctrl.ExpressionActivity;
+import com.brick.robotctrl.MainActivity;
+import com.service.MediaPlayerDecide;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import java.util.List;
 
 public class ADVideo {
     private final String TAG = "ADVideo2";
+    private static boolean isStop = false;
     private static VideoView videoView;
     private List<String> videoList;
     private int index = 0;
@@ -44,21 +48,13 @@ public class ADVideo {
                         files[i].getAbsolutePath().endsWith(".mp4")||
                         files[i].getAbsolutePath().endsWith(".avi")||
                         files[i].getAbsolutePath().endsWith(".3gp")||
-                        files[i].getAbsolutePath().endsWith(".sqv")
- //                       files[i].getAbsolutePath().endsWith(".flv")||
-//                        files[i].getAbsolutePath().endsWith(".gif")||
-//                        files[i].getAbsolutePath().endsWith(".mkv")||
-//                        files[i].getAbsolutePath().endsWith(".mov")||
-//                        files[i].getAbsolutePath().endsWith(".mpg")||
- //                       files[i].getAbsolutePath().endsWith(".rmvb")
-//                        files[i].getAbsolutePath().endsWith(".swf")||
-//                        files[i].getAbsolutePath().endsWith(".vob")||
-//                        files[i].getAbsolutePath().endsWith(".wmv")
-                         ) {
+                        files[i].getAbsolutePath().endsWith(".mp3"))
+                    {
                         videoList.add(files[i].toString());
                     }
                 }
             }
+            Log.d("getfile", "videoList next 顺序 ："+videoList);
             if (videoList.isEmpty()){
                 flag = false;
             }
@@ -142,6 +138,18 @@ public class ADVideo {
             index = 0;
         }
         Log.d(TAG, "next: 正在播放" + videoList.get(index));
+        //---------------------------------------------------------------------
+        if(videoList.get(index).endsWith(".mp3")||videoList.get(index).endsWith(".MP3")){
+            videoView.stopPlayback();
+            MainActivity.isMp3 = true;
+            path=videoList.get(index);
+            ADActivity.fileName=path .substring(path .lastIndexOf("/") + 1, path .length());
+            Log.d(TAG, "VideoName :"+ADActivity.fileName);
+            ExpressionActivity.startAction(MainActivity.mcontext, 1);
+            MediaPlayerDecide.MediaChanger(ADActivity.fileName, MainActivity.setPlayerBinder2);
+            return;
+        }
+        //---------------------------------------------------------------------
         videoView.setVideoPath(videoList.get(index));
         videoView.start();
         path=videoList.get(index);
@@ -169,12 +177,15 @@ public class ADVideo {
     public static void pause(){
         videoView.pause();
         per = videoView.getCurrentPosition();
+        isStop = true;
     }
     public static void resume(){
-        //videoView.seekTo(per);
-        //videoView.resume();//
-        //防止从头播放
-        videoView.start();
+        if (isStop){
+            // videoView.seekTo(per);
+            //videoView.resume();
+            videoView.start();
+            isStop = false;
+        }
 
     }
 

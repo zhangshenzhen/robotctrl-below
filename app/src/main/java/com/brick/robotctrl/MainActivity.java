@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -19,6 +20,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -36,6 +38,8 @@ import com.kjn.videoview.ADVideo;
 import com.rg2.activity.ShellUtils;
 import com.rg2.utils.LogUtil;
 import com.rg2.utils.WifiAdmin;
+import com.service.MPlayerService;
+import com.service.MediaPlayerDecide;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -47,6 +51,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import it.sauronsoftware.base64.Base64;
 
@@ -107,12 +113,12 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
     public WifiAdmin wifiAdmin;
     public WebView webView;
     public Timer timer;
-
+    public static Context mcontext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"onCreate");
-
+        mcontext = this;
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
@@ -136,14 +142,16 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
 //        registerReceiver(mNetworkConnectChangedReceiver, filter);
 
         initData();
-       // initChangeListener();
+           // initChangeListener();
 
-         timer = new Timer(true);
-         //改指令执行后延时1000ms后执行run，之后每1000ms执行�?次run
-         timer.schedule(queryTask, 200, 200);
+//         timer = new Timer(true);//改指令执行后延时1000ms后执行run，之后每1000ms执行�?次run
+//         timer.schedule(queryTask, 200, 200);
+        ScheduledThreadPoolExecutor mexecutor = new ScheduledThreadPoolExecutor(3);
+        mexecutor.scheduleWithFixedDelay(runnable, 1000, 300, TimeUnit.MILLISECONDS);
         //   timer.cancel(); //结束Timer所有的计时器;
         initHandler();
        // ExpressionActivity.startAction(RobotApplication.getAppContext(),1);
+        initbinder();//绑定服务
      }
     //初始化控件;
      public void initData() {
@@ -234,7 +242,10 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
       //Presentation
      // VideoPresentation.setHandler(handler);
     }
-
+    public void initbinder(){
+        Intent bindIntent = new Intent(MainActivity.this ,MPlayerService.class);
+        bindService(bindIntent,connection,BIND_AUTO_CREATE);//绑定
+    }
 
 
     //点击事件
@@ -265,15 +276,16 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
     private String strTimeFormat         = null;
     private String disableAudio          = "No";
 
-    TimerTask queryTask = new TimerTask()
-    {
+    /* TimerTask queryTask = new TimerTask()
+      {*/
+    Runnable runnable = new Runnable() {
         @Override
         public void run()
         {
-            Log.d(TAG, "run: stop 1: " + ssdbTask.stop);
+            Log.d(TAG,  "handler  "+handler +" "+Thread.currentThread()+ "run: stop 1: " + ssdbTask.stop);
             if (!ssdbTask.stop)
             {                  // 发起读请�?
-              ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
+                ssdbTask.SSDBQuery(SSDBTask.ACTION_HGET);
             } else {
                 countForReconnectSSDB++;
                 if (countForReconnectSSDB % (1000 / 200) == 0)
@@ -329,14 +341,29 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
             }
             addTimerCount();*/
         }
+   /* };*/
     };
-
     public static String Base64Decode(String base64EncodedData) {
         String base64EncodedBytes = Base64.decode(base64EncodedData);
         Log.d(TAG, "Base64Decode: base64EncodedBytes " + base64EncodedBytes);
         return base64EncodedBytes;
     }
-
+    //---------------------------------------
+    public static   boolean isMp3;
+    public  MPlayerService.SetPlayerBinder setPlayerBinder;
+    public static MPlayerService.SetPlayerBinder setPlayerBinder2;
+    public ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinderservice) {
+            setPlayerBinder = (MPlayerService.SetPlayerBinder) iBinderservice;  //绑定调用
+            setPlayerBinder2 =setPlayerBinder;
+        }
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            //解绑调用
+        }
+    };
+    //---------------------------------------
     // receive ssdb server info
     Handler handler = new Handler(){
         @Override
@@ -537,6 +564,37 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
                         Log.d(TAG, "handleMessage: ---------12---------Key:VideoPlay \tvalue:" + rlt);
                         String[] strArray = rlt.split(" ");
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_VideoPlay], "");
+                        //--------------------------------------------------------------
+                        if(strArray.length>1){
+                            Log.d(TAG, "handleMessage: ---------12-1-2-------");
+                            if(strArray[1].endsWith("mp3")){
+                                ActivityManager bm = (ActivityManager) getSystemService(ACTIVITY_SERVICE);//获得运行activity
+                                ComponentName bn = bm.getRunningTasks(1).get(0).topActivity;//得到某一活动
+                                //如果当前播放的是视频，就关掉视频
+                                if (bn.getClassName().equals("com.brick.robotctrl.ADActivity"))
+                                {
+                                    ADVideo.stopPlayBack();
+                                    ExpressionActivity.startAction(MainActivity.this, 1);
+                                }
+                                Log.d(TAG, "handleMessage: ---------12-1-3--------");
+                                isMp3 = true;
+                                //防止音乐没停止就切换播放模式
+                                MediaPlayerDecide.MediaStop(setPlayerBinder);
+                            }else if (strArray[1].endsWith("mp4")||strArray[1].endsWith("avi")){
+                                //防止当播播放音乐的时候没关毕音乐开始播放视频,,
+                                isMp3 = false;
+                                MediaPlayerDecide.MediaStop(setPlayerBinder);
+                            }
+                        }
+                        if(isMp3){
+                            if(strArray[0].equals("Stop")){
+                                isMp3 = false;
+                                Log.d(TAG, "handleMessage: ---------12-1-4------isMp3 :"+isMp3);
+                            }
+                            MediaPlayerDecide.startPlayer(strArray,setPlayerBinder);
+                            return;
+                        }
+                        //--------------------------------------------------------------
                         switch (strArray[0])
                         {
                             case "Play":
@@ -868,7 +926,6 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
     {
         super.onPause();
        // timer.cancel(); //结束Timer所有的计时器;
-
         Log.i(TAG, "生命------onPuase在这里停止掉");
     }
 
@@ -882,7 +939,6 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
         @Override
         protected void onStop() {
            super.onStop();
-
             Log.i(TAG, "生命------onStop: MainActivity停止了么？");
        }
 
@@ -906,6 +962,7 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
        // serialCtrl.closeSerialCOM();
 
         unregisterReceiver(netWorkChangeReceiver);
+        unbindService(connection);//解除绑定服务
        /* Intent stopSpeechServiceIntent = new Intent(this, SpeechService.class);
         stopService(stopSpeechServiceIntent);*/
         //穿网自启动相关的
