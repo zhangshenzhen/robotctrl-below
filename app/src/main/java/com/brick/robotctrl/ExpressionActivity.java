@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.rg2.utils.ToastUtil;
+import com.rg2.activity.PrintActivity;
 
 import java.io.File;
 
@@ -35,11 +35,11 @@ private static Context context;
 
 	enum EXPRESSION {
 		机器人Logo(R.drawable.smart_robot, "fennu", 0),
-		机器人Logo2(R.drawable.smart_robot, "duzui", 1);
+		机器人Logo2(R.drawable.smart_robot, "duzui", 1);//把这张图片华换掉几可以了。默认图片在机器人代码里设置的
 		/*机器人惊讶(R.drawable.jingya, "jingya", 2),
 		机器人花痴(R.drawable.huachi, "huachi", 3),
 		机器人可怜(R.drawable.kelian, "kelian", 4),
-		机器人可爱(R.drawable.keai, "keshui", 5),
+		机器人可爱(R.drawable.keai, "keshui", 5),。。。必然就是
 		机器人哭泣(R.drawable.kuqi, "kuqi", 6),
 		机器人调皮(R.drawable.tiaopi, "tiaopi", 7),
 		机器人委屈(R.drawable.weiqu, "weiqu", 8),
@@ -108,12 +108,13 @@ private static Context context;
 * 暂时不用先屏蔽掉*/
 	@Override
 	protected void initData() {
-		/*gifView.setOnClickListener(new View.OnClickListener() {
+		//把注释放开就可以了， 点击机器人下屏这里就可以执行
+		igv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent( ExpressionActivity.this , PrintActivity.class));
+				startActivity(new Intent( ExpressionActivity.this , PrintActivity.class));//如果PrintActivity报红 就Alt+enter 选择 import class
 			}
-		});*/
+		});
 	}
 
 	@Override
@@ -167,7 +168,7 @@ private static Context context;
 				.priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.NONE).into(igv);
 
 					Log.d(TAG, "changeExpression: 存在这张图片"+jpgpath);
-					ToastUtil.show(RobotApplication.getAppContext(),"存在这张图片,真开心 ^_^ ");
+					//ToastUtil.show(RobotApplication.getAppContext(),"存在这张图片,真开心 ^_^ ");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -175,7 +176,6 @@ private static Context context;
 					Log.d(TAG, "changeExpression: 不存在这张图片"+jpgpath);
 					Glide.with(RobotApplication.getAppContext()).load(EXPRESSION.getExpression(0).id).priority(Priority.IMMEDIATE).into(igv);
 				}
-
 
 		     currentIndex = index;
 			Log.d(TAG, "changeExpression: ..... " + index);

@@ -194,7 +194,7 @@ public class SerialCtrl {
 // relative robot
     public void robotMove(String dir) {
         Log.d(TAG, "robotMove: "+dir);
-      /*  if (serialCtrl2 ==null){
+      /* if (serialCtrl2 ==null){
             serialCtrl2 = new SerialCtrl(context, new Handler(), "ttyS1", 9600, "robotctrl");
         }*/
         switch (dir) {

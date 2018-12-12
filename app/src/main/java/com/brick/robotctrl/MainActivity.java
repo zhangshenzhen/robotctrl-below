@@ -517,14 +517,14 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
                     {
                         Log.d(TAG, "handleMessage: ----------10-17-1------ Key:Event \tvalue:" + rlt);
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
-                        FtpDownLoad.downLoad("hs24/picture/","/mnt/sdcard/Pictures/");
+                        FtpDownLoad.downLoad("hs39/picture/","/mnt/sdcard/Pictures/");
                         Log.d(TAG, "downLoad: " + "机器人开始下载。。。。" );
                     }
                     if (rlt.equals("downLoadMovies"))
                     {
                         Log.d(TAG, "handleMessage: ----------10-17-2------ Key:Event \tvalue:" + rlt);
                         ssdbTask.SSDBQuery(SSDBTask.ACTION_HSET, SSDBTask.event[SSDBTask.Key_Event], "");
-                        FtpDownLoad.downLoad("hs24/movie/","/mnt/sdcard/Movies/");
+                        FtpDownLoad.downLoad("hs39/movie/","/mnt/sdcard/Movies/");
                         Log.d(TAG, "downLoadMovies: " + "机器人开始下载。。。。" );
                     }
                     if (rlt.equals("shutdown"))
@@ -771,8 +771,8 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
                         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
                         Log.d(TAG, "handleMessage: ---------21-2--------Key:ChangeBrow \tvalue:"+rlt +" : "+ cn.getClassName());
-                        if(Integer.parseInt(rlt) >=10)  {//暂时更改的
-                            if (!cn.getClassName().equals("com.brick.robotctrl.WeatherActivity")) {
+                        if(Integer.parseInt(rlt) >=10)  {//暂时更改的 //序号大于=10 才走这里（0-9 是图片）
+                           if (!cn.getClassName().equals("com.brick.robotctrl.WeatherActivity")) {
                               WeatherActivity.startActionweathert(MainActivity.this, Integer.parseInt(rlt));
                                 Log.d(TAG, "handleMessage: loadWeatherActivity--1");
                             } else {
@@ -781,7 +781,6 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
                             }
                             return;
                           }
-
                         if (cn.getClassName().equals("com.brick.robotctrl.ExpressionActivity")){
                             if(Integer.parseInt(rlt)<10) {
                               ExpressionActivity.changeExpression(Integer.parseInt(rlt));
@@ -911,13 +910,15 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
         super.onWindowFocusChanged(hasFocus);
         Debug.stopMethodTracing();
     }*/
-
-    @Override //当重新获取焦点是 开启副屏的方法;
+     /*
+     * 开机后进入主界面 会执行这个函数
+     * */
+    @Override
     protected void onResume() {
         super.onResume();
         setResult(Activity.RESULT_OK);//开启新的ActivityForResult();
         LogUtil.e(TAG, "生命------onResume..System.currentTimeMillis()"+System.currentTimeMillis());
-        ExpressionActivity.startAction(MainActivity.this,1);
+        ExpressionActivity.startAction(MainActivity.this,1);//1默认选择1
        // timer.cancel();//取消任务
     }
 
@@ -976,7 +977,6 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
 
     public class DispQueueThread extends Thread
     {
-
         @Override
         public void run()
         {
@@ -1026,7 +1026,7 @@ public class MainActivity extends com.brick.robotctrl.BaseActivity{
                   AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
                              for (int i = 0; i <3 ; i++) {
                              sleep(2000);
-                       mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,7,0);
+                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,7,0);
                           }
                    Log.e(TAG, getIp2()+":当前媒体音量 ："+mAudioManager.getStreamVolume( AudioManager.STREAM_MUSIC ));
                    } catch (InterruptedException e) {

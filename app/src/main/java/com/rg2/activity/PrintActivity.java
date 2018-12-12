@@ -7,21 +7,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.brick.robotctrl.*;
+import com.brick.robotctrl.R;
+import com.brick.robotctrl.SerialCtrl;
 import com.rg2.utils.LogUtil;
 import com.rg2.utils.SPUtils;
 import com.rg2.utils.StringUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Date;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by Brick on 2016/12/10.
@@ -62,7 +61,7 @@ public class PrintActivity extends com.brick.robotctrl.BaseActivity{
 
     @Override
     protected void initViewData()
-    {
+    {                                                                       //串口1
     // serialCtrlPrinter = new SerialCtrl(PrintActivity.this, new Handler(), "ttyUSB1", 9600, "printer");
        serialCtrlPrinter = new SerialCtrl(PrintActivity.this, new Handler(), "ttyS1", 9600, "printer");
     }
@@ -72,7 +71,8 @@ public class PrintActivity extends com.brick.robotctrl.BaseActivity{
         switch (v.getId()){
             case R.id.btn_submit1:
                 CountPtint();
-                print1();
+                print12();
+               // sentPicture(Environment.getExternalStorageDirectory().getPath()+"/Pictures/"+"d.png");
                 break;
             case R.id.btn_submit2:
                 CountPtint();
@@ -80,8 +80,8 @@ public class PrintActivity extends com.brick.robotctrl.BaseActivity{
                 break;
             case R.id.btn_submit3:
                 CountPtint();
-               // print3();
-                print4();
+                print3();
+
                 break;
             case R.id.tv_back:
                 finish();
@@ -128,8 +128,6 @@ public class PrintActivity extends com.brick.robotctrl.BaseActivity{
         String str6 = " \n";
         String str7 = " \n";
         String str8 = " \n";
-
-
         sendPortText(str8);
         sendPortText(str7);
         sendPortText(str6);
@@ -143,35 +141,85 @@ public class PrintActivity extends com.brick.robotctrl.BaseActivity{
         sendPortText(str0);
     }
 
+
+/*
+*       String str1 = "\n 恭喜发财   年年有余   岁岁平安";
+        String str2 = "\n 财源广进   财源滚滚   财源滚滚";
+        String str3 = "\n 事事如意   招财进宝   吉祥如意";
+        String str4 = "\n 万事如意   一路发财   心想事成";
+        String str5 = "\n 合家平安   步步高升   一元复始";
+        String str6 = "\n祝您:万事如意,事业有成,合家平安";
+        String str7 = "\n清晨曙光初现,幸福在你身边;中午艳";
+        String str8 = "\n阳高照,微笑在你心间;傍晚日落西山";
+        String str9 = "\n欢乐随你满天;狗年吉祥，大吉大利!";
+        String str10 ="\n愿你一年天天天开心,小时时时快乐,";
+        String str11 ="\n分分分精彩,秒秒秒幸福。 ";*/
+
+    private void print12(){
+        String str0="                                ";
+        String str5="             赐如意符           ";
+        String str6 = "\n云篆太虚,浩劫之初,乍遐乍迩,或沉";
+        String str7 = "\n或浮!";
+        String str8 = "\n五方徘徊,一丈之余,天真皇人,按笔";
+        String str9 = "\n乃书!";
+        String str10 ="\n以演洞章,次书灵符,元始下降,真文";
+        String str11 ="\n诞敷!";
+        String str12 ="\n昭昭其有，冥冥其无!";
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str12);
+        sendPortText(str11);
+        sendPortText(str10);
+        sendPortText(str9);
+        sendPortText(str8);
+        sendPortText(str7);
+        sendPortText(str6);
+        sendPortText(str5);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+        sendPortText(str0);
+
+
+
+    }
     private void print2()
     {
         //  String str ="1234567890ABCDEFGHIJ中华人民共和";
         String time = StringUtils.getDateToString(new Date());
 
         String str0 = "                                ";
-        String str1 = "                      2016-12-12";
-        String str2 = "                                ";
-        String str3 = "                                ";
-        String str4 = "               9号              ";
-        String str5 = "                                ";
-        String str6 = "                                ";
-        String str7 = "对私业务    柜台032             ";
-        String str8 = "                                ";
-        String str9 = "                                ";
-        sendPortText(str9);
-        sendPortText(str9);
-        sendPortText(str9);
-        sendPortText(str9);
+        String str11 = "             赐吉祥符           ";
+        String str1 = "\n 恭喜发财   年年有余   岁岁平安";
+        String str2 = "\n 财源广进   财源滚滚   财源滚滚";
+        String str3 = "\n 事事如意   招财进宝   吉祥如意";
+        String str4 = "\n 万事如意   一路发财   心想事成";
+        String str5 = "\n 合家平安   步步高升   一元复始";
+      /* String str6 = "\n祝您:万事如意,事业有成,合家平安";
+        String str7 = "\n清晨曙光初现,幸福在你身边;中午艳";
+        String str8 = "\n阳高照,微笑在你心间;傍晚日落西山";
+        String str9 = "\n欢乐随你满天;狗年吉祥，大吉大利!";
+        String str10 ="\n愿你一年天天天开心,小时时时快乐,";
+        String str111 ="\n分分分精彩,秒秒秒幸福。 ";*/
+        String str12 ="\n";
+        sendPortText(str0);
+        sendPortText(str12);
+     /*   sendPortText(str111);
+        sendPortText(str10);
         sendPortText(str9);
         sendPortText(str8);
         sendPortText(str7);
-        sendPortText(str6);
+        sendPortText(str6);*/
         sendPortText(str5);
         sendPortText(str4);
         sendPortText(str3);
         sendPortText(str2);
         sendPortText(str1);
-        sendPortText(str0);
+        sendPortText(str11);
         sendPortText(str0);
         sendPortText(str0);
         sendPortText(str0);
@@ -182,30 +230,34 @@ public class PrintActivity extends com.brick.robotctrl.BaseActivity{
     {
         //  String str ="1234567890ABCDEFGHIJ中华人民共和";
         String time = StringUtils.getDateToString(new Date());
-
         String str0 = "                                ";
-        String str1 = "                      2016-12-13";
-        String str2 = "                                ";
-        String str3 = "                                ";
-        String str4 = "               16号             ";
-        String str5 = "                                ";
-        String str6 = "                                ";
-        String str7 = "理财业务    柜台032             ";
-        String str8 = "                                ";
-        String str9 = "                                ";
-        sendPortText(str9);
-        sendPortText(str9);
-        sendPortText(str9);
-        sendPortText(str9);
+      /*  String str1 = "\n 恭喜发财   年年有余   岁岁平安";
+        String str2 = "\n 财源广进   财源滚滚   财源滚滚";
+        String str3 = "\n 事事如意   招财进宝   吉祥如意";
+        String str4 = "\n 万事如意   一路发财   心想事成";
+        String str5 = "\n 合家平安   步步高升   一元复始";*/
+        String str5 = "            赐平安符            ";
+        String str6 = "\n祝您:万事如意,事业有成,合家平安";
+        String str7 = "\n清晨曙光初现,幸福在你身边;中午艳";
+        String str8 = "\n阳高照,微笑在你心间;傍晚日落西山";
+        String str9 = "\n欢乐随你满天;狗年吉祥，大吉大利!";
+        String str10 ="\n愿你一年天天天开心,小时时时快乐,";
+        String str11 ="\n分分分精彩,秒秒秒幸福。 ";
+        String str12 ="";
+        sendPortText(str0);
+        sendPortText(str12);
+        sendPortText(str11);
+        sendPortText(str10);
         sendPortText(str9);
         sendPortText(str8);
         sendPortText(str7);
         sendPortText(str6);
         sendPortText(str5);
+       /* sendPortText(str5);
         sendPortText(str4);
         sendPortText(str3);
         sendPortText(str2);
-        sendPortText(str1);
+        sendPortText(str1);*/
         sendPortText(str0);
         sendPortText(str0);
         sendPortText(str0);
@@ -213,42 +265,6 @@ public class PrintActivity extends com.brick.robotctrl.BaseActivity{
         sendPortText(str0);
     }
 
-    String url = "http://192.168.43.14:8080/mm/Gson.json";
-    private void print4() {
-        //1,创建okheepclient对象
-        OkHttpClient okHttpClient = new OkHttpClient();
-        //2, 构建请求对象，请求体
-        Request request = new Request.Builder().url(url).build();
-        //3,创建发送请求
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d(TAG, "print4  : "+e.toString());
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                // String   stream = InputStreamTools.readStream(response.body().byteStream());
-                String str0 = "                                ";
-               // String str1 = "  "+R.drawable.ic_gf_logo+" "+"\n";
-                String   stream = response.body().string();
-                        Log.d(TAG, "print4  : "+stream);
-                   if (stream ==null){
-                     print3();
-                    }else {
-                     sendPortText(str0);
-                     sendPortText(str0);
-                     sendPortText(str0);
-                     sendPortText(stream+"\n");
-                     sendPortText(str0);
-                     sendPortText(str0);
-                     sendPortText(str0);
-                     sendPortText(str0);
-                    }
-            }
-        });
-       // String streamData = OrderNum.getDate();
-       //Log.d(TAG, "print4  : "+streamData);
-    }
 
     private void sendPortText(String content)
     {
@@ -263,12 +279,40 @@ public class PrintActivity extends com.brick.robotctrl.BaseActivity{
         serialCtrlPrinter.sendPortText(serialCtrlPrinter.ComA, temp);
     }
 
+
+
+    /*图片到字节数组*/
+    public byte[] image2byte(String path){
+        byte[] data = null;
+        FileInputStream input = null;
+        try {
+            input = new FileInputStream(new File(path));
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+            int numBytesRead = 0;
+            while ((numBytesRead = input.read(buf)) != -1) {
+                output.write(buf, 0, numBytesRead);
+            }
+            data = output.toByteArray();
+            output.close();
+            input.close();
+        }
+        catch (FileNotFoundException ex1) {
+            ex1.printStackTrace();
+        }
+        catch (IOException ex1) {
+            ex1.printStackTrace();
+        }
+        return data;
+    }
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG,"打印的Activity");
         LogUtil.e(TAG, "..System.currentTimeMillis()"+System.currentTimeMillis());
        // updatePresentation();//在父类中已经被调用了
+
+
     }
 
     @Override

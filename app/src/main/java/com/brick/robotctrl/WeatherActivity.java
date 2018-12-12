@@ -2,13 +2,16 @@ package com.brick.robotctrl;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
+/* 网页
+* */
 /**
  * Created by lx on 2018-03-28.
  */
@@ -46,11 +49,12 @@ public class WeatherActivity extends BaseActivity {
     private static final String TAG ="WeatherActivity.class" ;
     public  static WebView webView;
     public int index;
-
+    public static CameraManager cameraManager;
+    public static Context mcontext;
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.wecther_activity);
-
+        mcontext = WeatherActivity.this;
     }
 
     @Override
@@ -75,38 +79,46 @@ public class WeatherActivity extends BaseActivity {
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
         //设置自适应屏幕
-       webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN );
+        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN );
         webView.getSettings().setLoadWithOverviewMode ( true );
-
+        webView.getSettings().setDatabaseEnabled(true);
+        //设置字体大小
+        webView.getSettings().setTextSize(WebSettings.TextSize.NORMAL);
           loadWeb(index);
     }
-    public static void loadWeb(int index){
+    public static void loadWeb(final int index){
            //南京天气
           String url = "http://www.weather.com.cn/weather/101190101.shtml";
+
           //广州天气http://www.weather.com.cn/weather/101280101.shtml
-         //沈阳
-        // String url = "http://www.weather.com.cn/weather/101070101.shtml";
-       //北京
-        // String url =  "https://tianqi.so.com/weather/101010100";
-         //广发 http://www.cgbchina.com.cn/
+
+       // String url =  "https://tianqi.so.com/weather/101010100";
+       //广发 http://www.cgbchina.com.cn/
         //中国银行http://www.boc.cn/
 
-         String url2 = "http://www.jsredstonetech.cn/";
-
-          if (index==10){
-                webView.loadUrl(url);
-          }else {
-                webView.loadUrl(url2);
-           }
+        String url2 = "http://www.jsredstonetech.cn/"; //公司网页
             //设置使用WevView加载 不使用系统浏览器加载;
-          webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient(){
                 @Override
              public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
-                    return true;
+                 return true;
                 }
-            });
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                Log.d("WebView", "onPageStarted");
+                super.onPageStarted(view, url, favicon);
+              }
+
+        });
+       // webView.setWebChromeClient(new PublicWebChromeClient());
+        //index 是客服点的表情序号 根据那个index 加载哪个网页
+         if (index==10){// 只允许着两个？
+                webView.loadUrl(url);
+          }else if(index ==11) {
+                webView.loadUrl(url2);
+           }//.......我知道，但是最高表情好像只有11个，网页我可以添加最多多扫个？
      }
+
     //覆盖Activity类的onKeyDown(int keyCoder,KeyEvent event)方法
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
@@ -150,7 +162,7 @@ public class WeatherActivity extends BaseActivity {
     public static void startActionweathert(Context context, int index) {
         Intent Net = new Intent();
         Net.setClass(context, WeatherActivity.class);
-        Log.d("TAG", "changeExpression: 开启天气");
+        Log.d("TAG", "changeExpression: 开启网页");
         Net.putExtra("index",index);
         context.startActivity(Net);
     }

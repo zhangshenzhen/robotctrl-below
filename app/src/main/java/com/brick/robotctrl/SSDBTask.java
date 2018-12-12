@@ -33,8 +33,7 @@ public class SSDBTask {
     // public String serverIp = "120.25.66.79";
     public String serverIp = "222.190.128.98";
     public int serverPort = 20177;
-
-    public String robotName = "hs12B";
+    public String robotName = "hs39B";
     public String robotLocation = "江苏红石信息集成服务有限公司";
     public String videoPlayList = null;
     private final int serverSite = 222;

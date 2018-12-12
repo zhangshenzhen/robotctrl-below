@@ -65,8 +65,10 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageView
+      <!--      android:visibility="gone"表隐藏消失，-->
+      <ImageView
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/ic_gf_logo"/>
